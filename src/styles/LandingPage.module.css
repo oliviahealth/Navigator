@@ -1,0 +1,167 @@
+/* Base reset for full width and no unexpected margins or paddings */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Styles for the landing page */
+  .ehrLandingPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url('src/assets/background_image.png');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+  
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* Adjusted padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9); /* Adjust opacity as needed */
+    z-index: 10; /* Ensure the header is above the main content */
+    padding: 1rem 5rem
+  }
+  
+  .logoContainer {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: flex-start; /* Align items to the start of the container */
+    align-items: center;
+    text-align: center;
+  }
+  
+  .universityLogo {
+    height: 60px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .universityName,
+  .recordName {
+    color: #000;
+    margin: 0;
+    margin-left: 0.5rem;
+    display: block;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .dashboardLink,
+  .loginLink {
+    text-decoration: none;
+    color: #000; /* Black color for visibility */
+    font-weight: 400;
+    color: #500000; /* Maroon background for Login */
+    padding: 0.5rem 1rem; /* Padding similar to Sign Up */
+    border-radius: 25px; /* Rounded corners */
+    font-weight: bold;
+  }
+
+  .dashboardLink {
+    font-weight: 400;
+    background-color: transparent;
+    color: #000;
+  }
+
+  .loginButton {
+    background-color: #500000;
+    color: #500000;
+    font-weight: bold;
+    /* background: none!important;
+    border: none;
+    padding: 0!important;
+    font-family: arial, sans-serif;
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer; */
+  }
+  
+  .signupLink {
+    background-color: #500000; /* Maroon */
+    color: #fff; /* White text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: 600;
+  }
+  
+  .mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width */
+    position: relative;
+    max-height: calc(100vh); /* Calculate the max height */
+    overflow: hidden;
+    background-image: url('src/assets/background_image.png');
+    background-size: cover;
+    background-position: center;
+    position: relative; /* Needed for absolute positioning of children */
+    padding-top: 120px;
+  }
+  
+  .imagePlaceholder {
+    /* Assuming .imagePlaceholder is the container of the background logo image */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Below the text */
+    opacity: 0.5; /* Adjust the opacity as needed */
+  }
+  
+  .ollieContainer {
+    /* Center 'Olivia Health' text */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Ensure it's above the background image */
+  }
+  
+  .oliviaText,
+  .healthText {
+    display: block;
+    color: rgb(255, 255, 255); /* Black color for visibility */
+    font-size: xx-large;
+  }
+  
+  .ollieHead {
+    /* Position the Ollie head logo in the bottom right */
+    position: absolute;
+    bottom: 20px; /* Adjust distance from bottom */
+    right: 20px; /* Adjust distance from right */
+    width: 100px; /* Adjust size as needed */
+    height: auto; /* Keep the aspect ratio */
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+    }
+  
+    .nav,
+    .logoContainer {
+      justify-content: center;
+      margin-top: 1rem;
+    }
+  
+    .mainContent {
+      margin-top: 2rem;
+    }
+  }
+  

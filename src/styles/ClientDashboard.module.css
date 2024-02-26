@@ -1,0 +1,76 @@
+/* Base reset for full width and no unexpected margins or paddings */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Styles for the landing page */
+  .ehrLandingPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    background-image: url('src/assets/background_image.png');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+  }
+  
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem; /* Adjusted padding */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.9); /* Adjust opacity as needed */
+    z-index: 10; /* Ensure the header is above the main content */
+    padding: 1rem 5rem
+  }
+  
+  .logoContainer {
+    display: flex;
+    flex-direction: row; /* Align items in a row */
+    justify-content: flex-start; /* Align items to the start of the container */
+    align-items: center;
+    text-align: center;
+  }
+  
+  .universityLogo {
+    height: 60px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .universityName,
+  .recordName {
+    color: #000;
+    margin: 0;
+    margin-left: 0.5rem;
+    display: block;
+  }
+  
+  .nav {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .dashboardLink,
+  .loginLink {
+    text-decoration: none;
+    color: #000; /* Black color for visibility */
+    font-weight: 400;
+    color: #500000; /* Maroon background for Login */
+    padding: 0.5rem 1rem; /* Padding similar to Sign Up */
+    border-radius: 25px; /* Rounded corners */
+    font-weight: bold;
+  }
+
+  .dashboardLink {
+    font-weight: 400;
+    background-color: transparent;
+    color: #000;
+  }
