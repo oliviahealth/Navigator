@@ -262,3 +262,49 @@ height: 100vh;
   font-size: 18px; /* Adjust icon size as needed */
 }
 
+.dropdown-content {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.generalInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.generalInfoBody {
+  flex-grow: 1; /* Takes up as much space as possible, pushing the button to the right */
+  display: flex;
+  flex-direction: row;
+  gap: 10px; /* Adjust the gap as needed */
+}
+
+.infoBlock {
+  /* Add styles for each block of info */
+  padding: 10px;
+  border-radius: 5px; /* Adjust border-radius as needed */
+}
+
+.infoBlock p {
+  margin: 5px 0;
+  font-weight: normal;
+}
+
+.infoBlock strong {
+  /* Add styles for the labels */
+  font-weight: bold;
+}
+
+.editButton {
+  /* Add styles for the edit button */
+  background-color: #800000; /* Adjust to match the button color in the image */
+  color: white;
+  border: none;
+  padding: 5px 15px;
+  border-radius: 10px; /* Adjust border-radius as needed */
+  cursor: pointer;
+  margin-left: auto;
+  margin-bottom: 5px;
+}
+
