@@ -207,10 +207,10 @@ return (
             {isActive.demographics && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  React
+               <Link to="/participants-demographic-record">Participants Demographics Record</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  Vue
+                  Child Demographics Record
                </div>
             </div>
             )}
