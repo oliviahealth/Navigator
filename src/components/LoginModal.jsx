@@ -1,6 +1,5 @@
-// LoginModal.jsx
 import React, { useState } from 'react';
-import styles from '../styles/LoginModal.module.css'; // Import the CSS module
+import styles from '../styles/LoginModal.module.css';
 
 const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
   const [username, setUsername] = useState('');
