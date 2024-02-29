@@ -154,33 +154,29 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.generalInformation && (
-  <div className={styles["dropdown-content"]}>
-    <div className={styles["generalInfo"]}>
-      <div className={styles["generalInfoHeader"]}>
-        <h2>General information</h2>
-        <FontAwesomeIcon icon={faChevronUp} className={styles.chevronIcon} />
-      </div>
-      <div className={styles["generalInfoBody"]}>
-        <div className={styles["infoBlock"]}>
-          <p><strong>Name:</strong> First Name Last name</p>
-          <p><strong>Date of Birth:</strong> 01/01/2000</p>
-          <p><strong>Gender:</strong> Male</p>
-        </div>
-        <div className={styles["infoBlock"]}>
-          <p><strong>Phone number:</strong> +1(000)-0000-0000</p>
-          <p><strong>Email:</strong> myemail@gmail.com</p>
-        </div>
-        <div className={styles["infoBlock"]}>
-          <p><strong>Address:</strong> 0000 Street Name Drive</p>
-          <p><strong>Zip code:</strong> 00000</p>
-          <p><strong>City, State:</strong> City, State</p>
-          <p><strong>Country:</strong> United States</p>
-        </div>
-      </div>
-      <button className={styles["editButton"]}>Edit</button>
-    </div>
-  </div>
-)}
+            <div className={styles["dropdown-content"]}>
+               <div className={styles["generalInfo"]}>
+                  <div className={styles["generalInfoBody"]}>
+                  <div className={styles["infoBlock"]}>
+                     <p><strong>Name:</strong> First Name Last name</p>
+                     <p><strong>Date of Birth:</strong> 01/01/2000</p>
+                     <p><strong>Gender:</strong> Male</p>
+                  </div>
+                  <div className={styles["infoBlock"]}>
+                     <p><strong>Phone number:</strong> +1(000)-0000-0000</p>
+                     <p><strong>Email:</strong> myemail@gmail.com</p>
+                  </div>
+                  <div className={styles["infoBlock"]}>
+                     <p><strong>Address:</strong> 0000 Street Name Drive</p>
+                     <p><strong>Zip code:</strong> 00000</p>
+                     <p><strong>City, State:</strong> City, State</p>
+                     <p><strong>Country:</strong> United States</p>
+                  </div>
+                  </div>
+                  <button className={styles["editButton"]}>Edit</button>
+               </div>
+            </div>
+            )}
 
          </div>
          <div className={styles.dropdown}>
