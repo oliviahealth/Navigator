@@ -10,15 +10,18 @@ import SignUpModal from './SignUpModal';
 const LandingPage = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
-  
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Add this line
+
     const onLoginSuccess = () => {
         setShowLoginModal(false);
+        setIsAuthenticated(true); // Update the state to indicate the user is authenticated
     };
-  
+
     const onSignUpSuccess = () => {
         setShowSignUpModal(false);
+        setIsAuthenticated(true); // Similarly, update the state here
     };
-  
+
     return (
         <div className={styles.ehrLandingPage}>
             <header className={styles.header}>
@@ -28,7 +31,7 @@ const LandingPage = () => {
                     <span className={styles.recordName}>Electronic Health Records</span>
                 </div>
                 <nav className={styles.nav}>
-                    <Link to="/dashboard" className={styles.dashboardLink}>Client Dashboard</Link>
+                    {isAuthenticated && <Link to="/dashboard" className={styles.dashboardLink}>Client Dashboard</Link>} {/* Conditionally render this link */}
                     <button onClick={() => setShowLoginModal(true)} className="loginButton">Login</button>
                     <button onClick={() => setShowSignUpModal(true)} className={styles.signupButton}>Sign Up</button>
                 </nav>
@@ -42,8 +45,8 @@ const LandingPage = () => {
                 <img src={ollieHeadLogo} alt="Ollie Head Logo" className={styles.ollieHead} />
             </main>
             <LoginModal
-                showModal={showLoginModal} // Use showModal instead of show
-                setShowModal={setShowLoginModal} // Use setShowModal to match the expected prop in LoginModal
+                showModal={showLoginModal}
+                setShowModal={setShowLoginModal}
                 onLoginSuccess={onLoginSuccess}
             />
             <SignUpModal

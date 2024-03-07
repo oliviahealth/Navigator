@@ -1,0 +1,81 @@
+import os
+import psycopg2
+from dotenv import load_dotenv 
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+load_dotenv()
+
+app = Flask(__name__)
+CORS(app)
+
+postgres_url = os.getenv("DATABASE_URL")
+connection = psycopg2.connect(postgres_url)
+
+CREATE_USER_TABLE = """
+CREATE TABLE IF NOT EXISTS "user" (
+    id SERIAL PRIMARY KEY, 
+    username VARCHAR(30) UNIQUE, 
+    firstName VARCHAR(20), 
+    lastName VARCHAR(20), 
+    email VARCHAR(50), 
+    phone VARCHAR(20), 
+    password VARCHAR(60), 
+    is_admin BOOLEAN, 
+    admin_id INTEGER, 
+    FOREIGN KEY (admin_id) REFERENCES "user"(id) ON DELETE CASCADE
+);
+"""
+
+
+INSERT_USER = """
+INSERT INTO "user" (username, firstName, lastName, email, phone, password, is_admin, admin_id)
+VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+RETURNING id;
+"""
+
+@app.post("/api/signup")
+def signup():
+    data = request.get_json()
+    firstName = data["firstName"]
+    lastName = data["lastName"]
+    email = data["email"]
+    phone = data["phone"]
+    username = data["username"]
+    password = data["password"]
+    confirmPassword = data["password"]
+    is_admin = False
+    admin_id = None
+
+    if password != confirmPassword:
+        return
+
+    print(f"Username: {username}, Password: {password}")
+    with connection:
+        with connection.cursor() as cursor:
+            cursor.execute(CREATE_USER_TABLE)
+            cursor.execute(INSERT_USER, (firstName, lastName, email, phone, username, password, is_admin, admin_id))
+            user_id = cursor.fetchone()[0]
+    return {
+        "status": "success",
+        "message": "User created successfully.",
+        "user_id": user_id
+    }
+
+@app.post("/api/login")
+def login():
+    data = request.get_json()
+    username = data.get("username")
+    password = data.get("password")
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id FROM \"user\" WHERE username = %s AND password = %s", (username, password))
+        user = cursor.fetchone()
+        if user:
+            return jsonify({"status": "success", "message": "Login successful", "user_id": user[0]})
+        else:
+            return jsonify({"status": "error", "message": "Invalid username or password"}), 401
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
