@@ -1,0 +1,91 @@
+.modalOverlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75); 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    z-index: 1000; 
+  }
+  
+  .modalContent {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    z-index: 1001; 
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 5px; 
+  }
+  
+  .closeButton {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .closeButton:hover,
+  .closeButton:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .tableContainer {
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  
+  .communicationsLogTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .communicationsLogTable th,
+  .communicationsLogTable td {
+    border: 1px solid #000;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .communicationsLogTable th {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .communicationsLogTable label {
+    margin-right: 12px;
+    cursor: pointer;
+  }
+  
+  .communicationsLogTable input[type="radio"],
+  .communicationsLogTable input[type="checkbox"] {
+    display: none;
+  }
+  
+  .communicationsLogTable input[type="radio"] + label::before,
+  .communicationsLogTable input[type="checkbox"] + label::before {
+    content: "";
+    display: inline-block;
+    margin-right: 5px;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #000;
+    vertical-align: middle;
+  }
+  
+  .communicationsLogTable input[type="radio"]:checked + label::before,
+  .communicationsLogTable input[type="checkbox"]:checked + label::before {
+    background-color: #2196F3;
+  }
+  
+  .communicationsLogTable .followUpLabel {
+    display: block;
+  }
+  
