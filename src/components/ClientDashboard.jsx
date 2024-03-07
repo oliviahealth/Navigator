@@ -7,8 +7,59 @@ import Dropdown from "./Dropdown";
 import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import CommunicationsLogModal from './ConsentForm/CommunicationsLogModal.jsx';
 const ClientDashboard = () => {
 const navigate = useNavigate();
+const [consentFormOptions, setConsentFormOptions] = useState([
+    "COMMUNICATIONS LOG",
+    "APPOINTMENT LOG (Home Visits)",
+    "TALKING POINTS FOR NAVIGATOR HOME VISITORS FOR CONSENT FORMS",
+    "WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24",
+    "ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION",
+    "Media Appearance Release"
+]);
+const [substanceUseAssessmentsOptions, setSubstanceUseAssessmentsOptions] = useState([
+    "4 P's of Pregnancy",
+    "Addiction Belief Scale",
+    "CAGE-Aid Screening Tool",
+    "CRAFFT Screening Tool",
+    "Drug Abuse Screening Test (DAST-10)",
+    "Drug Screening Results",
+    "Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum",
+    "Substance Use History",
+    "TWEAK Test (for alcohol drinking)",
+    "SUBSTANCE USE RELAPSE PREVENTION PLAN",
+]);  
+const [interpersonalRelationsAssessmentsOptions, setInterpersonalRelationsAssessmentsOptions] = useState([
+    "Intimate Partner Violence",
+    "Domestic Violence Screen for Pediatric Settings",
+    "IPV Screening and Assessment Questions",
+    "Intimate Partner Violence (IPV) Disclosure Screening Tool",
+    "Family Dynamics Social Support Questionnaire (SSQ6)",
+]);
+const [physicalAssessmentsOptions, setPhysicalAssessmentsOptions] = useState([
+    "10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment",
+    "Pregnancy spacing Assessment",
+]);
+const [mentalHealthAssessmentsOptions, setMentalHealthAssessmentsOptions] = useState([
+    "Mental Health History / Brief Update form",
+    "Columbia Suicide Severity Risk Scale, C-SSRS",
+    "Duke University Religion Index (DUREL)",
+    "Edinburg Postnatal Depression Scale (EPDS)",
+    "Generalized Anxiety Disorder (GAD-7)",
+    "Perceived Stress Scale (PSS)",
+    "PHQ-9",
+]);
+const [homeSafetyAssessmentsOptions, setHomeSafetyAssessmentsOptions] = useState([
+    "Housing Security Home Visit Form",
+    "Food Security",
+]);  
+
+const [isCommLogModalOpen, setCommLogModalOpen] = useState(false);
+
+const handleCommLogClick = () => {
+    setCommLogModalOpen(true);
+};
 const handleLogout = () => {
 navigate('/');
 };
@@ -143,6 +194,10 @@ return (
             </div>
          </div>
       </div>
+      <CommunicationsLogModal
+          isOpen={isCommLogModalOpen}
+          close={() => setCommLogModalOpen(false)}
+      />
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
             <span className={styles.title}>First Name Last Name</span>
@@ -180,21 +235,24 @@ return (
 
          </div>
          <div className={styles.dropdown}>
-            <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('consentForm')}>Consent Form
-               <FontAwesomeIcon icon={faCaretDown} />
-            </div>
-            {isActive.consentForm && (
+        <div className={styles["dropdown-btn"]} onClick={(e) => toggleDropdown('consentForm')}>
+            Communication Log, Appointment Log, & Consent Forms
+            <FontAwesomeIcon icon={faCaretDown} />
+        </div>
+        {isActive.consentForm && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            {consentFormOptions.map((option, index) => (
+            <div key={index} className={styles["dropdown-item"]} onClick={() => {
+                if (option === "COMMUNICATIONS LOG") {
+                    handleCommLogClick();
+                }
+            }}>
+                {option}
             </div>
-            )}
-         </div>
+        ))}
+        </div>
+        )}
+        </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('demographics')}>Demographics
@@ -213,7 +271,7 @@ return (
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('medical')}>Medical History
+               toggleDropdown('medical')}>Medical & Nutrition History
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.medical && (
@@ -229,7 +287,7 @@ return (
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('currMed')}>Current Medication
+               toggleDropdown('currMed')}>Medications
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.currMed && (
@@ -245,65 +303,40 @@ return (
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('suh')}>Substance Use History
+               toggleDropdown('suh')}>Substance Use Assessments
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.suh && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            {substanceUseAssessmentsOptions.map((option, index) => (
+                <div key={index} className="dropdownItem">{option}</div>
+            ))}
             </div>
             )}
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('PrenatalCare')}>Prenatal Care
-               <FontAwesomeIcon icon={faCaretDown} />
-            </div>
-            {isActive.PrenatalCare && (
-            <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
-            </div>
-            )}
-         </div>
-         <div className={styles.dropdown}>
-            <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('InterRel')}>Interpersonal Relations
+               toggleDropdown('InterRel')}>Interpersonal Relations Assessments
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.InterRel && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            {interpersonalRelationsAssessmentsOptions.map((option, index) => (
+                <div key={index} className="dropdownItem">{option}</div>
+            ))}
             </div>
             )}
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('physical')}>Physical Assessment
+               toggleDropdown('physical')}>Physical Assessments
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.phyical && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            {physicalAssessmentsOptions.map((option, index) => (
+                <div key={index} className="dropdownItem">{option}</div>
+            ))}
             </div>
             )}
          </div>
@@ -314,12 +347,9 @@ return (
             </div>
             {isActive.mental && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            {mentalHealthAssessmentsOptions.map((option, index) => (
+                <div key={index} className="dropdownItem">{option}</div>
+            ))}
             </div>
             )}
          </div>
@@ -329,6 +359,19 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.hsa && (
+            <div className={styles["dropdown-content"]}>
+            {homeSafetyAssessmentsOptions.map((option, index) => (
+                <div key={index} className="dropdownItem">{option}</div>
+            ))}
+            </div>
+            )}
+         </div>
+         <div className={styles.dropdown}>
+            <div className={styles["dropdown-btn"]} onClick={(e) =>
+               toggleDropdown('PrenatalCare')}>Prenatal Care
+               <FontAwesomeIcon icon={faCaretDown} />
+            </div>
+            {isActive.PrenatalCare && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
                   React
