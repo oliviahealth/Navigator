@@ -71,11 +71,11 @@ const ParentalMedicalHistory = () => {
             <label className={styles.labelBlock}>Actual Mode of Delivery:</label>
             <div className={styles.radioGroup}>
               <label>
-                <input type="radio" name="deliveryMode" value="vaginal" checked={deliveryMode === 'vaginal'} onChange={e => setDeliveryMode(e.target.value)} />
+                <input type="radio" name="actualDeliveryMode" value="vaginal" checked={actualDeliveryMode === 'vaginal'} onChange={e => setActualDeliveryMode(e.target.value)} />
                 Vaginal
               </label>
               <label>
-                <input type="radio" name="deliveryMode" value="cesarean" checked={deliveryMode === 'cesarean'} onChange={e => setDeliveryMode(e.target.value)} />
+                <input type="radio" name="actualDeliveryMode" value="cesarean" checked={actualDeliveryMode === 'cesarean'} onChange={e => setActualDeliveryMode(e.target.value)} />
                 Cesarean
               </label>
             </div>
