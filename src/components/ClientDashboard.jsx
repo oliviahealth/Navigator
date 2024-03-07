@@ -276,9 +276,9 @@ return (
             </div>
             {isActive.medical && (
             <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
+               <Link to="/parental-medical-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Parental Medical History Form</span>
+          </Link>
                <div className={styles["dropdown-item"]}>
                   Vue
                </div>
