@@ -7,6 +7,7 @@ import Dropdown from "./Dropdown";
 import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import PatientDemographics from "./PatientDemographics";
 import CommunicationsLogModal from './ConsentForm/CommunicationsLogModal.jsx';
 const ClientDashboard = () => {
 const navigate = useNavigate();
