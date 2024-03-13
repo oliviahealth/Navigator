@@ -1,0 +1,83 @@
+.pageContainer {
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.pageContent {
+    max-width: 100%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.appointmentLogTable {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; 
+}
+
+.appointmentLogTable th,
+.appointmentLogTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    word-break: break-word;
+}
+
+.appointmentLogTable th {
+    background-color: #ccc; 
+}
+
+.appointmentLogTable td input,
+.appointmentLogTable td textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+
+.appointmentLogTable td textarea {
+    height: 100px; 
+    resize: vertical;
+}
+
+.addNewRowButton,
+.cancelButton,
+.submitButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.addNewRowButton {
+    background-color: #808080;
+    color: white;
+}
+
+.cancelButton {
+    background-color: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+
+.submitButton {
+    background-color: #2196F3;
+    color: white;
+    margin-left: 10px;
+}
+
+.addNewRowButton:hover,
+.cancelButton:hover,
+.submitButton:hover {
+    opacity: 0.8;
+}
