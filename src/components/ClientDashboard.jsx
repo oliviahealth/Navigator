@@ -8,59 +8,54 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import CommunicationsLogModal from './ConsentForm/CommunicationsLogModal.jsx';
+import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+
 const ClientDashboard = () => {
 const navigate = useNavigate();
-const [consentFormOptions, setConsentFormOptions] = useState([
-    "COMMUNICATIONS LOG",
-    "APPOINTMENT LOG (Home Visits)",
-    "TALKING POINTS FOR NAVIGATOR HOME VISITORS FOR CONSENT FORMS",
-    "WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24",
-    "ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION",
-    "Media Appearance Release"
-]);
-const [substanceUseAssessmentsOptions, setSubstanceUseAssessmentsOptions] = useState([
-    "4 P's of Pregnancy",
-    "Addiction Belief Scale",
-    "CAGE-Aid Screening Tool",
-    "CRAFFT Screening Tool",
-    "Drug Abuse Screening Test (DAST-10)",
-    "Drug Screening Results",
-    "Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum",
-    "Substance Use History",
-    "TWEAK Test (for alcohol drinking)",
-    "SUBSTANCE USE RELAPSE PREVENTION PLAN",
-]);  
-const [interpersonalRelationsAssessmentsOptions, setInterpersonalRelationsAssessmentsOptions] = useState([
-    "Intimate Partner Violence",
-    "Domestic Violence Screen for Pediatric Settings",
-    "IPV Screening and Assessment Questions",
-    "Intimate Partner Violence (IPV) Disclosure Screening Tool",
-    "Family Dynamics Social Support Questionnaire (SSQ6)",
-]);
-const [physicalAssessmentsOptions, setPhysicalAssessmentsOptions] = useState([
-    "10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment",
-    "Pregnancy spacing Assessment",
-]);
-const [mentalHealthAssessmentsOptions, setMentalHealthAssessmentsOptions] = useState([
-    "Mental Health History / Brief Update form",
-    "Columbia Suicide Severity Risk Scale, C-SSRS",
-    "Duke University Religion Index (DUREL)",
-    "Edinburg Postnatal Depression Scale (EPDS)",
-    "Generalized Anxiety Disorder (GAD-7)",
-    "Perceived Stress Scale (PSS)",
-    "PHQ-9",
-]);
-const [homeSafetyAssessmentsOptions, setHomeSafetyAssessmentsOptions] = useState([
-    "Housing Security Home Visit Form",
-    "Food Security",
-]);  
-
-const [isCommLogModalOpen, setCommLogModalOpen] = useState(false);
-
-const handleCommLogClick = () => {
-    setCommLogModalOpen(true);
-};
+// const [consentFormOptions, setConsentFormOptions] = useState([
+//     "COMMUNICATIONS LOG",
+//     "APPOINTMENT LOG (Home Visits)",
+//     "TALKING POINTS FOR NAVIGATOR HOME VISITORS FOR CONSENT FORMS",
+//     "WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24",
+//     "ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION",
+//     "Media Appearance Release"
+// ]);
+// const [substanceUseAssessmentsOptions, setSubstanceUseAssessmentsOptions] = useState([
+//     "4 P's of Pregnancy",
+//     "Addiction Belief Scale",
+//     "CAGE-Aid Screening Tool",
+//     "CRAFFT Screening Tool",
+//     "Drug Abuse Screening Test (DAST-10)",
+//     "Drug Screening Results",
+//     "Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum",
+//     "Substance Use History",
+//     "TWEAK Test (for alcohol drinking)",
+//     "SUBSTANCE USE RELAPSE PREVENTION PLAN",
+// ]);  
+// const [interpersonalRelationsAssessmentsOptions, setInterpersonalRelationsAssessmentsOptions] = useState([
+//     "Intimate Partner Violence",
+//     "Domestic Violence Screen for Pediatric Settings",
+//     "IPV Screening and Assessment Questions",
+//     "Intimate Partner Violence (IPV) Disclosure Screening Tool",
+//     "Family Dynamics Social Support Questionnaire (SSQ6)",
+// ]);
+// const [physicalAssessmentsOptions, setPhysicalAssessmentsOptions] = useState([
+//     "10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment",
+//     "Pregnancy spacing Assessment",
+// ]);
+// const [mentalHealthAssessmentsOptions, setMentalHealthAssessmentsOptions] = useState([
+//     "Mental Health History / Brief Update form",
+//     "Columbia Suicide Severity Risk Scale, C-SSRS",
+//     "Duke University Religion Index (DUREL)",
+//     "Edinburg Postnatal Depression Scale (EPDS)",
+//     "Generalized Anxiety Disorder (GAD-7)",
+//     "Perceived Stress Scale (PSS)",
+//     "PHQ-9",
+// ]);
+// const [homeSafetyAssessmentsOptions, setHomeSafetyAssessmentsOptions] = useState([
+//     "Housing Security Home Visit Form",
+//     "Food Security",
+// ]);  
 const handleLogout = () => {
 navigate('/');
 };
@@ -71,6 +66,27 @@ setIsActive(prevState => ({
 [id]: !prevState[id]
 }));
 };
+// const [isAppointmentLogModalOpen, setAppointmentLogModalOpen] = useState(false);
+// const [appointmentLogs, setAppointmentLogs] = useState([]);
+// const handleAppointmentLogClick = () => {
+//     setAppointmentLogModalOpen(true);
+//   };
+// const handleSubmitAppointmentLog = (event) => {
+//     event.preventDefault();
+//     const newLog = {
+//       date: event.target.date.value,
+//       who: event.target.who.value,
+//       location: event.target.location.value,
+//       notes: event.target.notes.value,
+//     };
+//     setAppointmentLogs([...appointmentLogs, newLog]);
+//     setAppointmentLogModalOpen(false);
+//     navigate('/dashboard');
+//   };
+// const handleCancelAppointmentLog = () => {
+//     setAppointmentLogModalOpen(false);
+//     navigate('/dashboard');
+// };
 return (
 <div className={styles.clientDashboard}>
    <header className={styles.header}>
@@ -195,10 +211,6 @@ return (
             </div>
          </div>
       </div>
-      <CommunicationsLogModal
-          isOpen={isCommLogModalOpen}
-          close={() => setCommLogModalOpen(false)}
-      />
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
             <span className={styles.title}>First Name Last Name</span>
@@ -242,15 +254,22 @@ return (
         </div>
         {isActive.consentForm && (
             <div className={styles["dropdown-content"]}>
-            {consentFormOptions.map((option, index) => (
-            <div key={index} className={styles["dropdown-item"]} onClick={() => {
-                if (option === "COMMUNICATIONS LOG") {
-                    handleCommLogClick();
-                }
-            }}>
-                {option}
+                <Link to="/communications-log" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Communications Log Form</span>
+                </Link>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/apppointment-log" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Apppointment Log Form</span>
+                </Link>
             </div>
-        ))}
+        {/* <AppointmentLogModal
+            isOpen={isAppointmentLogModalOpen}
+            toggleModal={() => setAppointmentLogModalOpen(false)}
+            onSubmit={handleSubmitAppointmentLog}
+            onCancel={handleCancelAppointmentLog}
+            appointmentLogs={appointmentLogs}
+            setAppointmentLogs={setAppointmentLogs}
+        /> */}
         </div>
         )}
         </div>

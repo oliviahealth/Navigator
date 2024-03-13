@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from '/Users/arindamgahlot/Desktop/CSCE_482/Electronic_Health_Record_Final/ehr_landing_page/src/styles/ConsentFormStyles/CommunicationsLogModal.module.css';
 
 const CommunicationsLogModal = ({ isOpen, close }) => {
     if (!isOpen) return null;

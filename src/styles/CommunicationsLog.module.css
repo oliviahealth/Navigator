@@ -1,0 +1,128 @@
+.pageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: #f0f0f0;
+}
+
+.pageContent {
+    width: 100%;
+    max-width: 960px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow-x: auto; /* Allows for horizontal scrolling if the table is too wide */
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.communicationsLogTable {
+    width: 100%;
+    max-width: 100%; /* Ensures table does not exceed the container's width */
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed; /* Helps ensure the table fits within its container */
+}
+
+.communicationsLogTable th,
+.communicationsLogTable td {
+    text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+    word-wrap: break-word; /* Ensures content does not overflow */
+}
+
+.communicationsLogTable th {
+    background-color: #f2f2f2;
+}
+
+.communicationsLogTable td input[type="text"],
+.communicationsLogTable td input[type="radio"],
+.communicationsLogTable td input[type="checkbox"],.communicationsLogTable td textarea { /* Added textarea for style consistency */
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 4px;
+    width: 100%; /* Ensures inputs take full width of their cell */
+    box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+}
+
+.communicationsLogTable td textarea {
+    resize: vertical; /* Allows users to resize the textarea vertically */
+    height: 60px; /* Initial height to accommodate more text without scrolling */
+}
+
+.communicationsLogButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.addNewRow {
+    background-color: #808080; /* Changed to grey */
+    color: white;
+}
+
+.cancel {
+    background-color: #f44336;
+    color: white;
+    margin-left: 10px;
+}
+
+.submit {
+    background-color: #2196F3;
+    color: white;
+    margin-left: 10px;
+}
+
+.addNewRow:hover,
+.cancel:hover,
+.submit:hover {
+    opacity: 0.8;
+}
+
+@media screen and (max-width: 768px) {
+    .communicationsLogTable, .communicationsLogTable thead, .communicationsLogTable tbody, .communicationsLogTable th, .communicationsLogTable td, .communicationsLogTable tr {
+        display: block;
+    }
+    
+    .communicationsLogTable thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    
+    .communicationsLogTable tr { border: 1px solid #ccc; }
+    
+    .communicationsLogTable td {
+        /* Behaves like a "row" */
+        border: none;
+        position: relative;
+        padding-left: 50%;
+    }
+    
+    .communicationsLogTable td:before {
+        /* Now like a table header */
+        position: absolute;
+        /* Top/left values mimic padding */
+        left: 6px;
+        width: 45%;
+        padding-right: 10px; 
+        white-space: nowrap;
+    }
+    
+    /* Label the data */
+    .communicationsLogTable td:nth-of-type(1):before { content: "Date/Time"; }
+    .communicationsLogTable td:nth-of-type(2):before { content: "Method"; }
+    .communicationsLogTable td:nth-of-type(3):before { content: "Organization or Person"; }
+    .communicationsLogTable td:nth-of-type(4):before { content: "Purpose"; }
+    .communicationsLogTable td:nth-of-type(5):before { content: "Notes"; }
+    .communicationsLogTable td:nth-of-type(6):before { content: "Follow Up Needed"; }
+}
