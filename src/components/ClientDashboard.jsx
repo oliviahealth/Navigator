@@ -327,13 +327,10 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.currMed && (
-            <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/medications" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Medications</span>
+                </Link>
             </div>
             )}
          </div>

@@ -10,6 +10,7 @@ import AppointmentLog from './components/AppointmentLog';
 import FormCoverLetter from './components/FormCoverLetter'
 import ReleaseOfInformation from './components/ReleaseOfInformation'
 import MediaAppearanceRelease from './components/MediaAppearanceRelease'
+import Medications from './components/Medications'
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path="/form-cover-letter" element={<FormCoverLetter />} />
         <Route path="/release-of-information" element={<ReleaseOfInformation />} />
         <Route path="/media-appearance-release" element={<MediaAppearanceRelease />} />
+        <Route path="/medications" element={<Medications />} />
       </Routes>
     </Router>
   );
