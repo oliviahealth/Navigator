@@ -262,6 +262,22 @@ return (
                     <span className={styles.highlighted}>Apppointment Log Form</span>
                 </Link>
             </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/form-cover-letter" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24</span>
+                </Link>
+            </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/release-of-information" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
+                </Link>
+            </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/media-appearance-release" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Media Appearance Release</span>
+                </Link>
+            </div>
+
         {/* <AppointmentLogModal
             isOpen={isAppointmentLogModalOpen}
             toggleModal={() => setAppointmentLogModalOpen(false)}
