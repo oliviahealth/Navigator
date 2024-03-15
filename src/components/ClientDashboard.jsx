@@ -338,12 +338,17 @@ return (
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('suh')}>Substance Use Assessments
                <FontAwesomeIcon icon={faCaretDown} />
-            </div>
+            </div> 
             {isActive.suh && (
-            <div className={styles["dropdown-content"]}>
-            {substanceUseAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
+            <div className={styles["dropdown-item"]}>
+                <Link to="/pregnancy" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>4 P's of Pregnancy</span>
+                </Link>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Addiction Belief Scale</span>
+                </Link>
+            </div>
             </div>
             )}
          </div>
