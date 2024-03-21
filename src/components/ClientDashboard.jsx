@@ -280,7 +280,14 @@ return (
             <span className={styles.highlighted}>Parental Medical History Form</span>
           </Link>
                <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/encounter-form" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/nut-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Nutrition History and Assessment</span>
+          </Link>
                </div>
             </div>
             )}
