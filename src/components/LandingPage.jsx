@@ -7,6 +7,7 @@ import ollieHeadLogo from '../assets/ollie_head_logo.png';
 import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 
+
 const LandingPage = () => {
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
