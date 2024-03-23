@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import styles from '../styles/ClientDashboard.module.css';
 import texasLogo from '../assets/texas_a_and_m_logo.png'; 
 import { Link } from 'react-router-dom';
@@ -8,59 +8,33 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import CommunicationsLogModal from './ConsentForm/CommunicationsLogModal.jsx';
+import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+
 const ClientDashboard = () => {
 const navigate = useNavigate();
-const [consentFormOptions, setConsentFormOptions] = useState([
-    "COMMUNICATIONS LOG",
-    "APPOINTMENT LOG (Home Visits)",
-    "TALKING POINTS FOR NAVIGATOR HOME VISITORS FOR CONSENT FORMS",
-    "WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24",
-    "ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION",
-    "Media Appearance Release"
-]);
-const [substanceUseAssessmentsOptions, setSubstanceUseAssessmentsOptions] = useState([
-    "4 P's of Pregnancy",
-    "Addiction Belief Scale",
-    "CAGE-Aid Screening Tool",
-    "CRAFFT Screening Tool",
-    "Drug Abuse Screening Test (DAST-10)",
-    "Drug Screening Results",
-    "Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum",
-    "Substance Use History",
-    "TWEAK Test (for alcohol drinking)",
-    "SUBSTANCE USE RELAPSE PREVENTION PLAN",
-]);  
-const [interpersonalRelationsAssessmentsOptions, setInterpersonalRelationsAssessmentsOptions] = useState([
-    "Intimate Partner Violence",
-    "Domestic Violence Screen for Pediatric Settings",
-    "IPV Screening and Assessment Questions",
-    "Intimate Partner Violence (IPV) Disclosure Screening Tool",
-    "Family Dynamics Social Support Questionnaire (SSQ6)",
-]);
-const [physicalAssessmentsOptions, setPhysicalAssessmentsOptions] = useState([
-    "10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment",
-    "Pregnancy spacing Assessment",
-]);
-const [mentalHealthAssessmentsOptions, setMentalHealthAssessmentsOptions] = useState([
-    "Mental Health History / Brief Update form",
-    "Columbia Suicide Severity Risk Scale, C-SSRS",
-    "Duke University Religion Index (DUREL)",
-    "Edinburg Postnatal Depression Scale (EPDS)",
-    "Generalized Anxiety Disorder (GAD-7)",
-    "Perceived Stress Scale (PSS)",
-    "PHQ-9",
-]);
-const [homeSafetyAssessmentsOptions, setHomeSafetyAssessmentsOptions] = useState([
-    "Housing Security Home Visit Form",
-    "Food Security",
-]);  
 
-const [isCommLogModalOpen, setCommLogModalOpen] = useState(false);
+const [patients, setPatients] = useState([]); // State to store patient data
 
-const handleCommLogClick = () => {
-    setCommLogModalOpen(true);
-};
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/patients', {
+                  method: 'GET'
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setPatients(data); // Assuming the API returns an array of patient objects
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        };
+
+        fetchPatients();
+    }, []); 
+
+
 const handleLogout = () => {
 navigate('/');
 };
@@ -92,113 +66,29 @@ return (
             <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
             <input type="text" className={styles.searchInput} placeholder="Search for patients" />
          </div>
+
+         <a href="/add-patient">
+            <button>Add Patient</button>
+         </a>
+
          <div className={styles.sidebarContent}>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
+         {patients.map((patient, index) => (
+                        <div key={index} className={styles.patientSidebarItem}>
+                            <div className={styles.patientInfo}>
+                                <div className={styles.patientName}>{patient.first_name} {patient.last_name}</div>
+                                <div className={styles.patientStatusWithIcon}>
+                                    <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
+                                    No actions required
+                                </div>
+                            </div>
+                            <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
+                        </div>
+                    ))}
          </div>
+
+
+
       </div>
-      <CommunicationsLogModal
-          isOpen={isCommLogModalOpen}
-          close={() => setCommLogModalOpen(false)}
-      />
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
             <span className={styles.title}>First Name Last Name</span>
@@ -242,15 +132,38 @@ return (
         </div>
         {isActive.consentForm && (
             <div className={styles["dropdown-content"]}>
-            {consentFormOptions.map((option, index) => (
-            <div key={index} className={styles["dropdown-item"]} onClick={() => {
-                if (option === "COMMUNICATIONS LOG") {
-                    handleCommLogClick();
-                }
-            }}>
-                {option}
+                <Link to="/communications-log" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Communications Log Form</span>
+                </Link>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/apppointment-log" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Apppointment Log Form</span>
+                </Link>
             </div>
-        ))}
+            <div className={styles["dropdown-item"]}>
+                <Link to="/form-cover-letter" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24</span>
+                </Link>
+            </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/release-of-information" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
+                </Link>
+            </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/media-appearance-release" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Media Appearance Release</span>
+                </Link>
+            </div>
+
+        {/* <AppointmentLogModal
+            isOpen={isAppointmentLogModalOpen}
+            toggleModal={() => setAppointmentLogModalOpen(false)}
+            onSubmit={handleSubmitAppointmentLog}
+            onCancel={handleCancelAppointmentLog}
+            appointmentLogs={appointmentLogs}
+            setAppointmentLogs={setAppointmentLogs}
+        /> */}
         </div>
         )}
         </div>
@@ -292,13 +205,10 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.currMed && (
-            <div className={styles["dropdown-content"]}>
-               <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
-               </div>
+            <div className={styles["dropdown-item"]}>
+                <Link to="/medications" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Medications</span>
+                </Link>
             </div>
             )}
          </div>
@@ -306,12 +216,17 @@ return (
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('suh')}>Substance Use Assessments
                <FontAwesomeIcon icon={faCaretDown} />
-            </div>
+            </div> 
             {isActive.suh && (
-            <div className={styles["dropdown-content"]}>
-            {substanceUseAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
+            <div className={styles["dropdown-item"]}>
+                <Link to="/pregnancy" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>4 P's of Pregnancy</span>
+                </Link>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Addiction Belief Scale</span>
+                </Link>
+            </div>
             </div>
             )}
          </div>
