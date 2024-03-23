@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-import styles from '/Users/arindamgahlot/Desktop/CSCE_482/Electronic_Health_Record_Final/ehr_landing_page/src/styles/ConsentFormStyles/AppointmentLogModal.module.css';
+import styles from '/home/nitin/Documents/PageOneFrontEndCSE/src/styles/ConsentFormStyles/AppointmentLogModal.module.css';
 
 Modal.setAppElement('#root');
 

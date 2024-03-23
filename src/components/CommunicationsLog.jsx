@@ -1,22 +1,53 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/CommunicationsLog.module.css';
 
 const CommunicationsLog = () => {
-    const [entries, setEntries] = useState([{
+    const [entry, setEntry] = useState({
         date: '', method: '', organization: '', purpose: '', notes: '', followUp: ''
-    }]);
+    });
 
-    const addNewRow = () => {
-        setEntries([...entries, { date: '', method: '', organization: '', purpose: '', notes: '', followUp: '' }]);
+    const handleChange = (event) => {
+        const { name, value, type, checked } = event.target;
+        setEntry(prevEntry => ({
+            ...prevEntry,
+            [name]: type === 'checkbox' ? checked ? "Yes" : "No" : value,
+        }));
     };
-
 
     const handleCancel = () => {
         window.history.back();
     };
 
-    const handleSubmit = (event) => {
-        window.history.back();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Adjusted to match the Flask backend expectation
+        try {
+            const response = await fetch('http://localhost:5000/api/communications_log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    dateTime: entry.date,
+                    method: entry.method,
+                    organizationOrPerson: entry.organization,
+                    purpose: entry.purpose,
+                    notes: entry.notes,
+                    followUpNeeded: entry.followUp === "Yes",
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Successfully submitted:', data);
+            window.history.back();
+        } catch (error) {
+            console.error('Failed to submit:', error);
+            // Handle submission error here
+        }
     };
 
     return (
@@ -36,80 +67,32 @@ const CommunicationsLog = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {entries.map((entry, index) => (
-                                <tr key={index}>
-                                    <td>
-                                        <input type="text" value={entry.date} onChange={(e) => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].date = e.target.value;
-                                            setEntries(newEntries);
-                                        }} />
-                                    </td>
-                                    <td>
-                                        <input type="radio" name={`method${index}`} value="Phone" checked={entry.method === "Phone"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].method = "Phone";
-                                            setEntries(newEntries);
-                                        }} /> Phone
-                                        <input type="radio" name={`method${index}`} value="Email" checked={entry.method === "Email"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].method = "Email";
-                                            setEntries(newEntries);
-                                        }} /> Email/Letter
-                                        <input type="radio" name={`method${index}`} value="InPerson" checked={entry.method === "InPerson"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].method = "InPerson";
-                                            setEntries(newEntries);
-                                        }} /> In Person
-                                        <input type="radio" name={`method${index}`} value="VideoCall" checked={entry.method === "VideoCall"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].method = "VideoCall";
-                                            setEntries(newEntries);
-                                        }} /> Video Call
-                                        <input type="radio" name={`method${index}`} value="Other" checked={entry.method === "Other"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].method = "Other";
-                                            setEntries(newEntries);
-                                        }} /> Other
-                                    </td>
-                                    <td>
-                                        <input type="text" value={entry.organization} onChange={(e) => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].organization = e.target.value;
-                                            setEntries(newEntries);
-                                        }} />
-                                    </td>
-                                    <td>
-                                        <input type="text" value={entry.purpose} onChange={(e) => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].purpose = e.target.value;
-                                            setEntries(newEntries);
-                                        }} />
-                                    </td>
-                                    <td>
-                                        <input type="text" value={entry.notes} onChange={(e) => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].notes = e.target.value;
-                                            setEntries(newEntries);
-                                        }} />
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name={`followUp${index}`} value="Yes" checked={entry.followUp === "Yes"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].followUp = "Yes";
-                                            setEntries(newEntries);
-                                        }} /> Yes
-                                        <input type="checkbox" name={`followUp${index}`} value="No" checked={entry.followUp === "No"} onChange={() => {
-                                            let newEntries = [...entries];
-                                            newEntries[index].followUp = "No";
-                                            setEntries(newEntries);
-                                        }} /> No
-                                    </td>
-                                </tr>
-                            ))}
+                            {/* Single row for entry */}
+                            <tr>
+                                <td><input type="text" name="date" value={entry.date} onChange={handleChange} /></td>
+                                <td>
+                                    {/* Radio buttons for method selection */}
+                                    <div onChange={handleChange}>
+                                        <input type="radio" name="method" value="Phone" checked={entry.method === "Phone"} /> Phone
+                                        <input type="radio" name="method" value="Email" checked={entry.method === "Email"} /> Email/Letter
+                                        <input type="radio" name="method" value="InPerson" checked={entry.method === "InPerson"} /> In Person
+                                        <input type="radio" name="method" value="VideoCall" checked={entry.method === "VideoCall"} /> Video Call
+                                        <input type="radio" name="method" value="Other" checked={entry.method === "Other"} /> Other
+                                    </div>
+                                </td>
+                                <td><input type="text" name="organization" value={entry.organization} onChange={handleChange} /></td>
+                                <td><input type="text" name="purpose" value={entry.purpose} onChange={handleChange} /></td>
+                                <td><input type="text" name="notes" value={entry.notes} onChange={handleChange} /></td>
+                                <td>
+                                    {/* Checkbox for followUp */}
+                                    <div onChange={handleChange}>
+                                        <input type="checkbox" name="followUp" value="Yes" checked={entry.followUp === "Yes"} /> Yes
+                                        <input type="checkbox" name="followUp" value="No" checked={entry.followUp === "No"} /> No
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    <button type="button" onClick={addNewRow} className={`${styles.communicationsLogButton} ${styles.addNewRow}`}>Add a New Row</button>
                     <button type="button" onClick={handleCancel} className={`${styles.communicationsLogButton} ${styles.cancel}`}>Cancel</button>
                     <button type="submit" className={`${styles.communicationsLogButton} ${styles.submit}`}>Submit</button>
                 </div>

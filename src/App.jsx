@@ -13,6 +13,7 @@ import MediaAppearanceRelease from './components/MediaAppearanceRelease'
 import Medications from './components/Medications'
 import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
+import AddPatientModal from './components/AddPatient';
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
         <Route path="/medications" element={<Medications />} />
         <Route path="/pregnancy" element={<Pregnancy />} />
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
+        <Route path="/add-patient" element={<AddPatientModal />} />
       </Routes>
     </Router>
   );

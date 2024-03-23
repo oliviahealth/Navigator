@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from '/home/nitin/Documents/PageOneFrontEndCSE/src/styles/ConsentFormStyles/CommunicationsLogModal.module.css';
 
 const CommunicationsLogModal = ({ isOpen, close }) => {
     if (!isOpen) return null;

@@ -8,12 +8,30 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'password') {
-      onLoginSuccess();
-    } else {
-      setError('Invalid username or password');
-    }
+    setError(''); // Reset the error message
+  
+    fetch('http://localhost:5000/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Invalid username or password');
+      }
+      return response.json();
+    })
+    .then(data => {
+      console.log(data.message); // "Login successful"
+      onLoginSuccess(); // Handle successful login
+    })
+    .catch((error) => {
+      setError(error.message);
+    });
   };
+  
 
   if (!showModal) return null;
 
