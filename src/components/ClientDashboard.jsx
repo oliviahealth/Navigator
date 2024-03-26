@@ -8,7 +8,7 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+// import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
 const navigate = useNavigate();
@@ -232,6 +232,11 @@ return (
                 <div className={styles["dropdown-item"]}>
                 <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Addiction Belief Scale</span>
+                </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/cage-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
                 </Link>
             </div>
             </div>
