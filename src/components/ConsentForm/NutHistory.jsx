@@ -37,7 +37,7 @@ function NutHistory() {
     <div className="nut-history-form">
       <h1>Nutrition History and Assessment</h1>
       
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* Basic information */}
         <label htmlFor="todays-date">Today's Date</label>
         <input type="date" id="todays-date" name="todaysDate" />

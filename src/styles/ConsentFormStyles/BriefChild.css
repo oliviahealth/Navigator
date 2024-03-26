@@ -1,0 +1,56 @@
+.wellness-update-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .wellness-update-form h1, .wellness-update-form h2 {
+    text-align: center;
+  }
+  
+  .form-section {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .radio-section {
+    margin: 10px 0;
+  }
+  
+  .radio-section label {
+    display: block;
+    margin: 5px;
+  }
+  
+  .radio-section input[type="radio"], .radio-section input[type="text"] {
+    margin-right: 10px;
+  }
+  
+  .radio-section input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: calc(100% - 22px);
+  }
+  
+  button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+
+  
