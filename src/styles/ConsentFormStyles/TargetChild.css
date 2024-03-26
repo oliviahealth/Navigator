@@ -1,0 +1,115 @@
+.target-child-questionnaire {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .target-child-questionnaire h1 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .target-child-questionnaire form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .target-child-questionnaire label {
+    margin-bottom: 0.5rem;
+  }
+  
+  .target-child-questionnaire .timeframe-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .target-child-questionnaire .question {
+    margin-bottom: 1rem;
+  }
+  
+  .target-child-questionnaire .question label {
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .target-child-questionnaire-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1em;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .target-child-questionnaire-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .target-child-questionnaire-form label {
+    margin-bottom: 0.5em;
+  }
+  
+  .target-child-questionnaire-form input[type="text"],
+  .target-child-questionnaire-form input[type="date"],
+  .target-child-questionnaire-form input[type="checkbox"],
+  .target-child-questionnaire-form input[type="radio"] {
+    margin-right: 0.5em;
+  }
+  
+  .timeframe-question,
+  .additional-questions {
+    margin-top: 1em;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    padding: 1em;
+    border-radius: 5px;
+  }
+  
+  .timeframe-question label,
+  .additional-questions label {
+    display: block;
+    margin-bottom: 0.5em;
+  }
+  
+  .button {
+    padding: 0.5em 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 1em;
+  }
+
+  .general-questions {
+    background-color: #f8f8f8; /* Light grey background */
+    border-radius: 8px; /* Rounded corners */
+    padding: 15px; /* Padding inside the container */
+    margin-bottom: 20px; /* Margin to the bottom of each question block */
+  }
+  
+  .question-item {
+    background-color: #ffffff; /* White background for each question */
+    border: 1px solid #e7e7e7; /* Light grey border for each question */
+    border-radius: 5px; /* Slightly rounded corners for each question */
+    padding: 10px; /* Padding inside each question */
+    margin-bottom: 10px; /* Margin between questions */
+    display: flex; /* To align the label and radio buttons in a row */
+    align-items: center; /* Center-align the items vertically */
+    justify-content: space-between; /* Space between the label and radio buttons */
+  }
+  
+  .question-item label {
+    flex-grow: 1; /* Allows the label to take up the available space */
+    display: flex; /* To align the text and radio buttons in a row */
+    align-items: center; /* Center-align the text and radio buttons vertically */
+  }
+  
+  .question-item input[type="radio"] {
+    margin-right: 10px; /* Spacing before the label text */
+  }
