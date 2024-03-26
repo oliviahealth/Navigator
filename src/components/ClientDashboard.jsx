@@ -8,7 +8,7 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+// import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
 const navigate = useNavigate();
@@ -197,7 +197,14 @@ return (
             <span className={styles.highlighted}>Parental Medical History Form</span>
           </Link>
                <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/encounter-form" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/nut-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Nutrition History and Assessment</span>
+          </Link>
                </div>
             </div>
             )}
@@ -228,6 +235,11 @@ return (
                 <div className={styles["dropdown-item"]}>
                 <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Addiction Belief Scale</span>
+                </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/cage-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
                 </Link>
             </div>
             </div>
@@ -293,10 +305,9 @@ return (
             {isActive.PrenatalCare && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/prenatal-care" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Prenatal Care</span>
+          </Link>
                </div>
             </div>
             )}
@@ -309,10 +320,34 @@ return (
             {isActive.child && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  React
+               <Link to="/asq" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>ASQ-3</span>
+          </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/brief-child" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Brief Child Wellness Update</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/delivery-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Delivery History Information Update</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/breastfeeding" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Breastfeeding</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/infancy-quest" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Infancy Questionnaire</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/target-child" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Target Child Enrollment & Summary Record </span>
+          </Link>
                </div>
             </div>
             )}
