@@ -14,6 +14,7 @@ import Medications from './components/Medications'
 import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
 import AddPatientModal from './components/AddPatient';
+import DemographicsOthers from './components/DemographicsOthers'
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/dashboard" element={<ClientDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/participants-demographic-record" element={<PatientDemographics />} />
+        <Route path="/demographics-others" element={<DemographicsOthers />} />
         <Route path="/parental-medical-history" element={<ParentalMedicalHistory />} /> 
         <Route path="/communications-log" element={<CommunicationsLog />} />
         <Route path="/apppointment-log" element={<AppointmentLog />} />

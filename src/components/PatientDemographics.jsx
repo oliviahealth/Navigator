@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../styles/PatientDemographics.css';
 import { Link } from 'react-router-dom';
 
-const ParticipantForm = () => {
+const PatientDemographics = () => {
   // Initial form state
   const [formData, setFormData] = useState({
     programStartDate: '',
@@ -469,4 +469,4 @@ const ParticipantForm = () => {
   );
 };
 
-export default ParticipantForm;
+export default PatientDemographics;

@@ -175,7 +175,10 @@ return (
             {isActive.demographics && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-               <Link to="/participants-demographic-record">Participants Demographics Record</Link>
+                  <Link to="/participants-demographic-record">Participants Demographics Record</Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/demographics-others">Participant Record for Others Involved</Link>
                </div>
                <div className={styles["dropdown-item"]}>
                   Child Demographics Record
