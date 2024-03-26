@@ -20,25 +20,39 @@ const SignUpModal = ({ show, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Reset errors
-    setErrors({});
-    // Validate data
+    setErrors({}); // Reset errors
+
     let newErrors = {};
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+        newErrors.confirmPassword = "Passwords do not match.";
     }
     if (formData.phone.length !== 10) {
-      newErrors.phone = "Phone number must be 10 digits.";
+        newErrors.phone = "Phone number must be 10 digits.";
     }
     // More validations can be added here
     if (Object.keys(newErrors).length === 0) {
-      // Submit data
-      console.log(formData);
-      onClose(); // Close modal on successful submission
+        // Submit data
+        fetch('http://localhost:5000/api/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            onClose(); // Close modal on successful submission
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Handle errors here, for example, by setting error messages in your state
+        });
     } else {
-      setErrors(newErrors);
+        setErrors(newErrors);
     }
-  };
+};
+
 
   if (!show) return null;
 

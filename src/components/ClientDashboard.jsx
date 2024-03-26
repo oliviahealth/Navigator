@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import styles from '../styles/ClientDashboard.module.css';
 import texasLogo from '../assets/texas_a_and_m_logo.png'; 
 import { Link } from 'react-router-dom';
@@ -12,50 +12,29 @@ import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
 const navigate = useNavigate();
-// const [consentFormOptions, setConsentFormOptions] = useState([
-//     "COMMUNICATIONS LOG",
-//     "APPOINTMENT LOG (Home Visits)",
-//     "TALKING POINTS FOR NAVIGATOR HOME VISITORS FOR CONSENT FORMS",
-//     "WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24",
-//     "ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION",
-//     "Media Appearance Release"
-// ]);
-// const [substanceUseAssessmentsOptions, setSubstanceUseAssessmentsOptions] = useState([
-//     "4 P's of Pregnancy",
-//     "Addiction Belief Scale",
-//     "CAGE-Aid Screening Tool",
-//     "CRAFFT Screening Tool",
-//     "Drug Abuse Screening Test (DAST-10)",
-//     "Drug Screening Results",
-//     "Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum",
-//     "Substance Use History",
-//     "TWEAK Test (for alcohol drinking)",
-//     "SUBSTANCE USE RELAPSE PREVENTION PLAN",
-// ]);  
-// const [interpersonalRelationsAssessmentsOptions, setInterpersonalRelationsAssessmentsOptions] = useState([
-//     "Intimate Partner Violence",
-//     "Domestic Violence Screen for Pediatric Settings",
-//     "IPV Screening and Assessment Questions",
-//     "Intimate Partner Violence (IPV) Disclosure Screening Tool",
-//     "Family Dynamics Social Support Questionnaire (SSQ6)",
-// ]);
-// const [physicalAssessmentsOptions, setPhysicalAssessmentsOptions] = useState([
-//     "10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment",
-//     "Pregnancy spacing Assessment",
-// ]);
-// const [mentalHealthAssessmentsOptions, setMentalHealthAssessmentsOptions] = useState([
-//     "Mental Health History / Brief Update form",
-//     "Columbia Suicide Severity Risk Scale, C-SSRS",
-//     "Duke University Religion Index (DUREL)",
-//     "Edinburg Postnatal Depression Scale (EPDS)",
-//     "Generalized Anxiety Disorder (GAD-7)",
-//     "Perceived Stress Scale (PSS)",
-//     "PHQ-9",
-// ]);
-// const [homeSafetyAssessmentsOptions, setHomeSafetyAssessmentsOptions] = useState([
-//     "Housing Security Home Visit Form",
-//     "Food Security",
-// ]);  
+
+const [patients, setPatients] = useState([]); // State to store patient data
+
+    useEffect(() => {
+        const fetchPatients = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/patients', {
+                  method: 'GET'
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setPatients(data); // Assuming the API returns an array of patient objects
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        };
+
+        fetchPatients();
+    }, []); 
+
+
 const handleLogout = () => {
 navigate('/');
 };
@@ -66,27 +45,6 @@ setIsActive(prevState => ({
 [id]: !prevState[id]
 }));
 };
-// const [isAppointmentLogModalOpen, setAppointmentLogModalOpen] = useState(false);
-// const [appointmentLogs, setAppointmentLogs] = useState([]);
-// const handleAppointmentLogClick = () => {
-//     setAppointmentLogModalOpen(true);
-//   };
-// const handleSubmitAppointmentLog = (event) => {
-//     event.preventDefault();
-//     const newLog = {
-//       date: event.target.date.value,
-//       who: event.target.who.value,
-//       location: event.target.location.value,
-//       notes: event.target.notes.value,
-//     };
-//     setAppointmentLogs([...appointmentLogs, newLog]);
-//     setAppointmentLogModalOpen(false);
-//     navigate('/dashboard');
-//   };
-// const handleCancelAppointmentLog = () => {
-//     setAppointmentLogModalOpen(false);
-//     navigate('/dashboard');
-// };
 return (
 <div className={styles.clientDashboard}>
    <header className={styles.header}>
@@ -108,108 +66,28 @@ return (
             <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
             <input type="text" className={styles.searchInput} placeholder="Search for patients" />
          </div>
+
+         <a href="/add-patient">
+            <button>Add Patient</button>
+         </a>
+
          <div className={styles.sidebarContent}>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
-            <div className={styles.patientSidebarItem}>
-               <div className={styles.patientInfo}>
-                  <div className={styles.patientName}>First Name Last Name</div>
-                  <div className={styles.patientStatusWithIcon}>
-                     <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
-                     No actions required
-                  </div>
-               </div>
-               <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
-            </div>
+         {patients.map((patient, index) => (
+                        <div key={index} className={styles.patientSidebarItem}>
+                            <div className={styles.patientInfo}>
+                                <div className={styles.patientName}>{patient.first_name} {patient.last_name}</div>
+                                <div className={styles.patientStatusWithIcon}>
+                                    <FontAwesomeIcon icon={faCheckCircle} className={styles.statusIcon} />
+                                    No actions required
+                                </div>
+                            </div>
+                            <FontAwesomeIcon icon={faChevronRight} className={styles.arrowIcon} />
+                        </div>
+                    ))}
          </div>
+
+
+
       </div>
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
@@ -316,7 +194,14 @@ return (
             <span className={styles.highlighted}>Parental Medical History Form</span>
           </Link>
                <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/encounter-form" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/nut-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Nutrition History and Assessment</span>
+          </Link>
                </div>
             </div>
             )}
@@ -412,10 +297,9 @@ return (
             {isActive.PrenatalCare && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  React
-               </div>
-               <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/prenatal-care" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Prenatal Care</span>
+          </Link>
                </div>
             </div>
             )}
@@ -428,10 +312,34 @@ return (
             {isActive.child && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  React
+               <Link to="/asq" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>ASQ-3</span>
+          </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  Vue
+               <Link to="/brief-child" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Brief Child Wellness Update</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/delivery-history" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Delivery History Information Update</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/breastfeeding" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Breastfeeding</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/infancy-quest" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Infancy Questionnaire</span>
+          </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+               <Link to="/target-child" className={styles["dropdown-item"]}>
+            <span className={styles.highlighted}>Target Child Enrollment & Summary Record </span>
+          </Link>
                </div>
             </div>
             )}
