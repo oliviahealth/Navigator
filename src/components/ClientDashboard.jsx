@@ -8,7 +8,7 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+// import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
 const navigate = useNavigate();
@@ -49,8 +49,8 @@ return (
 <div className={styles.clientDashboard}>
    <header className={styles.header}>
       <div className={styles.logoContainer}>
-         <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
-         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span>
+         {/* <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
+         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span> */}
          <span className={styles.recordName}>Electronic Health Records</span>
       </div>
       <nav className={styles.nav}>
