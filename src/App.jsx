@@ -25,7 +25,13 @@ import AddictionBeliefScale from './components/AddictionBeliefScale'
 import AddPatientModal from './components/AddPatient';
 import DemographicsOthers from './components/DemographicsOthers'
 import CageScreening from './components/CageScreening'
-
+import ChildDemographics from './components/ChildDemographics';
+import SupportSystems from './components/SupportSystems';
+import CurrentLiving from './components/CurrentLiving';
+import ChildNeeds from './components/ChildNeeds';
+import ReferralsServices from './components/ReferralsServices';
+import EmergencyContact from './components/EmergencyContact';
+import GoalPlanning from './components/GoalPlanning';
 const App = () => {
   return (
     <Router>
@@ -35,6 +41,13 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/participants-demographic-record" element={<PatientDemographics />} />
         <Route path="/demographics-others" element={<DemographicsOthers />} />
+        <Route path="/child-demographics" element={<ChildDemographics />} />
+        <Route path="/support-systems" element={<SupportSystems />} />
+        <Route path="/current-living" element={<CurrentLiving />} />
+        <Route path="/child-needs" element={<ChildNeeds />} />
+        <Route path="/referrals-services" element={<ReferralsServices />} />
+        <Route path="/emergency-contact" element={<EmergencyContact />} />
+        <Route path="/goal-planning" element={<GoalPlanning />} />
         <Route path="/parental-medical-history" element={<ParentalMedicalHistory />} /> 
         <Route path="/encounter-form" element={<EncounterForm />} /> 
         <Route path="/nut-history" element={<NutHistory />} />
