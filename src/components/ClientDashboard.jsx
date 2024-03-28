@@ -175,10 +175,31 @@ return (
             {isActive.demographics && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-               <Link to="/participants-demographic-record">Participants Demographics Record</Link>
+                  <Link to="/participants-demographic-record">Participants Demographics Record</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  Child Demographics Record
+                  <Link to="/demographics-others">Participant Record for Others Involved</Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/child-demographics">Child Demographics Record</Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/support-systems">Support Systems, Strengths, Areas For Improvement & Goals </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/current-living">Current Living Arrangement </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/child-needs">Child(ren) Needs </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/referrals-services">Referrals and Services </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/emergency-contact">Emergency Contact Information </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/goal-planning">Goal Planning Tool </Link>
                </div>
             </div>
             )}
