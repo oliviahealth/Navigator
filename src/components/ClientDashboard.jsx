@@ -49,8 +49,8 @@ return (
 <div className={styles.clientDashboard}>
    <header className={styles.header}>
       <div className={styles.logoContainer}>
-         <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
-         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span>
+         {/* <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
+         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span> */}
          <span className={styles.recordName}>Electronic Health Records</span>
       </div>
       <nav className={styles.nav}>

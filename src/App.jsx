@@ -32,6 +32,9 @@ import ChildNeeds from './components/ChildNeeds';
 import ReferralsServices from './components/ReferralsServices';
 import EmergencyContact from './components/EmergencyContact';
 import GoalPlanning from './components/GoalPlanning';
+import CageScreening from './components/CageScreening'
+
+
 const App = () => {
   return (
     <Router>
