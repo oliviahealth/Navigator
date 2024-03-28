@@ -233,6 +233,11 @@ return (
                 <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Addiction Belief Scale</span>
                 </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/cage-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
+                </Link>
             </div>
             </div>
             )}

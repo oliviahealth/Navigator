@@ -23,6 +23,7 @@ import Medications from './components/Medications'
 import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
 import AddPatientModal from './components/AddPatient';
+import CageScreening from './components/CageScreening'
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
         <Route path="/pregnancy" element={<Pregnancy />} />
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
+        <Route path="/cage-screening" element={<CageScreening />} />
       </Routes>
     </Router>
   );
