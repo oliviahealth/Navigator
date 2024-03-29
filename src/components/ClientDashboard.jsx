@@ -15,11 +15,60 @@ const navigate = useNavigate();
 
 const [patients, setPatients] = useState([]); // State to store patient data
 
+const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
+const [selectedPatientObj, setSelectedPatientObj] = useState(null);
+
+const [searchInput, setSearchInput] = useState("");
+
+const handleSearchChange = (event) => {
+   setSearchInput(event.target.value);
+ };
+
+ const setPatientSession = async(patient) => {
+   try {
+      const response = await fetch('http://localhost:5000/api/select_patient', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // for sessions to work properly
+        body: JSON.stringify({
+          firstName: patient.first_name,
+          lastName: patient.last_name,
+          email: patient.email,
+          phone: patient.phone,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Handle success
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+ }
+ 
+
+const handlePatientClick = (index, patient) => {
+   setSelectedPatientIndex(index);
+   setSelectedPatientObj(patient);
+   setPatientSession(patient);
+   
+   localStorage.setItem('selectedPatientIndex', index);
+   localStorage.setItem('selectedPatientObj', JSON.stringify(patient));
+ };
+ 
+
     useEffect(() => {
         const fetchPatients = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/patients', {
-                  method: 'GET'
+                  method: 'GET',
+                  credentials: 'include',
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -32,6 +81,14 @@ const [patients, setPatients] = useState([]); // State to store patient data
         };
 
         fetchPatients();
+
+         const storedIndex = localStorage.getItem('selectedPatientIndex');
+         const storedPatient = localStorage.getItem('selectedPatientObj');
+
+         if (storedIndex && storedPatient) {
+            setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
+            setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
+         }
     }, []); 
 
 
@@ -61,19 +118,32 @@ return (
    </header>
    <div className={styles.clientDashboardContainer}>
       <div className={styles.patientSidebar}>
-         <h3>Patients (10)</h3>
+         <h3>Patients ({patients.length})</h3>
          <div className={styles.searchContainer}>
-            <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
-            <input type="text" className={styles.searchInput} placeholder="Search for patients" />
+         
+         <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search for patients"
+            value={searchInput}
+            onChange={handleSearchChange}
+         />
          </div>
+
 
          <a href="/add-patient">
             <button>Add Patient</button>
          </a>
 
          <div className={styles.sidebarContent}>
-         {patients.map((patient, index) => (
-                        <div key={index} className={styles.patientSidebarItem}>
+         {patients
+         .filter((patient) =>
+         `${patient.first_name} ${patient.last_name}`.toLowerCase().includes(searchInput.toLowerCase())
+         )
+         .map((patient, index) => (
+                        <div key={index} 
+    className={`${styles.patientSidebarItem} ${index === selectedPatientIndex ? styles.selectedPatient : ''}`} 
+    onClick={() => handlePatientClick(index, patient)}>
                             <div className={styles.patientInfo}>
                                 <div className={styles.patientName}>{patient.first_name} {patient.last_name}</div>
                                 <div className={styles.patientStatusWithIcon}>
@@ -89,10 +159,12 @@ return (
 
 
       </div>
+      {selectedPatientIndex !== null && (
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
-            <span className={styles.title}>First Name Last Name</span>
-            <button className={styles.ellipsisBtn} onClick={() => console.log('Button clicked')}>...</button>
+            <span className={styles.title}>
+              {selectedPatientObj.first_name} {selectedPatientObj.last_name}
+            </span>
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
@@ -371,6 +443,7 @@ return (
             )}
          </div>
       </div>
+      )}
    </div>
 </div>
 );

@@ -12,6 +12,7 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
   
     fetch('http://localhost:5000/api/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
