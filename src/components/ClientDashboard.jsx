@@ -204,7 +204,7 @@ return (
         </div>
         {isActive.consentForm && (
             <div className={styles["dropdown-content"]}>
-                <Link to="/communications-log" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/communications_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Communications Log Form</span>
                 </Link>
             <div className={styles["dropdown-item"]}>

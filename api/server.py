@@ -19,6 +19,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+
+
 CREATE_USER_TABLE = """
 CREATE TABLE IF NOT EXISTS "user" (
     id SERIAL PRIMARY KEY, 
@@ -33,6 +35,8 @@ CREATE TABLE IF NOT EXISTS "user" (
     FOREIGN KEY (admin_id) REFERENCES "user"(id) ON DELETE CASCADE
 );
 """
+
+forms = {'Communication_Log': 'communications_log'}
 
 
 INSERT_USER = """
@@ -195,6 +199,39 @@ def add_communications_log_entry():
 
     action = "updated" if existing_log else "added"
     return jsonify({"status": "success", "message": f"Log entry {action}.", "id": updated_id}), 201
+
+@app.route("/api/forms/<form_type>/<int:patient_id>", methods=['GET'])
+def get_forms(form_type, patient_id):
+    try:
+        with connection.cursor() as cursor:
+            query = f'SELECT * FROM {form_type} WHERE patient_id = %s'
+            cursor.execute(query, (patient_id,))
+            logs = cursor.fetchall()
+            cursor.close()
+            logs_dict = {}
+            counter = 0
+            for log in logs:
+                log_dict = {
+                    'log_id': log[0],
+                    'date_time': log[1],
+                    'method': log[2],
+                    'organization_or_person': log[3],
+                    'purpose': log[4],
+                    'notes': log[5],
+                    'follow_up_needed': log[6],
+                    'patient_id': log[7]
+                }
+
+                logs_dict[counter] = log_dict
+                counter += 1
+            return jsonify(logs_dict)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+    return jsonify({"status": "success", "message": "Patient Table has been created"})
+
+
+
 
 @app.route("/api/get_communication_log", methods=['GET'])
 def get_communication_log():
