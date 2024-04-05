@@ -1,8 +1,37 @@
 import React, { useState } from 'react';
 import styles from '../styles/ReleaseOfInformation.module.css';
+import { useParams } from 'react-router-dom';
 
 const ReleaseOfInformation = () => {
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1;
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const tzOffset = -now.getTimezoneOffset();
+        const offsetHours = Math.abs(Math.floor(tzOffset / 60));
+        const offsetMinutes = Math.abs(tzOffset % 60);
+
+        return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${tzOffset >= 0 ? '+' : '-'}${offsetHours.toString().padStart(2, '0')}${offsetMinutes.toString().padStart(2, '0')}`;
+    }
+    
+    const { patientId } = useParams();
     const [currentPage, setCurrentPage] = useState(1);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        address: '',
+        cityStateZip: '',
+        homePhone: '',
+        cellPhone: '',
+        email: '',
+        dob: '',
+        // Add more fields as necessary
+        submissionDate: getCurrentDateTime(),
+    });
 
     const [emergencyContacts, setEmergencyContacts] = useState([{ name: '', relationship: '', telephone: '', email: '' }]);
 
@@ -28,6 +57,14 @@ const ReleaseOfInformation = () => {
       setEmergencyContacts(updatedContacts);
     };
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
     const goToNextPage = () => {
         setCurrentPage(currentPage + 1);
     };
@@ -38,8 +75,22 @@ const ReleaseOfInformation = () => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        // Ensure you include patientId and date in the data submitted to your backend
+        try {
+            const response = await fetch(`http://localhost:5000/api/release_of_information/${patientId}`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) throw new Error('Failed to submit form data');
+            // Handle success - maybe reset form, show success message, or redirect
+        } catch (error) {
+            console.error(error);
+            // Handle error - show error message to user
+        }
     };
 
     const handleCancel = () => {

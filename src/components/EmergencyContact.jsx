@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function EmergencyContact() {
   const initialData = {
@@ -26,6 +27,31 @@ function EmergencyContact() {
   };
 
   const [formData, setFormData] = useState(initialData);
+  const { patientId } = useParams(); 
+
+  const getCurrentDateTime = () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; 
+    const day = now.getDate();
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const tzOffset = -now.getTimezoneOffset();
+    const offsetHours = Math.abs(Math.floor(tzOffset / 60));
+    const offsetMinutes = Math.abs(tzOffset % 60);
+
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${tzOffset >= 0 ? '+' : '-'}${offsetHours.toString().padStart(2, '0')}${offsetMinutes.toString().padStart(2, '0')}`;
+  };
+
+  const [entry, setEntry] = useState({
+    date: getCurrentDateTime(), // Automatically sets the current date and time
+    method: '', // e.g., "Phone", "Email", "In-Person"
+    organization: '', // Name of the organization or person contacted
+    purpose: '', // Reason for the contact
+    notes: '', // Any additional notes about the interaction
+    followUp: false // Whether a follow-up is required, initially set to false
+  });
 
   const addNewEntry = (key) => {
     const newEntry = key === 'children' || key === 'emergencyContacts' || key === 'safeCaregivers' ?
@@ -51,11 +77,31 @@ function EmergencyContact() {
                 .replace('Dob', 'Date of Birth'); // Proper case for specific fields
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    // Here, you would handle the form submission, such as sending the data to a backend server.
-  };
+    
+    try {
+        const response = await fetch(`http://localhost:5000/api/emergency_contacts/${patientId}`, {
+            method: 'POST',
+            credentials: 'include', // Assuming cookies for session handling
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Successfully submitted:', data);
+        // Optionally, reset the form or redirect the user here
+    } catch (error) {
+        console.error('Failed to submit:', error);
+        // Handle submission error here, such as displaying a message to the user
+    }
+};
 
   return (
     <form onSubmit={handleSubmit}>
