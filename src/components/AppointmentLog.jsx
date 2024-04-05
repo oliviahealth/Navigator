@@ -1,10 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import styles from '../styles/AppointmentLog.module.css';
 
 const AppointmentLog = () => {
-    // Adjust state to handle a single object instead of an array
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; 
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const tzOffset = -now.getTimezoneOffset();
+        const offsetHours = Math.abs(Math.floor(tzOffset / 60));
+        const offsetMinutes = Math.abs(tzOffset % 60);
+    
+        const formattedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${tzOffset >= 0 ? '+' : '-'}${offsetHours.toString().padStart(2, '0')}${offsetMinutes.toString().padStart(2, '0')}`;
+    
+        return formattedDateTime;
+    }
     const [entry, setEntry] = useState({
-        date: '', who: '', location: '', notes: ''
+        date: getCurrentDateTime(), who: '', location: '', notes: ''
     });
 
     const handleCancel = () => {
@@ -19,40 +35,13 @@ const AppointmentLog = () => {
         }));
     };
 
-    useEffect(() => {
-        const fetchEntry = async () => {
-            const response = await fetch('http://localhost:5000/api/get_appointment_log', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            if (!response.ok) {
-                console.error(`Failed to fetch appointment log: ${response.statusText}`);
-                return;
-            }
-
-            const data = await response.json();
-            if (data) {
-                setEntry({
-                    date: data.dateTime || '',
-                    who: data.who || '',
-                    location: data.location || '',
-                    notes: data.notes || ''
-                });
-            }
-        };
-
-        fetchEntry();
-    }, []);
+    const { patientId } = useParams();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         
         try {
-            const response = await fetch('http://localhost:5000/api/appointment_log', {
+            const response = await fetch(`http://localhost:5000/api/appointment_log/${patientId}`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

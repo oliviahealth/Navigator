@@ -145,60 +145,27 @@ ADD CONSTRAINT fk_patient
     ON UPDATE CASCADE;
 """
 
-@app.post("/api/communications_log")
-def add_communications_log_entry():
-    if 'selected_patient_id' not in session:
-        return jsonify({'error': 'No patient selected'}), 400
-
+@app.post("/api/communications_log/<int:patientId>")
+def add_communications_log_entry(patientId):
     data = request.get_json()
-    patient_id = session['selected_patient_id']
-    
     with connection.cursor() as cursor:
-        # Check if a log entry exists for the selected patient
+        print(data['dateTime'])
         cursor.execute("""
-            SELECT id FROM communications_log WHERE patient_id = %s LIMIT 1;
-        """, (session['selected_patient_id'],))
-        existing_log = cursor.fetchone()
-
-        if existing_log:
-            # An entry exists, so we update it
-            cursor.execute("""
-                UPDATE communications_log
-                SET date_time = %s, method = %s, organization_or_person = %s, 
-                    purpose = %s, notes = %s, follow_up_needed = %s
-                WHERE id = %s;
-            """, (
-                data['dateTime'],
-                data['method'],
-                data['organizationOrPerson'],
-                data.get('purpose', ''),
-                data.get('notes', ''),
-                data['followUpNeeded'],
-                existing_log[0],  # ID of the existing log entry
-            ))
-            updated_id = existing_log[0]  # Use the existing log entry's ID
-        else:
-            # No entry exists, so we insert a new one
-            cursor.execute("""
-                INSERT INTO communications_log (date_time, method, organization_or_person, purpose, notes, follow_up_needed, patient_id)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                RETURNING id;
-            """, (
-                data['dateTime'],
-                data['method'],
-                data['organizationOrPerson'],
-                data.get('purpose', ''),
-                data.get('notes', ''),
-                data['followUpNeeded'],
-                patient_id,
-            ))
-            new_id = cursor.fetchone()[0]
-            updated_id = new_id  # Use the new entry's ID
-
+            INSERT INTO communications_log (date_time, method, organization_or_person, purpose, notes, follow_up_needed, patient_id)
+            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            RETURNING id;
+        """, (
+            data['dateTime'],
+            data['method'],
+            data['organizationOrPerson'],
+            data.get('purpose', ''),
+            data.get('notes', ''),
+            data['followUpNeeded'],
+            patientId,
+        ))
         connection.commit()
 
-    action = "updated" if existing_log else "added"
-    return jsonify({"status": "success", "message": f"Log entry {action}.", "id": updated_id}), 201
+    return jsonify({"status": "success", "message": "Communicaition Log Added"}), 201
 
 @app.route("/api/forms/<form_type>/<int:patient_id>", methods=['GET'])
 def get_forms(form_type, patient_id):
@@ -233,33 +200,32 @@ def get_forms(form_type, patient_id):
 
 
 
-@app.route("/api/get_communication_log", methods=['GET'])
-def get_communication_log():
-    if 'selected_patient_id' not in session:
-        return jsonify({'error': 'No patient selected'}), 400
-
+@app.route("/api/get_communication_log/<int:patient_id>/<log_id>", methods=['GET'])
+def get_communication_log(patient_id, log_id):
+    print("test")
     try:
+        # Assuming 'connection' is already defined and is a valid database connection
         with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM communications_log WHERE patient_id = %s', (session['selected_patient_id'],))
+            print("test")
+            cursor.execute('SELECT * FROM communications_log WHERE patient_id = %s AND id = %s', (patient_id, log_id))
             logs = cursor.fetchone() 
-            cursor.close()
-
-            log_dict = {
-                'log_id': logs[0],
-                'date_time': logs[1],
-                'method': logs[2],
-                'organization_or_person': logs[3],
-                'purpose': logs[4],
-                'notes': logs[5],
-                'follow_up_needed': logs[6],
-                'patient_id': logs[7]
-            }
-            
-            return jsonify(log_dict)
+            print(logs)
+            if logs:
+                log_dict = {
+                    'log_id': logs[0],
+                    'date_time': logs[1],
+                    'method': logs[2],
+                    'organization_or_person': logs[3],
+                    'purpose': logs[4],
+                    'notes': logs[5],
+                    'follow_up_needed': logs[6],
+                    'patient_id': logs[7]
+                }
+                return jsonify(log_dict)
+            else:
+                return jsonify({'error': 'Log not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-    return jsonify({'error': str(e)}), 500
 
 PATIENT_TABLE = """
 CREATE TABLE IF NOT EXISTS patients (
@@ -345,72 +311,37 @@ CREATE TABLE IF NOT EXISTS appointment_log (
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
 );
 """
-@app.post("/api/appointment_log")
-def add_appointment_log_entry():
-    if 'selected_patient_id' not in session:
-        return jsonify({'error': 'No patient selected'}), 400
-    
+@app.post("/api/appointment_log/<int:patientId>")
+def add_appointment_log_entry(patientId):
     data = request.get_json()
-    patient_id = session['selected_patient_id']
 
     with connection.cursor() as cursor:
-        # Check for existing entry
         cursor.execute("""
-            SELECT id FROM appointment_log
-            WHERE patient_id = %s
-            LIMIT 1;
-        """, (patient_id,))
-        existing_entry = cursor.fetchone()
-        
-        if existing_entry:
-            # An entry exists, update it
-            cursor.execute("""
-                UPDATE appointment_log
-                SET date_time = %s, who = %s, location = %s, notes = %s
-                WHERE patient_id = %s;
-            """, (
-                data['dateTime'],
-                data['who'],
-                data['location'],
-                data['notes'],
-                patient_id
-            ))
-            updated_id = existing_entry[0]  # Use the existing log entry's ID for reference
-        else:
-            # No entry exists, insert new
-            cursor.execute("""
-                INSERT INTO appointment_log (date_time, who, location, notes, patient_id)
-                VALUES (%s, %s, %s, %s, %s)
-                RETURNING id;
-            """, (
-                data['dateTime'],
-                data['who'],
-                data['location'],
-                data['notes'],
-                patient_id
-            ))
-            new_id = cursor.fetchone()[0]
-            updated_id = new_id  # Use the new entry's ID
+            INSERT INTO appointment_log (date_time, who, location, notes, patient_id)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING id;
+        """, (
+            data['dateTime'],
+            data['who'],
+            data['location'],
+            data['notes'],
+            patientId
+        ))
 
         connection.commit()
     
-    action = "updated" if existing_entry else "added"
-    return jsonify({"status": "success", "message": f"Appointment log entry {action}.", "id": updated_id}), 201
+    return jsonify({"status": "success", "message": "appointment log created"}), 201
 
-@app.route("/api/get_appointment_log", methods=['GET'])
-def get_appointment_log():
-    if 'selected_patient_id' not in session:
-        return jsonify({'error': 'No patient selected'}), 400
-
-    patient_id = session['selected_patient_id']
+@app.route("/api/get_appointment_log/<int:patientId>/<log_id>", methods=['GET'])
+def get_appointment_log(patientId):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT id, date_time, who, location, notes
             FROM appointment_log
-            WHERE patient_id = %s
+            WHERE patient_id = %s AND log_id = %s
             ORDER BY date_time DESC
             LIMIT 1;
-        """, (patient_id,))
+        """, (patientId, log_id))
         entry = cursor.fetchone()
 
         if entry:
@@ -426,6 +357,26 @@ def get_appointment_log():
         else:
             # No entry found for the selected patient
             return jsonify({}), 204  # No content
+
+CREATE_PREGNANCY_TABLE = """
+CREATE TABLE IF NOT EXISTS pregnancy_log (
+    id SERIAL PRIMARY KEY,
+    date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    drugs_during_pregnancy BOOLEAN,
+    drugs_in_past BOOLEAN,
+    partner_drugs BOOLEAN,
+    parents_addicted BOOLEAN,
+    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+);
+"""
+
+# @app.route("/api/pregnancy_log/<int:patientId>")
+# def create_patient_log(patientId):
+#     data = request.get_json()
+
+#     with connection.cursor():
+#         cursos.execute(CREATE_PREGNANCY_TABLE)
+#         cursos.execute("INSERT INTO pregnancy_log (date_time, drugs_during_pregnancy, drugs_in_past, partner_drugs, parents_addicted)")
 
 if __name__ == "__main__":
     app.run(debug=True)

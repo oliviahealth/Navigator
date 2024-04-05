@@ -19,6 +19,7 @@ const FormsDashboard = () => {
 
     var formNames = {
         "communications_log": "Communication Log",
+        "appointment_log": "Appointments Log",
     };
 
     useEffect(() => {
@@ -47,6 +48,10 @@ const FormsDashboard = () => {
         fetchForms();
     }, [formType, patientId]); 
 
+    const navigateToAddForm = () => {
+        navigate(`/${formType}/${patientId}`);
+    };
+
     return (
         <div className={navStyles.clientDashboard}>
             <header className={navStyles.header}>
@@ -65,14 +70,23 @@ const FormsDashboard = () => {
                 {formNames[formType]}
             </header>
             <div className = {styles.btnContainer}>
-                <a className = {styles.btn} href="#">+ Add New Form</a>
+                <a className = {styles.btn} onClick={navigateToAddForm}>+ Add New Form</a>
             </div>
             <div className = {styles.formsContainer}>
-                {forms.map((form, index) => (
-                    <div className = {styles.formItem} key={index}>
+                {forms.slice().reverse().map((form, index) => (
+                        <div 
+                            className={styles.formItem} 
+                            key={index} 
+                            onClick={() => {
+                                // Encode the dateTime to make it URL-friendly
+                                navigate(`/${formType}-read-only/${patientId}/${form.log_id}`);
+                            }} 
+                            role="button" 
+                            tabIndex="0"
+                        >
                         <div className = {styles.formInfo}>
                             <div>
-                                {form.date_time}
+                                Submission Date: {form.date_time}
                             </div>
                             <FontAwesomeIcon icon={faEye} className={styles.eyeIcon} />
                         </div>

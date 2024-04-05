@@ -1,11 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/CommunicationsLog.module.css';
 
 const CommunicationsLog = () => {
+
+
+    function getCurrentDateTime() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth() + 1; 
+        const day = now.getDate();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const seconds = now.getSeconds();
+        const tzOffset = -now.getTimezoneOffset();
+        const offsetHours = Math.abs(Math.floor(tzOffset / 60));
+        const offsetMinutes = Math.abs(tzOffset % 60);
+    
+        const formattedDateTime = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${tzOffset >= 0 ? '+' : '-'}${offsetHours.toString().padStart(2, '0')}${offsetMinutes.toString().padStart(2, '0')}`;
+    
+        return formattedDateTime;
+    }
+
     const [entry, setEntry] = useState({
-        date: '', method: '', organization: '', purpose: '', notes: '', followUp: ''
+        date: getCurrentDateTime(), method: '', organization: '', purpose: '', notes: '', followUp: ''
     });
+    
+
+    const { patientId } = useParams();
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -24,7 +46,7 @@ const CommunicationsLog = () => {
 
         // Adjusted to match the Flask backend expectation
         try {
-            const response = await fetch('http://localhost:5000/api/communications_log', {
+            const response = await fetch(`http://localhost:5000/api/communications_log/${patientId}`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -50,39 +72,6 @@ const CommunicationsLog = () => {
             // Handle submission error here
         }
     };
-
-    useEffect(() => {
-        const fetchLog = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/get_communication_log`, {
-                  method: 'GET',
-                  credentials: 'include',
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                if (response.status === 204) { // Handling no content
-                    console.log("No communication log found for the selected patient.");
-                    return; // Early return if no content
-                }
-                const data = await response.json();
-                
-                setEntry({
-                    date: data.date_time,
-                    method: data.method,
-                    organization: data.organization_or_person,
-                    purpose: data.purpose,
-                    notes: data.notes,
-                    followUp: data.follow_up_needed ? "Yes" : "No",
-                });
-            } catch (error) {
-                console.error('Error fetching communication log:', error);
-            }
-        };
-    
-        fetchLog();
-    }, []); // Empty dependency array means this effect runs once on component mount
-    
 
     return (
         <div className={styles.pageContainer}>
@@ -118,11 +107,20 @@ const CommunicationsLog = () => {
                                 <td><input type="text" name="purpose" value={entry.purpose} onChange={handleChange} /></td>
                                 <td><input type="text" name="notes" value={entry.notes} onChange={handleChange} /></td>
                                 <td>
-                                    {/* Checkbox for followUp */}
-                                    <div onChange={handleChange}>
-                                        <input type="checkbox" name="followUp" value="Yes" checked={entry.followUp === "Yes"} /> Yes
-                                        <input type="checkbox" name="followUp" value="No" checked={entry.followUp === "No"} /> No
-                                    </div>
+                                <div>
+                                <input
+                                    type="radio"
+                                    name="followUp"
+                                    value="Yes"
+                                    checked={entry.followUp === "Yes"}
+                                    onChange={handleChange} /> Yes
+                                <input
+                                    type="radio"
+                                    name="followUp"
+                                    value="No"
+                                    checked={entry.followUp === "No"}
+                                    onChange={handleChange} /> No
+                                </div>
                                 </td>
                             </tr>
                         </tbody>
