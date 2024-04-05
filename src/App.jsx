@@ -24,6 +24,14 @@ import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
 import AddPatientModal from './components/AddPatient';
 import FormsDashboard from './components/FormsDashboard';
+import ChildDemographics from './components/ChildDemographics';
+import SupportSystems from './components/SupportSystems';
+import DemographicsOthers from './components/DemographicsOthers';
+import CurrentLiving from './components/CurrentLiving';
+import ChildNeeds from './components/ChildNeeds';
+import ReferralsServices from './components/ReferralsServices';
+import EmergencyContact from './components/EmergencyContact';
+import GoalPlanning from './components/GoalPlanning';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -36,6 +44,14 @@ const App = () => {
         <Route path="/dashboard" element={<ClientDashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/participants-demographic-record" element={<PatientDemographics />} />
+        <Route path="/demographics-others" element={<DemographicsOthers />} />
+        <Route path="/child-demographics" element={<ChildDemographics />} />
+        <Route path="/support-systems" element={<SupportSystems />} />
+        <Route path="/current-living" element={<CurrentLiving />} />
+        <Route path="/child-needs" element={<ChildNeeds />} />
+        <Route path="/referrals-services" element={<ReferralsServices />} />
+        <Route path="/emergency-contact" element={<EmergencyContact />} />
+        <Route path="/goal-planning" element={<GoalPlanning />} />
         <Route path="/parental-medical-history" element={<ParentalMedicalHistory />} /> 
         <Route path="/encounter-form" element={<EncounterForm />} /> 
         <Route path="/nut-history" element={<NutHistory />} />
@@ -58,7 +74,7 @@ const App = () => {
         <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
 
         <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
-        <Route path="appointment_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
+        <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />
       </Routes>
     </Router>
   );
