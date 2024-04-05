@@ -3,3 +3,5 @@ python-dotenv
 psycopg2-binary
 passlib[argon2]
 cachelib
+flask_cors
+flask_session

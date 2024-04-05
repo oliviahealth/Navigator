@@ -1,0 +1,74 @@
+.header {
+    font-size: 45px;
+    width: 35%;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.formsContainer {
+    height: 90vh;
+    width: 50%;
+    margin: auto;
+}
+
+.formItem {
+    background-color: rgb(252, 252, 252);
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border: solid;
+    border-width: thin;
+    position: relative;
+    display: flex;
+}
+
+.formInfo {
+    text-align: left;
+    margin-left: 50px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-size: 20px;
+    width: 600px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.eyeIcon {
+    color: #6c757d;
+    font-size: 40px; 
+    margin-right: 40px;
+}
+
+/* Define styles for the .btn-1 class */
+.btnContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+}
+
+.btn {
+    /* Generate a random color for the button */
+    background-color: rgba(81, 255, 95, 0.836);
+    /* Set text color to a lighter shade of the button color */
+    color: rgb(31, 31, 31);
+    padding-top: 15px;
+    padding-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    transition: color 0.3s ease, background-color 0.3s ease;
+    width: 25%;
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 auto; /* Center horizontally */
+    font-size: 20px;
+}
+
+/* Button hover effect */
+.btn:hover {
+    /* Lighten the text color on hover */
+    color: rgba(87, 31, 31, 0.877);
+    /* Darken the background color on hover */
+    background-color: rgb(120, 255, 131);
+}

@@ -23,16 +23,18 @@ import Medications from './components/Medications'
 import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
 import AddPatientModal from './components/AddPatient';
-import DemographicsOthers from './components/DemographicsOthers'
-import CageScreening from './components/CageScreening'
+import FormsDashboard from './components/FormsDashboard';
 import ChildDemographics from './components/ChildDemographics';
 import SupportSystems from './components/SupportSystems';
+import DemographicsOthers from './components/DemographicsOthers';
 import CurrentLiving from './components/CurrentLiving';
 import ChildNeeds from './components/ChildNeeds';
 import ReferralsServices from './components/ReferralsServices';
 import EmergencyContact from './components/EmergencyContact';
 import GoalPlanning from './components/GoalPlanning';
 
+import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
+import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
 
 const App = () => {
   return (
@@ -60,8 +62,8 @@ const App = () => {
         <Route path="/breastfeeding" element={<Breastfeeding />} /> 
         <Route path="/infancy-quest" element={<InfancyQuest />} />
         <Route path="/target-child" element={<TargetChild />} /> 
-        <Route path="/communications-log" element={<CommunicationsLog />} />
-        <Route path="/apppointment-log" element={<AppointmentLog />} />
+        <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
+        <Route path="/appointment_log/:patientId" element={<AppointmentLog />} />
         <Route path="/form-cover-letter" element={<FormCoverLetter />} />
         <Route path="/release-of-information" element={<ReleaseOfInformation />} />
         <Route path="/media-appearance-release" element={<MediaAppearanceRelease />} />
@@ -69,7 +71,10 @@ const App = () => {
         <Route path="/pregnancy" element={<Pregnancy />} />
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
-        <Route path="/cage-screening" element={<CageScreening />} />
+        <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
+
+        <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
+        <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />
       </Routes>
     </Router>
   );
