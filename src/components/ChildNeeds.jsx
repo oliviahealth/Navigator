@@ -31,7 +31,6 @@ function ChildNeeds() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log({ items, generalNotes });
-    // Integration with backend or further processing goes here
   };
 
   return (
