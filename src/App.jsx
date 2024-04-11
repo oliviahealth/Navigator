@@ -22,6 +22,8 @@ import MediaAppearanceRelease from './components/MediaAppearanceRelease'
 import Medications from './components/Medications'
 import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
+import CrafftScreening from './components/CrafftScreening'
+import DrugAbuseScreening from './components/DrugAbuseScreening'
 import AddPatientModal from './components/AddPatient';
 import FormsDashboard from './components/FormsDashboard';
 import ChildDemographics from './components/ChildDemographics';
@@ -70,6 +72,8 @@ const App = () => {
         <Route path="/medications" element={<Medications />} />
         <Route path="/pregnancy" element={<Pregnancy />} />
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
+        <Route path="/crafft-screening" element={<CrafftScreening />} />
+        <Route path="/drug-abuse-screening" element={<DrugAbuseScreening />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
         <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
 

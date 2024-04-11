@@ -331,6 +331,16 @@ return (
                 <Link to="/cage-screening" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
                 </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/crafft-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>CRAFFT Screening Tool</span>
+                </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/drug-abuse-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Drug Abuse Screening Test (DAST-10)</span>
+                </Link>
             </div>
             </div>
             )}
