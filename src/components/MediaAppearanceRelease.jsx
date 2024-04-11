@@ -3,9 +3,28 @@ import styles from '../styles/MediaAppearanceRelease.module.css';
 
 const MediaAppearanceRelease = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [formData, setFormData] = useState({
+    participant: '',
+    address: '',
+    participantSignature: '',
+    participantPrintedName: '',
+    participantDate: '',
+    guardianSignature: '',
+    guardianPrintedName: '',
+    guardianDate: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(formData); // Here you can handle the submission of the formData to a backend, for example.
   };
 
   const handleCancel = () => {
@@ -28,15 +47,15 @@ const MediaAppearanceRelease = () => {
             <h2>MEDIA APPEARANCE RELEASE</h2>
             <p>
             <u>MEDIA APPEARANCE RELEASE</u>
-            <br></br><br></br>
+            <br /><br />
             Page 1 of 2
-            <br></br><br></br>
+            <br /><br />
             <div className={styles.inputField}>
-            <label htmlFor="participant">Participant:</label>
-            <input type="text" id="participant" name="participant" className={styles.textInput} />
-
-            <label htmlFor="address">Address:</label>
-            <input type="text" id="address" name="address" className={styles.textInput} />
+              <label htmlFor="participant">Participant:</label>
+              <input type="text" id="participant" name="participant" className={styles.textInput} value={formData.participant} onChange={handleInputChange} />
+  
+              <label htmlFor="address">Address:</label>
+              <input type="text" id="address" name="address" className={styles.textInput} value={formData.address} onChange={handleInputChange} />
             </div>
             1. The Participant consents to the use by Texas A&M University and assigns and grants to System Member the  irrevocable and unconditional power, right, privilege and permission to make, record, produce, edit, modify, reproduce, exhibit,  distribute, publish, publicly or privately display, publicly or privately perform, create derivative works, and transmit by the  means of still photography, live or recorded broadcast, cablecast, webcast, or Internet streaming, broadband, wireless, mobile,  film, videotape, or any other similar mechanical or electronic method (whether now known or invented later) the Participant’s  performance, contribution, appearance, name, voice, picture, likeness, poses, actions and any combination of any of these (the  “Appearance”) in connection with the Program of Excellence for Mothers, Children & Families production conducted by  System Member (the “Project”) which is generally for the purposes of education, instruction, research, publicity, advertising,  and promotion in connection with the Project. Participant also waives any moral or similar rights Participant may have in the Project relating to the Appearance. 
             <br></br><br></br> 
@@ -54,45 +73,45 @@ const MediaAppearanceRelease = () => {
           <>
             <h2>MEDIA APPEARANCE RELEASE</h2>
             <p>Page 2 of 2
-                <br></br><br></br>
-                PARTICIPANT SIGNATURE:  
-                <br></br><br></br>
-                <div className="signatureSection">
-                <div className="participantSignature">
-                    <label htmlFor="participantSignature">Signature:</label>
-                    <input type="text" id="participantSignature" name="participantSignature" />
-                </div>
-                <div className="participantPrintedName">
-                    <label htmlFor="participantPrintedName">Printed Name:</label>
-                    <input type="text" id="participantPrintedName" name="participantPrintedName" />
-                </div>
-                <div className="participantDate">
-                    <label htmlFor="participantDate">Date:</label>
-                    <input type="date" id="participantDate" name="participantDate" />
-                </div>
-                <hr />
-                IF PARTICIPANT IS UNDER THE AGE OF 18 YEARS, A PARENT OR LEGAL GUARDIAN MUST SIGN BELOW:
-                <br></br><br></br>
-                I agree to all the terms and conditions of this Appearance Release on behalf of myself and my child/ward.
-                <br></br><br></br>
-                <div className="guardianSignature">
-                    <label htmlFor="guardianSignature">Signature (Parent or Legal Guardian):</label>
-                    <input type="text" id="guardianSignature" name="guardianSignature" />
-                </div>
-                <div className="guardianPrintedName">
-                    <label htmlFor="guardianPrintedName">Printed Name:</label>
-                    <input type="text" id="guardianPrintedName" name="guardianPrintedName" />
-                </div>
-                <div className="guardianDate">
-                    <label htmlFor="guardianDate">Date:</label>
-                    <input type="date" id="guardianDate" name="guardianDate" />
-                </div>
+                <br /><br />
+                PARTICIPANT SIGNATURE:  
+                <br /><br />
+                <div className={styles.signatureSection}>
+                  <div className={styles.participantSignature}>
+                      <label htmlFor="participantSignature">Signature:</label>
+                      <input type="text" id="participantSignature" name="participantSignature" value={formData.participantSignature} onChange={handleInputChange} />
+                  </div>
+                  <div className={styles.participantPrintedName}>
+                      <label htmlFor="participantPrintedName">Printed Name:</label>
+                      <input type="text" id="participantPrintedName" name="participantPrintedName" value={formData.participantPrintedName} onChange={handleInputChange} />
+                  </div>
+                  <div className={styles.participantDate}>
+                      <label htmlFor="participantDate">Date:</label>
+                      <input type="date" id="participantDate" name="participantDate" value={formData.participantDate} onChange={handleInputChange} />
+                  </div>
+                  <hr />
+                  IF PARTICIPANT IS UNDER THE AGE OF 18 YEARS, A PARENT OR LEGAL GUARDIAN MUST SIGN BELOW:
+                  <br /><br />
+                  I agree to all the terms and conditions of this Appearance Release on behalf of myself and my child/ward.
+                  <br /><br />
+                  <div className={styles.guardianSignature}>
+                      <label htmlFor="guardianSignature">Signature (Parent or Legal Guardian):</label>
+                      <input type="text" id="guardianSignature" name="guardianSignature" value={formData.guardianSignature} onChange={handleInputChange} />
+                  </div>
+                  <div className={styles.guardianPrintedName}>
+                      <label htmlFor="guardianPrintedName">Printed Name:</label>
+                      <input type="text" id="guardianPrintedName" name="guardianPrintedName" value={formData.guardianPrintedName} onChange={handleInputChange} />
+                  </div>
+                  <div className={styles.guardianDate}>
+                      <label htmlFor="guardianDate">Date:</label>
+                      <input type="date" id="guardianDate" name="guardianDate" value={formData.guardianDate} onChange={handleInputChange} />
+                  </div>
                 </div>
             </p>
           </>
         )}
         <div className={styles.buttonSection}>
-        <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
+          <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
           {currentPage > 1 && (
             <button type="button" onClick={goToPreviousPage} className={styles.previousButton}>Previous Page</button>
           )}
@@ -106,6 +125,7 @@ const MediaAppearanceRelease = () => {
       </form>
     </div>
   );
+  
 };
 
 export default MediaAppearanceRelease;

@@ -86,7 +86,7 @@ function ReferralsServices() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(services);
-    // Here you'd typically send this data to a server
+
   };
 
   return (
