@@ -16,13 +16,13 @@ const DrugAbuseScreening = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const calculatedScore = answers.reduce((total, answer) => {
-      return total + parseInt(answer);
+    const calculatedScore = answers.reduce((total, answer, index) => {
+      return total + (index === 2 ? (answer === '0' ? 1 : 0) : parseInt(answer));
     }, 0);
     setScore(calculatedScore);
     setSubmitted(true);
-    setShowModal(true);
-  };   
+    setShowModal(true); 
+  };  
 
   const handleCancel = () => {
     window.history.back();
