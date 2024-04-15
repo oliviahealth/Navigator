@@ -8,10 +8,11 @@ from passlib.hash import argon2
 from datetime import datetime
 from psycopg2.extras import Json
 from psycopg2 import pool
+from flask.helpers import send_from_directory
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../dist', static_url_path='')
 CORS(app, supports_credentials=True)
 
 postgres_url = os.getenv("DATABASE_URL")
@@ -43,6 +44,10 @@ INSERT INTO "user" (username, firstName, lastName, email, phone, password, is_ad
 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
 RETURNING id;
 """
+
+@app.route("/")
+def serve():
+    return send_from_directory(app.static_folder, 'index.html')
 
 @app.route("/api/forms/<formType>/<int:patientId>", methods=['GET'])
 def get_forms(formType, patientId):
