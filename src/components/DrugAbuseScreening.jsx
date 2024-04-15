@@ -21,7 +21,7 @@ const DrugAbuseScreening = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response = await fetch(`http://localhost:5000/api/add-form/drug_abuse_screening/${patientId}`, {
+        const response = await fetch(`http://localhost:5000/api/insert_forms/drug_abuse_screening/${patientId}`, {
           method: 'POST',
           credentials: 'include',
           headers: {

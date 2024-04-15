@@ -33,7 +33,7 @@ function ChildNeedsReadOnly() {
                 return; 
             }
             const data = await response.json();
-            setItems(data.data)
+            setItems(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

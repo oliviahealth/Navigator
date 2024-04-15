@@ -66,10 +66,8 @@ def get_forms(formType, patientId):
 @app.route("/api/insert_forms/<formType>/<int:patientId>", methods=['POST'])
 def insert_form(formType, patientId):
     data = request.get_json()
-    
     try:
         connection = connection_pool.getconn()
-
         with connection.cursor() as cursor:
             query = """
                 INSERT INTO {} (date_time, data, patient_id)
@@ -78,7 +76,7 @@ def insert_form(formType, patientId):
             """.format(formType) 
             cursor.execute(query, (
                 datetime.now(),
-                Json(data['data']),
+                Json(data),
                 patientId,
             ))
             inserted_id = cursor.fetchone()[0]
@@ -90,6 +88,27 @@ def insert_form(formType, patientId):
         connection_pool.putconn(connection)
     
     return jsonify({"inserted_id": inserted_id}), 201
+
+@app.route("/api/get_read_only_data/<formType>/<int:patientId>/<logId>", methods=['GET'])
+def get_read_only_data(formType, patientId, logId):
+    print("test1")
+    try:
+        print("test2")
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            query = f"SELECT * FROM {formType} WHERE id = %s AND patient_id = %s;"
+            cursor.execute(query, (logId, patientId))
+            log = cursor.fetchone()
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+    
+    if log is not None:
+        return jsonify(log)
+    else:
+        return jsonify({"error": "Log not found"}), 404
 
 
 @app.post("/api/signup")
@@ -494,23 +513,21 @@ def add_appointment_log_entry(patientId):
     return jsonify({"status": "success", "message": "appointment log created"}), 201
 
 @app.route("/api/get_appointment_log/<int:patientId>/<log_id>", methods=['GET'])
-def get_appointment_log(patientId):
+def get_appointment_log(patientId, log_id):
     try:
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             cursor.execute("""
                 SELECT id, date_time, who, location, notes
                 FROM appointment_log
-                WHERE patient_id = %s AND log_id = %s
+                WHERE patient_id = %s AND id = %s
                 ORDER BY date_time DESC
                 LIMIT 1;
             """, (patientId, log_id))
             entry = cursor.fetchone()
     finally:
         connection_pool.putconn(connection)
-
     if entry:
-        # Constructing a response dictionary using the fetched log entry
         response = {
             "id": entry[0],
             "dateTime": entry[1].strftime("%Y-%m-%d %H:%M:%S") if entry[1] else "",

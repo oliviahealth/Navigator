@@ -29,7 +29,7 @@ function GoalPlanningReadOnly() {
                 return; 
             }
             const data = await response.json();
-            setGoalInfo(data.data)
+            setGoalInfo(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

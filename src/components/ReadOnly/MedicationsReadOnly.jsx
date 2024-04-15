@@ -45,7 +45,7 @@ const MedicationsReadOnly = () => {
                 return; 
             }
             const data = await response.json();
-            setMedications(data.data)
+            setMedications(data[2])
             
         } catch (error) {
             console.error('Error fetching  info:', error);

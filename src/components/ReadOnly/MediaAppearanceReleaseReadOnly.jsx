@@ -28,7 +28,7 @@ const MediaAppearanceReleaseReadOnly = () => {
   useEffect(() => {
     const fetchLog = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/get-media-appearance-release/${patientId}/${log_id}`, {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/media_appearance_release/${patientId}/${log_id}`, {
               method: 'GET',
               credentials: 'include',
             });

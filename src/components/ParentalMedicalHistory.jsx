@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from '../styles/ParentalMedicalHistory.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const ParentalMedicalHistory = () => {
+  const { patientId } = useParams();
   const [formData, setFormData] = useState({
     participantComplete: '',
     followUp: '',
@@ -33,10 +34,24 @@ const ParentalMedicalHistory = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData); 
-    navigate('/dashboard');
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/parental_medical_history/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

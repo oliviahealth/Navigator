@@ -104,7 +104,7 @@ const AddictionBeliefScaleReadOnly = () => {
                 return; 
             }
             const data = await response.json();
-            setAnswersData(data.data)
+            setAnswersData(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

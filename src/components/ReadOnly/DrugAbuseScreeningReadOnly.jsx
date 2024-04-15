@@ -22,7 +22,7 @@ const DrugAbuseScreeningReadOnly = () => {
                 return; 
             }
             const data = await response.json();
-            setAnswers(data.data)
+            setAnswers(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

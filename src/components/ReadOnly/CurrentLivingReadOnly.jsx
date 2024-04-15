@@ -29,7 +29,7 @@ function CurrentLivingReadOnly() {
                 return; 
             }
             const data = await response.json();
-            setFormData(data.data)
+            setFormData(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function ReferralsServices() {
+  const { patientId } = useParams();
   const initialServices = {
     "Support Services": [
       "Parenting Classes",
@@ -83,10 +85,24 @@ function ReferralsServices() {
     setServices({ ...services, items: updatedItems });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(services);
-
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/referrals_services/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(services),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

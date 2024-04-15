@@ -49,9 +49,9 @@ const CrafftScreeningReadOnly = () => {
                 return; 
             }
             const data = await response.json();
-            setAnswers(data.data.partA)
-            setPartBAnswers(data.data.partB)
-            setPartCAnswers(data.data.partC)
+            setAnswers(data[2].partA)
+            setPartBAnswers(data[2].partB)
+            setPartCAnswers(data[2].partC)
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

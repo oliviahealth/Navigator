@@ -5,25 +5,90 @@ import '../../styles/ConsentFormStyles/NutHistoryStyle.css';
 
 function NutHistory() {
   const [formValues, setFormValues] = useState({
-    // Initialize your state with all the fields you have in the form.
-    // For example:
     todayDate: '',
     yourName: '',
     educationLevel: '',
-    maritalStatus: false,
-    // ...other fields
+    maritalStatus: '', // Changed from boolean to string to accommodate radio button values
+    ethnicity: '',
+    race: [], // Array to handle multiple checkbox selections
+    lastMenstrualPeriod: '',
+    dueDate: '',
+    prepregnancyWeight: '',
+    numberPregnancies: '',
+    numberLiveBabies: '',
+    pregnantTwentyWeeksCount: '',
+    prenatalCareMonth: '',
+    pregnancyConditions: [], // Array for checkboxes
+    healthProviderVisits: '',
+    hivTestOffered: '',
+    previousPregnancyConditions: [], // Array for checkboxes
+    medicalConditions: [],
+    medications: [],
+    dentalProblems: [],
+    smokingBeforePregnancy: '',
+    currentSmoking: '',
+    householdSmoking: '',
+    alcoholBeforePregnancy: '',
+    alcoholDuringPregnancy: '',
+    substanceUse: [], // Array for checkboxes
+    feedingDecisionLimitation: '',
+    breastfedBefore: '',
+    currentlyBreastfeeding: '',
+    babyAge: '',
+    breastfeedingMoreThanOneChild: '',
+    breastfeedDuration: '',
+    breastfeedDurationReason: [],
+    breastfeedingInformation: '',
+    feedingPlan: '',
+    infoOnBreastfeeding: '',
+    breastfeedingConcerns: [],
+    mealsPerDay: '',
+    snacksPerDay: '',
+    milkPerDay: '',
+    appetite: '',
+    specialDiet: '',
+    fastFoodFrequency: '',
+    fastFoodDetails: '',
+    foodAllergies: '',
+    foodAllergiesDetails: '',
+    dailyConsumptionMilk: '',
+    dailyConsumptionSweetenedBeverages: '',
+    dailyConsumptionSnacks: '',
+    unpasteurizedJuiceOrMilk: [],
+    softCheese: [],
+    rawMeat: [],
+    fish: [],
+    sprouts: [],
+    refmeat: [],
+    hotdogs: [],
+    napplys: [],
+    dietType: [],
+    dietTypeDetails: '',
   });
+  
   
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Handle the change for checkboxes differently
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+  
+    if (type === 'checkbox') {
+      // Handling checkboxes that are part of a group (array in state)
+      setFormValues(prev => ({
+        ...prev,
+        [name]: checked
+          ? [...prev[name], value]
+          : prev[name].filter(item => item !== value)
+      }));
+    } else {
+      // Handling other input types like 'text', 'radio', 'date', etc.
+      setFormValues(prev => ({
+        ...prev,
+        [name]: type === 'radio' ? value : checked
+      }));
+    }
   };
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();

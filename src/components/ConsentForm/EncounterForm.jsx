@@ -1,8 +1,9 @@
 import '../../styles/EncounterFormStyle.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function App() {
+  const { patientId } = useParams();
   const [formData, setFormData] = useState({
     participantName: '',
     caseId: '',
@@ -61,11 +62,24 @@ function App() {
     });
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
-    // Process the formData here
-    console.log(formData);
-    navigate('/dashboard');
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/encounter_form/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   // ...

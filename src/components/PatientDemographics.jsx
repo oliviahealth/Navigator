@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import '../styles/PatientDemographics.css';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const PatientDemographics = () => {
- 
+    const { patientId } = useParams();
   const [formData, setFormData] = useState({
     programStartDate: '',
     caseId: '',
@@ -31,9 +32,25 @@ const PatientDemographics = () => {
   });
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(JSON.stringify(formData))
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/participant_info/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   // Handle input change

@@ -87,11 +87,12 @@ const ReleaseOfInformationReadOnly = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    console.log("No support system info found for the selected patient.");
+                    console.log("No info found for the selected patient.");
                     return; 
                 }
                 const data = await response.json();
-                setFormData(data.data)
+                console.log(data[2])
+                setFormData(data[2])
                 
             } catch (error) {
                 console.error('Error fetching sipport system info:', error);

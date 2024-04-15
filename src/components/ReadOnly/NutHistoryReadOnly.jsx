@@ -108,7 +108,7 @@ function NutHistoryReadOnly() {
                 return; 
             }
             const data = await response.json();
-            setFormValues(data.data)
+            setFormValues(data[2])
             
         } catch (error) {
             console.error('Error fetching sipport system info:', error);

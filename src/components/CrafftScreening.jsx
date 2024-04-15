@@ -26,6 +26,7 @@ const CrafftScreening = () => {
     });
   };
 
+  const [allAnswers, setAllAnswers] = useState();
   const [answers, setAnswers] = useState({ q1: '', q2: '', q3: '', q4: '' });
   const [partBAnswers, setPartBAnswers] = useState({
     c: '', r: '', a: '', f1: '', f2: '', t: ''
@@ -322,7 +323,7 @@ const CrafftScreening = () => {
       };
   
       try {
-        const response = await fetch(`http://localhost:5000/api/add-form/crafft_screening/${patientId}`, {
+        const response = await fetch(`http://localhost:5000/api/insert_forms/crafft_screening/${patientId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

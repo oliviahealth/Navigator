@@ -80,15 +80,15 @@ function ReferralsServicesReadOnly() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data.data.items)
+        console.log(data[2].items)
   
-        if (data && data.data.items) {
+        if (data && data[2].items) {
           // Assuming data.items should be an object with keys matching service categories
           const transformedData = Object.keys(initialServices).reduce((acc, category) => {
             // Map over each category to ensure it has the correct structure
             return {
               ...acc,
-              [category]: data.data.items[category].map(service => ({
+              [category]: data[2].items[category].map(service => ({
                 ...service,
                 discussed: service.discussed || false,
                 needed: service.needed || false,
