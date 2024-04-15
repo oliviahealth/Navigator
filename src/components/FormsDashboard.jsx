@@ -20,12 +20,21 @@ const FormsDashboard = () => {
     var formNames = {
         "communications_log": "Communication Log",
         "appointment_log": "Appointments Log",
+        "release-of-information": "Release of Information",
+        "media-appearance-release": "Media Appearance Release"
     };
+
+    var dbTableNames = {
+        "communications_log": "Communication Log",
+        "appointment_log": "Appointments Log",
+        "release-of-information": "release_of_information",
+        "media-appearance-release": "media_appearance_release"
+    }
 
     useEffect(() => {
         const fetchForms = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/forms/${formType}/${patientId}`, {
+                const response = await fetch(`http://localhost:5000/api/forms/${dbTableNames[formType]}/${patientId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

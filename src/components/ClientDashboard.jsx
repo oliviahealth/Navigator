@@ -93,7 +93,9 @@ const handlePatientClick = (index, patient) => {
 
 
 const handleLogout = () => {
-navigate('/');
+   localStorage.removeItem('selectedPatientIndex');
+   localStorage.removeItem('selectedPatientObj');
+   navigate('/');
 };
 const [isActive, setIsActive] = useState(false);
 const toggleDropdown = (id) => {
@@ -218,12 +220,12 @@ return (
                 </Link>
             </div>
             <div className={styles["dropdown-item"]}>
-                <Link to="/release-of-information" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/release-of-information/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
                 </Link>
             </div>
             <div className={styles["dropdown-item"]}>
-                <Link to="/media-appearance-release" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/media-appearance-release/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Media Appearance Release</span>
                 </Link>
             </div>
