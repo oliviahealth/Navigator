@@ -24,6 +24,11 @@ import Pregnancy from './components/Pregnancy'
 import AddictionBeliefScale from './components/AddictionBeliefScale'
 import CrafftScreening from './components/CrafftScreening'
 import DrugAbuseScreening from './components/DrugAbuseScreening'
+import DrugScreeningResults from './components/DrugScreeningResults.jsx'
+
+
+import SubstanceUseHistory from './components/SubstanceUseHistory'
+import TweakTest from './components/TweakTest.jsx'
 import AddPatientModal from './components/AddPatient';
 import FormsDashboard from './components/FormsDashboard';
 import ChildDemographics from './components/ChildDemographics';
@@ -74,6 +79,10 @@ const App = () => {
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
         <Route path="/crafft-screening" element={<CrafftScreening />} />
         <Route path="/drug-abuse-screening" element={<DrugAbuseScreening />} />
+        <Route path="/drug-screening-results" element={<DrugScreeningResults />} />
+
+        <Route path="/substance-use-history" element={<SubstanceUseHistory />} />     
+        <Route path="/tweak-test" element={<TweakTest />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
         <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
 

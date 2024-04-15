@@ -341,6 +341,21 @@ return (
                 <Link to="/drug-abuse-screening" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Drug Abuse Screening Test (DAST-10)</span>
                 </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/drug-screening-results" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Drug Screening Results</span>
+                </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/drug-screening-results" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Substance Use History</span>
+                </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/tweak-test" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>TWEAK Test (for alcohol drinking)</span>
+                </Link>
             </div>
             </div>
             )}
