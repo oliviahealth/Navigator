@@ -12,7 +12,7 @@ from flask.helpers import send_from_directory
 
 load_dotenv()
 
-app = Flask(__name__, static_folder='../dist', static_url_path='')
+app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 postgres_url = os.getenv("DATABASE_URL")
