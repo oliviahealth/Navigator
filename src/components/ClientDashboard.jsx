@@ -93,7 +93,9 @@ const handlePatientClick = (index, patient) => {
 
 
 const handleLogout = () => {
-navigate('/');
+   localStorage.removeItem('selectedPatientIndex');
+   localStorage.removeItem('selectedPatientObj');
+   navigate('/');
 };
 const [isActive, setIsActive] = useState(false);
 const toggleDropdown = (id) => {
@@ -218,12 +220,12 @@ return (
                 </Link>
             </div>
             <div className={styles["dropdown-item"]}>
-                <Link to="/release-of-information" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/release-of-information/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
                 </Link>
             </div>
             <div className={styles["dropdown-item"]}>
-                <Link to="/media-appearance-release" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/media-appearance-release/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Media Appearance Release</span>
                 </Link>
             </div>
@@ -247,31 +249,31 @@ return (
             {isActive.demographics && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/participants-demographic-record">Participants Demographics Record</Link>
+                  <Link to={`/forms-dashboard/participants-demographic-record/${selectedPatientObj.patient_id}`}>Participants Demographics Record</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/demographics-others">Participant Record for Others Involved</Link>
+                  <Link to={`/forms-dashboard/demographics-others/${selectedPatientObj.patient_id}`}>Participant Record for Others Involved</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/child-demographics">Child Demographics Record</Link>
+                  <Link to={`/forms-dashboard/child-demographics/${selectedPatientObj.patient_id}`}>Child Demographics Record</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/support-systems">Support Systems, Strengths, Areas For Improvement & Goals </Link>
+                  <Link to={`/forms-dashboard/support-systems/${selectedPatientObj.patient_id}`}>Support Systems, Strengths, Areas For Improvement & Goals </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/current-living">Current Living Arrangement </Link>
+                  <Link to={`/forms-dashboard/current-living/${selectedPatientObj.patient_id}`}>Current Living Arrangement </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/child-needs">Child(ren) Needs </Link>
+                  <Link to={`/forms-dashboard/child-needs/${selectedPatientObj.patient_id}`}>Child(ren) Needs </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/referrals-services">Referrals and Services </Link>
+                  <Link to={`/forms-dashboard/referrals-services/${selectedPatientObj.patient_id}`}>Referrals and Services </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/emergency-contact">Emergency Contact Information </Link>
+                  <Link to={`/forms-dashboard/emergency-contact/${selectedPatientObj.patient_id}`}>Emergency Contact Information </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  <Link to="/goal-planning">Goal Planning Tool </Link>
+                  <Link to={`/forms-dashboard/goal-planning/${selectedPatientObj.patient_id}`}>Goal Planning Tool </Link>
                </div>
             </div>
             )}
@@ -283,16 +285,16 @@ return (
             </div>
             {isActive.medical && (
             <div className={styles["dropdown-content"]}>
-               <Link to="/parental-medical-history" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/parental-medical-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Parental Medical History Form</span>
           </Link>
                <div className={styles["dropdown-item"]}>
-               <Link to="/encounter-form" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/encounter-form/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
           </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-               <Link to="/nut-history" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/nut-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Nutrition History and Assessment</span>
           </Link>
                </div>
@@ -306,7 +308,7 @@ return (
             </div>
             {isActive.currMed && (
             <div className={styles["dropdown-item"]}>
-                <Link to="/medications" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/medications/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Medications</span>
                 </Link>
             </div>
@@ -319,44 +321,29 @@ return (
             </div> 
             {isActive.suh && (
             <div className={styles["dropdown-item"]}>
-                <Link to="/pregnancy" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/pregnancy/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>4 P's of Pregnancy</span>
                 </Link>
                 <div className={styles["dropdown-item"]}>
-                <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/addiction-belief-scale/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Addiction Belief Scale</span>
                 </Link>
                 </div>
                 <div className={styles["dropdown-item"]}>
-                <Link to="/cage-screening" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/cage-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
                 </Link>
-                </div>
-                <div className={styles["dropdown-item"]}>
-                <Link to="/crafft-screening" className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>CRAFFT Screening Tool</span>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/crafft-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Crafft Screening</span>
                 </Link>
-                </div>
-                <div className={styles["dropdown-item"]}>
-                <Link to="/drug-abuse-screening" className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>Drug Abuse Screening Test (DAST-10)</span>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/drug-abuse-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Drug Abuse Screening</span>
                 </Link>
-                </div>
-                <div className={styles["dropdown-item"]}>
-                <Link to="/drug-screening-results" className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>Drug Screening Results</span>
-                </Link>
-                </div>
-                <div className={styles["dropdown-item"]}>
-                <Link to="/drug-screening-results" className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>Substance Use History</span>
-                </Link>
-                </div>
-                <div className={styles["dropdown-item"]}>
-                <Link to="/tweak-test" className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>TWEAK Test (for alcohol drinking)</span>
-                </Link>
-            </div>
+               </div>
             </div>
             )}
          </div>
@@ -420,7 +407,7 @@ return (
             {isActive.PrenatalCare && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-               <Link to="/prenatal-care" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/prenatal-care/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Prenatal Care</span>
           </Link>
                </div>
@@ -435,32 +422,32 @@ return (
             {isActive.child && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-               <Link to="/asq" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/asq/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>ASQ-3</span>
           </Link>
                </div>
-               <div className={styles["dropdown-item"]}>
-               <Link to="/brief-child" className={styles["dropdown-item"]}>
+            <div className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/brief-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Brief Child Wellness Update</span>
           </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-               <Link to="/delivery-history" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/delivery-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Delivery History Information Update</span>
           </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-               <Link to="/breastfeeding" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/breastfeeding/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Breastfeeding</span>
           </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-               <Link to="/infancy-quest" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/infancy-quest/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Infancy Questionnaire</span>
           </Link>
                </div>
                <div className={styles["dropdown-item"]}>
-               <Link to="/target-child" className={styles["dropdown-item"]}>
+               <Link to={`/forms-dashboard/target-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
             <span className={styles.highlighted}>Target Child Enrollment & Summary Record </span>
           </Link>
                </div>

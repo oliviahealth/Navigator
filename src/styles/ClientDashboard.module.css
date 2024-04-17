@@ -200,7 +200,7 @@ height: 100vh;
   /* Removes default styles for placeholder */
   ::placeholder {
     color: #757575;
-    opacity: 1; /* Placeholder text full opacity */
+    opacity: 1;
     padding-top: 10px;
   }
 }

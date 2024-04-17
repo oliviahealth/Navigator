@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styles from '../styles/Pregnancy.module.css';
+import { useParams } from 'react-router-dom';
 
 const Pregnancy = () => {
+  const { patientId } = useParams();
   const questions = [
     "Have you ever used drugs or alcohol during this Pregnancy?",
     "Have you had a problem with drugs or alcohol in the Past?",
@@ -19,12 +21,26 @@ const Pregnancy = () => {
     setAnswers(updatedAnswers);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const needsAssessment = answers.includes('yes');
-    setAssessment(needsAssessment ? 'Referred for Further Assessment.' : 'No Further Assessment Needed.');
-    setShowPopup(true);
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/pregnancy/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
+
 
   const handleCancel = () => {
     window.history.back();

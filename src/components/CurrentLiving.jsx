@@ -1,40 +1,60 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function CurrentLiving() {
-  const [livingWith, setLivingWith] = useState([
-    { name: '', dateOfBirth: '', relation: '' }
-  ]);
+  const { patientId } = useParams();
+  const [formData, setFormData] = useState({
+    livingWith: [
+      { name: '', dateOfBirth: '', relation: '' }
+    ],
+    notLivingWith: [
+      { name: '', dateOfBirth: '', caregiverContact: '' }
+    ],
+    notes: ''
+  });
 
-  const [notLivingWith, setNotLivingWith] = useState([
-    { name: '', dateOfBirth: '', caregiverContact: '' }
-  ]);
-
-  const [notes, setNotes] = useState('');
-
-  const handleLivingChange = (index, field, value) => {
-    const updated = [...livingWith];
-    updated[index][field] = value;
-    setLivingWith(updated);
+  const handleChange = (section, index, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: prev[section].map((item, i) => 
+        i === index ? { ...item, [field]: value } : item
+      )
+    }));
   };
 
-  const handleNotLivingChange = (index, field, value) => {
-    const updated = [...notLivingWith];
-    updated[index][field] = value;
-    setNotLivingWith(updated);
+  const addRow = (section) => {
+    const newRow = section === 'livingWith' ? { name: '', dateOfBirth: '', relation: '' } : { name: '', dateOfBirth: '', caregiverContact: '' };
+    setFormData(prev => ({
+      ...prev,
+      [section]: [...prev[section], newRow]
+    }));
   };
 
-  const addLivingWithRow = () => {
-    setLivingWith([...livingWith, { name: '', dateOfBirth: '', relation: '' }]);
+  const handleNotesChange = (value) => {
+    setFormData(prev => ({
+      ...prev,
+      notes: value
+    }));
   };
 
-  const addNotLivingWithRow = () => {
-    setNotLivingWith([...notLivingWith, { name: '', dateOfBirth: '', caregiverContact: '' }]);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({ livingWith, notLivingWith, notes });
-    // Submission logic here
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/current_living/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (
@@ -51,35 +71,35 @@ function CurrentLiving() {
           </tr>
         </thead>
         <tbody>
-          {livingWith.map((person, index) => (
+          {formData.livingWith.map((person, index) => (
             <tr key={index}>
               <td>
                 <input
                   type="text"
                   value={person.name}
-                  onChange={(e) => handleLivingChange(index, 'name', e.target.value)}
+                  onChange={(e) => handleChange('livingWith', index, 'name', e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="date"
                   value={person.dateOfBirth}
-                  onChange={(e) => handleLivingChange(index, 'dateOfBirth', e.target.value)}
+                  onChange={(e) => handleChange('livingWith', index, 'dateOfBirth', e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={person.relation}
-                  onChange={(e) => handleLivingChange(index, 'relation', e.target.value)}
+                  onChange={(e) => handleChange('livingWith', index, 'relation', e.target.value)}
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={addLivingWithRow}>Add Row</button>
-
+      <button type="button" onClick={() => addRow('livingWith')}>Add Row</button>
+  
       <h3>List of Children NOT Living with You</h3>
       <table>
         <thead>
@@ -90,46 +110,47 @@ function CurrentLiving() {
           </tr>
         </thead>
         <tbody>
-          {notLivingWith.map((child, index) => (
+          {formData.notLivingWith.map((child, index) => (
             <tr key={index}>
               <td>
                 <input
                   type="text"
                   value={child.name}
-                  onChange={(e) => handleNotLivingChange(index, 'name', e.target.value)}
+                  onChange={(e) => handleChange('notLivingWith', index, 'name', e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="date"
                   value={child.dateOfBirth}
-                  onChange={(e) => handleNotLivingChange(index, 'dateOfBirth', e.target.value)}
+                  onChange={(e) => handleChange('notLivingWith', index, 'dateOfBirth', e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={child.caregiverContact}
-                  onChange={(e) => handleNotLivingChange(index, 'caregiverContact', e.target.value)}
+                  onChange={(e) => handleChange('notLivingWith', index, 'caregiverContact', e.target.value)}
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={addNotLivingWithRow}>Add Row</button>
-
+      <button type="button" onClick={() => addRow('notLivingWith')}>Add Row</button>
+  
       <label>
         Notes:
         <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
+          value={formData.notes}
+          onChange={(e) => handleNotesChange(e.target.value)}
         />
       </label>
-
+  
       <button type="submit">Submit</button>
     </form>
   );
+  
 }
 
 export default CurrentLiving;

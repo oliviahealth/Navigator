@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import styles from '../styles/DrugAbuseScreening.module.css';
+import { useParams } from 'react-router-dom';
 
 const DrugAbuseScreening = () => {
+    const { patientId } = useParams();
   const [answers, setAnswers] = useState(new Array(10).fill('0'));
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(null);
+
+  
 
   const [showModal, setShowModal] = useState(false);
 
@@ -14,14 +18,28 @@ const DrugAbuseScreening = () => {
     setAnswers(updatedAnswers);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const calculatedScore = answers.reduce((total, answer, index) => {
-      return total + (index === 2 ? (answer === '0' ? 1 : 0) : parseInt(answer));
-    }, 0);
-    setScore(calculatedScore);
-    setSubmitted(true);
-    setShowModal(true); 
+    try {
+        const response = await fetch(`http://localhost:5000/api/insert_forms/drug_abuse_screening/${patientId}`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(answers),
+        });
+  
+        if (response.ok) {
+          console.log('Form data saved successfully');
+        } else {
+          console.error('Error saving form data');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+  
+      window.history.back();
   };  
 
   const handleCancel = () => {

@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/CrafftScreening.module.css';
+import { useParams } from 'react-router-dom' 
 
 const CrafftScreening = () => {
+  const { patientId } = useParams();
   const [currentPart, setCurrentPart] = useState('A');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    alert('Form submitted!'); 
-  };
 
   const handleCancel = () => {
     window.history.back(); 
@@ -29,14 +26,16 @@ const CrafftScreening = () => {
     });
   };
 
+  const [allAnswers, setAllAnswers] = useState();
+  const [answers, setAnswers] = useState({ q1: '', q2: '', q3: '', q4: '' });
+  const [partBAnswers, setPartBAnswers] = useState({
+    c: '', r: '', a: '', f1: '', f2: '', t: ''
+  });
+  const [partCAnswers, setPartCAnswers] = useState({
+    q1: '', q2: '', q3: '', q4: '', q5: '', q6: '', q7a: '', q7b: '', q7c: '', q7d: ''
+  });
+
   const renderFormPart = () => {
-    const [answers, setAnswers] = useState({ q1: '', q2: '', q3: '', q4: '' });
-    const [partBAnswers, setPartBAnswers] = useState({
-      c: '', r: '', a: '', f1: '', f2: '', t: ''
-    });
-    const [partCAnswers, setPartCAnswers] = useState({
-      q1: '', q2: '', q3: '', q4: '', q5: '', q6: '', q7a: '', q7b: '', q7c: '', q7d: ''
-    });
   
     const handleChange = (event) => {
       const { name, value } = event.target;
@@ -60,6 +59,7 @@ const CrafftScreening = () => {
         setCurrentPart('C'); 
       }
     };
+    
   
     const checkPartBAnswers = () => {
       const yesCount = Object.values(partBAnswers).filter(answer => answer === 'yes').length;
@@ -311,6 +311,40 @@ const CrafftScreening = () => {
             </div>
           );          
       }      
+  };
+
+    const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const fullFormData = {
+        partA: answers,
+        partB: partBAnswers,
+        partC: partCAnswers
+      };
+  
+      try {
+        const response = await fetch(`http://localhost:5000/api/insert_forms/crafft_screening/${patientId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(fullFormData)
+        });
+  
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        
+        const result = await response.json();
+        console.log('Form submitted successfully:', result);
+  
+      } catch (error) {
+        console.error('Failed to submit form:', error);
+        alert('Failed to submit form. Please try again.');
+      }
+
+      window.history.back();
+    
   };
   
   return (

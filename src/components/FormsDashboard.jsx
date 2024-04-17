@@ -20,12 +20,71 @@ const FormsDashboard = () => {
     var formNames = {
         "communications_log": "Communication Log",
         "appointment_log": "Appointments Log",
+        "release-of-information": "Release of Information",
+        "media-appearance-release": "Media Appearance Release",
+        "participants-demographic-record": "Participants Demographic Record",
+        "demographics-others": "Demographics for Others Involved",
+        "child-demographics": "Child Demographics",
+        "support-systems": "Support Systems",
+        "current-living": "Current Living",
+        "child-needs": "Child Needs",
+        "referrals-services": "Referrals and Services",
+        "emergency-contact": "Emergency Contact",
+        "goal-planning": "Goal Planning",
+        "parental-medical-history": "Parental Medical History",
+        "encounter-form": "Encounter Form",
+        "nut-history": "Nutrition History",
+        "medications": "Medications",
+        "pregnancy": "4 P's of Pregnancy",
+        "addiction-belief-scale": "Addiction Belief Scale",
+        "cage-screening": "CAGE Screening",
+        "crafft-screening": "Crafft Screening",
+        "drug-abuse-screening": "Drug Abuse Screening",
+        "prenatal-care": "Prenatal Care",
+        "asq": "ASQ-3",
+        "brief-child": "Brief Child Wellness Update",
+        "delivery-history": "Delivery History Information Update",
+        "breastfeeding": "Breastfeeding",
+        "infancy-quest": "Infancy Questionnaire",
+        "target-child": "Target Child Enrollement & Summary Record"
     };
+
+    var dbTableNames = {
+        "communications_log": "communications_log",
+        "appointment_log": "appointment_log",
+        "release-of-information": "release_of_information",
+        "media-appearance-release": "media_appearance_release",
+        "participants-demographic-record": "participant_info",
+        "demographics-others": "demographics_others",
+        "child-demographics": "child_demographics",
+        "support-systems": "support_systems",
+        "current-living": "current_living",
+        "child-needs": "child_needs",
+        "referrals-services": "referrals_services",
+        "emergency-contact": "emergency_contact",
+        "goal-planning": "goal_planning",
+        "parental-medical-history": "parental_medical_history",
+        "encounter-form": "encounter_form",
+        "nut-history": "nut_history",
+        "medications": "medications",
+        "pregnancy": "pregnancy",
+        "addiction-belief-scale": "addiction_belief_scale",
+        "cage-screening": "cage_screening",
+        "crafft-screening": "crafft_screening",
+        "drug-abuse-screening": "drug_abuse_screening",
+        "prenatal-care": "prenatal_care",
+        "asq": "asq_three",
+        "brief-child": "brief_child",
+        "delivery-history": "delivery_history",
+        "breastfeeding": "breastfeeding",
+        "infancy-quest": "infancy_quest",
+        "target-child": "target_child"
+    }
 
     useEffect(() => {
         const fetchForms = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/forms/${formType}/${patientId}`, {
+                const response = await fetch(`http://localhost:5000/api/forms/${dbTableNames[formType]}/${patientId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

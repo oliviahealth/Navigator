@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 function EmergencyContact() {
+  const { patientId } = useParams();
   const initialData = {
     emergencyContacts: [{ id: 1, name: '', phone: '' }],
     pediatrician: { name: '', phone: '' },
@@ -27,7 +28,6 @@ function EmergencyContact() {
   };
 
   const [formData, setFormData] = useState(initialData);
-  const { patientId } = useParams(); 
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -79,29 +79,23 @@ function EmergencyContact() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
     try {
-        const response = await fetch(`http://localhost:5000/api/emergency_contacts/${patientId}`, {
-            method: 'POST',
-            credentials: 'include', // Assuming cookies for session handling
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log('Successfully submitted:', data);
-        // Optionally, reset the form or redirect the user here
+      const response = await fetch(`http://localhost:5000/api/insert_forms/emergency_contact/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
     } catch (error) {
-        console.error('Failed to submit:', error);
-        // Handle submission error here, such as displaying a message to the user
+      console.error('Failed to submit:', error);
     }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit}>
