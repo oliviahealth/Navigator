@@ -341,12 +341,41 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.InterRel && (
-            <div className={styles["dropdown-content"]}>
-            {interpersonalRelationsAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
+            <div className={styles["dropdown-item"]}>
+            <Link to="/partnerViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Intimate Partner Violence </span>
+                </Link>
+                <div className={styles["dropdown-item"]}>
+            <Link to="/domesticViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Domestic Violence Screen for Pediatric Settings</span>
+                </Link>
+                
             </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/ipv" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>IPV Screening and Assessment Questions </span>
+                </Link>
+                
+            </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/intimateViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Intimate Partner Violence (IPV) Disclosure Screening Tool</span>
+                </Link>
+                
+            </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/familyDynamics" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Family Dynamics Social Support Questionnaire (SSQ6)	 </span>
+                </Link>
+                
+            </div>
+                
+            </div>
+            
+            
+            
             )}
+            
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import ClientDashboard from './components/ClientDashboard';
-import Login from './components/LoginModal'; // Import the Login component
+import Login from './components/LoginModal';
 import PatientDemographics from "./components/PatientDemographics";
 import ParentalMedicalHistory from './components/ParentalMedicalHistory';
 import EncounterForm from './components/ConsentForm/EncounterForm';
@@ -32,6 +32,11 @@ import ChildNeeds from './components/ChildNeeds';
 import ReferralsServices from './components/ReferralsServices';
 import EmergencyContact from './components/EmergencyContact';
 import GoalPlanning from './components/GoalPlanning';
+import PartnerViolence from './components/ConsentForm/PartnerViolence';
+import DomesticViolence from './components/ConsentForm/DomesticViolence';
+import IPV from './components/ConsentForm/IPV';
+import IntimateViolence from './components/ConsentForm/IntimateViolence';
+import FamilyDynamics from './components/FamilyDynamics';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -72,6 +77,11 @@ const App = () => {
         <Route path="/addiction-belief-scale" element={<AddictionBeliefScale />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
         <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
+        <Route path="partnerViolence" element={<PartnerViolence />} />
+        <Route path="domesticViolence" element={<DomesticViolence />} />
+        <Route path="ipv" element={<IPV />} />
+        <Route path="intimateViolence" element={<IntimateViolence />} />
+        <Route path="familyDynamics" element={<FamilyDynamics />} />
 
         <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
         <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />

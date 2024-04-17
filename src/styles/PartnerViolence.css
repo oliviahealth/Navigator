@@ -1,0 +1,72 @@
+/* IntimatePartnerViolenceForm.css */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .form-container h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-label {
+    display: block;
+    margin-top: 20px;
+    color: #555;
+  }
+  
+  .form-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .alert-message {
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+  }
+  
+  .alert-message.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+  }
+  
+  /* Responsive styling */
+  @media (max-width: 767px) {
+    .form-container {
+      padding: 10px;
+    }
+  }
+
+  .labelQ {
+    font-size: 20px;
+  }
+  
