@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/PrenatalCare.css';
 
-function PrenatalCare() {
-  const { patientId } = useParams();
+function PrenatalCareReadOnly() {
+  const { patientId, log_id } = useParams();
   const [formValues, setFormValues] = useState({
     pregDate: '',
     startDate: '',
@@ -22,31 +22,35 @@ function PrenatalCare() {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/prenatal_care/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues),
-      });
-      if (!response.ok) {
-        console.log(JSON.stringify(formValues))
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/prenatal_care/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormValues(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   return (
     <div className="prenatal-care-form">
       <h1>Prenatal Care</h1>
-      <form onSubmit={handleSubmit}>
+      <form>
         <label htmlFor="pregDate">If currently pregnant, do you attend regular visits with your OB/GYN or Nurse Practitioner?</label>
         <input type="date" id="pregDate" name="pregDate" value={formValues.pregDate} onChange={handleInputChange} />
 
@@ -60,11 +64,9 @@ function PrenatalCare() {
         <input type="text" id="phoneNum" name="phoneNum" value={formValues.phoneNum} onChange={handleInputChange} />
         <label htmlFor="email">Email</label>
         <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
-        
-        <button type="submit">Submit</button>
       </form>
     </div>
   );
 }
 
-export default PrenatalCare;
+export default PrenatalCareReadOnly;

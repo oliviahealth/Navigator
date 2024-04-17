@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/BriefChild.css';
 
-function PrenatalCare() {
-  const { patientId } = useParams()
+function BriefChildReadOnly() {
+  const { patientId, log_id } = useParams()
   const [formValues, setFormValues] = useState({
     childName: '',
     dateCompleted: '',
@@ -26,26 +26,30 @@ function PrenatalCare() {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/brief_child/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues),
-      });
-      if (!response.ok) {
-        console.log(JSON.stringify(formValues))
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/brief_child/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormValues(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   return (
     <div className="wellness-update-form">
@@ -53,7 +57,7 @@ function PrenatalCare() {
       <h2>PageOne-EHR: Child Wellness TouchPoint</h2>
       <p>Complete this form for each PAGEONE-EHR target child at each required timeframe once the child is enrolled.</p>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className="form-section">
           <label htmlFor="childName">Child Name:</label>
           <input type="text" id="childName" name="childName" onChange={handleInputChange} value={formValues.childName} />
@@ -142,12 +146,10 @@ function PrenatalCare() {
               Some days
             </label>
           </div>
-
-          <button type="submit">Submit</button>
         </div>
       </form>
     </div>
   );
 }
 
-export default PrenatalCare;
+export default BriefChildReadOnly;

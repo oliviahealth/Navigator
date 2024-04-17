@@ -17,7 +17,7 @@ CORS(app, supports_credentials=True)
 
 postgres_url = os.getenv("DATABASE_URL")
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-connection_pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=5, dsn=postgres_url)
+connection_pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=20, dsn=postgres_url)
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -49,6 +49,8 @@ RETURNING id;
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
+
+
 @app.route("/api/forms/<formType>/<int:patientId>", methods=['GET'])
 def get_forms(formType, patientId):
     try:
@@ -68,9 +70,35 @@ def get_forms(formType, patientId):
     return jsonify(logs_list)
 
 
+
+@app.route("/api/create_form_table", methods=['POST'])
+def create_form_table():
+    try:
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            Create_table = """
+            CREATE TABLE IF NOT EXISTS target_child (
+                id SERIAL PRIMARY KEY,
+                date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+                data JSONB NOT NULL,
+                patient_id INTEGER,
+                FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
+            );
+            """
+            cursor.execute(Create_table)
+            connection.commit()
+            return jsonify({"message": "Table 'prenatal_care' created successfully"}), 201
+    except Exception as e:
+        print(f"Error creating table: {e}")
+        return jsonify({"error": "Failed to create table"}), 500
+    finally:
+        connection_pool.putconn(connection)
+
+
 @app.route("/api/insert_forms/<formType>/<int:patientId>", methods=['POST'])
 def insert_form(formType, patientId):
     data = request.get_json()
+    # print(data)
     try:
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
@@ -85,14 +113,16 @@ def insert_form(formType, patientId):
                 patientId,
             ))
             inserted_id = cursor.fetchone()[0]
+            print(inserted_id)
             connection.commit()
     except Exception as e:
+        print(str(e))
         connection.rollback()
         return jsonify({"error": str(e)}), 500
     finally:
         connection_pool.putconn(connection)
     
-    return jsonify({"inserted_id": inserted_id}), 201
+    return jsonify({"inserted_id": 0}), 201
 
 @app.route("/api/get_read_only_data/<formType>/<int:patientId>/<logId>", methods=['GET'])
 def get_read_only_data(formType, patientId, logId):

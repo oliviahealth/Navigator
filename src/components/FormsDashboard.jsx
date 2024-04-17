@@ -39,7 +39,14 @@ const FormsDashboard = () => {
         "addiction-belief-scale": "Addiction Belief Scale",
         "cage-screening": "CAGE Screening",
         "crafft-screening": "Crafft Screening",
-        "drug-abuse-screening": "Drug Abuse Screening"
+        "drug-abuse-screening": "Drug Abuse Screening",
+        "prenatal-care": "Prenatal Care",
+        "asq": "ASQ-3",
+        "brief-child": "Brief Child Wellness Update",
+        "delivery-history": "Delivery History Information Update",
+        "breastfeeding": "Breastfeeding",
+        "infancy-quest": "Infancy Questionnaire",
+        "target-child": "Target Child Enrollement & Summary Record"
     };
 
     var dbTableNames = {
@@ -64,7 +71,14 @@ const FormsDashboard = () => {
         "addiction-belief-scale": "addiction_belief_scale",
         "cage-screening": "cage_screening",
         "crafft-screening": "crafft_screening",
-        "drug-abuse-screening": "drug_abuse_screening"
+        "drug-abuse-screening": "drug_abuse_screening",
+        "prenatal-care": "prenatal_care",
+        "asq": "asq_three",
+        "brief-child": "brief_child",
+        "delivery-history": "delivery_history",
+        "breastfeeding": "breastfeeding",
+        "infancy-quest": "infancy_quest",
+        "target-child": "target_child"
     }
 
     useEffect(() => {

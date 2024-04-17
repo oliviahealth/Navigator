@@ -58,6 +58,13 @@ import AddictionBeliefScaleReadOnly from './components/ReadOnly/AddictionBeliefS
 import CageScreeningReadOnly from './components/ReadOnly/CageScreeningReadOnly';
 import CrafftScreeningReadOnly from './components/ReadOnly/CrafftScreeningReadOnly';
 import DrugAbuseScreeningReadOnly from './components/ReadOnly/DrugAbuseScreeningReadOnly';
+import ASQReadOnly from './components/ReadOnly/ASQReadOnly';
+import BriefChildReadOnly from './components/ReadOnly/BriefChildReadOnly';
+import DeliveryHistoryReadOnly from './components/ReadOnly/DeliveryHistoryReadOnly';
+import BreastFeedingReadOnly from './components/ReadOnly/BreastfeedingReadOnly';
+import InfancyReadOnly from './components/ReadOnly/InfancyReadOnly';
+import TargetChildReadOnly from './components/ReadOnly/TargetChildReadOnly';
+import PrenatalCareReadOnly from './components/ReadOnly/PrenatalCareReadOnly';
 
 const App = () => {
   return (
@@ -80,12 +87,12 @@ const App = () => {
         <Route path="/nut-history/:patientId" element={<NutHistory />} />
         <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} /> 
         <Route path="/addiction-belief-scale/:patientId" element={<AddictionBeliefScale />} /> 
-        <Route path="/asq" element={<ASQ />} /> 
-        <Route path="/brief-child" element={<BriefChild />} />
-        <Route path="/delivery-history" element={<DeliveryHistory/>} />  
-        <Route path="/breastfeeding" element={<Breastfeeding />} /> 
-        <Route path="/infancy-quest" element={<InfancyQuest />} />
-        <Route path="/target-child" element={<TargetChild />} /> 
+        <Route path="/asq/:patientId" element={<ASQ />} /> 
+        <Route path="/brief-child/:patientId" element={<BriefChild />} />
+        <Route path="/delivery-history/:patientId" element={<DeliveryHistory/>} />  
+        <Route path="/breastfeeding/:patientId" element={<Breastfeeding />} /> 
+        <Route path="/infancy-quest/:patientId" element={<InfancyQuest />} />
+        <Route path="/target-child/:patientId" element={<TargetChild />} /> 
         <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
         <Route path="/appointment_log/:patientId" element={<AppointmentLog />} />
         <Route path="/form-cover-letter" element={<FormCoverLetter />} />
@@ -123,6 +130,13 @@ const App = () => {
         <Route path="/crafft-screening-read-only/:patientId/:log_id" element={<CrafftScreeningReadOnly />} />
         <Route path="/drug-abuse-screening-read-only/:patientId/:log_id" element={<DrugAbuseScreeningReadOnly />} />
         <Route path="/cage-screening-read-only/:patientId/:log_id" element={<CageScreeningReadOnly />} />
+        <Route path="/asq-read-only/:patientId/:log_id" element={<ASQReadOnly />} /> 
+        <Route path="/brief-child-read-only/:patientId/:log_id" element={<BriefChildReadOnly />} />
+        <Route path="/delivery-history-read-only/:patientId/:log_id" element={<DeliveryHistoryReadOnly/>} />  
+        <Route path="/breastfeeding-read-only/:patientId/:log_id" element={<BreastFeedingReadOnly />} /> 
+        <Route path="/infancy-quest-read-only/:patientId/:log_id" element={<InfancyReadOnly />} />
+        <Route path="/target-child-read-only/:patientId/:log_id" element={<TargetChildReadOnly />} /> 
+        <Route path="/prenatal-care-read-only/:patientId/:log_id" element={<PrenatalCareReadOnly />} /> 
       </Routes>
     </Router>
   );

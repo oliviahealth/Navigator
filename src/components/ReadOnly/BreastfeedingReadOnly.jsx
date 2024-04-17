@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/BreastFeeding.css';
 
-function BreastFeeding() {
-  const { patientId } = useParams()
+function BreastFeedingReadOnly() {
+  const { patientId, log_id } = useParams()
   const [assessment, setAssessment] = useState({
     questions: {
       q1: 0,
@@ -34,9 +34,6 @@ function BreastFeeding() {
       q26: 0,
       q27: 0,
       q28: 0,
-
-
-
     }
   });
 
@@ -52,32 +49,34 @@ function BreastFeeding() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/breastfeeding/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setAssessment(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
 
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/breastfeeding/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(assessment),
-      });
-      if (!response.ok) {
-        console.log(JSON.stringify(assessment))
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
+    fetchLog();
+}, [patientId, log_id]);
 
   return (
     <div className="breastfeeding-form">
-      <form onSubmit={handleSubmit} className="encounter-form">
+      <form className="encounter-form">
         <h1>Breastfeeding & Lactation</h1>
         <h2>Breastfeeding and Lactation CHECKLIST</h2>
         <p>How can I tell that breastfeeding is going well?</p>
@@ -443,10 +442,6 @@ function BreastFeeding() {
             </tbody>
           </table>
         </div>
-        <div className="form-group">
-          <button className="btn" type="submit">Submit</button>
-        </div>
-
       </form>
 
 
@@ -457,4 +452,4 @@ function BreastFeeding() {
   );
 }
 
-export default BreastFeeding;
+export default BreastFeedingReadOnly;

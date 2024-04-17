@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/ASQ-3.css';
 
-function ASQ() {
-  const { patientId } = useParams()
+function ASQReadOnly() {
+  const { patientId, log_id } = useParams()
   const [formValues, setFormValues] = useState({
     participantName: '',
     caseId: '',
@@ -28,6 +28,31 @@ function ASQ() {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/asq_three/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormValues(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     let inputValue;
@@ -50,32 +75,11 @@ function ASQ() {
     });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/asq_three/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues),
-      });
-      if (!response.ok) {
-        console.log(JSON.stringify(formValues));
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
-
   return (
     <div className="ASQ-form">
       <h1>ASQ-3 Questionnaire</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form>
         <label htmlFor="participantName">Participant Name</label>
         <input type="text" id="participantName" name="participantName" onChange={handleInputChange} value={formValues.participantName} />
 
@@ -260,8 +264,6 @@ function ASQ() {
           onChange={handleInputChange}
           value={formValues.followUpNotes}
         ></textarea>
-
-        <button type="submit">Submit</button>
       </form>
 
       <div className="guidance-section">
@@ -354,4 +356,4 @@ function ASQ() {
   );
 }
 
-export default ASQ;
+export default ASQReadOnly;
