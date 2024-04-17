@@ -40,6 +40,8 @@ import SmokingTobaccoUse from './components/SmokingTobaccoUse';
 import SubstanceUseHistory from './components/SubstanceUseHistory';
 import TweakTest from './components/TweakTest';
 import SubstanceUseRelapse from './components/SubstanceUseRelapse';
+import TenB from './components/TenB'
+import PregnancySpacing from './components/PregnancySpacing'
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -108,11 +110,15 @@ const App = () => {
         <Route path="/cage-screening/:patientId" element={<CageScreening />} />
         <Route path="/crafft-screening/:patientId" element={<CrafftScreening />} />
         <Route path="/drug-abuse-screening/:patientId" element={<DrugAbuseScreening />} />
-        <Route path="/drug-screening-results" element={<DrugScreeningResults />} />
-        <Route path="/smoking-tobacco-use" element={<SmokingTobaccoUse />} />
-        <Route path="/substance-use-history" element={<SubstanceUseHistory />} />
-        <Route path="/tweak-test" element={<TweakTest />} />
-        <Route path="/substance-use-relapse" element={<SubstanceUseRelapse />} />
+        <Route path="/drug-screening-results/:patientId" element={<DrugScreeningResults />} />
+        <Route path="/smoking-tobacco-use/:patientId" element={<SmokingTobaccoUse />} />
+        <Route path="/substance-use-history/:patientId" element={<SubstanceUseHistory />} />
+        <Route path="/tweak-test/:patientId" element={<TweakTest />} />
+        <Route path="/substance-use-relapse/:patientId" element={<SubstanceUseRelapse />} />
+
+        {/* Tab-7: Physical Assessments  */}
+        <Route path="/ten-b/:patientId" element={<TenB />} />
+        <Route path="/pregnancy-spacing/:patientId" element={<PregnancySpacing />} />
         
         {/* Tab-10: Prenatal Care */}
         <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} />

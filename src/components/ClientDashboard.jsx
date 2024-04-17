@@ -391,13 +391,19 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.phyical && (
-            <div className={styles["dropdown-content"]}>
-            {physicalAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
+            <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/ten-b/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>10 B’s: 1 month, 3/6/9/12 month postpartum appointment assessment</span>
+                </Link>
+                <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/pregnancy-spacing/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Pregnancy spacing Assessment</span>
+                </Link>
+               </div>
             </div>
             )}
          </div>
+
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('mental')}>Mental Health Assessments
