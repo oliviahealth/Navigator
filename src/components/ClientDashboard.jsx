@@ -341,7 +341,32 @@ return (
                </div>
                <div className={styles["dropdown-item"]}>
                 <Link to={`/forms-dashboard/drug-abuse-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                    <span className={styles.highlighted}>Drug Abuse Screening</span>
+                    <span className={styles.highlighted}>Drug Abuse Screening (DAST-10)</span>
+                </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/drug-screening-results/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Drug Screening Results</span>
+                </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/smoking-tobacco-use/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum</span>
+                </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/substance-use-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Substance Use History</span>
+                </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/tweak-test/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>TWEAK Test (for alcohol drinking)</span>
+                </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/substance-use-relapse/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>SUBSTANCE USE RELAPSE PREVENTION PLAN</span>
                 </Link>
                </div>
             </div>
