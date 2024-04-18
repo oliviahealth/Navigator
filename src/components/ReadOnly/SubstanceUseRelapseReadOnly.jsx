@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import styles from '../styles/SubstanceUseRelapse.module.css';
-<<<<<<< HEAD
-
-const SubstanceUseRelapse = () => {
-=======
+import React, { useState, useEffect } from 'react';
+import styles from '../../styles/SubstanceUseRelapse.module.css';
 import { useParams } from 'react-router-dom';
 
-const SubstanceUseRelapse = () => {
-  const { patientId } = useParams();
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+const SubstanceUseRelapseReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const [formValues, setFormValues] = useState({
     triggers: '',
     skills: '',
@@ -20,6 +15,31 @@ const SubstanceUseRelapse = () => {
     naloxone: '',
     supportNaloxone: ''
   });
+
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/substance_use_relapse/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormValues(data[2]);
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,44 +55,13 @@ const SubstanceUseRelapse = () => {
     setFormValues({ ...formValues, safeCaregivers: updatedSafeCaregivers });
   };
 
-<<<<<<< HEAD
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Submit form logic here
-    console.log(formValues);
-  };
-
-  const handleCancel = () => {
-    window.history.back();
-=======
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/substance_use_relapse/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      window.history.back();
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
-
   const handleCancel = () => {
     // Cancel logic here
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
   };
 
   return (
     <div className={styles.formContainer}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form className={styles.form}>
         <table className={styles.table}>
           <tbody>
             <tr>
@@ -202,17 +191,10 @@ const SubstanceUseRelapse = () => {
           <button type="button" className={styles.cancelButton} onClick={handleCancel}>
             Cancel
           </button>
-          <button type="submit" className={styles.submitButton}>
-            Submit
-          </button>
         </div>
       </form>
     </div>
   );
 }
 
-<<<<<<< HEAD
-export default SubstanceUseRelapse;
-=======
-export default SubstanceUseRelapse;
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+export default SubstanceUseRelapseReadOnly;

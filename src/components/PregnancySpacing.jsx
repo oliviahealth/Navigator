@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
 import styles from '../styles/PregnancySpacing.module.css';
+<<<<<<< HEAD
 
 const PregnancySpacing = () => {
+=======
+import { useParams } from 'react-router-dom';
+
+const PregnancySpacing = () => {
+    const { patientId } = useParams();
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
   const [pregnancySpacing, setPregnancySpacing] = useState('');
   const [familyPlanningInterest, setFamilyPlanningInterest] = useState('');
 
@@ -13,6 +20,7 @@ const PregnancySpacing = () => {
     setFamilyPlanningInterest(event.target.value);
   };
 
+<<<<<<< HEAD
   const handleSubmit = (event) => {
     event.preventDefault();
     // Here you can handle the submission of the data, for example, sending it to a server or logging it
@@ -20,6 +28,30 @@ const PregnancySpacing = () => {
       pregnancySpacing,
       familyPlanningInterest
     });
+=======
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formData = {
+        pregnancySpacing: pregnancySpacing,
+        familyPlanningInterest: familyPlanningInterest
+    }
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/pregnancy_spacing/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log('Successfully submitted:', data);
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
   };
 
   const handleCancel = () => {
@@ -67,4 +99,8 @@ const PregnancySpacing = () => {
   );
 };
 
+<<<<<<< HEAD
 export default PregnancySpacing;
+=======
+export default PregnancySpacing;
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581

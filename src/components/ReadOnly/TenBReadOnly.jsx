@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import styles from '../styles/TenB.module.css';
-<<<<<<< HEAD
-=======
+import React, { useState, useEffect } from 'react';
+import styles from '../../styles/TenB.module.css';
 import { useParams } from 'react-router-dom';
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
 
 const checklistItems = [
     {
@@ -98,42 +95,38 @@ const checklistItems = [
     },
   ];
   
-const TenB = () => {
-<<<<<<< HEAD
-=======
-    const { patientId } = useParams()
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+const TenBReadOnly = () => {
+    const { patientId, log_id } = useParams()
   const [checkedItems, setCheckedItems] = useState({});
 
   const handleChange = (itemId, isChecked) => {
     setCheckedItems(prevState => ({ ...prevState, [itemId]: isChecked }));
   };
 
-<<<<<<< HEAD
-  const handleSubmit = () => {
-    console.log('Checked Items:', checkedItems);
-    // Add submission logic here
-=======
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/ten_b/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(checkedItems),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      window.history.back();
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
-  };
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/ten_b/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No participant info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setCheckedItems(data[2]);
+            
+        } catch (error) {
+            console.error('Error fetching participant info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   const renderChecklist = (items, parentId = '') => {
     return items.map((item) => (
@@ -154,21 +147,16 @@ const TenB = () => {
   return (
     <div className={styles.checklistContainer}>
       <h1 className={styles.title}>Checklist: The 10 Bs</h1>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form>
         <ul className={styles.checklist}>
           {renderChecklist(checklistItems)}
         </ul>
         <div className={styles.buttonContainer}>
           <button type="button" className={styles.button} onClick={() => window.history.back()}>Cancel</button>
-          <button type="submit" className={styles.button} onClick={handleSubmit}>Submit</button>
         </div>
       </form>
     </div>
   );
 };
 
-<<<<<<< HEAD
-export default TenB;
-=======
-export default TenB;
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+export default TenBReadOnly;

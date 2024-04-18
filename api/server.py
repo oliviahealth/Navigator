@@ -77,7 +77,7 @@ def create_form_table():
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             Create_table = """
-            CREATE TABLE IF NOT EXISTS target_child (
+            CREATE TABLE IF NOT EXISTS family_dynamics (
                 id SERIAL PRIMARY KEY,
                 date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                 data JSONB NOT NULL,
@@ -87,7 +87,7 @@ def create_form_table():
             """
             cursor.execute(Create_table)
             connection.commit()
-            return jsonify({"message": "Table 'prenatal_care' created successfully"}), 201
+            return jsonify({"message": "Table created successfully"}), 201
     except Exception as e:
         print(f"Error creating table: {e}")
         return jsonify({"error": "Failed to create table"}), 500

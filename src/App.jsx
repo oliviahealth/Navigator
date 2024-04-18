@@ -42,6 +42,14 @@ import TweakTest from './components/TweakTest';
 import SubstanceUseRelapse from './components/SubstanceUseRelapse';
 import TenB from './components/TenB'
 import PregnancySpacing from './components/PregnancySpacing'
+<<<<<<< HEAD
+=======
+import DomesticViolenceScreenForm from './components/ConsentForm/DomesticViolence';
+import IPVScreeningAndAssessmentForm from './components/ConsentForm/IPV';
+import IPVDisclosureForm from './components/ConsentForm/IntimateViolence';
+import IntimatePartnerViolenceForm from './components/ConsentForm/PartnerViolence';
+import SocialSupportForm from './components/FamilyDynamics';
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -72,12 +80,33 @@ import BreastFeedingReadOnly from './components/ReadOnly/BreastfeedingReadOnly';
 import InfancyReadOnly from './components/ReadOnly/InfancyReadOnly';
 import TargetChildReadOnly from './components/ReadOnly/TargetChildReadOnly';
 import PrenatalCareReadOnly from './components/ReadOnly/PrenatalCareReadOnly';
+import DrugScreeningResultsReadOnly from './components/ReadOnly/DrugScreeningResultsReadOnly';
+import SubstanceUseHistoryReadOnly from './components/ReadOnly/SubstanceUseHistoryReadOnly';
+import SubstanceUseRelapseReadOnly from './components/ReadOnly/SubstanceUseRelapseReadOnly';
+import TweakTestReadOnly from './components/ReadOnly/TweakTestReadOnly';
+import PregnancySpacingReadOnly from './components/ReadOnly/PregnancySpacingReadOnly';
+import TenBReadOnly from './components/ReadOnly/TenBReadOnly';
+import DomesticViolenceScreenFormReadOnly from './components/ReadOnly/DomesticViolenceReadOnly';
+import IPVScreeningAndAssessmentFormReadOnly from './components/ReadOnly/IPVReadOnly';
+import IPVDisclosureFormReadOnly from './components/ReadOnly/IntimateViolenceReadOnly';
+import IntimatePartnerViolenceFormReadOnly from './components/ReadOnly/PartnerViolenceReadOnly';
+import SocialSupportFormReadOnly from './components/ReadOnly/FamilyDynamicsReadOnly';
+
 
 
 const App = () => {
   return (
     <Router>
       <Routes>
+<<<<<<< HEAD
+=======
+        <Route exact path="/" element={<LandingPage />} />
+        <Route path="/dashboard" element={<ClientDashboard />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/add-patient" element={<AddPatientModal />} />
+        <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
+
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
         {/* Tab-1: Communication and Information Forms */}
         <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
         <Route path="/appointment_log/:patientId" element={<AppointmentLog />} />
@@ -116,7 +145,18 @@ const App = () => {
         <Route path="/tweak-test/:patientId" element={<TweakTest />} />
         <Route path="/substance-use-relapse/:patientId" element={<SubstanceUseRelapse />} />
 
+<<<<<<< HEAD
         {/* Tab-7: Physical Assessments  */}
+=======
+        {/* Tab-6: Interpersonal Relations Assessment*/}
+        <Route path="partner-violence/:patientId" element={<IntimatePartnerViolenceForm />} />
+        <Route path="domestic-violence/:patientId" element={<DomesticViolenceScreenForm />} />
+        <Route path="ipv/:patientId" element={<IPVScreeningAndAssessmentForm />} />
+        <Route path="intimate-violence/:patientId" element={<IPVDisclosureForm />} />
+        <Route path="family-dynamics/:patientId" element={<SocialSupportForm />} />
+
+        {/* Tab-7: Physical Assessments */}
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
         <Route path="/ten-b/:patientId" element={<TenB />} />
         <Route path="/pregnancy-spacing/:patientId" element={<PregnancySpacing />} />
         
@@ -130,9 +170,13 @@ const App = () => {
         <Route path="/breastfeeding/:patientId" element={<Breastfeeding />} /> 
         <Route path="/infancy-quest/:patientId" element={<InfancyQuest />} />
         <Route path="/target-child/:patientId" element={<TargetChild />} /> 
+<<<<<<< HEAD
         
         {/* Read-Only Routes */}
         {/* Communications and Information Forms */}
+=======
+
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
         <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
         <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />
         <Route path="release-of-information-read-only/:patientId/:log_id" element={<ReleaseOfInformationReadOnly />} />
@@ -174,6 +218,23 @@ const App = () => {
         <Route path="/breastfeeding-read-only/:patientId/:log_id" element={<BreastFeedingReadOnly />} /> 
         <Route path="/infancy-quest-read-only/:patientId/:log_id" element={<InfancyReadOnly />} />
         <Route path="/target-child-read-only/:patientId/:log_id" element={<TargetChildReadOnly />} /> 
+<<<<<<< HEAD
+=======
+        <Route path="/prenatal-care-read-only/:patientId/:log_id" element={<PrenatalCareReadOnly />} /> 
+      
+        <Route path="/drug-screening-results-read-only/:patientId/:log_id" element={<DrugScreeningResultsReadOnly />} />
+        <Route path="/substance-use-history-read-only/:patientId/:log_id" element={<SubstanceUseHistoryReadOnly />} />
+        <Route path="/tweak-test-read-only/:patientId/:log_id" element={<TweakTestReadOnly />} />
+        <Route path="/substance-use-relapse-read-only/:patientId/:log_id" element={<SubstanceUseRelapseReadOnly />} />
+        <Route path="/ten-b-read-only/:patientId/:log_id" element={<TenBReadOnly />} />
+        <Route path="/pregnancy-spacing-read-only/:patientId/:log_id" element={<PregnancySpacingReadOnly />} />
+        
+        <Route path="partner-violence-read-only/:patientId/:log_id" element={<IntimatePartnerViolenceFormReadOnly />} />
+        <Route path="domestic-violence-read-only/:patientId/:log_id" element={<DomesticViolenceScreenFormReadOnly />} />
+        <Route path="ipv-read-only/:patientId/:log_id" element={<IPVScreeningAndAssessmentFormReadOnly />} />
+        <Route path="intimate-violence-read-only/:patientId/:log_id" element={<IPVDisclosureFormReadOnly />} />
+        <Route path="family-dynamics-read-only/:patientId/:log_id" element={<SocialSupportFormReadOnly/>} />
+>>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
       </Routes>
     </Router>
   );

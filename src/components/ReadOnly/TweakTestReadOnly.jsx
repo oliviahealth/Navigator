@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import styles from '../styles/TweakTest.module.css';
-<<<<<<< HEAD
-
-const TweakTest = () => {
-=======
+import React, { useState, useEffect } from 'react';
+import styles from '../../styles/TweakTest.module.css';
 import { useParams } from 'react-router-dom';
 
-const TweakTest = () => {
-  const { patientId } = useParams();
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+const TweakTestReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const [answers, setAnswers] = useState({
     tolerance: '',
     worried: false,
@@ -35,43 +30,38 @@ const TweakTest = () => {
     return score;
   };
 
-<<<<<<< HEAD
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const score = calculateScore();
-    if (score >= 2) {
-      alert('Your score is ' + score + '. You meet the criteria for likely harmful drinking and are recommended to submit to a further and more stringent medical evaluation.');
-    } else {
-      alert('Your score is ' + score + '. You do not meet the criteria for likely harmful drinking.');
-=======
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/tweak_test/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      window.history.back();
-    } catch (error) {
-      console.error('Failed to submit:', error);
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
-    }
-  };
-
   const handleCancel = () => {
     window.history.back();
   };
 
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/tweak_test/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setAnswers(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
+
   return (
     <div className={styles.tweakTest}>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div className={styles.question}>
           <label>
             T. Tolerance: How many drinks can you "hold?" (6 or more indicates tolerance)
@@ -133,15 +123,10 @@ const TweakTest = () => {
         </label>
         </div>
 
-        <button type="submit" className={styles.submitButton}>Submit</button>
         <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
       </form>
     </div>
   );
 };
 
-<<<<<<< HEAD
-export default TweakTest;
-=======
-export default TweakTest;
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+export default TweakTestReadOnly;

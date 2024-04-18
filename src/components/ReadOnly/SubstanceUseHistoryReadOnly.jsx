@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import styles from '../styles/SubstanceUseHistory.module.css';
-<<<<<<< HEAD
-=======
+import React, { useState, useEffect } from 'react';
+import styles from '../../styles/SubstanceUseHistory.module.css';
 import { useParams } from 'react-router-dom';
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
 
 const initialSubstances = [
   { name: 'Alcohol', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
@@ -20,11 +17,8 @@ const initialSubstances = [
 ];
 
 
-const SubstanceUseHistory = () => {
-<<<<<<< HEAD
-=======
-  const { patientId } = useParams();
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+const SubstanceUseHistoryReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const [substances, setSubstances] = useState(initialSubstances);
   const [mat, setMat] = useState({
     engaged: '',
@@ -37,8 +31,6 @@ const SubstanceUseHistory = () => {
     clinicInfo: '',
   });
 
-<<<<<<< HEAD
-=======
   const handleSetMat = (field, value) => {
     setMat(prevMat => ({
       ...prevMat,
@@ -53,9 +45,33 @@ const SubstanceUseHistory = () => {
     }));
   };
 
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/substance_use_history/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setSubstances(data[2].substances)
+            setMat(data[2].mat)
+            setAddictionServices(data[2].addictionServices)
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
 
+    fetchLog();
+}, [patientId, log_id]);
 
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
   const handleSubstanceChange = (index, field, value) => {
     const updatedSubstances = [...substances];
     updatedSubstances[index][field] = value;
@@ -63,65 +79,13 @@ const SubstanceUseHistory = () => {
   };
 
   // Handlers for MAT and Addiction Medicine Services would be similar
-
-<<<<<<< HEAD
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Implement submission logic here
-=======
-  const handleSubmit = async (event) => {
-    const formData = {
-      substances: substances,
-      mat: mat,
-      addictionServices: addictionServices
-    };
-
-    event.preventDefault();
-    
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/substance_use_history/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      window.history.back();
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
-  };
-
   const handleCancel = () => {
     window.history.back();
   };
 
   return (
     <div className={styles.substanceUseHistory}>
-      <form onSubmit={handleSubmit}>
-<<<<<<< HEAD
-      <h1>Substance Use History</h1>
-      <p>
-      Update at each Encounter/Visit  
-      <br  /><br  />
-      Complete with Participant 
-      <br  /><br  />
-      Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc. 
-      </p>
-        <table className={styles.substanceTable}>
-          <thead>
-          <tr>
-            <th colSpan="4" className={styles.tableHeader}>
-            SUBSTANCE USE HISTORY Complete with Client / Family.<br />
-            Follow up as needed with: Complete with Client / Family. Treatment Case Manager, Recovery Coach
-            </th>
-          </tr>
-=======
+      <form>
         <h1>Substance Use History</h1>
         <p>
           Update at each Encounter/Visit
@@ -138,7 +102,6 @@ const SubstanceUseHistory = () => {
                 Follow up as needed with: Complete with Client / Family. Treatment Case Manager, Recovery Coach
               </th>
             </tr>
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
             <tr>
               <th>Substance</th>
               <th>Ever Used</th>
@@ -147,144 +110,6 @@ const SubstanceUseHistory = () => {
             </tr>
           </thead>
           <tbody>
-<<<<<<< HEAD
-          {substances.map((substance, index) => (
-            <tr key={index}>
-                <td>
-                {substance.isOther ? (
-                    <input
-                    type="text"
-                    placeholder="Other substance"
-                    value={substance.name}
-                    onChange={(e) => handleSubstanceChange(index, 'name', e.target.value)}
-                    />
-                ) : (
-                    substance.name
-                )}
-                </td>
-                <td>
-                <label>
-                    Yes
-                    <input
-                    type="checkbox"
-                    checked={substance.everUsed === true}
-                    onChange={(e) => handleSubstanceChange(index, 'everUsed', true)}
-                    />
-                </label>
-                <label>
-                    No
-                    <input
-                    type="checkbox"
-                    checked={substance.everUsed === false}
-                    onChange={(e) => handleSubstanceChange(index, 'everUsed', false)}
-                    />
-                </label>
-                </td>
-                <td>
-                <label>
-                    Yes
-                    <input
-                    type="checkbox"
-                    checked={substance.usedDuringPregnancy === true}
-                    onChange={(e) => handleSubstanceChange(index, 'usedDuringPregnancy', true)}
-                    />
-                </label>
-                <label>
-                    No
-                    <input
-                    type="checkbox"
-                    checked={substance.usedDuringPregnancy === false}
-                    onChange={(e) => handleSubstanceChange(index, 'usedDuringPregnancy', false)}
-                    />
-                </label>
-                </td>
-                <td>
-                <input
-                    type="date"
-                    value={substance.dateLastUsed}
-                    onChange={(e) => handleSubstanceChange(index, 'dateLastUsed', e.target.value)}
-                />
-                </td>
-            </tr>
-            ))}
-          </tbody>
-          <tfoot>
-        <tr>
-            <td colSpan="4">
-            <input
-                type="text"
-                placeholder="Notes"
-                className={styles.notesInput}
-            />
-            </td>
-        </tr>
-        </tfoot>
-        </table>
-        
-        <table className={styles.medicalServicesTable}>
-        <thead>
-            <tr>
-            <th colSpan="2" className={styles.tableHeader}>
-                MEDICAL SERVICES FOR SUBSTANCE USE Complete with Client / Family.
-                <br />
-                Follow up as needed with Physician, Nurse Practitioner, Medication Assisted Treatment (MAT) Provider
-            </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-            <td colSpan="2" className={styles.tableRowHeader}>
-                Medication Assisted Treatment (MAT) Engaged: 
-                <label>
-                <input type="checkbox" name="matEngaged" value="Never" /> Never
-                </label>
-                <label>
-                <input type="checkbox" name="matEngaged" value="Currently" /> Currently
-                </label>
-                <label>
-                <input type="checkbox" name="matEngaged" value="Prior" /> Prior MAT use
-                </label>
-                Date of Last use:
-                <input type="date" name="matLastUseDate" />
-            </td>
-            </tr>
-            <tr>
-            <td className={styles.tableRowHeader}>
-                Medication(s), Dose(s), and Date(s):
-                <textarea name="matMedications" className={styles.largeInput} />
-            </td>
-            <td className={styles.tableRowHeader}>
-                Name and Contact Information for MAT Clinic:
-                <textarea name="matClinicInfo" className={styles.largeInput} />
-            </td>
-            </tr>
-            <tr>
-            <td colSpan="2" className={styles.tableRowHeader}>
-                Addiction Medicine Services:
-                <label>
-                <input type="checkbox" name="addictionServices" value="Never" /> Never
-                </label>
-                <label>
-                <input type="checkbox" name="addictionServices" value="Currently" /> Currently
-                </label>
-                <label>
-                <input type="checkbox" name="addictionServices" value="Prior" /> Prior, Date of Last Appointment:
-                </label>
-                <input type="date" name="addictionLastAppointmentDate" />
-            </td>
-            </tr>
-            <tr>
-            <td colSpan="2" className={styles.tableRowHeader}>
-                Name and Contact Information for Addiction Medicine Clinic:
-                <textarea name="addictionClinicInfo" className={styles.largeInput} />
-            </td>
-            </tr>
-        </tbody>
-        </table>
-
-
-        
-=======
             {substances.map((substance, index) => (
               <tr key={index}>
                 <td>
@@ -450,16 +275,10 @@ const SubstanceUseHistory = () => {
 
 
 
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
         <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
-        <button type="submit" className={styles.submitButton}>Submit</button>
       </form>
     </div>
   );
 };
 
-<<<<<<< HEAD
-export default SubstanceUseHistory;
-=======
-export default SubstanceUseHistory;
->>>>>>> d654d61a81d7169d3815c10a3336e76297ebc581
+export default SubstanceUseHistoryReadOnly;

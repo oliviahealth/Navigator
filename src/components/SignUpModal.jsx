@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/SignUpModal.module.css';
 
-const SignUpModal = ({ show, onClose }) => {
+const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -24,34 +24,35 @@ const SignUpModal = ({ show, onClose }) => {
 
     let newErrors = {};
     if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Passwords do not match.";
+      newErrors.confirmPassword = "Passwords do not match.";
     }
     if (formData.phone.length !== 10) {
-        newErrors.phone = "Phone number must be 10 digits.";
+      newErrors.phone = "Phone number must be 10 digits.";
     }
     // More validations can be added here
     if (Object.keys(newErrors).length === 0) {
-        // Submit data
-        fetch('http://localhost:5000/api/signup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        })
+      // Submit data
+      fetch('http://localhost:5000/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            onClose(); // Close modal on successful submission
+          console.log(data);
+          onSignUpSuccess();
+          onClose();
         })
         .catch((error) => {
-            console.error('Error:', error);
-            // Handle errors here, for example, by setting error messages in your state
+          newErrors.account = "Account with username already created";
+          setErrors(newErrors);
         });
     } else {
-        setErrors(newErrors);
+      setErrors(newErrors);
     }
-};
+  };
 
 
   if (!show) return null;
@@ -71,9 +72,12 @@ const SignUpModal = ({ show, onClose }) => {
           <input type="text" name="username" placeholder="Username" onChange={handleChange} />
           <input type="password" name="password" placeholder="Password" onChange={handleChange} />
           <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} />
-          {errors.confirmPassword && <div className={styles.error}>{errors.confirmPassword}</div>}
-          {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           <button type="submit">Sign Up</button>
+          {Object.keys(errors).map((key) => (
+            <div key={key} className={styles.error}>
+              {errors[key]}
+            </div>
+          ))}
         </form>
         <br></br>
         <button onClick={onClose} className="closeButton">Close</button>
