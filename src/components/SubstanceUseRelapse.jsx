@@ -35,7 +35,7 @@ const SubstanceUseRelapse = () => {
   };
 
   const handleCancel = () => {
-    // Cancel logic here
+    window.history.back();
   };
 
   return (
