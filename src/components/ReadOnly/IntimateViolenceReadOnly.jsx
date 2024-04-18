@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const IPVDisclosureForm = () => {
-  const { patientId } = useParams();
+const IPVDisclosureFormReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     participantName: '',
@@ -17,6 +17,31 @@ const IPVDisclosureForm = () => {
     notes: '',
     referralNeeded: false
   });
+
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/intimate_violence/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormData(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -51,26 +76,6 @@ const IPVDisclosureForm = () => {
     return false;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/intimate_violence/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
-
   const handleCancel = () => {
     navigate('/dashboard'); 
   };
@@ -78,7 +83,7 @@ const IPVDisclosureForm = () => {
   return (
     <div>
       
-      <form onSubmit={handleSubmit}>
+      <form>
       <h2>Intimate Partner Violence (IPV) Disclosure Screening Tool</h2>
         {/* Participant Info */}
         <label>
@@ -184,13 +189,10 @@ const IPVDisclosureForm = () => {
             </label>
           </>
         )}
-        
-
-        <button type="submit">Submit</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
     </div>
   );
 };
 
-export default IPVDisclosureForm;
+export default IPVDisclosureFormReadOnly;

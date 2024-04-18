@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const IPVScreeningAndAssessmentForm = () => {
-  const { patientId } = useParams();
+const IPVScreeningAndAssessmentFormReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const navigate = useNavigate();
   const [responses, setResponses] = useState({
     partnerTreatment: '',
@@ -36,29 +36,34 @@ const IPVScreeningAndAssessmentForm = () => {
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/ipv/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(responses),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
-
   const handleCancel = () => {
     navigate('/dashboard'); 
   };
+
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/ipv/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setResponses(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
 
   const directQuestions = {
@@ -74,7 +79,7 @@ const IPVScreeningAndAssessmentForm = () => {
   return (
     <div>
       
-      <form onSubmit={handleSubmit}>
+      <form>
       <h2>IPV Screening and Assessment Questions</h2>
         {/* Indirect Questions */}
         <div className="question">
@@ -233,8 +238,6 @@ const IPVScreeningAndAssessmentForm = () => {
             onChange={handleChange}
           />
         </div>
-       
-        <button type="submit">Submit</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
        
       </form>
@@ -243,4 +246,4 @@ const IPVScreeningAndAssessmentForm = () => {
 };
 
 
-export default IPVScreeningAndAssessmentForm;
+export default IPVScreeningAndAssessmentFormReadOnly;

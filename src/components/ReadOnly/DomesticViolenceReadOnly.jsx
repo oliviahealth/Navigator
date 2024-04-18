@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/DomesticViolenceStyle.css';
 
-const DomesticViolenceScreenForm = () => {
-  const { patientId } = useParams();
+const DomesticViolenceScreenFormReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({
     afraidOfPartner: '',
@@ -23,28 +23,33 @@ const DomesticViolenceScreenForm = () => {
     });
   };
 
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/domestic_violence/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setAnswers(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
+
   const handleCancel = () => {
     navigate('/dashboard'); 
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/domestic_violence/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(answers),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
   };
 
   const handlePopupClose = () => {
@@ -64,7 +69,7 @@ const DomesticViolenceScreenForm = () => {
   return (
     <div>
       <h2>Domestic Violence Screen for Pediatric Settings</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         {Object.entries(questions).map(([key, question]) => {
           if (key === 'threatenedOrHurtPets' && answers.petsInHouse !== 'yes') {
             return null; 
@@ -95,7 +100,6 @@ const DomesticViolenceScreenForm = () => {
             </div>
           );
         })}
-        <button type="submit">Submit</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
       {showPopup && (
@@ -112,4 +116,4 @@ const DomesticViolenceScreenForm = () => {
   );
 };
 
-export default DomesticViolenceScreenForm;
+export default DomesticViolenceScreenFormReadOnly;

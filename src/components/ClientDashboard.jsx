@@ -108,8 +108,6 @@ const ClientDashboard = () => {
       <div className={styles.clientDashboard}>
          <header className={styles.header}>
             <div className={styles.logoContainer}>
-               {/* <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
-         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span> */}
                <span className={styles.recordName}>Electronic Health Records</span>
             </div>
             <nav className={styles.nav}>
@@ -378,11 +376,31 @@ const ClientDashboard = () => {
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.InterRel && (
-                        <div className={styles["dropdown-content"]}>
-                           {interpersonalRelationsAssessmentsOptions.map((option, index) => (
-                              <div key={index} className="dropdownItem">{option}</div>
-                           ))}
+                        <div className={styles["dropdown-item"]}>
+                        <Link to={`/forms-dashboard/partner-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                           <span className={styles.highlighted}>Intimate Partner Violence</span>
+                        </Link>
+                        <div className={styles["dropdown-item"]}>
+                           <Link to={`/forms-dashboard/domestic-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Domestic Violence Screen for Pediatric Settings</span>
+                           </Link>
                         </div>
+                        <div className={styles["dropdown-item"]}>
+                           <Link to={`/forms-dashboard/ipv/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>IPV Screening and Assessment Questions</span>
+                           </Link>
+                        </div>
+                        <div className={styles["dropdown-item"]}>
+                           <Link to={`/forms-dashboard/intimate-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Intimate Partner Violence (IPV) Disclosure Screening Tool</span>
+                           </Link>
+                        </div>
+                        <div className={styles["dropdown-item"]}>
+                           <Link to={`/forms-dashboard/family-dynamics/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Family Dynamics Social Support Questionnaire (SSQ6)</span>
+                           </Link>
+                        </div>
+                     </div>
                      )}
                   </div>
                   <div className={styles.dropdown}>

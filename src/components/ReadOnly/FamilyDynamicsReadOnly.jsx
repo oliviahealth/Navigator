@@ -1,7 +1,7 @@
 // SocialSupportForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../styles/SocialSupportForm.css';
+import '../../styles/SocialSupportForm.css';
 
 const questionTitles = [
   "Who can you really count on to be dependable when you need help?",
@@ -12,8 +12,8 @@ const questionTitles = [
   "Who can you count on to console you when you are very upset?"
 ];
 
-const SocialSupportForm = () => {
-  const { patientId } = useParams();
+const SocialSupportFormReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const navigate = useNavigate();
   const initialFormData = {
     fullName: '',
@@ -23,6 +23,31 @@ const SocialSupportForm = () => {
   };
 
   const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/family_dynamics/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormData(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   const handleInputChange = (index, name, value) => {
     setFormData(prevFormData => {
@@ -57,34 +82,12 @@ const SocialSupportForm = () => {
       updatedSupportData[index].satisfaction = '1';
     }
     setFormData({ ...formData, supportData: updatedSupportData });
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/family_dynamics/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
-
-  
+  };  
 
   return (
     <div className="social-support-form">
       <h2>Social Support Questionnaire (SSQ6)</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <label>
           Your full name:
           <input
@@ -149,12 +152,10 @@ const SocialSupportForm = () => {
             readOnly
           />
         </div>
-
-        <button type="submit">Submit</button>
         <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );
 };
 
-export default SocialSupportForm;
+export default SocialSupportFormReadOnly;

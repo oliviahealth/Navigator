@@ -83,6 +83,12 @@ import SubstanceUseRelapseReadOnly from './components/ReadOnly/SubstanceUseRelap
 import TweakTestReadOnly from './components/ReadOnly/TweakTestReadOnly';
 import PregnancySpacingReadOnly from './components/ReadOnly/PregnancySpacingReadOnly';
 import TenBReadOnly from './components/ReadOnly/TenBReadOnly';
+import DomesticViolenceScreenFormReadOnly from './components/ReadOnly/DomesticViolenceReadOnly';
+import IPVScreeningAndAssessmentFormReadOnly from './components/ReadOnly/IPVReadOnly';
+import IPVDisclosureFormReadOnly from './components/ReadOnly/IntimateViolenceReadOnly';
+import IntimatePartnerViolenceFormReadOnly from './components/ReadOnly/PartnerViolenceReadOnly';
+import SocialSupportFormReadOnly from './components/ReadOnly/FamilyDynamicsReadOnly';
+
 
 const App = () => {
   return (
@@ -192,6 +198,11 @@ const App = () => {
         <Route path="/ten-b-read-only/:patientId/:log_id" element={<TenBReadOnly />} />
         <Route path="/pregnancy-spacing-read-only/:patientId/:log_id" element={<PregnancySpacingReadOnly />} />
         
+        <Route path="partner-violence-read-only/:patientId/:log_id" element={<IntimatePartnerViolenceFormReadOnly />} />
+        <Route path="domestic-violence-read-only/:patientId/:log_id" element={<DomesticViolenceScreenFormReadOnly />} />
+        <Route path="ipv-read-only/:patientId/:log_id" element={<IPVScreeningAndAssessmentFormReadOnly />} />
+        <Route path="intimate-violence-read-only/:patientId/:log_id" element={<IPVDisclosureFormReadOnly />} />
+        <Route path="family-dynamics-read-only/:patientId/:log_id" element={<SocialSupportFormReadOnly/>} />
       </Routes>
     </Router>
   );

@@ -1,14 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const IntimatePartnerViolenceForm = () => {
-  const { patientId } = useParams();
+const IntimatePartnerViolenceFormReadOnly = () => {
+  const { patientId, log_id } = useParams();
   const [formData, setFormData] = useState({
     physicallyHurt: '',
     insultOrTalkDown: '',
     threatenWithHarm: '',
     screamOrCurse: ''
   });
+
+  useEffect(() => {
+    const fetchLog = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/get_read_only_data/partner_violence/${patientId}/${log_id}`, {
+              method: 'GET',
+              credentials: 'include',
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+                console.log("No support system info found for the selected patient.");
+                return; 
+            }
+            const data = await response.json();
+            setFormData(data[2])
+            
+        } catch (error) {
+            console.error('Error fetching sipport system info:', error);
+        }
+    };
+
+    fetchLog();
+}, [patientId, log_id]);
 
   const handleAssessmentChange = (name, value) => {
     setFormData(prevFormData => ({
@@ -18,26 +43,6 @@ const IntimatePartnerViolenceForm = () => {
   };
 
   const navigate = useNavigate(); 
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/partner_violence/${patientId}`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log('Successfully submitted:', data);
-      navigate(-1);
-    } catch (error) {
-      console.error('Failed to submit:', error);
-    }
-  };
 
   const handleCancel = () => {
     navigate('/dashboard'); 
@@ -54,7 +59,7 @@ const IntimatePartnerViolenceForm = () => {
   return (
     <div>
       <h2>Intimate Partner Violence</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
       <h2>How often does your partner:</h2>
       <div className="labelQ">
       <h3>(1) Never (2) Rarely (3) Sometimes (4) Often (5) Always</h3>
@@ -78,11 +83,10 @@ const IntimatePartnerViolenceForm = () => {
             ))}
           </div>
         ))}
-        <button type="submit">Submit</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
     </div>
   );
 };
 
-export default IntimatePartnerViolenceForm;
+export default IntimatePartnerViolenceFormReadOnly;

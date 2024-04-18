@@ -57,7 +57,12 @@ const FormsDashboard = () => {
         "tweak-test": "Tweak Test",
         "substance-use-relapse": "Substance Use Relapse",
         "ten-b": "10 B's",
-        "pregnancy-spacing": "Pregnancy Spacing Assessment"
+        "pregnancy-spacing": "Pregnancy Spacing Assessment",
+        "partner-violence": "Partner Violence",
+        "domestic-violence": "Domestic Violence Screening",
+        "ipv": "IPV Screening and Assessment Questions",
+        "intimate-violence": "Intimate Partner Violence (IPV) Disclosure Screening Tool",
+        "family-dynamics": "Family Dynamics Social Support Questionnaire (SSQ6)"
     };
 
     var dbTableNames = {
@@ -96,7 +101,12 @@ const FormsDashboard = () => {
         "tweak-test": "tweak_test",
         "substance-use-relapse": "substance_use_relapse",
         "ten-b": "ten_b",
-        "pregnancy-spacing": "pregnancy_spacing"
+        "pregnancy-spacing": "pregnancy_spacing",
+        "partner-violence": "partner_violence",
+        "domestic-violence": "domestic_violence",
+        "ipv": "ipv",
+        "intimate-violence": "intimate_violence",
+        "family-dynamics": "family_dynamics"
     }
 
     useEffect(() => {
