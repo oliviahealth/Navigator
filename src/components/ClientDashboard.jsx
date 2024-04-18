@@ -13,7 +13,7 @@ import PatientDemographics from "./PatientDemographics";
 const ClientDashboard = () => {
 const navigate = useNavigate();
 
-const [patients, setPatients] = useState([]); // State to store patient data
+const [patients, setPatients] = useState([]);
 
 const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
 const [selectedPatientObj, setSelectedPatientObj] = useState(null);
@@ -404,18 +404,26 @@ return (
             )}
          </div>
          <div className={styles.dropdown}>
-            <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('hsa')}>Home Safety Assessments
-               <FontAwesomeIcon icon={faCaretDown} />
-            </div>
-            {isActive.hsa && (
-            <div className={styles["dropdown-content"]}>
-            {homeSafetyAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
-            </div>
-            )}
-         </div>
+  <div className={styles["dropdown-btn"]} onClick={(e) => toggleDropdown('hsa')}>Home Safety Assessments
+    <FontAwesomeIcon icon={faCaretDown} />
+  </div>
+  {isActive.hsa && (
+    <div className={styles["dropdown-content"]}>
+      <div className={styles["dropdown-item"]}>
+        <Link to="/housingVisit" className={styles["dropdown-item"]}>
+          <span className={styles.highlighted}>Housing Security Home Visit Form </span>
+        </Link>
+      </div>
+      <div className={styles["dropdown-item"]}>
+        <Link to="/housingSafety" className={styles["dropdown-item"]}>
+          <span className={styles.highlighted}>Household Housing Safety Profile </span>
+        </Link>
+      </div>
+     
+    </div>
+  )}
+</div>
+
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('PrenatalCare')}>Prenatal Care

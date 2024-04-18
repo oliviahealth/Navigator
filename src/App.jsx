@@ -37,6 +37,8 @@ import DomesticViolence from './components/ConsentForm/DomesticViolence';
 import IPV from './components/ConsentForm/IPV';
 import IntimateViolence from './components/ConsentForm/IntimateViolence';
 import FamilyDynamics from './components/FamilyDynamics';
+import HousingVisit from './components/HousingVisit';
+import HousingSafety from './components/HousingSafety';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -82,6 +84,8 @@ const App = () => {
         <Route path="ipv" element={<IPV />} />
         <Route path="intimateViolence" element={<IntimateViolence />} />
         <Route path="familyDynamics" element={<FamilyDynamics />} />
+        <Route path="housingVisit" element={<HousingVisit/>} />
+        <Route path="housingSafety" element={<HousingSafety/>} />
 
         <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
         <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />
