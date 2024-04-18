@@ -17,6 +17,10 @@ const FormsDashboard = () => {
         navigate('/');
     };
 
+    const handleBack = () => {
+        navigate(-1);
+    }
+
     var formNames = {
         "communications_log": "Communication Log",
         "appointment_log": "Appointments Log",
@@ -46,7 +50,14 @@ const FormsDashboard = () => {
         "delivery-history": "Delivery History Information Update",
         "breastfeeding": "Breastfeeding",
         "infancy-quest": "Infancy Questionnaire",
-        "target-child": "Target Child Enrollement & Summary Record"
+        "target-child": "Target Child Enrollement & Summary Record",
+        "drug-screening-results": "Drug Screening Results",
+        "smoking-tobacco-use": "Smoking Tobacco Use",
+        "substance-use-history": "Substance Use History",
+        "tweak-test": "Tweak Test",
+        "substance-use-relapse": "Substance Use Relapse",
+        "ten-b": "10 B's",
+        "pregnancy-spacing": "Pregnancy Spacing Assessment"
     };
 
     var dbTableNames = {
@@ -78,7 +89,14 @@ const FormsDashboard = () => {
         "delivery-history": "delivery_history",
         "breastfeeding": "breastfeeding",
         "infancy-quest": "infancy_quest",
-        "target-child": "target_child"
+        "target-child": "target_child",
+        "drug-screening-results": "drug_screening_results",
+        "smoking-tobacco-use": "smoking_tobacco_use",
+        "substance-use-history": "substance_use_history",
+        "tweak-test": "tweak_test",
+        "substance-use-relapse": "substance_use_relapse",
+        "ten-b": "ten_b",
+        "pregnancy-spacing": "pregnancy_spacing"
     }
 
     useEffect(() => {
@@ -128,6 +146,9 @@ const FormsDashboard = () => {
             <header className = {styles.header}>
                 {formNames[formType]}
             </header>
+            <div className = {styles.btnContainer}>
+                <a className = {styles.backBtn} onClick={handleBack}>Back to Client Dashboard</a>
+            </div>
             <div className = {styles.btnContainer}>
                 <a className = {styles.btn} onClick={navigateToAddForm}>+ Add New Form</a>
             </div>

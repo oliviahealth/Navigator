@@ -35,6 +35,18 @@ import GoalPlanning from './components/GoalPlanning';
 import CrafftScreening from './components/CrafftScreening';
 import DrugAbuseScreening from './components/DrugAbuseScreening';
 import CageScreening from './components/CageScreening';
+import DrugScreeningResults from './components/DrugScreeningResults';
+import SmokingTobaccoUse from './components/SmokingTobaccoUse';
+import SubstanceUseHistory from './components/SubstanceUseHistory';
+import TweakTest from './components/TweakTest';
+import SubstanceUseRelapse from './components/SubstanceUseRelapse';
+import TenB from './components/TenB'
+import PregnancySpacing from './components/PregnancySpacing'
+import DomesticViolenceScreenForm from './components/ConsentForm/DomesticViolence';
+import IPVScreeningAndAssessmentForm from './components/ConsentForm/IPV';
+import IPVDisclosureForm from './components/ConsentForm/IntimateViolence';
+import IntimatePartnerViolenceForm from './components/ConsentForm/PartnerViolence';
+import SocialSupportForm from './components/FamilyDynamics';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -65,6 +77,12 @@ import BreastFeedingReadOnly from './components/ReadOnly/BreastfeedingReadOnly';
 import InfancyReadOnly from './components/ReadOnly/InfancyReadOnly';
 import TargetChildReadOnly from './components/ReadOnly/TargetChildReadOnly';
 import PrenatalCareReadOnly from './components/ReadOnly/PrenatalCareReadOnly';
+import DrugScreeningResultsReadOnly from './components/ReadOnly/DrugScreeningResultsReadOnly';
+import SubstanceUseHistoryReadOnly from './components/ReadOnly/SubstanceUseHistoryReadOnly';
+import SubstanceUseRelapseReadOnly from './components/ReadOnly/SubstanceUseRelapseReadOnly';
+import TweakTestReadOnly from './components/ReadOnly/TweakTestReadOnly';
+import PregnancySpacingReadOnly from './components/ReadOnly/PregnancySpacingReadOnly';
+import TenBReadOnly from './components/ReadOnly/TenBReadOnly';
 
 const App = () => {
   return (
@@ -73,6 +91,17 @@ const App = () => {
         <Route exact path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<ClientDashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/add-patient" element={<AddPatientModal />} />
+        <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
+
+        {/* Tab-1: Communication and Information Forms */}
+        <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
+        <Route path="/appointment_log/:patientId" element={<AppointmentLog />} />
+        <Route path="/form-cover-letter" element={<FormCoverLetter />} />
+        <Route path="/release-of-information/:patientId" element={<ReleaseOfInformation />} />
+        <Route path="/media-appearance-release/:patientId" element={<MediaAppearanceRelease />} />
+        
+        {/* Tab-2: Demographics and Social History */}
         <Route path="/participants-demographic-record/:patientId" element={<PatientDemographics />} />
         <Route path="/demographics-others/:patientId" element={<DemographicsOthers />} />
         <Route path="/child-demographics/:patientId" element={<ChildDemographics />} />
@@ -82,30 +111,48 @@ const App = () => {
         <Route path="/referrals-services/:patientId" element={<ReferralsServices />} />
         <Route path="/emergency-contact/:patientId" element={<EmergencyContact />} />
         <Route path="/goal-planning/:patientId" element={<GoalPlanning />} />
+        
+        {/* Tab-3: Medical and Nutritional History */}
         <Route path="/parental-medical-history/:patientId" element={<ParentalMedicalHistory />} /> 
         <Route path="/encounter-form/:patientId" element={<EncounterForm />} /> 
         <Route path="/nut-history/:patientId" element={<NutHistory />} />
-        <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} /> 
+        
+        {/* Tab-4: Medications */}
+        <Route path="/medications/:patientId" element={<Medications />} />
+        
+        {/* Tab-5: Substance Use Screening */}
+        <Route path="/pregnancy/:patientId" element={<Pregnancy />} />
         <Route path="/addiction-belief-scale/:patientId" element={<AddictionBeliefScale />} /> 
+        <Route path="/cage-screening/:patientId" element={<CageScreening />} />
+        <Route path="/crafft-screening/:patientId" element={<CrafftScreening />} />
+        <Route path="/drug-abuse-screening/:patientId" element={<DrugAbuseScreening />} />
+        <Route path="/drug-screening-results/:patientId" element={<DrugScreeningResults />} />
+        <Route path="/smoking-tobacco-use/:patientId" element={<SmokingTobaccoUse />} />
+        <Route path="/substance-use-history/:patientId" element={<SubstanceUseHistory />} />
+        <Route path="/tweak-test/:patientId" element={<TweakTest />} />
+        <Route path="/substance-use-relapse/:patientId" element={<SubstanceUseRelapse />} />
+
+        {/* Tab-6: Interpersonal Relations Assessment*/}
+        <Route path="partner-violence/:patientId" element={<IntimatePartnerViolenceForm />} />
+        <Route path="domestic-violence/:patientId" element={<DomesticViolenceScreenForm />} />
+        <Route path="ipv/:patientId" element={<IPVScreeningAndAssessmentForm />} />
+        <Route path="intimate-violence/:patientId" element={<IPVDisclosureForm />} />
+        <Route path="family-dynamics/:patientId" element={<SocialSupportForm />} />
+
+        {/* Tab-7: Physical Assessments */}
+        <Route path="/ten-b/:patientId" element={<TenB />} />
+        <Route path="/pregnancy-spacing/:patientId" element={<PregnancySpacing />} />
+        
+        {/* Tab-10: Prenatal Care */}
+        <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} />
+        
+        {/* Tab-11: Child Development */}
         <Route path="/asq/:patientId" element={<ASQ />} /> 
         <Route path="/brief-child/:patientId" element={<BriefChild />} />
         <Route path="/delivery-history/:patientId" element={<DeliveryHistory/>} />  
         <Route path="/breastfeeding/:patientId" element={<Breastfeeding />} /> 
         <Route path="/infancy-quest/:patientId" element={<InfancyQuest />} />
         <Route path="/target-child/:patientId" element={<TargetChild />} /> 
-        <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
-        <Route path="/appointment_log/:patientId" element={<AppointmentLog />} />
-        <Route path="/form-cover-letter" element={<FormCoverLetter />} />
-        <Route path="/release-of-information/:patientId" element={<ReleaseOfInformation />} />
-        <Route path="/media-appearance-release/:patientId" element={<MediaAppearanceRelease />} />
-        <Route path="/medications/:patientId" element={<Medications />} />
-        <Route path="/pregnancy/:patientId" element={<Pregnancy />} />
-        <Route path="/crafft-screening/:patientId" element={<CrafftScreening />} />
-        <Route path="/drug-abuse-screening/:patientId" element={<DrugAbuseScreening />} />
-        <Route path="/cage-screening/:patientId" element={<CageScreening />} />
-
-        <Route path="/add-patient" element={<AddPatientModal />} />
-        <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
 
         <Route path="communications_log-read-only/:patientId/:log_id" element={<CommunicationsLogReadOnly />} />
         <Route path="appointment_log-read-only/:patientId/:log_id" element={<AppointmentLogReadOnly />} />
@@ -137,6 +184,14 @@ const App = () => {
         <Route path="/infancy-quest-read-only/:patientId/:log_id" element={<InfancyReadOnly />} />
         <Route path="/target-child-read-only/:patientId/:log_id" element={<TargetChildReadOnly />} /> 
         <Route path="/prenatal-care-read-only/:patientId/:log_id" element={<PrenatalCareReadOnly />} /> 
+      
+        <Route path="/drug-screening-results-read-only/:patientId/:log_id" element={<DrugScreeningResultsReadOnly />} />
+        <Route path="/substance-use-history-read-only/:patientId/:log_id" element={<SubstanceUseHistoryReadOnly />} />
+        <Route path="/tweak-test-read-only/:patientId/:log_id" element={<TweakTestReadOnly />} />
+        <Route path="/substance-use-relapse-read-only/:patientId/:log_id" element={<SubstanceUseRelapseReadOnly />} />
+        <Route path="/ten-b-read-only/:patientId/:log_id" element={<TenBReadOnly />} />
+        <Route path="/pregnancy-spacing-read-only/:patientId/:log_id" element={<PregnancySpacingReadOnly />} />
+        
       </Routes>
     </Router>
   );

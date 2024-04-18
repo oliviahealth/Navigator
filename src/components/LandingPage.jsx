@@ -14,12 +14,12 @@ const LandingPage = () => {
 
     const onLoginSuccess = () => {
         setShowLoginModal(false);
-        setIsAuthenticated(true); // Update the state to indicate the user is authenticated
+        setIsAuthenticated(true);
     };
 
     const onSignUpSuccess = () => {
         setShowSignUpModal(false);
-        setIsAuthenticated(true); // Similarly, update the state here
+        setIsAuthenticated(true); 
     };
 
     return (
