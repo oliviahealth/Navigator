@@ -69,7 +69,9 @@ const FormsDashboard = () => {
         "epds": "Edinburg Postnatal Depression Scale (EPDS)",
         "gad7": "Generalized Anxiety Disorder (GAD-7)",
         "pss": "Perceived Stress Scale (PSS)",
-        "phq9": "PHQ-9"
+        "phq9": "PHQ-9",
+        "housingVisit": "Housing Security Home Visit Form",
+        "housingSafety": "Household Housing Safety Profile"
     };
 
     var dbTableNames = {
@@ -120,7 +122,9 @@ const FormsDashboard = () => {
         "epds": "epds",
         "gad7": "gad7",
         "pss": "pss",
-        "phq9": "phq9"
+        "phq9": "phq9",
+        "housingVisit": "housing_vist",
+        "housingSafety": "housing_safety"
     }
 
     useEffect(() => {

@@ -8,7 +8,6 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-// import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
    const navigate = useNavigate();
@@ -377,9 +376,12 @@ const ClientDashboard = () => {
                      </div>
                      {isActive.hsa && (
                         <div className={styles["dropdown-content"]}>
-                           {homeSafetyAssessmentsOptions.map((option, index) => (
-                              <div key={index} className="dropdownItem">{option}</div>
-                           ))}
+                           <Link to={`/forms-dashboard/housingVisit/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Housing Security Home Visit Form </span>
+                           </Link>
+                           <Link to={`/forms-dashboard/housingSafety/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Household Housing Safety Profile </span>
+                           </Link>
                         </div>
                      )}
                   </div>

@@ -54,6 +54,8 @@ import EPDS from './components/EPDS';
 import GAD7 from './components/GAD7.';
 import PSS from './components/PSS';
 import PHQ9 from './components/PHQ9';
+import HousingVisit from './components/HousingVisit';
+import SafetyProfileForm from './components/HousingSafety';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -102,6 +104,8 @@ import EPDSReadOnly from './components/ReadOnly/EPDSReadOnly';
 import GAD7ReadOnly from './components/ReadOnly/GAD7ReadOnly.';
 import PSSReadOnly from './components/ReadOnly/PSSReadOnly';
 import PHQ9ReadOnly from './components/ReadOnly/PHQ9ReadOnly';
+import HousingVisitReadOnly from './components/ReadOnly/HousingVisitReadOnly';
+import SafetyProfileFormReadOnly from './components/ReadOnly/HousingSafetyReadOnly';
 
 const App = () => {
   return (
@@ -171,6 +175,10 @@ const App = () => {
         <Route path="/pss/:patientId" element={<PSS />} />
         <Route path="/phq9/:patientId" element={<PHQ9 />} />
 
+        {/* Tab-9*/}
+        <Route path="housingVisit/:patientId" element={<HousingVisit/>} />
+        <Route path="housingSafety/:patientId" element={<SafetyProfileForm/>} />
+
         {/* Tab-10: Prenatal Care */}
         <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} />
         
@@ -234,6 +242,10 @@ const App = () => {
         <Route path="/gad7-read-only/:patientId/:log_id" element={<GAD7ReadOnly />} />
         <Route path="/pss-read-only/:patientId/:log_id" element={<PSSReadOnly />} />
         <Route path="/phq9-read-only/:patientId/:log_id" element={<PHQ9ReadOnly />} />
+
+        {/* Tab-9*/}
+        <Route path="housingVisit-read-only/:patientId/:log_id" element={<HousingVisitReadOnly/>} />
+        <Route path="housingSafety-read-only/:patientId/:log_id" element={<SafetyProfileFormReadOnly/>} />
       </Routes>
     </Router>
   );

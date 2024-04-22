@@ -75,7 +75,7 @@ def create_form_table():
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             Create_table = """
-            CREATE TABLE IF NOT EXISTS phq9 (
+            CREATE TABLE IF NOT EXISTS housing_vist (
                 id SERIAL PRIMARY KEY,
                 date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                 data JSONB NOT NULL,
