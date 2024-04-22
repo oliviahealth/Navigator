@@ -69,15 +69,13 @@ def get_forms(formType, patientId):
 
     return jsonify(logs_list)
 
-
-
 @app.route("/api/create_form_table", methods=['POST'])
 def create_form_table():
     try:
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             Create_table = """
-            CREATE TABLE IF NOT EXISTS family_dynamics (
+            CREATE TABLE IF NOT EXISTS phq9 (
                 id SERIAL PRIMARY KEY,
                 date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                 data JSONB NOT NULL,
@@ -126,9 +124,7 @@ def insert_form(formType, patientId):
 
 @app.route("/api/get_read_only_data/<formType>/<int:patientId>/<logId>", methods=['GET'])
 def get_read_only_data(formType, patientId, logId):
-    print("test1")
     try:
-        print("test2")
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             query = f"SELECT * FROM {formType} WHERE id = %s AND patient_id = %s;"

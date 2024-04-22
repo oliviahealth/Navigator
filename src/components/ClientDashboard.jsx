@@ -207,35 +207,18 @@ const ClientDashboard = () => {
                            <Link to={`/forms-dashboard/communications_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Communications Log Form</span>
                            </Link>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/appointment_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Apppointment Log Form</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to="/form-cover-letter" className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/release-of-information/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/media-appearance-release/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Media Appearance Release</span>
-                              </Link>
-                           </div>
-
-                           {/* <AppointmentLogModal
-            isOpen={isAppointmentLogModalOpen}
-            toggleModal={() => setAppointmentLogModalOpen(false)}
-            onSubmit={handleSubmitAppointmentLog}
-            onCancel={handleCancelAppointmentLog}
-            appointmentLogs={appointmentLogs}
-            setAppointmentLogs={setAppointmentLogs}
-        /> */}
+                           <Link to={`/forms-dashboard/appointment_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Apppointment Log Form</span>
+                           </Link>
+                           <Link to="/form-cover-letter" className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>WELCOME & ENROLLMENT & CONSENT FORMS COVER LETTER v.2.26.24</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/release-of-information/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/media-appearance-release/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Media Appearance Release</span>
+                           </Link>
                         </div>
                      )}
                   </div>
@@ -246,33 +229,15 @@ const ClientDashboard = () => {
                      </div>
                      {isActive.demographics && (
                         <div className={styles["dropdown-content"]}>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/participants-demographic-record/${selectedPatientObj.patient_id}`}>Participants Demographics Record</Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/demographics-others/${selectedPatientObj.patient_id}`}>Participant Record for Others Involved</Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/child-demographics/${selectedPatientObj.patient_id}`}>Child Demographics Record</Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/support-systems/${selectedPatientObj.patient_id}`}>Support Systems, Strengths, Areas For Improvement & Goals </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/current-living/${selectedPatientObj.patient_id}`}>Current Living Arrangement </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/child-needs/${selectedPatientObj.patient_id}`}>Child(ren) Needs </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/referrals-services/${selectedPatientObj.patient_id}`}>Referrals and Services </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/emergency-contact/${selectedPatientObj.patient_id}`}>Emergency Contact Information </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/goal-planning/${selectedPatientObj.patient_id}`}>Goal Planning Tool </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/participants-demographic-record/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Participants Demographics Record</Link>
+                           <Link to={`/forms-dashboard/demographics-others/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Participant Record for Others Involved</Link>
+                           <Link to={`/forms-dashboard/child-demographics/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Child Demographics Record</Link>
+                           <Link to={`/forms-dashboard/support-systems/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Support Systems, Strengths, Areas For Improvement & Goals </Link>
+                           <Link to={`/forms-dashboard/current-living/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Current Living Arrangement </Link>
+                           <Link to={`/forms-dashboard/child-needs/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Child(ren) Needs </Link>
+                           <Link to={`/forms-dashboard/referrals-services/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Referrals and Services </Link>
+                           <Link to={`/forms-dashboard/emergency-contact/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Emergency Contact Information </Link>
+                           <Link to={`/forms-dashboard/goal-planning/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Goal Planning Tool </Link>
                         </div>
                      )}
                   </div>
@@ -286,16 +251,12 @@ const ClientDashboard = () => {
                            <Link to={`/forms-dashboard/parental-medical-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Parental Medical History Form</span>
                            </Link>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/encounter-form/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/nut-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Nutrition History and Assessment</span>
-                              </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/encounter-form/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Encounter Form / Home Visit Form - to Assess External Care Provider Encounters/Visits</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/nut-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Nutrition History and Assessment</span>
+                           </Link>
                         </div>
                      )}
                   </div>
@@ -305,7 +266,7 @@ const ClientDashboard = () => {
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.currMed && (
-                        <div className={styles["dropdown-item"]}>
+                        <div className={styles["dropdown-content"]}>
                            <Link to={`/forms-dashboard/medications/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Medications</span>
                            </Link>
@@ -318,55 +279,37 @@ const ClientDashboard = () => {
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.suh && (
-                        <div className={styles["dropdown-item"]}>
+                        <div className={styles["dropdown-content"]}>
                            <Link to={`/forms-dashboard/pregnancy/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>4 P's of Pregnancy</span>
                            </Link>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/addiction-belief-scale/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Addiction Belief Scale</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/cage-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/crafft-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Crafft Screening</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/drug-abuse-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Drug Abuse Screening</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/drug-screening-results/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Drug Screening Results</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/smoking-tobacco-use/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/substance-use-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Substance Use History</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/tweak-test/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>TWEAK Test (for alcohol drinking)</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/substance-use-relapse/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>SUBSTANCE USE RELAPSE PREVENTION PLAN</span>
-                              </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/addiction-belief-scale/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Addiction Belief Scale</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/cage-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/crafft-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Crafft Screening</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/drug-abuse-screening/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Drug Abuse Screening</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/drug-screening-results/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Drug Screening Results</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/smoking-tobacco-use/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/substance-use-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Substance Use History</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/tweak-test/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>TWEAK Test (for alcohol drinking)</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/substance-use-relapse/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>SUBSTANCE USE RELAPSE PREVENTION PLAN</span>
+                           </Link>
                         </div>
                      )}
                   </div>
@@ -376,31 +319,23 @@ const ClientDashboard = () => {
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.InterRel && (
-                        <div className={styles["dropdown-item"]}>
-                        <Link to={`/forms-dashboard/partner-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                           <span className={styles.highlighted}>Intimate Partner Violence</span>
-                        </Link>
-                        <div className={styles["dropdown-item"]}>
+                        <div className={styles["dropdown-content"]}>
+                           <Link to={`/forms-dashboard/partner-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Intimate Partner Violence</span>
+                           </Link>
                            <Link to={`/forms-dashboard/domestic-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Domestic Violence Screen for Pediatric Settings</span>
                            </Link>
-                        </div>
-                        <div className={styles["dropdown-item"]}>
                            <Link to={`/forms-dashboard/ipv/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>IPV Screening and Assessment Questions</span>
                            </Link>
-                        </div>
-                        <div className={styles["dropdown-item"]}>
                            <Link to={`/forms-dashboard/intimate-violence/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Intimate Partner Violence (IPV) Disclosure Screening Tool</span>
                            </Link>
-                        </div>
-                        <div className={styles["dropdown-item"]}>
                            <Link to={`/forms-dashboard/family-dynamics/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>Family Dynamics Social Support Questionnaire (SSQ6)</span>
                            </Link>
                         </div>
-                     </div>
                      )}
                   </div>
                   <div className={styles.dropdown}>
@@ -409,15 +344,13 @@ const ClientDashboard = () => {
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.physical && (
-                        <div className={styles["dropdown-item"]}>
+                        <div className={styles["dropdown-content"]}>
                            <Link to={`/forms-dashboard/ten-b/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                               <span className={styles.highlighted}>10 B’s: 1 month, 3/6/9/12 month postpartum appointment assessment</span>
                            </Link>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/pregnancy-spacing/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Pregnancy spacing Assessment</span>
-                              </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/pregnancy-spacing/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Pregnancy spacing Assessment</span>
+                           </Link>
                         </div>
                      )}
                   </div>
@@ -428,9 +361,13 @@ const ClientDashboard = () => {
                      </div>
                      {isActive.mental && (
                         <div className={styles["dropdown-content"]}>
-                           {mentalHealthAssessmentsOptions.map((option, index) => (
-                              <div key={index} className="dropdownItem">{option}</div>
-                           ))}
+                           <Link to={`/forms-dashboard/mentalhealthhistory/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Mental Health History / Brief Update Form</Link>
+                           <Link to={`/forms-dashboard/cssrs/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Columbia Suicide Severity Risk Scale</Link>
+                           <Link to={`/forms-dashboard/durel/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Duke University Religion Index (DUREL)</Link>
+                           <Link to={`/forms-dashboard/epds/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Edinburg Postnatal Depression Scale (EPDS)</Link>
+                           <Link to={`/forms-dashboard/gad7/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Generalized Anxiety Disorder (GAD-7)</Link>
+                           <Link to={`/forms-dashboard/pss/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Perceived Stress Scale (PSS)</Link>
+                           <Link to={`/forms-dashboard/phq9/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>PHQ-9</Link>
                         </div>
                      )}
                   </div>
@@ -454,11 +391,9 @@ const ClientDashboard = () => {
                      </div>
                      {isActive.PrenatalCare && (
                         <div className={styles["dropdown-content"]}>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/prenatal-care/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Prenatal Care</span>
-                              </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/prenatal-care/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Prenatal Care</span>
+                           </Link>
                         </div>
                      )}
                   </div>
@@ -469,36 +404,24 @@ const ClientDashboard = () => {
                      </div>
                      {isActive.child && (
                         <div className={styles["dropdown-content"]}>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/asq/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>ASQ-3</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/brief-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Brief Child Wellness Update</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/delivery-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Delivery History Information Update</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/breastfeeding/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Breastfeeding</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/infancy-quest/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Infancy Questionnaire</span>
-                              </Link>
-                           </div>
-                           <div className={styles["dropdown-item"]}>
-                              <Link to={`/forms-dashboard/target-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
-                                 <span className={styles.highlighted}>Target Child Enrollment & Summary Record </span>
-                              </Link>
-                           </div>
+                           <Link to={`/forms-dashboard/asq/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>ASQ-3</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/brief-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Brief Child Wellness Update</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/delivery-history/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Delivery History Information Update</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/breastfeeding/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Breastfeeding</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/infancy-quest/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Infancy Questionnaire</span>
+                           </Link>
+                           <Link to={`/forms-dashboard/target-child/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
+                              <span className={styles.highlighted}>Target Child Enrollment & Summary Record </span>
+                           </Link>
                         </div>
                      )}
                   </div>
