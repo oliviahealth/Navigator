@@ -30,11 +30,6 @@ const DrugAbuseScreening = () => {
           body: JSON.stringify(answers),
         });
   
-        if (response.ok) {
-          console.log('Form data saved successfully');
-        } else {
-          console.error('Error saving form data');
-        }
       } catch (error) {
         console.error('Error:', error);
       }

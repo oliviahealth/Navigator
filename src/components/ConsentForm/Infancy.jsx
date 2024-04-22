@@ -84,11 +84,9 @@ function Infancy() {
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        console.log(JSON.stringify(formData))
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Successfully submitted:', data);
       navigate(-1);
     } catch (error) {
       console.error('Failed to submit:', error);

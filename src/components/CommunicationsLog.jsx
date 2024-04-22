@@ -64,7 +64,6 @@ const CommunicationsLog = () => {
             }
 
             const data = await response.json();
-            console.log('Successfully submitted:', data);
             window.history.back();
         } catch (error) {
             console.error('Failed to submit:', error);

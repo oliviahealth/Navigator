@@ -41,7 +41,6 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
       })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           onSignUpSuccess();
           onClose();
         })

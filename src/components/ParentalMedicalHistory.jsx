@@ -47,7 +47,6 @@ const ParentalMedicalHistory = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Successfully submitted:', data);
       window.history.back();
     } catch (error) {
       console.error('Failed to submit:', error);

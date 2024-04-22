@@ -157,7 +157,7 @@ const FormsDashboard = () => {
         <div className={navStyles.clientDashboard}>
             <header className={navStyles.header}>
                 <div className={navStyles.logoContainer}>
-                    <span className={navStyles.recordName}>Electronic Health Records</span>
+                    <span className={navStyles.recordName}>Olivia-NAVIGATOR</span>
                 </div>
                 <nav className={navStyles.nav}>
                     <Link to="/dashboard" className={navStyles.dashboardLink}>

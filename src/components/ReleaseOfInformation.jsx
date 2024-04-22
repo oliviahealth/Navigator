@@ -62,7 +62,6 @@ const ReleaseOfInformation = () => {
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(JSON.stringify(formData))
       try {
         const response = await fetch(`http://localhost:5000/api/insert_forms/release_of_information/${patientId}`, {
           method: 'POST',
@@ -74,7 +73,6 @@ const ReleaseOfInformation = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log('Successfully submitted:', data);
         window.history.back();
       } catch (error) {
         console.error('Failed to submit:', error);
