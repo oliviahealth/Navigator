@@ -62,7 +62,14 @@ const FormsDashboard = () => {
         "domestic-violence": "Domestic Violence Screening",
         "ipv": "IPV Screening and Assessment Questions",
         "intimate-violence": "Intimate Partner Violence (IPV) Disclosure Screening Tool",
-        "family-dynamics": "Family Dynamics Social Support Questionnaire (SSQ6)"
+        "family-dynamics": "Family Dynamics Social Support Questionnaire (SSQ6)",
+        "mentalhealthhistory": "Mental Health History / Brief Update Form",
+        "cssrs": "Columbia Suicide Severity Risk Scale",
+        "durel": "Duke University Religion Index (DUREL)",
+        "epds": "Edinburg Postnatal Depression Scale (EPDS)",
+        "gad7": "Generalized Anxiety Disorder (GAD-7)",
+        "pss": "Perceived Stress Scale (PSS)",
+        "phq9": "PHQ-9"
     };
 
     var dbTableNames = {
@@ -106,7 +113,14 @@ const FormsDashboard = () => {
         "domestic-violence": "domestic_violence",
         "ipv": "ipv",
         "intimate-violence": "intimate_violence",
-        "family-dynamics": "family_dynamics"
+        "family-dynamics": "family_dynamics",
+        "mentalhealthhistory": "mentalhealthhistory",
+        "cssrs": "cssrs",
+        "durel": "durel",
+        "epds": "epds",
+        "gad7": "gad7",
+        "pss": "pss",
+        "phq9": "phq9"
     }
 
     useEffect(() => {

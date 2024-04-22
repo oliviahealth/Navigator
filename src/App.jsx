@@ -47,6 +47,13 @@ import IPVScreeningAndAssessmentForm from './components/ConsentForm/IPV';
 import IPVDisclosureForm from './components/ConsentForm/IntimateViolence';
 import IntimatePartnerViolenceForm from './components/ConsentForm/PartnerViolence';
 import SocialSupportForm from './components/FamilyDynamics';
+import MentalHealthHistory from './components/MentalHealthHistory';
+import CSSRS from './components/CSSRS';
+import DUREL from './components/DUREL';
+import EPDS from './components/EPDS';
+import GAD7 from './components/GAD7.';
+import PSS from './components/PSS';
+import PHQ9 from './components/PHQ9';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -88,7 +95,13 @@ import IPVScreeningAndAssessmentFormReadOnly from './components/ReadOnly/IPVRead
 import IPVDisclosureFormReadOnly from './components/ReadOnly/IntimateViolenceReadOnly';
 import IntimatePartnerViolenceFormReadOnly from './components/ReadOnly/PartnerViolenceReadOnly';
 import SocialSupportFormReadOnly from './components/ReadOnly/FamilyDynamicsReadOnly';
-
+import MentalHealthHistoryReadOnly from './components/ReadOnly/MentalHealthHistoryReadOnly';
+import CSSRSReadOnly from './components/ReadOnly/CSSRSReadOnly';
+import DURELReadOnly from './components/ReadOnly/DURELReadOnly';
+import EPDSReadOnly from './components/ReadOnly/EPDSReadOnly';
+import GAD7ReadOnly from './components/ReadOnly/GAD7ReadOnly.';
+import PSSReadOnly from './components/ReadOnly/PSSReadOnly';
+import PHQ9ReadOnly from './components/ReadOnly/PHQ9ReadOnly';
 
 const App = () => {
   return (
@@ -149,6 +162,15 @@ const App = () => {
         <Route path="/ten-b/:patientId" element={<TenB />} />
         <Route path="/pregnancy-spacing/:patientId" element={<PregnancySpacing />} />
         
+        {/*Tab-8: Mental Health Assessments*/}
+        <Route path="/mentalhealthhistory/:patientId" element={<MentalHealthHistory />} />
+        <Route path="/cssrs/:patientId" element={<CSSRS />} />
+        <Route path="/durel/:patientId" element={<DUREL />} />
+        <Route path="/epds/:patientId" element={<EPDS />} />
+        <Route path="/gad7/:patientId" element={<GAD7 />} />
+        <Route path="/pss/:patientId" element={<PSS />} />
+        <Route path="/phq9/:patientId" element={<PHQ9 />} />
+
         {/* Tab-10: Prenatal Care */}
         <Route path="/prenatal-care/:patientId" element={<PrenatalCare />} />
         
@@ -203,6 +225,15 @@ const App = () => {
         <Route path="ipv-read-only/:patientId/:log_id" element={<IPVScreeningAndAssessmentFormReadOnly />} />
         <Route path="intimate-violence-read-only/:patientId/:log_id" element={<IPVDisclosureFormReadOnly />} />
         <Route path="family-dynamics-read-only/:patientId/:log_id" element={<SocialSupportFormReadOnly/>} />
+      
+        {/*Tab-8: Mental Health Assessments*/}
+        <Route path="/mentalhealthhistory-read-only/:patientId/:log_id" element={<MentalHealthHistoryReadOnly />} />
+        <Route path="/cssrs-read-only/:patientId/:log_id" element={<CSSRSReadOnly />} />
+        <Route path="/durel-read-only/:patientId/:log_id" element={<DURELReadOnly />} />
+        <Route path="/epds-read-only/:patientId/:log_id" element={<EPDSReadOnly />} />
+        <Route path="/gad7-read-only/:patientId/:log_id" element={<GAD7ReadOnly />} />
+        <Route path="/pss-read-only/:patientId/:log_id" element={<PSSReadOnly />} />
+        <Route path="/phq9-read-only/:patientId/:log_id" element={<PHQ9ReadOnly />} />
       </Routes>
     </Router>
   );
