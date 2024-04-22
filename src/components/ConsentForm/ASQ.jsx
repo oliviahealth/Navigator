@@ -60,11 +60,9 @@ function ASQ() {
         body: JSON.stringify(formValues),
       });
       if (!response.ok) {
-        console.log(JSON.stringify(formValues));
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log('Successfully submitted:', data);
       navigate(-1);
     } catch (error) {
       console.error('Failed to submit:', error);

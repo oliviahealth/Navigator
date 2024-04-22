@@ -34,7 +34,6 @@ function DURELReadOnly() {
                     ...initialState,
                     ...data[2]
                   });
-                console.log(data[2])
             } catch (error) {
                 setError(error.message);
             } finally {

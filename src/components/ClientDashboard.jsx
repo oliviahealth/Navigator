@@ -46,7 +46,6 @@ const ClientDashboard = () => {
          }
          // Handle success
          const data = await response.json();
-         console.log(data.message);
       } catch (error) {
          console.error('Error:', error);
       }
@@ -108,7 +107,7 @@ const ClientDashboard = () => {
       <div className={styles.clientDashboard}>
          <header className={styles.header}>
             <div className={styles.logoContainer}>
-               <span className={styles.recordName}>Electronic Health Records</span>
+               <span className={styles.recordName}>Olivia-NAVIGATOR</span>
             </div>
             <nav className={styles.nav}>
                <Link to="/dashboard" className={styles.dashboardLink}>

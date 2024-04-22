@@ -38,7 +38,6 @@ const AppointmentLogReadOnly = () => {
       
             if (response.status === 204) {
               // Handling no content
-              console.log('No communication log found for the selected patient.');
               setEntry({ date: '', who: '', location: '', notes: '' });
               return; // Early return if no content
             }

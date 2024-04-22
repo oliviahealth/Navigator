@@ -336,7 +336,6 @@ const CrafftScreening = () => {
         }
         
         const result = await response.json();
-        console.log('Form submitted successfully:', result);
   
       } catch (error) {
         console.error('Failed to submit form:', error);

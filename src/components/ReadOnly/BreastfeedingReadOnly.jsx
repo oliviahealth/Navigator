@@ -60,7 +60,6 @@ function BreastFeedingReadOnly() {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             if (response.status === 204) { // Handling no content
-                console.log("No support system info found for the selected patient.");
                 return; 
             }
             const data = await response.json();

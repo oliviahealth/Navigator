@@ -41,7 +41,6 @@ const AddPatientForm = ({ onSubmit }) => {
       return response.json();
     })
     .then(data => {
-      console.log('Success:', data);
       window.history.back();
     })
     .catch((error) => {

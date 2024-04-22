@@ -80,7 +80,6 @@ function ReferralsServicesReadOnly() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data[2].items)
   
         if (data && data[2].items) {
           // Assuming data.items should be an object with keys matching service categories
@@ -102,7 +101,6 @@ function ReferralsServicesReadOnly() {
           }, {});
           setServices({ ...services, items: transformedData });
         } else {
-          console.log("No referrals services info found for the selected patient.");
         }
       } catch (error) {
         console.error('Error fetching referrals services info:', error);

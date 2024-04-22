@@ -91,7 +91,6 @@ const ReleaseOfInformationReadOnly = () => {
                     return; 
                 }
                 const data = await response.json();
-                console.log(data[2])
                 setFormData(data[2])
                 
             } catch (error) {
