@@ -106,6 +106,7 @@ import PSSReadOnly from './components/ReadOnly/PSSReadOnly';
 import PHQ9ReadOnly from './components/ReadOnly/PHQ9ReadOnly';
 import HousingVisitReadOnly from './components/ReadOnly/HousingVisitReadOnly';
 import SafetyProfileFormReadOnly from './components/ReadOnly/HousingSafetyReadOnly';
+import SmokingTobaccoUseReadOnly from './components/ReadOnly/SmokingTobaccoUseReadOnly';
 
 const App = () => {
   return (
@@ -246,6 +247,8 @@ const App = () => {
         {/* Tab-9*/}
         <Route path="housingVisit-read-only/:patientId/:log_id" element={<HousingVisitReadOnly/>} />
         <Route path="housingSafety-read-only/:patientId/:log_id" element={<SafetyProfileFormReadOnly/>} />
+      
+        <Route path="/smoking-tobacco-use-read-only/:patientId/:log_id" element={<SmokingTobaccoUseReadOnly />} />
       </Routes>
     </Router>
   );

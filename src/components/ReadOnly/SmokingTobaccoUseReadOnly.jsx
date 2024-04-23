@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/SmokingTobaccoUse.module.css';
+import styles from '../../styles/SmokingTobaccoUse.module.css';
 import { useParams } from 'react-router-dom';
 
-const SmokingTobaccoUse = () => {
+const SmokingTobaccoUseReadOnly = () => {
     const { patientId, log_id } = useParams();
     const [products, setProducts] = useState([
         'Cigarettes',
@@ -45,6 +45,30 @@ const SmokingTobaccoUse = () => {
         hasUsedMedications: ""
     });
 
+    useEffect(() => {
+        const fetchLog = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/get_read_only_data/smoking_tobacco_use/${patientId}/${log_id}`, {
+                  method: 'GET',
+                  credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                if (response.status === 204) { // Handling no content
+                    return; 
+                }
+                const data = await response.json();
+                setFormData(data[2]);
+                
+            } catch (error) {
+                console.error('Error fetching sipport system info:', error);
+            }
+        };
+    
+        fetchLog();
+    }, [patientId, log_id]);
+
     const handleCancel = () => {
         window.history.back();
     };
@@ -66,28 +90,9 @@ const SmokingTobaccoUse = () => {
         }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/smoking_tobacco_use/${patientId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          window.history.back();
-        } catch (error) {
-          console.error('Failed to submit:', error);
-        }
-      };
-
     return (
         <div className={styles.container}>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <h1 className={styles.title}>Tobacco Use Screening and Documentation Form</h1>
                 {/* Section for clients who had a baby in the past year */}
                 <section className={styles.section}>
@@ -345,10 +350,9 @@ const SmokingTobaccoUse = () => {
                     </div>
                 </section>
                 <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
-                <button type="submit" className={styles.button}>Submit</button>
             </form>
         </div>
     );
 };
 
-export default SmokingTobaccoUse;
+export default SmokingTobaccoUseReadOnly;

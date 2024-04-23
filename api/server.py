@@ -3,12 +3,12 @@ import psycopg2
 from dotenv import load_dotenv 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-from flask_session import Session
 from passlib.hash import argon2
 from datetime import datetime
 from psycopg2.extras import Json
 from psycopg2 import pool
 from flask.helpers import send_from_directory
+from flask_jwt_extended import JWTManager
 
 load_dotenv()
 
@@ -19,9 +19,8 @@ postgres_url = os.getenv("DATABASE_URL")
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 connection_pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=20, dsn=postgres_url)
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+jwt = JWTManager(app)
 
 CREATE_USER_TABLE = """
 CREATE TABLE IF NOT EXISTS "user" (

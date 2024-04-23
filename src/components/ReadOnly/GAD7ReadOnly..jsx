@@ -26,6 +26,7 @@ function GAD7ReadOnly() {
                 }
                 const data = await response.json();
                 setResponses(data[2].responses);
+                console.log(data[2].responses)
                 setTotalScore(data[2].totalScore);
                 
             } catch (error) {
@@ -65,10 +66,17 @@ function GAD7ReadOnly() {
                                    "Becoming easily annoyed or irritable", 
                                    "Feeling afraid as if something awful might happen",
                                    "If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?"][i]}</p>
-                    <label><input type="radio" name={`q${i + 1}`} value="0" onChange={() => handleChange(`q${i + 1}`, '0')} /> Not at all (0)</label>
-                    <label><input type="radio" name={`q${i + 1}`} value="1" onChange={() => handleChange(`q${i + 1}`, '1')} /> Several days (1)</label>
-                    <label><input type="radio" name={`q${i + 1}`} value="2" onChange={() => handleChange(`q${i + 1}`, '2')} /> More than half the days (2)</label>
-                    <label><input type="radio" name={`q${i + 1}`} value="3" onChange={() => handleChange(`q${i + 1}`, '3')} /> Nearly every day (3)</label>
+                    {Array.from({ length: 4 }).map((_, value) => (
+                        <label key={value}>
+                            <input
+                                type="radio"
+                                name={`q${i + 1}`}
+                                value={value}
+                                checked={responses[`q${i + 1}`] === value}
+                                onChange={() => handleChange(`q${i + 1}`, `${value}`)}
+                            /> {['Not at all', 'Several days', 'More than half the days', 'Nearly every day'][value]} ({value})
+                        </label>
+                    ))}
                 </div>
             ))}
 
