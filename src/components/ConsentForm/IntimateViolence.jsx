@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const IPVDisclosureForm = () => {
+  const { patientId } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     participantName: '',
@@ -26,6 +27,8 @@ const IPVDisclosureForm = () => {
     }));
   };
 
+  
+
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     setFormData(prevData => ({
@@ -48,11 +51,23 @@ const IPVDisclosureForm = () => {
     return false;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    console.log(formData);
-    navigate('/dashboard'); 
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/intimate_violence/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(-1);
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   const handleCancel = () => {

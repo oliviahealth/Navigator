@@ -1,0 +1,85 @@
+.drugScreeningResultsForm {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .drugScreeningResultsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .drugScreeningResultsTable th,
+  .drugScreeningResultsTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .drugScreeningResultsTable th {
+    background-color: #f4f4f4;
+  }
+  
+  .drugScreeningResultsTable td {
+    background-color: #fff;
+  }
+  
+  .drugScreeningResultsTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .drugScreeningResultsTable tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .drugScreeningResultsTable input[type="date"],
+  .drugScreeningResultsTable input[type="text"] {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .drugScreeningResultsTable input[type="checkbox"],
+  .drugScreeningResultsTable input[type="radio"] {
+    margin-right: 5px;
+  }
+  
+  .drugScreeningResultsTable label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .removeButton {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .removeButton:hover {
+    background-color: #bd2130;
+  }
+  

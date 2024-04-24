@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function EmergencyContact() {
+  const { patientId } = useParams();
   const initialData = {
     emergencyContacts: [{ id: 1, name: '', phone: '' }],
     pediatrician: { name: '', phone: '' },
@@ -51,10 +53,23 @@ function EmergencyContact() {
                 .replace('Dob', 'Date of Birth'); // Proper case for specific fields
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    // Here, you would handle the form submission, such as sending the data to a backend server.
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/emergency_contact/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

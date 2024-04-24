@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function GoalPlanning() {
+  const { patientId } = useParams();
+
   const [goalInfo, setGoalInfo] = useState({
     goal: '',
     steps: ['', '', ''], // Assuming 3 steps for simplicity; adjust as needed
@@ -23,10 +26,23 @@ function GoalPlanning() {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(goalInfo);
-    // Here, you would handle form submission, such as sending the goalInfo to a backend server.
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/goal_planning/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(goalInfo),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

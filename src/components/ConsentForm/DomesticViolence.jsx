@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/DomesticViolenceStyle.css';
 
 const DomesticViolenceScreenForm = () => {
+  const { patientId } = useParams();
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({
     afraidOfPartner: '',
@@ -26,14 +27,22 @@ const DomesticViolenceScreenForm = () => {
     navigate('/dashboard'); 
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const positiveAnswers = Object.values(answers).slice(0, 3).filter(value => value === 'yes').length;
-    
-    if (positiveAnswers >= 3) {
-      setShowPopup(true);
-    } else {
-      navigate('/dashboard');
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/domestic_violence/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(-1);
+    } catch (error) {
+      console.error('Failed to submit:', error);
     }
   };
 

@@ -24,7 +24,6 @@ const CommunicationsLogReadOnly = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    console.log("No communication log found for the selected patient.");
                     return; // Early return if no content
                 }
                 const data = await response.json();
