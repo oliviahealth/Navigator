@@ -261,12 +261,12 @@ return (
           </table>
         </div>
   
-        <div className="form-group">
           <button type="button" className="btn" onClick={addCareVisit}>Add Another Visit</button>
-        </div>
-        <div className="form-group">
+       
+       
           <button className="btn" type="submit">Submit</button>
-        </div>
+          <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
+       
       </form>
      
       <div className="list-container">

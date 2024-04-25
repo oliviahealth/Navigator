@@ -119,7 +119,7 @@ function NutHistory() {
         <label htmlFor="todays-date">Today's Date</label>
         <input type="date" id="todays-date" name="todayDate" value={formValues.todayDate} onChange={handleInputChange} />
 
-        <label htmlFor="name">Your Name</label>
+        <label htmlFor="name">Participant Name:</label>
         <input type="text" id="name" name="yourName" value={formValues.yourName} onChange={handleInputChange} />
 
         <label htmlFor="education-level">Education Level</label>
@@ -288,6 +288,7 @@ function NutHistory() {
         </fieldset>
 
         <button type="submit">Submit</button>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );

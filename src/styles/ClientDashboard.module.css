@@ -75,8 +75,13 @@ font-weight: bold;
 font-weight: 400;
 background-color: transparent;
 color: #000;
+transition: background-color 0.3s, color 0.3s;
+border: 2px solid;
 }
 
+.dashboardLink:hover {
+  background-color: #b2c5b2; 
+}
 
 
 .dropdown{
@@ -199,11 +204,11 @@ height: 100vh;
   padding-top: 30px;
 
   /* Removes default styles for placeholder */
-  ::placeholder {
+  /* ::placeholder {
     color: #757575;
-    opacity: 1; /* Placeholder text full opacity */
+    opacity: 1; Placeholder text full opacity
     padding-top: 10px;
-  }
+  } */
 }
 
 .searchIcon {

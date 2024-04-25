@@ -60,6 +60,11 @@ function PrenatalCare() {
         <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
         
         <button type="submit">Submit</button>
+        <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
       </form>
     </div>
   );

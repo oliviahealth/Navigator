@@ -142,6 +142,11 @@ function PrenatalCare() {
           </div>
 
           <button type="submit">Submit</button>
+          <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
         </div>
       </form>
     </div>

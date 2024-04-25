@@ -444,6 +444,11 @@ function BreastFeeding() {
         <div className="form-group">
           <button className="btn" type="submit">Submit</button>
         </div>
+        <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
 
       </form>
 

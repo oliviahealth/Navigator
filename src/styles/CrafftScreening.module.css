@@ -17,6 +17,10 @@
     border-radius: 5px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
     z-index: 1001;
+    width: 90%; 
+    max-width: 700px; 
+    max-height: 100vh;
+    overflow-y: auto;
   }
   
   .formContainer {

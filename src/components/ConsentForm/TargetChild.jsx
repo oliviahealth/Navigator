@@ -468,6 +468,11 @@ function TargetChild() {
 
       
       <button type="submit">Submit</button>
+      <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
 
   
 </form>

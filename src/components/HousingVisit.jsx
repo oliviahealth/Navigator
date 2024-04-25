@@ -332,7 +332,7 @@ const HousingVisit = () => {
           </>
         )}
         <button type="submit">Submit</button>
-        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );

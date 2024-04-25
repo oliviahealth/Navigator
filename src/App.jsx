@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import ClientDashboard from './components/ClientDashboard';
-import Login from './components/LoginModal'; // Import the Login component
+import Login from './components/LoginModal';
 import PatientDemographics from "./components/PatientDemographics";
 import ParentalMedicalHistory from './components/ParentalMedicalHistory';
 import EncounterForm from './components/ConsentForm/EncounterForm';

@@ -41,17 +41,3 @@
     margin-right: 5px;
   }
   
-  .housing-visit-form button {
-    padding: 10px 20px;
-    margin-top: 20px;
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .housing-visit-form button:hover {
-    background-color: #003d82;
-  }
-  

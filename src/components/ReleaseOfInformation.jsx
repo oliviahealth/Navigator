@@ -50,6 +50,14 @@ const ReleaseOfInformation = () => {
       setFormData({ ...formData, [field]: value });
     };
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value,
+        }));
+    };
+
     const goToNextPage = () => {
       setCurrentPage(currentPage + 1);
     };
