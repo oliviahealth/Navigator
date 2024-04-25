@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/LandingPage.module.css';
 import oliviaLogo from '../assets/olivia_health_logo.png';
 import ollieHeadLogo from '../assets/ollie_head_logo.png';
@@ -8,25 +8,28 @@ import SignUpModal from './SignUpModal';
 
 
 const LandingPage = () => {
+    const navigate = useNavigate();
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [showSignUpModal, setShowSignUpModal] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // Add this line
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const onLoginSuccess = () => {
         setShowLoginModal(false);
-        setIsAuthenticated(true); // Update the state to indicate the user is authenticated
+        setIsAuthenticated(true);
+        navigate("/dashboard");
     };
 
     const onSignUpSuccess = () => {
         setShowSignUpModal(false);
-        setIsAuthenticated(true); // Similarly, update the state here
+        setIsAuthenticated(true); 
+        navigate("/dashboard");
     };
 
     return (
         <div className={styles.ehrLandingPage}>
             <header className={styles.header}>
                 <div className={styles.logoContainer}>
-                    <span className={styles.recordName}>Electronic Health Records</span>
+                    <span className={styles.recordName}>Olivia-NAVIGATOR</span>
                 </div>
                 <nav className={styles.nav}>
                     {isAuthenticated && <Link to="/dashboard" className={styles.dashboardLink}>Client Dashboard</Link>} {/* Conditionally render this link */}

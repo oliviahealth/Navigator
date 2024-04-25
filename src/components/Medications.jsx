@@ -1,8 +1,10 @@
 // Medications.jsx
 import React, { useState } from 'react';
 import styles from '../styles/Medications.module.css';
+import { useParams } from 'react-router-dom';
 
 const Medications = () => {
+  const { patientId } = useParams();
   const [medications, setMedications] = useState([{ medication: '', dose: '', prescriber: '', notes: '' }]);
 
   const handleAddRow = () => {
@@ -13,9 +15,25 @@ const Medications = () => {
     setMedications(medications.filter((_, idx) => idx !== index));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/medications/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(medications),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
+
 
   const handleCancel = () => {
     window.history.back();

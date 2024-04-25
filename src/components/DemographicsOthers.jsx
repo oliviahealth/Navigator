@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const DemographicsOthers = () => {
+  const { patientId } = useParams();
   const [formData, setFormData] = useState({
     name: '',
     dateOfBirth: '',
@@ -56,10 +58,23 @@ const DemographicsOthers = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    // Submit form data
-    console.log(formData);
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/demographics_others/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

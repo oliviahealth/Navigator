@@ -23,39 +23,43 @@ const AppointmentLogReadOnly = () => {
 
     useEffect(() => {
         const fetchLog = async () => {
-            try {
-                const response = await fetch(`http://localhost:5000/api/get_appointment_log/${patientId}/${log_id}`, {
-                  method: 'GET',
-                  credentials: 'include',
-                });
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                if (response.status === 204) { // Handling no content
-                    console.log("No communication log found for the selected patient.");
-                    return; // Early return if no content
-                }
-                const data = await response.json();
-                
-                setEntry({
-                    date: data.date_time,
-                    method: data.method,
-                    organization: data.organization_or_person,
-                    purpose: data.purpose,
-                    notes: data.notes,
-                    followUp: data.follow_up_needed ? "Yes" : "No",
-                });
-            } catch (error) {
-                console.error('Error fetching communication log:', error);
+          try {
+            const response = await fetch(
+              `http://localhost:5000/api/get_appointment_log/${patientId}/${log_id}`,
+              {
+                method: 'GET',
+                credentials: 'include',
+              }
+            );
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
+      
+            if (response.status === 204) {
+              // Handling no content
+              setEntry({ date: '', who: '', location: '', notes: '' });
+              return; // Early return if no content
+            }
+      
+            const data = await response.json();
+            setEntry({
+              date: data.dateTime || '',
+              who: data.who || '',
+              location: data.location || '',
+              notes: data.notes || '',
+            });
+          } catch (error) {
+            console.error('Error fetching communication log:', error);
+          }
         };
-    
+      
         fetchLog();
-    }, []);
+      }, [patientId, log_id]);
 
     return (
         <div className={styles.pageContainer}>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <div className={styles.pageContent}>
                     <h1>Appointment Log</h1>
                     <div className={styles.appointmentLogForm}>

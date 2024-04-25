@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function SupportSystems() {
+  const { patientId } = useParams(); 
   const [formData, setFormData] = useState({
     currentSupportSystem: '',
     yourStrengths: '',
@@ -16,10 +18,23 @@ function SupportSystems() {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    // Here you can handle the form submission, for example, sending the formData to a server
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/support_systems/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

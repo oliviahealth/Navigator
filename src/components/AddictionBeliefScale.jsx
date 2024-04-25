@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/AddictionBeliefScale.module.css';
+import { useParams } from 'react-router-dom';
 
 const questions = [
   { 
@@ -77,87 +78,71 @@ const questions = [
 ];
 
 const AddictionBeliefScale = () => {
-  const [answers, setAnswers] = useState(Array(questions.length).fill('1'));
+  const { patientId } = useParams();
+  const [answersData, setAnswersData] = useState({
+    addictionBeliefs: questions.map((question, index) => ({
+      id: index,
+      text: question.text,
+      model: question.model,
+      score: '1',
+    }))
+  });
 
   const handleChange = (index, value) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index] = value;
-    setAnswers(updatedAnswers);
+    setAnswersData(prevData => ({
+      ...prevData,
+      addictionBeliefs: prevData.addictionBeliefs.map((item, i) =>
+        i === index ? { ...item, score: value } : item
+      )
+    }));
   };
 
-  const calculateScore = () => {
-    return answers.reduce((total, current) => total + Number(current), 0);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const score = calculateScore();
-    alert(`Your Total Score: ${score}`);
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/addiction_belief_scale/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answersData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit');
+    }
   };
-
-  const handleCancel = () => {
-    window.history.back();
-  };
-
-  const diseaseQuestions = questions.filter(q => q.model === 'disease');
-  const freeWillQuestions = questions.filter(q => q.model === 'free-will');
 
   return (
     <form className={styles.addictionBeliefScale} onSubmit={handleSubmit}>
-      <section>
-        <h2>Disease Model</h2>
-        <p>
-          The stronger the belief in a disease-model item, the higher the score for that item. Thus, disease-model items were scored 5 for “strongly agree” and 1 for “strongly disagree.” The higher the degree of belief in the disease model of addiction, the higher their total score. The highest possible score is 90.
-          <br /><br />
-          On a scale of 1-5, 1 being strongly disagree and 5 being strongly agree, what is the extent to which you agree or disagree with each statement below?
-        </p>
-        {diseaseQuestions.map((question, index) => (
-          <div key={index} className={styles.question}>
-            <p>{`${index + 1}. ${question.text}`}</p>
-            {[1, 2, 3, 4, 5].map((number) => (
-              <label key={number}>
-                <input
-                  type="radio"
-                  name={`question-${index}`}
-                  value={number}
-                  checked={answers[index] === number.toString()}
-                  onChange={() => handleChange(index, number.toString())}
-                />
-                {`${number} - ${['Strongly disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly agree'][number-1]}`}
-              </label>
-            ))}
-          </div>
-        ))}
-      </section>
-
-      <section>
-        <h2>Free-will Model</h2>
-        <p>
-          The stronger the belief in a free-will item, the lower the score for that item. Free-will model items were scored 1 for “strongly agree” and 5 for “strongly disagree.” The higher the degree of belief in the free-will model of addiction, the higher their total score. The highest possible score is 90.
-          <br /><br />
-          On a scale of 1-5, 1 being strongly agree and 5 being strongly disagree, what is the extent to which you agree or disagree with each statement below?
-        </p>
-        {freeWillQuestions.map((question, index) => (
-          <div key={index + diseaseQuestions.length} className={styles.question}>
-            <p>{`${index + 1}. ${question.text}`}</p>
-            {[1, 2, 3, 4, 5].map((number) => (
-              <label key={number}>
-                <input
-                  type="radio"
-                  name={`question-${index + diseaseQuestions.length}`}
-                  value={number}
-                  checked={answers[index + diseaseQuestions.length] === number.toString()}
-                  onChange={() => handleChange(index + diseaseQuestions.length, number.toString())}
-                />
-                {`${number} - ${['Strongly agree', 'Agree', 'Uncertain', 'Disagree', 'Strongly disagree'][number-1]}`}
-              </label>
-            ))}
-          </div>
-        ))}
-      </section>
-
+      {['disease', 'free-will'].map((model, sectionIndex) => (
+        <section key={model}>
+          <h2>{model.charAt(0).toUpperCase() + model.slice(1)} Model</h2>
+          
+          {answersData.addictionBeliefs.filter(q => q.model === model).map((question, index) => (
+            <div key={question.id} className={styles.question}>
+              <p>{`${sectionIndex * (questions.length / 2) + index + 1}. ${question.text}`}</p>
+              {[1, 2, 3, 4, 5].map((number) => (
+                <label key={number}>
+                  <input
+                    type="radio"
+                    name={`question-${question.id}`}
+                    value={number}
+                    checked={question.score === number.toString()}
+                    onChange={(e) => handleChange(question.id, e.target.value)}
+                  />
+                  {`${number} - ${['Strongly disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly agree'][number-1]}`}
+                </label>
+              ))}
+            </div>
+          ))}
+        </section>
+      ))}
       <div className={styles.buttonSection}>
-        <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
+        <button type="button" onClick={() => window.history.back()} className={styles.cancelButton}>Cancel</button>
         <button type="submit" className={styles.submitButton}>Submit</button>
       </div>
     </form>

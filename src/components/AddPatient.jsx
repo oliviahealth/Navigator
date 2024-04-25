@@ -38,16 +38,13 @@ const AddPatientForm = ({ onSubmit }) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json(); // Assuming your server responds with JSON
+      return response.json();
     })
     .then(data => {
-      console.log('Success:', data);
-      // Handle success. For instance, redirect or inform the user
       window.history.back();
     })
     .catch((error) => {
       console.error('Error:', error);
-      // Handle errors here, such as informing the user
     });
   };
   

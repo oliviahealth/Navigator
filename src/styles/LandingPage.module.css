@@ -58,22 +58,39 @@ html, body {
     gap: 1rem;
   }
   
-  .dashboardLink,
   .loginLink {
     text-decoration: none;
     color: #000; /* Black color for visibility */
     font-weight: 400;
-    color: #500000; /* Maroon background for Login */
     padding: 0.5rem 1rem; /* Padding similar to Sign Up */
     border-radius: 25px; /* Rounded corners */
     font-weight: bold;
   }
 
   .dashboardLink {
-    font-weight: 400;
-    background-color: transparent;
-    color: #000;
+    background-color: transparent; 
+    color: #000; 
+    text-decoration: none; /* Remove default underline */
+    padding: 0.5rem 1rem; /* Padding to maintain button-like dimensions */
+    border-radius: 25px; /* Rounded corners */
+    font-weight: bold; /* Bold text */
+    border: 1px; /* No border */
+    display: inline-block; /* Ensures padding and dimensions are respected */
+    text-align: center; /* Center the text inside the link */
+    cursor: pointer; /* Cursor changes to pointer to indicate this is clickable */
+    transition: text-decoration-color 0.3s ease, color 0.3s ease; /* Smooth transition for color changes */
+    padding-right: 50px;
+    white-space: nowrap;
+    margin-top: 5%;
   }
+
+.dashboardLink:hover, .dashboardLink:focus {
+    text-decoration: underline; /* Add underline on hover/focus */
+    text-decoration-color: #007BFF; /* Blue underline color */
+    color: #007BFF; /* Change text color on hover to match underline */
+    outline: none; /* Removes outline to keep styling clean */
+}
+
 
   .loginButton {
     background-color: #500000;
@@ -95,6 +112,7 @@ html, body {
     padding: 0.5rem 1rem;
     border-radius: 25px;
     font-weight: 600;
+    white-space: nowrap;
   }
   
   .mainContent {

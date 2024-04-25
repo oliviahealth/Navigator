@@ -25,7 +25,6 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
       return response.json();
     })
     .then(data => {
-      console.log(data.message); // "Login successful"
       onLoginSuccess(); // Handle successful login
     })
     .catch((error) => {

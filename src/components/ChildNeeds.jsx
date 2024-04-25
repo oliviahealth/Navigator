@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function ChildNeeds() {
+  const { patientId } = useParams();
   const [items, setItems] = useState([
     { id: 1, name: 'Breast Pump', status: '', notes: '' },
     { id: 2, name: 'Breastfeeding Support', status: '', notes: '' },
@@ -28,10 +30,23 @@ function ChildNeeds() {
     setNextId(nextId + 1);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log({ items, generalNotes });
-    // Integration with backend or further processing goes here
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/child_needs/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(items),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (
@@ -75,6 +90,7 @@ function ChildNeeds() {
         </label>
       </div>
       <button type="submit">Submit</button>
+      <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
     </form>
   );
 }

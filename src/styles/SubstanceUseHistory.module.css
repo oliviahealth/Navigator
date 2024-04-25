@@ -1,0 +1,109 @@
+.substanceUseHistory {
+    font-family: Arial, sans-serif;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .substanceTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .substanceTable th,
+  .substanceTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .substanceTable th {
+    background-color: #f4f4f4;
+  }
+  
+  .cancelButton,
+  .submitButton {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .cancelButton {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .submitButton {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .cancelButton:hover {
+    background-color: #d32f2f;
+  }
+  
+  .submitButton:hover {
+    background-color: #45a049;
+  }
+  
+  .tableHeader {
+    text-align: center;
+    font-weight: bold;
+    background-color: #e9ecef;
+    padding: 15px;
+  }
+  
+  .notesInput {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+
+  .medicalServicesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .medicalServicesTable th,
+  .medicalServicesTable td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: left;
+  }
+
+  .medicalServicesTable td {
+    background-color: #fff;
+  }
+  
+  .tableHeader,
+  .tableRowHeader {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-bottom: 2px solid #000; 
+  }
+  
+  .largeInput {
+    width: calc(100% - 2.5px);
+    height: 100px; 
+    margin-top: 10px;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    box-sizing: border-box;
+  }  
+  
+  .label {
+    display: block;
+    margin: 5px 0;
+  }
+  
+  .checkbox-inline {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  

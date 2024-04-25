@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styles from '../styles/CageScreening.module.css';
+import { useParams } from 'react-router-dom';
 
 const CageScreening = ({ onSubmit, onCancel }) => {
+  const { patientId } = useParams();
   const [answers, setAnswers] = useState({
     c: 'no',
     a: 'no',
@@ -14,13 +16,22 @@ const CageScreening = ({ onSubmit, onCancel }) => {
     setAnswers({ ...answers, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const isSubstanceUseDisorder = Object.values(answers).some(answer => answer === 'yes');
-    if (isSubstanceUseDisorder) {
-      window.alert("Indicates a possible substance use disorder and a need for further testing.");
-    } else {
-      window.alert("Does not indicate a possible substance use disorder and no need for further testing.");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/cage_screening/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answers),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
     }
   };
 

@@ -1,8 +1,9 @@
 import '../../styles/EncounterFormStyle.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function DeliveryHistory() {
+  const { patientId } = useParams()
   const [formData, setFormData] = useState({
     participantName: '',
     caseId: '',
@@ -45,10 +46,23 @@ function DeliveryHistory() {
     });
   };
 
-  const onSubmitHandler = (event) => {
+  const onSubmitHandler = async (event) => {
     event.preventDefault();
-    console.log(formData);
-    navigate('/dashboard');
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/delivery_history/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(-1);
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   // ...
@@ -150,6 +164,11 @@ return (
         <div className="form-group">
           <button className="btn" type="submit">Submit</button>
         </div>
+        <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
       </form>
 
       </div>
