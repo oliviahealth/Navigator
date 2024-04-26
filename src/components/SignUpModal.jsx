@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/SignUpModal.module.css';
+import Cookies from 'js-cookie';
 
 const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
   const [formData, setFormData] = useState({
@@ -41,6 +42,7 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
       })
         .then(response => response.json())
         .then(data => {
+          Cookies.set('accessToken', data.access_token, { expires: 1 });
           onSignUpSuccess();
           onClose();
         })

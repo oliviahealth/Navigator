@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import styles from '../styles/LoginModal.module.css';
+import Cookies from 'js-cookie';
 
 const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  ////////////////////////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
     setError(''); // Reset the error message
@@ -25,13 +26,15 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
       return response.json();
     })
     .then(data => {
+      Cookies.set('accessToken', data.access_token, { expires: 1 });
+      
       onLoginSuccess(); // Handle successful login
     })
     .catch((error) => {
       setError(error.message);
     });
   };
-  
+  ///////////////////////////////////////////////////////////////////////
 
   if (!showModal) return null;
 

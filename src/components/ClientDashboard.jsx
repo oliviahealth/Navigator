@@ -1,15 +1,15 @@
 import { React, useState, useEffect } from 'react';
 import styles from '../styles/ClientDashboard.module.css';
-import texasLogo from '../assets/texas_a_and_m_logo.png';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import Dropdown from "./Dropdown";
 import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import PatientDemographics from "./PatientDemographics";
+import Cookies from 'js-cookie';
 
 const ClientDashboard = () => {
+   
+   
    const navigate = useNavigate();
 
    const [patients, setPatients] = useState([]); // State to store patient data
@@ -23,50 +23,26 @@ const ClientDashboard = () => {
       setSearchInput(event.target.value);
    };
 
-   const setPatientSession = async (patient) => {
-      try {
-         const response = await fetch('http://localhost:5000/api/select_patient', {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            credentials: 'include', // for sessions to work properly
-            body: JSON.stringify({
-               firstName: patient.first_name,
-               lastName: patient.last_name,
-               email: patient.email,
-               phone: patient.phone,
-            }),
-         });
-
-         if (!response.ok) {
-            throw new Error('Network response was not ok');
-         }
-         // Handle success
-         const data = await response.json();
-      } catch (error) {
-         console.error('Error:', error);
-      }
-   }
-
-
    const handlePatientClick = (index, patient) => {
       setSelectedPatientIndex(index);
       setSelectedPatientObj(patient);
-      setPatientSession(patient);
 
       localStorage.setItem('selectedPatientIndex', index);
       localStorage.setItem('selectedPatientObj', JSON.stringify(patient));
    };
 
-
+   ///////////////////////////////////////////////////////////////////////////////
    useEffect(() => {
+      const accessToken = Cookies.get('accessToken');
       const fetchPatients = async () => {
          try {
+            console.log(accessToken);
             const response = await fetch('http://localhost:5000/api/patients', {
                method: 'GET',
                credentials: 'include',
+               headers: {
+                  'Authorization': `Bearer ${accessToken}`
+               }
             });
             if (!response.ok) {
                throw new Error('Network response was not ok');
@@ -88,7 +64,7 @@ const ClientDashboard = () => {
          setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
       }
    }, []);
-
+   /////////////////////////////////////////////////////////////////////////////////
 
    const handleLogout = () => {
       localStorage.removeItem('selectedPatientIndex');
