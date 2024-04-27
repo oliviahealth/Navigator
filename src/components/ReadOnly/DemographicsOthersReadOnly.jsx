@@ -90,106 +90,106 @@ const DemographicsOthersReadOnly = () => {
   
       <label>
         Name:
-        <input type="text" name="name" value={formData.name} onChange={handleChange} />
+        <input type="text" name="name" value={formData.name} disabled />
       </label>
       <label>
         Date of Birth:
-        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
+        <input type="date" name="dateOfBirth" value={formData.dateOfBirth} disabled />
       </label>
   
       <fieldset>
         <legend>Current Living Arrangement:</legend>
-        <label><input type="radio" name="currentLivingArrangement" value="Rent/Own a Home" onChange={handleChange} /> Rent/Own a Home</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Homeless" onChange={handleChange} /> Homeless</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Living with Relatives or Friends" onChange={handleChange} /> Living with Relatives or Friends</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Residential Treatment Center" onChange={handleChange} /> Residential Treatment Center</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Correctional Facility" onChange={handleChange} /> Correctional Facility</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Emergency Shelter" onChange={handleChange} /> Emergency Shelter</label>
-        <label><input type="radio" name="currentLivingArrangement" value="Other" onChange={handleChange} /> Other</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Rent/Own a Home" disabled /> Rent/Own a Home</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Homeless" disabled /> Homeless</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Living with Relatives or Friends" disabled /> Living with Relatives or Friends</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Residential Treatment Center" disabled /> Residential Treatment Center</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Correctional Facility" disabled /> Correctional Facility</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Emergency Shelter" disabled /> Emergency Shelter</label>
+        <label><input type="radio" name="currentLivingArrangement" value="Other" disabled /> Other</label>
       </fieldset>
   
       <label>
         Street Address:
-        <input type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} />
+        <input type="text" name="streetAddress" value={formData.streetAddress} disabled />
       </label>
       <label>
         City:
-        <input type="text" name="city" value={formData.city} onChange={handleChange} />
+        <input type="text" name="city" value={formData.city} disabled />
       </label>
       <label>
         State:
-        <input type="text" name="state" value={formData.state} onChange={handleChange} />
+        <input type="text" name="state" value={formData.state} disabled />
       </label>
       <label>
         Zip Code:
-        <input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} />
+        <input type="text" name="zipCode" value={formData.zipCode} disabled />
       </label>
       <label>
         County:
-        <input type="text" name="county" value={formData.county} onChange={handleChange} />
+        <input type="text" name="county" value={formData.county} disabled />
       </label>
   
       <label>
         Primary Phone Numbers:
-        <input type="tel" name="primaryPhoneNumber" value={formData.primaryPhoneNumber} onChange={handleChange} />
+        <input type="tel" name="primaryPhoneNumber" value={formData.primaryPhoneNumber} disabled />
       </label>
   
       <label>
         Emergency Contact:
-        <input type="text" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
+        <input type="text" name="emergencyContact" value={formData.emergencyContact} disabled />
       </label>
       <label>
         Phone Number:
-        <input type="tel" name="emergencyPhoneNumber" value={formData.emergencyPhoneNumber} onChange={handleChange} />
+        <input type="tel" name="emergencyPhoneNumber" value={formData.emergencyPhoneNumber} disabled />
       </label>
       <label>
         Relationship:
-        <input type="text" name="emergencyRelationship" value={formData.emergencyRelationship} onChange={handleChange} />
+        <input type="text" name="emergencyRelationship" value={formData.emergencyRelationship} disabled />
       </label>
   
       <fieldset>
         <legend>Marital Status:</legend>
-        <label><input type="radio" name="maritalStatus" value="Single" onChange={handleChange} /> Single</label>
-        <label><input type="radio" name="maritalStatus" value="Married" onChange={handleChange} /> Married</label>
-        <label><input type="radio" name="maritalStatus" value="Divorced" onChange={handleChange} /> Divorced</label>
-        <label><input type="radio" name="maritalStatus" value="Widowed" onChange={handleChange} /> Widowed</label>
-        <label><input type="radio" name="maritalStatus" value="Separated" onChange={handleChange} /> Separated</label>
+        <label><input type="radio" name="maritalStatus" value="Single" disabled /> Single</label>
+        <label><input type="radio" name="maritalStatus" value="Married" disabled /> Married</label>
+        <label><input type="radio" name="maritalStatus" value="Divorced" disabled /> Divorced</label>
+        <label><input type="radio" name="maritalStatus" value="Widowed" disabled /> Widowed</label>
+        <label><input type="radio" name="maritalStatus" value="Separated" disabled /> Separated</label>
       </fieldset>
   
       <label>
         Insurance Plan:
-        <input type="text" name="insurancePlan" value={formData.insurancePlan} onChange={handleChange} />
+        <input type="text" name="insurancePlan" value={formData.insurancePlan} disabled />
       </label>
       <label>
         Effective Date:
-        <input type="date" name="insuranceEffectiveDate" value={formData.insuranceEffectiveDate} onChange={handleChange} />
+        <input type="date" name="insuranceEffectiveDate" value={formData.insuranceEffectiveDate} disabled />
       </label>
       <label>
         Subscriber ID:
-        <input type="text" name="subscriberId" value={formData.subscriberId} onChange={handleChange} />
+        <input type="text" name="subscriberId" value={formData.subscriberId} disabled />
       </label>
       <label>
         Group ID:
-        <input type="text" name="groupId" value={formData.groupId} onChange={handleChange} />
+        <input type="text" name="groupId" value={formData.groupId} disabled />
       </label>
   
       <fieldset>
         <legend>Prenatal Care (for current or most recent pregnancy)</legend>
         <label>
         Gestational Age at Entry of Care:
-        <input type="text" name="prenatalCare.gestationalAgeAtEntry" value={formData.prenatalCare.gestationalAgeAtEntry} onChange={handleChange} />
+        <input type="text" name="prenatalCare.gestationalAgeAtEntry" value={formData.prenatalCare.gestationalAgeAtEntry} disabled />
       </label>
       <label>
         Due Date:
-        <input type="date" name="prenatalCare.dueDate" value={formData.prenatalCare.dueDate} onChange={handleChange} />
+        <input type="date" name="prenatalCare.dueDate" value={formData.prenatalCare.dueDate} disabled />
       </label>
       <label>
         Delivery Date:
-        <input type="date" name="prenatalCare.deliveryDate" value={formData.prenatalCare.deliveryDate} onChange={handleChange} />
+        <input type="date" name="prenatalCare.deliveryDate" value={formData.prenatalCare.deliveryDate} disabled />
       </label>
       <label>
         Planned Mode of Delivery:
-        <select name="prenatalCare.plannedModeOfDelivery" value={formData.prenatalCare.plannedModeOfDelivery} onChange={handleChange}>
+        <select name="prenatalCare.plannedModeOfDelivery" value={formData.prenatalCare.plannedModeOfDelivery} disabled>
           <option value="">Select</option>
           <option value="Vaginal">Vaginal</option>
           <option value="Cesarean">Cesarean</option>
@@ -197,7 +197,7 @@ const DemographicsOthersReadOnly = () => {
       </label>
       <label>
         Actual Mode of Delivery:
-        <select name="prenatalCare.actualModeOfDelivery" value={formData.prenatalCare.actualModeOfDelivery} onChange={handleChange}>
+        <select name="prenatalCare.actualModeOfDelivery" value={formData.prenatalCare.actualModeOfDelivery} disabled>
           <option value="">Select</option>
           <option value="Vaginal">Vaginal</option>
           <option value="Cesarean">Cesarean</option>
@@ -205,15 +205,15 @@ const DemographicsOthersReadOnly = () => {
       </label>
       <label>
         Attended Postpartum Visit:
-        <input type="checkbox" name="prenatalCare.attendedPostpartumVisit" checked={formData.prenatalCare.attendedPostpartumVisit} onChange={handleChange} /> Yes
+        <input type="checkbox" name="prenatalCare.attendedPostpartumVisit" checked={formData.prenatalCare.attendedPostpartumVisit} disabled /> Yes
       </label>
       <label>
         If so, Location:
-        <input type="text" name="prenatalCare.postpartumVisitLocation" value={formData.prenatalCare.postpartumVisitLocation} onChange={handleChange} />
+        <input type="text" name="prenatalCare.postpartumVisitLocation" value={formData.prenatalCare.postpartumVisitLocation} disabled />
       </label>
       <label>
         Date Completed:
-        <input type="date" name="prenatalCare.dateCompleted" value={formData.prenatalCare.dateCompleted} onChange={handleChange} />
+        <input type="date" name="prenatalCare.dateCompleted" value={formData.prenatalCare.dateCompleted} disabled />
       </label>
       </fieldset>
 
@@ -221,19 +221,19 @@ const DemographicsOthersReadOnly = () => {
         <legend>Obstetric History</legend>
         <label>
           Describe Any Complications During Prior Pregnancies:
-          <textarea name="obstetricHistory.complications" value={formData.obstetricHistory.complications} onChange={handleChange} />
+          <textarea name="obstetricHistory.complications" value={formData.obstetricHistory.complications} disabled />
         </label>
         <label>
           Total Number of Pregnancies:
-          <input type="number" name="obstetricHistory.totalPregnancies" value={formData.obstetricHistory.totalPregnancies} onChange={handleChange} />
+          <input type="number" name="obstetricHistory.totalPregnancies" value={formData.obstetricHistory.totalPregnancies} disabled />
         </label>
         <label>
           Number of Live Births:
-          <input type="number" name="obstetricHistory.liveBirths" value={formData.obstetricHistory.liveBirths} onChange={handleChange} />
+          <input type="number" name="obstetricHistory.liveBirths" value={formData.obstetricHistory.liveBirths} disabled />
         </label>
         <label>
           Number of Children Currently Living with You:
-          <input type="number" name="obstetricHistory.childrenLivingWithYou" value={formData.obstetricHistory.childrenLivingWithYou} onChange={handleChange} />
+          <input type="number" name="obstetricHistory.childrenLivingWithYou" value={formData.obstetricHistory.childrenLivingWithYou} disabled />
         </label>
       </fieldset>
 
@@ -241,7 +241,7 @@ const DemographicsOthersReadOnly = () => {
         <legend>Medical Problems Requiring Ongoing Care</legend>
         <label>
           Diagnoses/Conditions:
-          <textarea name="medicalProblems" value={formData.medicalProblems} onChange={handleChange} />
+          <textarea name="medicalProblems" value={formData.medicalProblems} disabled />
         </label>
       </fieldset>
     </form>

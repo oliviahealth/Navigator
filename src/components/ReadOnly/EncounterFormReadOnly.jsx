@@ -118,7 +118,7 @@ return (
                       type="date" 
                       name="date" 
                       value={visit.date} 
-                      onChange={(event) => handleInputChange(event, index)} 
+                      disabled
                       className="form-control"
                     />
                   </td>
@@ -127,7 +127,7 @@ return (
                       type="text" 
                       name="staff" 
                       value={visit.staff} 
-                      onChange={(event) => handleInputChange(event, index)} 
+                      disabled
                       className="form-control"
                     />
                   </td>
@@ -139,7 +139,7 @@ return (
                           className="checkbox-input" 
                           name="healthInsuranceYes" 
                           checked={visit.healthInsuranceYes} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -148,7 +148,7 @@ return (
                           className="checkbox-input" 
                           name="healthInsuranceNo" 
                           checked={visit.healthInsuranceNo} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> No
                       </label>
                     </div>
@@ -161,7 +161,7 @@ return (
                           className="checkbox-input" 
                           name="parentConcernsYes" 
                           checked={visit.parentConcernsYes} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -170,7 +170,7 @@ return (
                           className="checkbox-input" 
                           name="parentConcernsNo" 
                           checked={visit.parentConcernsNo} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> No
                       </label>
                       <label className="checkbox-label">
@@ -179,7 +179,7 @@ return (
                           className="checkbox-input" 
                           name="parentConcernsDidNotAsk" 
                           checked={visit.parentConcernsDidNotAsk} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> Did not ask
                       </label>
                     </div>
@@ -192,7 +192,7 @@ return (
                           className="checkbox-input" 
                           name="careVisitYes" 
                           checked={visit.careVisitYes} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -201,7 +201,7 @@ return (
                           className="checkbox-input" 
                           name="careVisitNo" 
                           checked={visit.careVisitNo} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> No
                       </label>
                     </div>
@@ -213,7 +213,7 @@ return (
                         name="careVisitDate" 
                         value={visit.careVisitDate} 
                         placeholder="Visit Date"
-                        onChange={(event) => handleInputChange(event, index)} 
+                        disabled
                         className="form-control"
                       />
                       <input 
@@ -221,7 +221,7 @@ return (
                         name="careVisitReason" 
                         value={visit.careVisitReason} 
                         placeholder="Reason"
-                        onChange={(event) => handleInputChange(event, index)} 
+                        disabled
                         className="form-control"
                       />
                     </td>
@@ -235,7 +235,7 @@ return (
                           className="checkbox-input" 
                           name="wellChildVisitYes" 
                           checked={visit.wellChildVisitYes} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -244,7 +244,7 @@ return (
                           className="checkbox-input" 
                           name="wellChildVisitNo" 
                           checked={visit.wellChildVisitNo} 
-                          onChange={(event) => handleInputChange(event, index)} 
+                          disabled
                         /> No
                       </label>
                     </div>
@@ -256,7 +256,7 @@ return (
                         name="visitCompleted" 
                         value={visit.visitCompleted} 
                         placeholder="Visit(s) Completed"
-                        onChange={(event) => handleInputChange(event, index)} 
+                        disabled
                         className="form-control"
                       />
                     </td>
@@ -266,10 +266,6 @@ return (
               ))}
             </tbody>
           </table>
-        </div>
-  
-        <div className="form-group">
-          <button type="button" className="btn" onClick={addCareVisit}>Add Another Visit</button>
         </div>
       </form>
      

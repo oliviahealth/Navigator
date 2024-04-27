@@ -59,7 +59,7 @@ function GoalPlanningReadOnly() {
         <label style={{ display: 'block', marginBottom: '10px' }}>
           Goal:
         </label>
-        <textarea name="goal" value={goalInfo.goal} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
+        <textarea name="goal" value={goalInfo.goal} disabled style={{ width: '100%', height: '60px' }} />
       </div>
 
       <div>
@@ -72,7 +72,7 @@ function GoalPlanningReadOnly() {
             name={`step${index + 1}`}
             placeholder={`Step ${index + 1}`}
             value={step}
-            onChange={handleChange}
+            disabled
             style={{ width: '100%', height: '60px', marginBottom: '10px' }}
           />
         ))}
@@ -82,35 +82,35 @@ function GoalPlanningReadOnly() {
         <label style={{ display: 'block', marginBottom: '10px' }}>
           Skills or Knowledge Needed:
         </label>
-        <textarea name="skillsOrKnowledgeNeeded" value={goalInfo.skillsOrKnowledgeNeeded} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
+        <textarea name="skillsOrKnowledgeNeeded" value={goalInfo.skillsOrKnowledgeNeeded} disabled style={{ width: '100%', height: '60px' }} />
       </div>
 
       <div style={{ margin: '20px 0' }}>
         <label style={{ display: 'block', marginBottom: '10px' }}>
           People or Organizations I need to connect with:
         </label>
-        <textarea name="peopleOrOrganizations" value={goalInfo.peopleOrOrganizations} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
+        <textarea name="peopleOrOrganizations" value={goalInfo.peopleOrOrganizations} disabled style={{ width: '100%', height: '60px' }} />
       </div>
 
       <div style={{ margin: '20px 0' }}>
         <label style={{ display: 'block', marginBottom: '10px' }}>
           This is what success looks like:
         </label>
-        <textarea name="successLooksLike" value={goalInfo.successLooksLike} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
+        <textarea name="successLooksLike" value={goalInfo.successLooksLike} disabled style={{ width: '100%', height: '60px' }} />
       </div>
 
       <div style={{ margin: '20px 0' }}>
         <label style={{ display: 'block', marginBottom: '10px' }}>
           I want to accomplish this goal by:
         </label>
-        <input type="date" name="accomplishBy" value={goalInfo.accomplishBy} onChange={handleChange} style={{ width: '100%' }} />
+        <input type="date" name="accomplishBy" value={goalInfo.accomplishBy} disabled style={{ width: '100%' }} />
       </div>
 
       <div style={{ margin: '20px 0' }}>
         <label style={{ display: 'block', marginBottom: '10px' }}>
           Progress:
         </label>
-        <textarea name="progress" value={goalInfo.progress} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
+        <textarea name="progress" value={goalInfo.progress} disabled style={{ width: '100%', height: '60px' }} />
       </div>
     </form>
   );

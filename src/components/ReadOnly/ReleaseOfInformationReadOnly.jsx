@@ -87,7 +87,6 @@ const ReleaseOfInformationReadOnly = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    console.log("No info found for the selected patient.");
                     return; 
                 }
                 const data = await response.json();
@@ -104,7 +103,7 @@ const ReleaseOfInformationReadOnly = () => {
     if (currentPage === 1) {
         return (
             <div className={styles.releaseForm}>
-                <form>
+                <form inert>
                     <h2>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</h2>
                     <p>
                         GC-MOMS is a free community health care program. The Program provides pregnancy and parenting support to first-time mothers from nurses who visit their homes beginning in early pregnancy through the child’s second birthday.
@@ -123,28 +122,28 @@ const ReleaseOfInformationReadOnly = () => {
                         <br /><br />
                         <div className={styles.contactInfo}>
                             <label htmlFor="firstName">First Name</label>
-                            <input type="text" id="firstName" name="firstName" className={styles.fullWidth} value={formData.firstName} onChange={handleChange} />
+                            <input type="text" id="firstName" name="firstName" className={styles.fullWidth} value={formData.firstName} disabled/>
 
                             <label htmlFor="lastName">Last Name</label>
-                            <input type="text" id="lastName" name="lastName" className={styles.fullWidth} value={formData.lastName} onChange={handleChange} />
+                            <input type="text" id="lastName" name="lastName" className={styles.fullWidth} value={formData.lastName} disabled/>
 
                             <label htmlFor="address">Address</label>
-                            <input type="text" id="address" name="address" className={styles.fullWidth} value={formData.address} onChange={handleChange} />
+                            <input type="text" id="address" name="address" className={styles.fullWidth} value={formData.address} disabled/>
 
                             <label htmlFor="cityStateZip">City/State/Zip</label>
-                            <input type="text" id="cityStateZip" name="cityStateZip" className={styles.fullWidth} value={formData.cityStateZip} onChange={handleChange} />
+                            <input type="text" id="cityStateZip" name="cityStateZip" className={styles.fullWidth} value={formData.cityStateZip} disabled />
 
                             <label htmlFor="homePhone">Home Phone</label>
-                            <input type="tel" id="homePhone" name="homePhone" className={styles.halfWidth} value={formData.homePhone} onChange={handleChange} />
+                            <input type="tel" id="homePhone" name="homePhone" className={styles.halfWidth} value={formData.homePhone} disabled />
 
                             <label htmlFor="cellPhone">Cell Phone</label>
-                            <input type="tel" id="cellPhone" name="cellPhone" className={styles.halfWidth} value={formData.cellPhone} onChange={handleChange} />
+                            <input type="tel" id="cellPhone" name="cellPhone" className={styles.halfWidth} value={formData.cellPhone} disabled/>
 
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" className={styles.fullWidth} value={formData.email} onChange={handleChange} />
+                            <input type="email" id="email" name="email" className={styles.fullWidth} value={formData.email} disabled/>
 
                             <label htmlFor="dob">Date of birth</label>
-                            <input type="date" id="dob" name="dob" className={styles.fullWidth} value={formData.dob} onChange={handleChange} />
+                            <input type="date" id="dob" name="dob" className={styles.fullWidth} value={formData.dob} disabled/>
                         </div>
                         <u>Emergency Contact Information </u>
                         <br /><br />
@@ -162,6 +161,7 @@ const ReleaseOfInformationReadOnly = () => {
                                         value={contact.name}
                                         onChange={(e) => handleEmergencyContactChange(index, 'name', e.target.value)}
                                         className={styles.thirdWidth}
+                                        disabled
                                     />
                                     <input
                                         type="text"
@@ -169,6 +169,7 @@ const ReleaseOfInformationReadOnly = () => {
                                         value={contact.relationship}
                                         onChange={(e) => handleEmergencyContactChange(index, 'relationship', e.target.value)}
                                         className={styles.thirdWidth}
+                                        disabled
                                     />
                                     <input
                                         type="tel"
@@ -176,6 +177,7 @@ const ReleaseOfInformationReadOnly = () => {
                                         value={contact.telephone}
                                         onChange={(e) => handleEmergencyContactChange(index, 'telephone', e.target.value)}
                                         className={styles.thirdWidth}
+                                        disabled
                                     />
                                     <input
                                         type="email"
@@ -183,12 +185,11 @@ const ReleaseOfInformationReadOnly = () => {
                                         value={contact.email}
                                         onChange={(e) => handleEmergencyContactChange(index, 'email', e.target.value)}
                                         className={styles.thirdWidth}
+                                        disabled
                                     />
-                                    <button type="button" onClick={() => removeEmergencyContact(index)} className={styles.removeButton}>Remove</button>
                                 </div>
                             ))}
 
-                            <button type="button" onClick={addEmergencyContact} className={styles.addButton}>Add Contact</button>
                         </div>
                     </p>
                     <div className={styles.buttonSection}>
@@ -203,7 +204,7 @@ const ReleaseOfInformationReadOnly = () => {
     {
         return (
             <div className={styles.releaseForm}>
-            <form>
+            <form inert>
             <p>
             <h2>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</h2>
                 <u>Permission to Share Health Information (Release of Information – ROI)</u>
@@ -239,7 +240,7 @@ const ReleaseOfInformationReadOnly = () => {
     else if (currentPage === 3) {
         return (
             <div className={styles.releaseForm}>
-                <form>
+                <form inert>
                     <p>
                         <h2>ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT & RELEASE OF INFORMATION</h2>
                         <u>Signature Authorization</u>
@@ -253,19 +254,19 @@ const ReleaseOfInformationReadOnly = () => {
                     </p>
                     <div className={styles.signatureSection}>
                         <div className={styles.signatureBlock}>
-                            <input type="text" placeholder="Client's Signature" className={styles.signature} name="clientSignature" value={formData.clientSignature} onChange={handleChange} />
-                            <input type="text" placeholder="Client's Printed Name" className={styles.printName} name="clientPrintedName" value={formData.clientPrintedName} onChange={handleChange} />
-                            <input type="date" className={styles.date} name="clientSignatureDate" value={formData.clientSignatureDate} onChange={handleChange} />
+                            <input type="text" placeholder="Client's Signature" className={styles.signature} name="clientSignature" value={formData.clientSignature} disabled/>
+                            <input type="text" placeholder="Client's Printed Name" className={styles.printName} name="clientPrintedName" value={formData.clientPrintedName} disabled/>
+                            <input type="date" className={styles.date} name="clientSignatureDate" value={formData.clientSignatureDate} disabled />
                         </div>
                         <div className={styles.signatureBlock}>
-                            <input type="text" placeholder="Parent/Legal Guardian Signature" className={styles.signature} name="parentSignature" value={formData.parentSignature} onChange={handleChange} />
-                            <input type="text" placeholder="Parent/Legal Guardian Printed Name" className={styles.printName} name="parentPrintedName" value={formData.parentPrintedName} onChange={handleChange} />
-                            <input type="date" className={styles.date} name="parentSignatureDate" value={formData.parentSignatureDate} onChange={handleChange} />
+                            <input type="text" placeholder="Parent/Legal Guardian Signature" className={styles.signature} name="parentSignature" value={formData.parentSignature} disabled/>
+                            <input type="text" placeholder="Parent/Legal Guardian Printed Name" className={styles.printName} name="parentPrintedName" value={formData.parentPrintedName} disabled/>
+                            <input type="date" className={styles.date} name="parentSignatureDate" value={formData.parentSignatureDate} disabled/>
                         </div>
                         <div className={styles.signatureBlock}>
-                            <input type="text" placeholder="GC-MOMS at Texas A&M University College of Nursing Representative Signature" className={styles.signature} name="representativeSignature" value={formData.representativeSignature} onChange={handleChange} />
-                            <input type="text" placeholder="Representative Printed Name" className={styles.printName} name="representativePrintedName" value={formData.representativePrintedName} onChange={handleChange} />
-                            <input type="date" className={styles.date} name="representativeSignatureDate" value={formData.representativeSignatureDate} onChange={handleChange} />
+                            <input type="text" placeholder="GC-MOMS at Texas A&M University College of Nursing Representative Signature" className={styles.signature} name="representativeSignature" value={formData.representativeSignature} disabled />
+                            <input type="text" placeholder="Representative Printed Name" className={styles.printName} name="representativePrintedName" value={formData.representativePrintedName} disabled />
+                            <input type="date" className={styles.date} name="representativeSignatureDate" value={formData.representativeSignatureDate} disabled />
                         </div>
                     </div>
                     <div className={styles.buttonSection}>

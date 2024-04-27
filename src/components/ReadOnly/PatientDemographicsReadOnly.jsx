@@ -84,21 +84,21 @@ const PatientDemographicsReadOnly = () => {
   return (
     <form>
       <label>Program Start Date*</label>
-      <input type="date" name="programStartDate" value={formData.programStartDate} onChange={handleChange} required />
+      <input type="date" name="programStartDate" value={formData.programStartDate} disabled/>
       <label>Case ID*</label>
-      <input type="text" name="caseId" value={formData.caseId} onChange={handleChange} required />
+      <input type="text" name="caseId" value={formData.caseId} disabled />
       <label>Home Visitor Assigned*</label>
-      <input type="text" name="homeVisitorAssigned" value={formData.homeVisitorAssigned} onChange={handleChange} required />
+      <input type="text" name="homeVisitorAssigned" value={formData.homeVisitorAssigned} disabled />
       <label>Name*</label>
-      <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+      <input type="text" name="name" value={formData.name} disabled />
       <label>Date of Birth*</label>
-      <input type="date" name="dob" value={formData.dob} onChange={handleChange} required />
+      <input type="date" name="dob" value={formData.dob} disabled />
       <label>Address</label>
-      <input type="text" name="address" value={formData.address} onChange={handleChange} />
+      <input type="text" name="address" value={formData.address} disabled />
       <label>Zip Code</label>
-      <input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} />
+      <input type="text" name="zipCode" value={formData.zipCode} disabled />
       <label>Phone</label>
-      <input type="tel" name="phone" value={formData.phone} onChange={handleChange} />
+      <input type="tel" name="phone" value={formData.phone} disabled />
 
         <fieldset>
         <legend>Gender*</legend>
@@ -108,7 +108,7 @@ const PatientDemographicsReadOnly = () => {
             name="gender"
             value="Female"
             checked={formData.gender === 'Female'}
-            onChange={handleChange}
+            disabled
             /> Female
         </label>
         <label>
@@ -117,7 +117,7 @@ const PatientDemographicsReadOnly = () => {
             name="gender"
             value="Male"
             checked={formData.gender === 'Male'}
-            onChange={handleChange}
+            disabled
             /> Male
         </label>
         </fieldset>
@@ -130,7 +130,7 @@ const PatientDemographicsReadOnly = () => {
             name="ethnicity"
             value="Hispanic or Latino/a"
             checked={formData.ethnicity === 'Hispanic or Latino/a'}
-            onChange={handleChange}
+            disabled
             /> Hispanic or Latino/a
         </label>
         <label>
@@ -139,7 +139,7 @@ const PatientDemographicsReadOnly = () => {
             name="ethnicity"
             value="Not Hispanic or Latino/a"
             checked={formData.ethnicity === 'Not Hispanic or Latino/a'}
-            onChange={handleChange}
+            disabled
             /> Not Hispanic or Latino/a
         </label>
         </fieldset>
@@ -153,7 +153,7 @@ const PatientDemographicsReadOnly = () => {
             name="race"
             value="American Indian/Alaska Native"
             checked={formData.race.includes('American Indian/Alaska Native')}
-            onChange={handleChange}
+            disabled
             /> American Indian/Alaska Native
         </label>
         {/* Repeat for each race option */}
@@ -163,7 +163,7 @@ const PatientDemographicsReadOnly = () => {
             name="race"
             value="Asian"
             checked={formData.race.includes('Asian')}
-            onChange={handleChange}
+            disabled
             /> Asian
         </label>
         <label>
@@ -172,13 +172,11 @@ const PatientDemographicsReadOnly = () => {
             name="race"
             value="Black or African American"
             checked={formData.race.includes('Black or African American')}
-            onChange={handleChange}
+            disabled
             /> Black or African American
         </label>
-        {/* Add other races following the same pattern */}
         </fieldset>
 
-        {/* Primary Language Selection */}
         <fieldset>
         <legend>Primary Language (check one)</legend>
         <label>
@@ -187,7 +185,7 @@ const PatientDemographicsReadOnly = () => {
             name="primaryLanguage"
             value="English"
             checked={formData.primaryLanguage === 'English'}
-            onChange={handleChange}
+            disabled
             /> English
         </label>
         <label>
@@ -196,7 +194,7 @@ const PatientDemographicsReadOnly = () => {
             name="primaryLanguage"
             value="Spanish"
             checked={formData.primaryLanguage === 'Spanish'}
-            onChange={handleChange}
+            disabled
             /> Spanish
         </label>
         <label>
@@ -205,8 +203,7 @@ const PatientDemographicsReadOnly = () => {
             type="text"
             name="otherLanguage"
             value={formData.otherLanguage}
-            disabled={formData.primaryLanguage !== 'Other'}
-            onChange={handleChange}
+            disabled
             />
         </label>
         </fieldset>
@@ -220,7 +217,7 @@ const PatientDemographicsReadOnly = () => {
             name="pregnancyStatus"
             value="Pregnant"
             checked={formData.pregnancyStatus === 'Pregnant'}
-            onChange={handleChange}
+            disabled
             /> Pregnant
         </label>
         <label>
@@ -229,7 +226,7 @@ const PatientDemographicsReadOnly = () => {
             name="pregnancyStatus"
             value="Not Pregnant"
             checked={formData.pregnancyStatus === 'Not Pregnant'}
-            onChange={handleChange}
+            disabled
             /> Not Pregnant
         </label>
         <label>
@@ -238,7 +235,7 @@ const PatientDemographicsReadOnly = () => {
             name="pregnancyStatus"
             value="NA"
             checked={formData.pregnancyStatus === 'NA'}
-            onChange={handleChange}
+            disabled
             /> NA (male Participant)
         </label>
         </fieldset>
@@ -251,7 +248,7 @@ const PatientDemographicsReadOnly = () => {
             name="maritalStatus"
             value="Married"
             checked={formData.maritalStatus === 'Married'}
-            onChange={handleChange}
+            disabled
             /> Married
         </label>
         <label>
@@ -260,7 +257,7 @@ const PatientDemographicsReadOnly = () => {
             name="maritalStatus"
             value="Not married but living together"
             checked={formData.maritalStatus === 'Not married but living together'}
-            onChange={handleChange}
+            disabled
             /> Not married but living together
         </label>
         <label>
@@ -269,7 +266,7 @@ const PatientDemographicsReadOnly = () => {
             name="maritalStatus"
             value="Never married and not living with partner"
             checked={formData.maritalStatus === 'Never married and not living with partner'}
-            onChange={handleChange}
+            disabled
             /> Never married and not living with partner
         </label>
         <label>
@@ -278,7 +275,7 @@ const PatientDemographicsReadOnly = () => {
             name="maritalStatus"
             value="Separated or Divorced"
             checked={formData.maritalStatus === 'Separated or Divorced'}
-            onChange={handleChange}
+            disabled
             /> Separated or Divorced
         </label>
         <label>
@@ -287,7 +284,7 @@ const PatientDemographicsReadOnly = () => {
             name="maritalStatus"
             value="Widowed"
             checked={formData.maritalStatus === 'Widowed'}
-            onChange={handleChange}
+            disabled
             /> Widowed
         </label>
         </fieldset>
@@ -305,7 +302,7 @@ const PatientDemographicsReadOnly = () => {
                 name="childAbuse"
                 value="Yes"
                 checked={formData.childAbuse === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -314,7 +311,7 @@ const PatientDemographicsReadOnly = () => {
                 name="childAbuse"
                 value="No"
                 checked={formData.childAbuse === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -328,7 +325,7 @@ const PatientDemographicsReadOnly = () => {
                 name="substanceAbuse"
                 value="Yes"
                 checked={formData.substanceAbuse === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -337,7 +334,7 @@ const PatientDemographicsReadOnly = () => {
                 name="substanceAbuse"
                 value="No"
                 checked={formData.substanceAbuse === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -351,7 +348,7 @@ const PatientDemographicsReadOnly = () => {
                 name="tobaccoUse"
                 value="Yes"
                 checked={formData.tobaccoUse === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -360,7 +357,7 @@ const PatientDemographicsReadOnly = () => {
                 name="tobaccoUse"
                 value="No"
                 checked={formData.tobaccoUse === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -374,7 +371,7 @@ const PatientDemographicsReadOnly = () => {
                 name="lowStudentAchievement"
                 value="Yes"
                 checked={formData.lowStudentAchievement === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -383,7 +380,7 @@ const PatientDemographicsReadOnly = () => {
                 name="lowStudentAchievement"
                 value="No"
                 checked={formData.lowStudentAchievement === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -397,7 +394,7 @@ const PatientDemographicsReadOnly = () => {
                 name="developmentalDelay"
                 value="Yes"
                 checked={formData.developmentalDelay === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -406,7 +403,7 @@ const PatientDemographicsReadOnly = () => {
                 name="developmentalDelay"
                 value="No"
                 checked={formData.developmentalDelay === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -419,7 +416,7 @@ const PatientDemographicsReadOnly = () => {
                 name="armedForces"
                 value="Yes"
                 checked={formData.armedForces === 'Yes'}
-                onChange={handleChange}
+                disabled
             /> Yes
             </label>
             <label>
@@ -428,7 +425,7 @@ const PatientDemographicsReadOnly = () => {
                 name="armedForces"
                 value="No"
                 checked={formData.armedForces === 'No'}
-                onChange={handleChange}
+                disabled
             /> No
             </label>
         </div>
@@ -443,7 +440,7 @@ const PatientDemographicsReadOnly = () => {
             name="reEnrollment"
             value="Yes"
             checked={formData.reEnrollment === 'Yes'}
-            onChange={handleChange}
+            disabled
             /> Yes
         </label>
         <label>
@@ -452,7 +449,7 @@ const PatientDemographicsReadOnly = () => {
             name="reEnrollment"
             value="No"
             checked={formData.reEnrollment === 'No'}
-            onChange={handleChange}
+            disabled
             /> No
         </label>
         </div>
@@ -466,7 +463,7 @@ const PatientDemographicsReadOnly = () => {
             name="transferFromAnotherSite"
             value="Yes"
             checked={formData.transferFromAnotherSite === 'Yes'}
-            onChange={handleChange}
+            disabled
             /> Yes
         </label>
         <label>
@@ -475,7 +472,7 @@ const PatientDemographicsReadOnly = () => {
             name="transferFromAnotherSite"
             value="No"
             checked={formData.transferFromAnotherSite === 'No'}
-            onChange={handleChange}
+            disabled
             /> No
         </label>
         </div>

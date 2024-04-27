@@ -139,23 +139,22 @@ function ReferralsServicesReadOnly() {
             <div key={`${category}-${index}`} style={{ marginBottom: '10px' }}>
               <div><b>{service.name}</b></div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <label><input type="checkbox" checked={service.discussed} onChange={e => handleServiceChange(category, index, 'discussed', e.target.checked)} /> Discussed</label>
-                <label><input type="checkbox" checked={service.needed} onChange={e => handleServiceChange(category, index, 'needed', e.target.checked)} /> Needed</label>
-                <label><input type="checkbox" checked={service.referred} onChange={e => handleServiceChange(category, index, 'referred', e.target.checked)} /> Referred</label>
-                <label><input type="checkbox" checked={service.participating} onChange={e => handleServiceChange(category, index, 'participating', e.target.checked)} /> Participating</label>
-                <label><input type="checkbox" checked={service.completed} onChange={e => handleServiceChange(category, index, 'completed', e.target.checked)} /> Completed</label>
-                <label><input type="checkbox" checked={service.na} onChange={e => handleServiceChange(category, index, 'na', e.target.checked)} /> N/A</label>
-                <input type="text" placeholder="Notes" value={service.notes} onChange={(e) => handleServiceChange(category, index, 'notes', e)} style={{ marginTop: '5px' }} />
+                <label><input type="checkbox" checked={service.discussed} disabled /> Discussed</label>
+                <label><input type="checkbox" checked={service.needed} /> Needed</label>
+                <label><input type="checkbox" checked={service.referred} disabled /> Referred</label>
+                <label><input type="checkbox" checked={service.participating} disabled/> Participating</label>
+                <label><input type="checkbox" checked={service.completed} disabled /> Completed</label>
+                <label><input type="checkbox" checked={service.na} disabled /> N/A</label>
+                <input type="text" placeholder="Notes" value={service.notes} disabled style={{ marginTop: '5px' }} />
               </div>
             </div>
           ))}
-          <button type="button" onClick={() => addOtherService(category)} style={{ marginTop: '10px' }}>Add Other</button>
         </div>
       ))}
       <div style={{ marginTop: '20px' }}>
         <label>
           Notes:
-          <textarea value={services.notes} onChange={e => setServices({ ...services, notes: e.target.value })} style={{ width: '100%', height: '100px' }} />
+          <textarea value={services.notes} disabled style={{ width: '100%', height: '100px' }} />
         </label>
       </div>
     </form>

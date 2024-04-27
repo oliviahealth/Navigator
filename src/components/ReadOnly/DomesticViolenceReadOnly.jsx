@@ -83,7 +83,7 @@ const DomesticViolenceScreenFormReadOnly = () => {
                   name={key}
                   value="yes"
                   checked={answers[key] === 'yes'}
-                  onChange={handleInputChange}
+                  disabled
                 />
               </label>
               <label>
@@ -93,7 +93,7 @@ const DomesticViolenceScreenFormReadOnly = () => {
                   name={key}
                   value="no"
                   checked={answers[key] === 'no'}
-                  onChange={handleInputChange}
+                  disabled
                 />
               </label>
             </div>

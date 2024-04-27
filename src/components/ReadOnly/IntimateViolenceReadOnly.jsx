@@ -91,7 +91,7 @@ const IPVDisclosureFormReadOnly = () => {
             type="text" 
             name="participantName" 
             value={formData.participantName} 
-            onChange={handleChange} 
+            disabled 
           />
         </label>
         <label>
@@ -100,7 +100,7 @@ const IPVDisclosureFormReadOnly = () => {
             type="text" 
             name="caseId" 
             value={formData.caseId} 
-            onChange={handleChange} 
+            disabled 
           />
         </label>
         <label>
@@ -109,7 +109,7 @@ const IPVDisclosureFormReadOnly = () => {
             type="date" 
             name="dateCompleted" 
             value={formData.dateCompleted} 
-            onChange={handleChange} 
+            disabled 
           />
         </label>
         <label>
@@ -118,7 +118,7 @@ const IPVDisclosureFormReadOnly = () => {
             type="text" 
             name="staffName" 
             value={formData.staffName} 
-            onChange={handleChange} 
+            disabled 
           />
         </label>
 
@@ -131,7 +131,7 @@ const IPVDisclosureFormReadOnly = () => {
               name="screeningToolUsed" 
               value="PAT_HFA" 
               checked={formData.screeningToolUsed === 'PAT_HFA'} 
-              onChange={handleChange} 
+              disabled 
             />
           </label>
           <label>
@@ -141,7 +141,7 @@ const IPVDisclosureFormReadOnly = () => {
               name="screeningToolUsed" 
               value="HITS_NFP" 
               checked={formData.screeningToolUsed === 'HITS_NFP'} 
-              onChange={handleChange} 
+              disabled 
             />
           </label>
           <label>
@@ -151,7 +151,7 @@ const IPVDisclosureFormReadOnly = () => {
               name="screeningToolUsed" 
               value="Not_Screened" 
               checked={formData.screeningToolUsed === 'Not_Screened'} 
-              onChange={handleChange} 
+              disabled 
             />
           </label>
         </div>
@@ -162,7 +162,7 @@ const IPVDisclosureFormReadOnly = () => {
               type="number" 
               name="totalScore" 
               value={formData.totalScore} 
-              onChange={handleChange} 
+              disabled 
             />
           </label>
         )}
@@ -174,7 +174,7 @@ const IPVDisclosureFormReadOnly = () => {
                 type="checkbox" 
                 name="notScreenedButDisclosed" 
                 checked={formData.notScreenedButDisclosed} 
-                onChange={handleCheckboxChange} 
+                disabled
               />
             </label>
             <label>
@@ -183,7 +183,7 @@ const IPVDisclosureFormReadOnly = () => {
                 type="date" 
                 name="disclosureDate" 
                 value={formData.disclosureDate} 
-                onChange={handleChange} 
+                disabled 
               />
             </label>
           </>

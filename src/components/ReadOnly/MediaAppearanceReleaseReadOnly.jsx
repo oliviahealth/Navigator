@@ -75,10 +75,10 @@ const MediaAppearanceReleaseReadOnly = () => {
             <br /><br />
             <div className={styles.inputField}>
               <label htmlFor="participant">Participant:</label>
-              <input type="text" id="participant" name="participant" className={styles.textInput} value={formData.participant} onChange={handleInputChange} />
+              <input type="text" id="participant" name="participant" className={styles.textInput} value={formData.participant} disabled />
   
               <label htmlFor="address">Address:</label>
-              <input type="text" id="address" name="address" className={styles.textInput} value={formData.address} onChange={handleInputChange} />
+              <input type="text" id="address" name="address" className={styles.textInput} value={formData.address} disabled />
             </div>
             1. The Participant consents to the use by Texas A&M University and assigns and grants to System Member the  irrevocable and unconditional power, right, privilege and permission to make, record, produce, edit, modify, reproduce, exhibit,  distribute, publish, publicly or privately display, publicly or privately perform, create derivative works, and transmit by the  means of still photography, live or recorded broadcast, cablecast, webcast, or Internet streaming, broadband, wireless, mobile,  film, videotape, or any other similar mechanical or electronic method (whether now known or invented later) the Participant’s  performance, contribution, appearance, name, voice, picture, likeness, poses, actions and any combination of any of these (the  “Appearance”) in connection with the Program of Excellence for Mothers, Children & Families production conducted by  System Member (the “Project”) which is generally for the purposes of education, instruction, research, publicity, advertising,  and promotion in connection with the Project. Participant also waives any moral or similar rights Participant may have in the Project relating to the Appearance. 
             <br></br><br></br> 
@@ -102,15 +102,15 @@ const MediaAppearanceReleaseReadOnly = () => {
                 <div className={styles.signatureSection}>
                   <div className={styles.participantSignature}>
                       <label htmlFor="participantSignature">Signature:</label>
-                      <input type="text" id="participantSignature" name="participantSignature" value={formData.participantSignature} onChange={handleInputChange} />
+                      <input type="text" id="participantSignature" name="participantSignature" value={formData.participantSignature} disabled />
                   </div>
                   <div className={styles.participantPrintedName}>
                       <label htmlFor="participantPrintedName">Printed Name:</label>
-                      <input type="text" id="participantPrintedName" name="participantPrintedName" value={formData.participantPrintedName} onChange={handleInputChange} />
+                      <input type="text" id="participantPrintedName" name="participantPrintedName" value={formData.participantPrintedName} disabled />
                   </div>
                   <div className={styles.participantDate}>
                       <label htmlFor="participantDate">Date:</label>
-                      <input type="date" id="participantDate" name="participantDate" value={formData.participantDate} onChange={handleInputChange} />
+                      <input type="date" id="participantDate" name="participantDate" value={formData.participantDate} disabled />
                   </div>
                   <hr />
                   IF PARTICIPANT IS UNDER THE AGE OF 18 YEARS, A PARENT OR LEGAL GUARDIAN MUST SIGN BELOW:
@@ -119,15 +119,15 @@ const MediaAppearanceReleaseReadOnly = () => {
                   <br /><br />
                   <div className={styles.guardianSignature}>
                       <label htmlFor="guardianSignature">Signature (Parent or Legal Guardian):</label>
-                      <input type="text" id="guardianSignature" name="guardianSignature" value={formData.guardianSignature} onChange={handleInputChange} />
+                      <input type="text" id="guardianSignature" name="guardianSignature" value={formData.guardianSignature} disabled />
                   </div>
                   <div className={styles.guardianPrintedName}>
                       <label htmlFor="guardianPrintedName">Printed Name:</label>
-                      <input type="text" id="guardianPrintedName" name="guardianPrintedName" value={formData.guardianPrintedName} onChange={handleInputChange} />
+                      <input type="text" id="guardianPrintedName" name="guardianPrintedName" value={formData.guardianPrintedName} disabled />
                   </div>
                   <div className={styles.guardianDate}>
                       <label htmlFor="guardianDate">Date:</label>
-                      <input type="date" id="guardianDate" name="guardianDate" value={formData.guardianDate} onChange={handleInputChange} />
+                      <input type="date" id="guardianDate" name="guardianDate" value={formData.guardianDate} disabled />
                   </div>
                 </div>
             </p>

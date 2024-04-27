@@ -88,7 +88,7 @@ const DrugAbuseScreeningReadOnly = () => {
                     name={`question-${index}`}
                     value="0"
                     checked={answers[index] === '0'}
-                    onChange={() => handleOptionChange(index, '0')}
+                    disabled
                   />
                 </td>
                 <td>
@@ -97,7 +97,7 @@ const DrugAbuseScreeningReadOnly = () => {
                     name={`question-${index}`}
                     value="1"
                     checked={answers[index] === '1'}
-                    onChange={() => handleOptionChange(index, '1')}
+                    disabled
                   />
                 </td>
               </tr>

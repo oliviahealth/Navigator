@@ -97,13 +97,10 @@ function EmergencyContactReadOnly() {
                       name={field}
                       placeholder={formatSectionTitle(field)}
                       value={fieldVal}
-                      onChange={(e) => handleInputChange(key, index, field, e.target.value)}
+                      disabled
                     />
                   )
                 ))}
-                {(index === value.length - 1) && (
-                  <button type="button" onClick={() => addNewEntry(key)}>Add Another {formatSectionTitle(key)}</button>
-                )}
               </div>
             ))
           ) : typeof value === 'object' ? (
@@ -114,7 +111,7 @@ function EmergencyContactReadOnly() {
                 name={field}
                 placeholder={formatSectionTitle(field)}
                 value={fieldVal}
-                onChange={(e) => setFormData({ ...formData, [key]: { ...formData[key], [field]: e.target.value } })}
+                disabled
               />
             ))
           ) : (
@@ -122,7 +119,7 @@ function EmergencyContactReadOnly() {
               key={key}
               placeholder="Notes"
               value={value}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              disabled
             />
           )}
         </div>

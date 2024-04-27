@@ -56,7 +56,7 @@ const PregnancySpacingReadOnly = () => {
             type="text"
             id="spacing"
             value={pregnancySpacing}
-            onChange={handleSpacingChange}
+            disabled
             className={styles.input}
           />
         </div>

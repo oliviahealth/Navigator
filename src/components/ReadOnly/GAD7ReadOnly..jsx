@@ -26,7 +26,6 @@ function GAD7ReadOnly() {
                 }
                 const data = await response.json();
                 setResponses(data[2].responses);
-                console.log(data[2].responses)
                 setTotalScore(data[2].totalScore);
                 
             } catch (error) {

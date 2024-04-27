@@ -36,7 +36,6 @@ const ClientDashboard = () => {
       const accessToken = Cookies.get('accessToken');
       const fetchPatients = async () => {
          try {
-            console.log(accessToken);
             const response = await fetch('http://localhost:5000/api/patients', {
                method: 'GET',
                credentials: 'include',

@@ -83,28 +83,27 @@ function CurrentLivingReadOnly() {
                 <input
                   type="text"
                   value={person.name}
-                  onChange={(e) => handleChange('livingWith', index, 'name', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="date"
                   value={person.dateOfBirth}
-                  onChange={(e) => handleChange('livingWith', index, 'dateOfBirth', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={person.relation}
-                  onChange={(e) => handleChange('livingWith', index, 'relation', e.target.value)}
+                  disabled
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={() => addRow('livingWith')}>Add Row</button>
   
       <h3>List of Children NOT Living with You</h3>
       <table>
@@ -122,34 +121,33 @@ function CurrentLivingReadOnly() {
                 <input
                   type="text"
                   value={child.name}
-                  onChange={(e) => handleChange('notLivingWith', index, 'name', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="date"
                   value={child.dateOfBirth}
-                  onChange={(e) => handleChange('notLivingWith', index, 'dateOfBirth', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={child.caregiverContact}
-                  onChange={(e) => handleChange('notLivingWith', index, 'caregiverContact', e.target.value)}
+                  disabled
                 />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={() => addRow('notLivingWith')}>Add Row</button>
   
       <label>
         Notes:
         <textarea
           value={formData.notes}
-          onChange={(e) => handleNotesChange(e.target.value)}
+          disabled
         />
       </label>  
     </form>

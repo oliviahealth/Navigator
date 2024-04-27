@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/SubstanceUseRelapse.module.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const SubstanceUseRelapseReadOnly = () => {
+  const navigate = useNavigate();
   const { patientId, log_id } = useParams();
   const [formValues, setFormValues] = useState({
     triggers: '',
@@ -55,7 +56,7 @@ const SubstanceUseRelapseReadOnly = () => {
   };
 
   const handleCancel = () => {
-    // Cancel logic here
+    navigate(-1);
   };
 
   return (
@@ -74,7 +75,7 @@ const SubstanceUseRelapseReadOnly = () => {
               <td>List 3 things that you know trigger your desire to use</td>
             </tr>
             <tr>
-              <td><textarea name="triggers" rows="3" value={formValues.triggers} onChange={handleChange}></textarea></td>
+              <td><textarea name="triggers" rows="3" value={formValues.triggers} disabled></textarea></td>
             </tr>
             <tr>
               <td><textarea rows="3"></textarea></td>
@@ -86,7 +87,7 @@ const SubstanceUseRelapseReadOnly = () => {
               <td>List 3 skills or things you enjoy doing that can help get your mind off using</td>
             </tr>
             <tr>
-              <td><textarea name="skills" rows="3" value={formValues.skills} onChange={handleChange}></textarea></td>
+              <td><textarea name="skills" rows="3" value={formValues.skills} disabled></textarea></td>
             </tr>
             <tr>
               <td><textarea rows="3"></textarea></td>
@@ -98,7 +99,7 @@ const SubstanceUseRelapseReadOnly = () => {
               <td>List 3 people you can talk to if you are thinking about using</td>
             </tr>
             <tr>
-              <td><textarea name="support" rows="3" value={formValues.support} onChange={handleChange}></textarea></td>
+              <td><textarea name="support" rows="3" value={formValues.support} disabled></textarea></td>
             </tr>
             <tr>
               <td><textarea rows="3"></textarea></td>
@@ -132,7 +133,7 @@ const SubstanceUseRelapseReadOnly = () => {
                     name="name" 
                     placeholder="Enter Name" 
                     value={caregiver.name} 
-                    onChange={(e) => handleSafeCaregiverChange(e, index)} 
+                    disabled
                     />
                 </td>
                 </tr>
@@ -144,7 +145,7 @@ const SubstanceUseRelapseReadOnly = () => {
                     name="contactNumber" 
                     placeholder="Enter Contact Number" 
                     value={caregiver.contactNumber} 
-                    onChange={(e) => handleSafeCaregiverChange(e, index)} 
+                    disabled
                     />
                 </td>
                 </tr>
@@ -156,7 +157,7 @@ const SubstanceUseRelapseReadOnly = () => {
                     name="relationship" 
                     placeholder="Enter Relationship" 
                     value={caregiver.relationship} 
-                    onChange={(e) => handleSafeCaregiverChange(e, index)} 
+                    disabled
                     />
                 </td>
                 </tr>
@@ -172,15 +173,15 @@ const SubstanceUseRelapseReadOnly = () => {
             <td colSpan="3">I have Naloxone (opioid overdose reversal drug), and I know how to use it.</td>
             </tr>
             <tr>
-            <td><input type="radio" name="naloxone" value="yes" /> Yes</td>
-            <td><input type="radio" name="naloxone" value="no" /> No</td>
+            <td><input type="radio" name="naloxone" value="yes" disabled/> Yes</td>
+            <td><input type="radio" name="naloxone" value="no" disabled/> No</td>
             </tr>
             <tr>
             <td colSpan="3">I have a support person who has Naloxone (opioid overdose drug) and knows how to use it.</td>
             </tr>
             <tr>
-            <td><input type="radio" name="supportNaloxone" value="yes" /> Yes</td>
-            <td><input type="radio" name="supportNaloxone" value="no" /> No</td>
+            <td><input type="radio" name="supportNaloxone" value="yes" disabled/> Yes</td>
+            <td><input type="radio" name="supportNaloxone" value="no" disabled/> No</td>
             </tr>
         </tbody>
         </table>

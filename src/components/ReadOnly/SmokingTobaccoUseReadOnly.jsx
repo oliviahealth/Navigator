@@ -105,7 +105,7 @@ const SmokingTobaccoUseReadOnly = () => {
                             <input
                                 type="checkbox"
                                 checked={formData.smokingStatus[status] || false}
-                                onChange={(e) => handleChange(status, e.target.checked, 'smokingStatus')}
+                                disabled
                             />
                             {`Status ${status}`}
                         </label>
@@ -127,7 +127,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                                     type="radio"
                                                     name={`product${index}-time${i}`}
                                                     checked={formData.tobaccoUse[`product${index}-time${i}`] || false}
-                                                    onChange={(e) => handleChange(`product${index}-time${i}`, e.target.checked, 'tobaccoUse')}
+                                                    disabled
                                                 />
                                             </td>
                                         ))}
@@ -145,7 +145,7 @@ const SmokingTobaccoUseReadOnly = () => {
                         rows="4"
                         placeholder="Describe your usage"
                         value={formData.typicalUsage}
-                        onChange={(e) => handleChange('typicalUsage', e.target.value)}
+                        disabled
                     />
                 </section>
 
@@ -158,7 +158,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="mentholProductUse"
                                 value="yes"
                                 checked={formData.mentholProductUse === 'yes'}
-                                onChange={(e) => handleChange('mentholProductUse', e.target.value)}
+                                disabled
                             />
                             Yes
                         </label>
@@ -168,7 +168,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="mentholProductUse"
                                 value="no"
                                 checked={formData.mentholProductUse === 'no'}
-                                onChange={(e) => handleChange('mentholProductUse', e.target.value)}
+                                disabled
                             />
                             No
                         </label>
@@ -182,7 +182,7 @@ const SmokingTobaccoUseReadOnly = () => {
                         rows="2"
                         placeholder="List all brands"
                         value={formData.brandsUsed}
-                        onChange={(e) => handleChange('brandsUsed', e.target.value)}
+                        disabled
                     />
                 </section>
 
@@ -195,7 +195,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="aroundChildren"
                                 value="smoke"
                                 checked={formData.exposure.aroundChildren === 'smoke'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Smoke
                         </label>
@@ -205,7 +205,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="aroundChildren"
                                 value="vape"
                                 checked={formData.exposure.aroundChildren === 'vape'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Vape
                         </label>
@@ -215,7 +215,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="aroundChildren"
                                 value="neither"
                                 checked={formData.exposure.aroundChildren === 'neither'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Neither
                         </label>
@@ -250,7 +250,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="wakeUpForTobacco"
                                 value="yes"
                                 checked={formData.wakeUpForTobacco === 'yes'}
-                                onChange={(e) => handleChange('wakeUpForTobacco', e.target.value)}
+                                disabled
                             />
                             Yes
                         </label>
@@ -260,7 +260,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 name="wakeUpForTobacco"
                                 value="no"
                                 checked={formData.wakeUpForTobacco === 'no'}
-                                onChange={(e) => handleChange('wakeUpForTobacco', e.target.value)}
+                                disabled
                             />
                             No
                         </label>
@@ -272,7 +272,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                 className={styles.nightsPerWeekInput}
                                 placeholder="____ nights per week"
                                 value={formData.nightsPerWeek}
-                                onChange={(e) => handleChange('nightsPerWeek', e.target.value)}
+                                disabled
                             />
                         </label>
                     </div>
@@ -288,7 +288,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                     name="quitAttempts"
                                     value={attempt}
                                     checked={formData.quitAttempts === attempt}
-                                    onChange={(e) => handleChange('quitAttempts', e.target.value)}
+                                    disabled
                                 />
                                 {attempt}
                             </label>
@@ -315,7 +315,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="text"
                                             name={`recentQuit${field}`}
                                             value={formData.pastQuitDetails[`recentQuit${field}`]}
-                                            onChange={(e) => handleChange(`recentQuit${field}`, e.target.value, 'pastQuitDetails')}
+                                            disabled
                                         />
                                     </td>
                                     <td>
@@ -323,7 +323,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="text"
                                             name={`longestQuit${field}`}
                                             value={formData.pastQuitDetails[`longestQuit${field}`]}
-                                            onChange={(e) => handleChange(`longestQuit${field}`, e.target.value, 'pastQuitDetails')}
+                                            disabled
                                         />
                                     </td>
                                 </tr>
@@ -341,7 +341,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                     <input
                                         type="checkbox"
                                         checked={formData.medicationsUsed[medication] || false}
-                                        onChange={(e) => handleChange(medication, e.target.checked, 'medicationsUsed')}
+                                        disabled
                                     />
                                     {medication}
                                 </label>

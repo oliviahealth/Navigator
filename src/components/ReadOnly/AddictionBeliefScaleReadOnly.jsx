@@ -138,7 +138,7 @@ const AddictionBeliefScaleReadOnly = () => {
                     name={`question-${question.id}`}
                     value={number}
                     checked={question.score === number.toString()}
-                    onChange={(e) => handleChange(question.id, e.target.value)}
+                    disabled
                   />
                   {`${number} - ${['Strongly disagree', 'Disagree', 'Uncertain', 'Agree', 'Strongly agree'][number-1]}`}
                 </label>

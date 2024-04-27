@@ -31,7 +31,6 @@ function DURELReadOnly() {
 
                 const data = await response.json();
                 setResponses(data[2])
-                console.log(data[2])
             } catch (error) {
                 setError(error.message);
             } finally {
