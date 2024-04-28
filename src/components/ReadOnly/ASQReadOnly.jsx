@@ -80,19 +80,19 @@ function ASQReadOnly() {
 
       <form>
         <label htmlFor="participantName">Participant Name</label>
-        <input type="text" id="participantName" name="participantName" onChange={handleInputChange} value={formValues.participantName} />
+        <input type="text" id="participantName" name="participantName" disabled value={formValues.participantName} />
 
         <label htmlFor="caseId">Case ID</label>
-        <input type="text" id="caseId" name="caseId" onChange={handleInputChange} value={formValues.caseId} />
+        <input type="text" id="caseId" name="caseId" disabled value={formValues.caseId} />
 
         <label htmlFor="dateCompleted">Date Completed*</label>
-        <input type="date" id="dateCompleted" name="dateCompleted" onChange={handleInputChange} value={formValues.dateCompleted} />
+        <input type="date" id="dateCompleted" name="dateCompleted" disabled value={formValues.dateCompleted} />
 
         <label htmlFor="staffName">Staff Name</label>
-        <input type="text" id="staffName" name="staffName" onChange={handleInputChange} value={formValues.staffName} />
+        <input type="text" id="staffName" name="staffName" disabled value={formValues.staffName} />
 
         <label htmlFor="childName">Child Name*</label>
-        <input type="text" id="childName" name="childName" onChange={handleInputChange} value={formValues.childName} />
+        <input type="text" id="childName" name="childName" disabled value={formValues.childName} />
 
         <div className="form-section questionnaire">
           <p>Complete this form when an ASQ-3 Questionnaire required by PAGEONE-EHR is administered.</p>
@@ -104,7 +104,7 @@ function ASQReadOnly() {
                 id={`${month}month`}
                 name="questionnaireUsed"
                 value={month}
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.questionnaireUsed === `${month}`}
               />
               <label htmlFor={`${month}month`}>{month} month</label>
@@ -120,7 +120,7 @@ function ASQReadOnly() {
               id="yesPremature"
               name="adjustedForPrematurity"
               value="Yes"
-              onChange={handleInputChange}
+              disabled
               checked={formValues.adjustedForPrematurity === 'Yes'}
             />
             <label htmlFor="yesPremature">Yes</label>
@@ -129,7 +129,7 @@ function ASQReadOnly() {
               id="noPremature"
               name="adjustedForPrematurity"
               value="No"
-              onChange={handleInputChange}
+              disabled
               checked={formValues.adjustedForPrematurity === 'No'}
             />
             <label htmlFor="noPremature">No</label>
@@ -141,7 +141,7 @@ function ASQReadOnly() {
           type="number"
           id="communicationScore"
           name="communicationScore"
-          onChange={handleInputChange}
+          disabled
           value={formValues.communicationScore}
         />
 
@@ -150,7 +150,7 @@ function ASQReadOnly() {
           type="number"
           id="grossMotorScore"
           name="grossMotorScore"
-          onChange={handleInputChange}
+          disabled
           value={formValues.grossMotorScore}
         />
 
@@ -159,7 +159,7 @@ function ASQReadOnly() {
           type="number"
           id="fineMotorScore"
           name="fineMotorScore"
-          onChange={handleInputChange}
+          disabled
           value={formValues.fineMotorScore}
         />
 
@@ -168,7 +168,7 @@ function ASQReadOnly() {
           type="number"
           id="problemSolvingScore"
           name="problemSolvingScore"
-          onChange={handleInputChange}
+          disabled
           value={formValues.problemSolvingScore}
         />
 
@@ -177,7 +177,7 @@ function ASQReadOnly() {
           type="number"
           id="personalSocialScore"
           name="personalSocialScore"
-          onChange={handleInputChange}
+          disabled
           value={formValues.personalSocialScore}
         />
 
@@ -190,7 +190,7 @@ function ASQReadOnly() {
                 type="checkbox"
                 id="developmentalSupport"
                 name="developmentalSupport"
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.developmentalSupport}
               />
               Provide developmental support activities
@@ -201,7 +201,7 @@ function ASQReadOnly() {
                 type="checkbox"
                 id="rescreen"
                 name="rescreen"
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.rescreen}
               />
               Rescreen at next interval
@@ -212,7 +212,7 @@ function ASQReadOnly() {
                 type="checkbox"
                 id="referEarlySteps"
                 name="referEarlySteps"
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.referEarlySteps}
               />
               Refer to Early Steps or Child Find
@@ -223,7 +223,7 @@ function ASQReadOnly() {
                 type="checkbox"
                 id="referCommunityAgency"
                 name="referCommunityAgency"
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.referCommunityAgency}
               />
               Refer to other community agency/provider
@@ -234,7 +234,7 @@ function ASQReadOnly() {
                 type="checkbox"
                 id="noFurtherAction"
                 name="noFurtherAction"
-                onChange={handleInputChange}
+                disabled
                 checked={formValues.noFurtherAction}
               />
               No further action taken at this time
@@ -249,7 +249,7 @@ function ASQReadOnly() {
               <textarea
                 id="describeActivities"
                 name="describeActivities"
-                onChange={handleInputChange}
+                disabled
                 value={formValues.describeActivities}
               ></textarea>
             </div>
@@ -260,7 +260,7 @@ function ASQReadOnly() {
         <textarea
           id="followUpNotes"
           name="followUpNotes"
-          onChange={handleInputChange}
+          disabled
           value={formValues.followUpNotes}
         ></textarea>
       </form>

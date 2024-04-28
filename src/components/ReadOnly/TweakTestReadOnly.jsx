@@ -68,7 +68,7 @@ const TweakTestReadOnly = () => {
               type="number"
               name="tolerance"
               value={answers.tolerance}
-              onChange={handleInputChange}
+              disabled
               min="0"
             />
           </label>
@@ -81,7 +81,7 @@ const TweakTestReadOnly = () => {
               type="checkbox"
               name="worried"
               checked={answers.worried}
-              onChange={handleInputChange}
+              disabled
             />
           </label>
         </div>
@@ -93,7 +93,7 @@ const TweakTestReadOnly = () => {
             type="checkbox"
             name="eyeOpeners"
             checked={answers.eyeOpeners}
-            onChange={handleInputChange}
+            disabled
             />
         </label>
         </div>
@@ -105,7 +105,7 @@ const TweakTestReadOnly = () => {
             type="checkbox"
             name="amnesia"
             checked={answers.amnesia}
-            onChange={handleInputChange}
+            disabled
             />
         </label>
         </div>
@@ -117,7 +117,7 @@ const TweakTestReadOnly = () => {
             type="checkbox"
             name="kutDown"
             checked={answers.kutDown}
-            onChange={handleInputChange}
+            disabled
             />
         </label>
         </div>

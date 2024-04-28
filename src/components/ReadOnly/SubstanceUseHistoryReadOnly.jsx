@@ -117,7 +117,7 @@ const SubstanceUseHistoryReadOnly = () => {
                       type="text"
                       placeholder="Other substance"
                       value={substance.name}
-                      onChange={(e) => handleSubstanceChange(index, 'name', e.target.value)}
+                      disabled
                     />
                   ) : (
                     substance.name
@@ -129,7 +129,7 @@ const SubstanceUseHistoryReadOnly = () => {
                     <input
                       type="checkbox"
                       checked={substance.everUsed === true}
-                      onChange={(e) => handleSubstanceChange(index, 'everUsed', true)}
+                      disabled
                     />
                   </label>
                   <label>
@@ -137,7 +137,7 @@ const SubstanceUseHistoryReadOnly = () => {
                     <input
                       type="checkbox"
                       checked={substance.everUsed === false}
-                      onChange={(e) => handleSubstanceChange(index, 'everUsed', false)}
+                      disabled
                     />
                   </label>
                 </td>
@@ -147,7 +147,7 @@ const SubstanceUseHistoryReadOnly = () => {
                     <input
                       type="checkbox"
                       checked={substance.usedDuringPregnancy === true}
-                      onChange={(e) => handleSubstanceChange(index, 'usedDuringPregnancy', true)}
+                      disabled
                     />
                   </label>
                   <label>
@@ -155,7 +155,7 @@ const SubstanceUseHistoryReadOnly = () => {
                     <input
                       type="checkbox"
                       checked={substance.usedDuringPregnancy === false}
-                      onChange={(e) => handleSubstanceChange(index, 'usedDuringPregnancy', false)}
+                      disabled
                     />
                   </label>
                 </td>
@@ -163,7 +163,7 @@ const SubstanceUseHistoryReadOnly = () => {
                   <input
                     type="date"
                     value={substance.dateLastUsed}
-                    onChange={(e) => handleSubstanceChange(index, 'dateLastUsed', e.target.value)}
+                    disabled
                   />
                 </td>
               </tr>
@@ -176,6 +176,7 @@ const SubstanceUseHistoryReadOnly = () => {
                   type="text"
                   placeholder="Notes"
                   className={styles.notesInput}
+                  disabled
                 />
               </td>
             </tr>
@@ -200,28 +201,28 @@ const SubstanceUseHistoryReadOnly = () => {
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Never'}
-                    onChange={() => handleSetMat('engaged', 'Never')}
+                    disabled
                   /> Never
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Currently'}
-                    onChange={() => handleSetMat('engaged', 'Currently')}
+                    disabled
                   /> Currently
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Prior'}
-                    onChange={() => handleSetMat('engaged', 'Prior')}
+                    disabled
                   /> Prior MAT use
                 </label>
                 Date of Last use:
                 <input
                   type="date"
                   value={mat.medicationDetails}
-                  onChange={(e) => handleSetMat('medicationDetails', e.target.value)}
+                  disabled
                 />
               </td>
             </tr>
@@ -232,28 +233,28 @@ const SubstanceUseHistoryReadOnly = () => {
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Never'}
-                    onChange={() => handleSetMat('engaged', 'Never')}
+                    disabled
                   /> Never
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Currently'}
-                    onChange={() => handleSetMat('engaged', 'Currently')}
+                    disabled
                   /> Currently
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={mat.engaged === 'Prior'}
-                    onChange={() => handleSetMat('engaged', 'Prior')}
+                    disabled
                   /> Prior MAT use
                 </label>
                 Date of Last use:
                 <input
                   type="date"
                   value={mat.medicationDetails}
-                  onChange={(e) => handleSetMat('medicationDetails', e.target.value)}
+                  disabled
                 />
               </td>
             </tr>
@@ -264,7 +265,7 @@ const SubstanceUseHistoryReadOnly = () => {
                   name="clinicInfo"
                   value={addictionServices.clinicInfo}
                   className={styles.largeInput}
-                  onChange={(e) => handleSetAddictionServices('clinicInfo', e.target.value)}
+                  disabled
                   placeholder="Clinic Name and Contact Information"
                 />
               </td>

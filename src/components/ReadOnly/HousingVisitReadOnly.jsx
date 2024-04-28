@@ -120,7 +120,7 @@ const HousingVisitReadOnly = () => {
             type="text"
             name="participantName"
             value={formData.participantName}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -129,7 +129,7 @@ const HousingVisitReadOnly = () => {
             type="text"
             name="caseId"
             value={formData.caseId}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -138,7 +138,7 @@ const HousingVisitReadOnly = () => {
             type="date"
             name="dateOfVisit"
             value={formData.dateOfVisit}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -147,7 +147,7 @@ const HousingVisitReadOnly = () => {
             type="text"
             name="staffName"
             value={formData.staffName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -160,7 +160,7 @@ const HousingVisitReadOnly = () => {
               name="hasInsurance"
               value="Yes"
               checked={formData.hasInsurance === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -170,7 +170,7 @@ const HousingVisitReadOnly = () => {
               name="hasInsurance"
               value="No"
               checked={formData.hasInsurance === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -184,7 +184,7 @@ const HousingVisitReadOnly = () => {
               name="concernsDevelopment"
               value="Yes"
               checked={formData.concernsDevelopment === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -194,7 +194,7 @@ const HousingVisitReadOnly = () => {
               name="concernsDevelopment"
               value="No"
               checked={formData.concernsDevelopment === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -204,7 +204,7 @@ const HousingVisitReadOnly = () => {
               name="concernsDevelopment"
               value="Did not ask"
               checked={formData.concernsDevelopment === 'Did not ask'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -219,7 +219,7 @@ const HousingVisitReadOnly = () => {
               name="visitedER"
               value="Yes"
               checked={formData.visitedER === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -229,7 +229,7 @@ const HousingVisitReadOnly = () => {
               name="visitedER"
               value="No"
               checked={formData.visitedER === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -244,7 +244,7 @@ const HousingVisitReadOnly = () => {
                     type="date"
                     name={`erVisitDate${index}`}
                     value={visit.date}
-                    onChange={(e) => handleERVisitChange(index, e)}
+                    disabled
                   />
                 </label>
                 <label>
@@ -252,7 +252,7 @@ const HousingVisitReadOnly = () => {
                   <select
                     name={`erVisitReason${index}`}
                     value={visit.reason}
-                    onChange={(e) => handleERVisitChange(index, e)}
+                    disabled
                   >
                     <option value="Injury">Injury</option>
                     <option value="Other">Other reason</option>
@@ -279,7 +279,7 @@ const HousingVisitReadOnly = () => {
               name="hadWellChildVisits"
               value="Yes"
               checked={formData.hadWellChildVisits === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -289,7 +289,7 @@ const HousingVisitReadOnly = () => {
               name="hadWellChildVisits"
               value="No"
               checked={formData.hadWellChildVisits === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -305,7 +305,7 @@ const HousingVisitReadOnly = () => {
                     type="text"
                     name={`childName${childIndex}`}
                     value={child.name}
-                    onChange={(e) => handleChildNameChange(childIndex, e)}
+                    disabled
                   />
                 </label>
 
@@ -316,7 +316,7 @@ const HousingVisitReadOnly = () => {
                         type="checkbox"
                         name={`child${childIndex}Visit${visitIndex}`}
                         checked={checked}
-                        onChange={() => handleWellChildVisitChange(childIndex, visitIndex)}
+                        disabled
                       />
                       {ageRanges[visitIndex]}
                     </label>

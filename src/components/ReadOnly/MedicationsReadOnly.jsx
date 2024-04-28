@@ -67,25 +67,22 @@ const MedicationsReadOnly = () => {
               <th>Dose</th>
               <th>Prescriber</th>
               <th>Notes</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {medications.map((med, index) => (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td><input type="text" value={med.medication} onChange={(e) => handleChange(index, 'medication', e.target.value)} /></td>
-                <td><input type="text" value={med.dose} onChange={(e) => handleChange(index, 'dose', e.target.value)} /></td>
-                <td><input type="text" value={med.prescriber} onChange={(e) => handleChange(index, 'prescriber', e.target.value)} /></td>
-                <td><input type="text" value={med.notes} onChange={(e) => handleChange(index, 'notes', e.target.value)} /></td>
-                <td><button type="button" onClick={() => handleRemoveRow(index)}>Remove</button></td>
+                <td><input type="text" value={med.medication} disabled /></td>
+                <td><input type="text" value={med.dose} disabled /></td>
+                <td><input type="text" value={med.prescriber} disabled /></td>
+                <td><input type="text" value={med.notes} disabled /></td>
               </tr>
             ))}
           </tbody>
         </table>
-        <button type="button" onClick={handleAddRow} className={styles.addButton}>Add Row</button>
       </div>
-      <textarea placeholder="Notes:" className={styles.notesArea}></textarea>
+      <textarea placeholder="Notes:" className={styles.notesArea} disabled></textarea>
       <div className={styles.buttonSection}>
         <button type="button" onClick={handleCancel} className={styles.cancelButton}>Back</button>
       </div>

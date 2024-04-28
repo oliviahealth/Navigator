@@ -71,8 +71,8 @@ function PHQ9ReadOnly() {
                                    ][i]}</p>
                     {Array.from({ length: 4 }).map((_, j) => (
                         <label key={j}>
-                            <input type="radio" name={`q${i + 1}`} value={j} 
-                                   onChange={() => handleChange(`q${i + 1}`, `${j}`)} /> 
+                            <input type="radio" name={`q${i + 1}`} value={j} checked={responses[`q${i + 1}`] === j}
+                                   disabled /> 
                             {['Not at all', 'Several days', 'More than half the days', 'Nearly every day'][j]} ({j})
                         </label>
                     ))}

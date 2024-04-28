@@ -51,7 +51,7 @@ function SupportSystemsReadOnly() {
         <textarea
           name="currentSupportSystem"
           value={formData.currentSupportSystem}
-          onChange={handleChange}
+          disabled
           rows="5"
         />
       </label>
@@ -61,7 +61,7 @@ function SupportSystemsReadOnly() {
         <textarea
           name="yourStrengths"
           value={formData.yourStrengths}
-          onChange={handleChange}
+          disabled
           rows="5"
         />
       </label>
@@ -71,7 +71,7 @@ function SupportSystemsReadOnly() {
         <textarea
           name="yourAreasForImprovementAndNeeds"
           value={formData.yourAreasForImprovementAndNeeds}
-          onChange={handleChange}
+          disabled
           rows="5"
         />
       </label>
@@ -81,7 +81,7 @@ function SupportSystemsReadOnly() {
         <textarea
           name="yourGoals"
           value={formData.yourGoals}
-          onChange={handleChange}
+          disabled
           rows="5"
         />
       </label>

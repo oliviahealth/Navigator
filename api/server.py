@@ -3,12 +3,12 @@ import psycopg2
 from dotenv import load_dotenv 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
-from flask_session import Session
 from passlib.hash import argon2
 from datetime import datetime
 from psycopg2.extras import Json
 from psycopg2 import pool
 from flask.helpers import send_from_directory
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
 
 load_dotenv()
 
@@ -19,9 +19,8 @@ postgres_url = os.getenv("DATABASE_URL")
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 connection_pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=20, dsn=postgres_url)
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
+app.config['JWT_SECRET_KEY'] = '}NN~V6Yl%/W&U^(yp;|bMr8W})fn5O'
+jwt = JWTManager(app)
 
 CREATE_USER_TABLE = """
 CREATE TABLE IF NOT EXISTS "user" (
@@ -48,8 +47,6 @@ RETURNING id;
 @app.route("/")
 def serve():
     return send_from_directory(app.static_folder, 'index.html')
-
-
 
 @app.route("/api/forms/<formType>/<int:patientId>", methods=['GET'])
 def get_forms(formType, patientId):
@@ -91,7 +88,6 @@ def create_form_table():
         return jsonify({"error": "Failed to create table"}), 500
     finally:
         connection_pool.putconn(connection)
-
 
 @app.route("/api/insert_forms/<formType>/<int:patientId>", methods=['POST'])
 def insert_form(formType, patientId):
@@ -141,7 +137,6 @@ def get_read_only_data(formType, patientId, logId):
     else:
         return jsonify({"error": "Log not found"}), 404
 
-
 @app.post("/api/signup")
 def signup():
     data = request.get_json()
@@ -166,16 +161,16 @@ def signup():
                 cursor.execute(CREATE_USER_TABLE)
                 cursor.execute(INSERT_USER, (username, firstName, lastName, email, phone, hashed_password, is_admin, admin_id))  # Store the hashed password
                 user_id = cursor.fetchone()[0]
-                session['user_id'] = user_id
+                access_token = create_access_token(identity=user[0])
                 connection.commit()
     finally:
         connection_pool.putconn(connection)
     return jsonify({
         "status": "success",
         "message": "User created successfully.",
-        "user_id": user_id
+        "access_token": access_token
     }), 201
-
+####################################
 @app.post("/api/login")
 def login():
     try:
@@ -187,17 +182,62 @@ def login():
         with connection.cursor() as cursor:
             cursor.execute("SELECT id, password FROM \"user\" WHERE username = %s", (username,))
             user = cursor.fetchone()
-            session['user_id'] = user[0]
-            session.modified = True
-            print(session['user_id'])
+            access_token = create_access_token(identity=user[0])
+            print(access_token)
             if user and argon2.verify(password, user[1]):  # Verify the password against the stored hash
-                return jsonify({"status": "success", "message": "Login successful", "user_id": user[0]})
+                return jsonify({"status": "success", "message": "Login successful", "access_token": access_token})
             else:
                 return jsonify({"status": "error", "message": "Invalid username or password"}), 401
     finally:
         connection_pool.putconn(connection)
 
-
+@app.route('/api/patients', methods=['GET'])
+@jwt_required()
+def get_patients():
+    connection = connection_pool.getconn()
+    user_id = get_jwt_identity()
+    
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT patient_id, first_name, last_name, email, phone FROM patients WHERE admin_id = %s;', (user_id,))
+            patients = cursor.fetchall()
+            patient_list = [{
+                'patient_id': patient[0],
+                'first_name': patient[1],
+                'last_name': patient[2],
+                'email': patient[3],
+                'phone': patient[4]
+            } for patient in patients]  
+            response = jsonify(patient_list)
+    except Exception as e:
+        response = jsonify({'error': str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+        return response
+#############################################################
+@app.post('/api/add_patient')
+@jwt_required()
+def add_patient():
+    try:
+        connection = connection_pool.getconn()
+        data = request.get_json()
+        user_id = get_jwt_identity()
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                INSERT INTO patients (first_name, last_name, email, phone, admin_id)
+                VALUES (%s, %s, %s, %s, %s)
+                RETURNING patient_id;
+            """, (
+                data['firstName'], 
+                data['lastName'], 
+                data['email'], 
+                data.get('phone'),
+                user_id
+            ))
+            connection.commit()
+    finally:
+        connection_pool.putconn(connection)
+    return jsonify({"status": "success", "message": "Patient Talble has been created"})
 
 CREATE_COMMUNICATIONS_LOG_TABLE = """
 CREATE TABLE IF NOT EXISTS communications_log (
@@ -436,76 +476,6 @@ CREATE TABLE IF NOT EXISTS patients (
     FOREIGN KEY (admin_id) REFERENCES \"user\"(id)
 );
 """
-
-@app.route('/api/patients', methods=['GET'])
-def get_patients():
-    connection = connection_pool.getconn()
-    try:
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT patient_id, first_name, last_name, email, phone FROM patients WHERE admin_id = %s;', (session['user_id'],))
-            patients = cursor.fetchall()
-            patient_list = [{
-                'patient_id': patient[0],
-                'first_name': patient[1],
-                'last_name': patient[2],
-                'email': patient[3],
-                'phone': patient[4]
-            } for patient in patients]  
-            response = jsonify(patient_list)
-    except Exception as e:
-        response = jsonify({'error': str(e)}), 500
-    finally:
-        connection_pool.putconn(connection)
-        return response
-
-@app.post('/api/add_patient')
-def add_patient():
-    try:
-        connection = connection_pool.getconn()
-        data = request.get_json()
-        user_id = session.get('user_id')
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO patients (first_name, last_name, email, phone, admin_id)
-                VALUES (%s, %s, %s, %s, %s)
-                RETURNING patient_id;
-            """, (
-                data['firstName'], 
-                data['lastName'], 
-                data['email'], 
-                data.get('phone'),
-                user_id
-            ))
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-    return jsonify({"status": "success", "message": "Patient Talble has been created"})
-
-@app.route('/api/select_patient', methods=['POST'])
-def select_patient():
-    try:
-        connection = connection_pool.getconn()
-        data = request.get_json()
-        firstName = data.get('firstName')
-        lastName = data.get('lastName')
-        email = data.get('email')
-        phone = data.get('phone')
-        
-        # Query the database for the patient
-        with connection.cursor() as cursor:
-            cursor.execute("""SELECT patient_id FROM patients 
-                            WHERE first_name = %s AND last_name = %s AND email = %s AND phone = %s""",
-                        (firstName, lastName, email, phone))
-            result = cursor.fetchone()
-    finally:
-        connection_pool.putconn(connection)
-    
-    if result:
-        patient_id = result[0]
-        session['selected_patient_id'] = patient_id
-        return jsonify({"status": "success", "message": "Patient selected successfully.", "patientId": patient_id}), 200
-    else:
-        return jsonify({"status": "error", "message": "Patient not found."}), 404
 
 CREATE_APPOINTMENT_LOG_TABLE = """
 CREATE TABLE IF NOT EXISTS appointment_log (

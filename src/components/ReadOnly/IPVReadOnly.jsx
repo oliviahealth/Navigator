@@ -87,7 +87,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="partnerTreatment"
             value={responses.partnerTreatment} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -96,7 +96,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="feelSafeAtHome"
             value={responses.feelSafeAtHome} 
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -111,7 +111,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
                 name={key}
                 value="yes"
                 checked={responses[key] === 'yes'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -121,7 +121,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
                 name={key}
                 value="no"
                 checked={responses[key] === 'no'}
-                onChange={handleChange}
+                disabled
               />
             </label>
           </div>
@@ -133,7 +133,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="perpetratorWithClient"
             value={responses.perpetratorWithClient} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -142,7 +142,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="threatsOfHomicide"
             value={responses.threatsOfHomicide} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -151,7 +151,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="weaponsInvolved"
             value={responses.weaponsInvolved} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -160,7 +160,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="historyOfStrangulation"
             value={responses.historyOfStrangulation} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -169,7 +169,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="suicidalityAndHomicidality"
             value={responses.suicidalityAndHomicidality} 
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -179,7 +179,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="assessSafetyOfChildren"
             value={responses.assessSafetyOfChildren} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <h2>Assessment of history of IPV</h2>
@@ -189,7 +189,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="patternsOfAbuse"
             value={responses.patternsOfAbuse} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -198,7 +198,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="historyOfEffects"
             value={responses.historyOfEffects} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -207,7 +207,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="injuriesHospitalizations"
             value={responses.injuriesHospitalizations} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -216,7 +216,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="healthEffects"
             value={responses.healthEffects} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -225,7 +225,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="supportStrategies"
             value={responses.supportStrategies} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <div className="question">
@@ -234,7 +234,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
             type="text" 
             name="readinessForChange"
             value={responses.readinessForChange} 
-            onChange={handleChange}
+            disabled
           />
         </div>
         <button type="button" onClick={handleCancel}>Cancel</button>

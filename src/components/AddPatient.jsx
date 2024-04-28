@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from '../styles/PatientModal.module.css'; // Update the CSS file name accordingly
+import Cookies from 'js-cookie';
 
 const AddPatientForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -20,12 +21,13 @@ const AddPatientForm = ({ onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+    const accessToken = Cookies.get('accessToken');
     fetch('http://localhost:5000/api/add_patient', {
       method: 'POST',
       credentials: "include",
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
         firstName: formData.firstName,

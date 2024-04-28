@@ -74,7 +74,7 @@ const IntimatePartnerViolenceFormReadOnly = () => {
                   type="radio"
                   name={key}
                   value={rating}
-                  onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                  disabled
                   checked={value === String(rating)}
                 />
                 {rating}

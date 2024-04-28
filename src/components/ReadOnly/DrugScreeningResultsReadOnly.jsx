@@ -84,7 +84,6 @@ const DrugScreeningResultsReadOnly = () => {
             <th>Results</th>
             <th>Provider Reviewed with You</th>
             <th>If Positive, Specify Results</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -95,14 +94,14 @@ const DrugScreeningResultsReadOnly = () => {
                 <input
                   type="date"
                   value={row.dateCollected}
-                  onChange={(e) => updateRow(index, 'dateCollected', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={row.orderedBy}
-                  onChange={(e) => updateRow(index, 'orderedBy', e.target.value)}
+                  disabled
                 />
               </td>
               <td>
@@ -111,7 +110,7 @@ const DrugScreeningResultsReadOnly = () => {
                     type="radio"
                     name={`results-${index}`}
                     checked={row.results === 'Positive'}
-                    onChange={() => updateRow(index, 'results', 'Positive')}
+                    disabled
                   /> Positive
                 </label>
                 <label>
@@ -119,7 +118,7 @@ const DrugScreeningResultsReadOnly = () => {
                     type="radio"
                     name={`results-${index}`}
                     checked={row.results === 'Negative'}
-                    onChange={() => updateRow(index, 'results', 'Negative')}
+                    disabled
                   /> Negative
                 </label>
               </td>
@@ -128,39 +127,35 @@ const DrugScreeningResultsReadOnly = () => {
                   <input
                     type="checkbox"
                     checked={row.providerReviewed === 'Yes'}
-                    onChange={() => updateRow(index, 'providerReviewed', 'Yes')}
+                    disabled
                   /> Yes
                 </label>
                 <label>
                   <input
                     type="checkbox"
                     checked={row.providerReviewed === 'No'}
-                    onChange={() => updateRow(index, 'providerReviewed', 'No')}
+                    disabled
                   /> No
                 </label>
                 <input
                   type="date"
                   value={row.reviewDate}
-                  onChange={(e) => updateRow(index, 'reviewDate', e.target.value)}
-                  disabled={row.providerReviewed !== 'Yes'}
+                  disabled
                 />
               </td>
               <td>
                 <input
                   type="text"
                   value={row.specifyResults}
-                  onChange={(e) => updateRow(index, 'specifyResults', e.target.value)}
-                  disabled={row.results !== 'Positive'}
+                  disabled
                 />
               </td>
               <td>
-              <button type="button" className={styles.removeButton} onClick={() => removeRow(index)}>Remove</button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <button type="button" onClick={addRow}>Add Row</button>
       <button type="button" onClick={handleCancel}>Cancel</button>
     </form>
   );

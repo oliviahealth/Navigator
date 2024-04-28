@@ -59,19 +59,19 @@ function BriefChildReadOnly() {
       <form>
         <div className="form-section">
           <label htmlFor="childName">Child Name:</label>
-          <input type="text" id="childName" name="childName" onChange={handleInputChange} value={formValues.childName} />
+          <input type="text" id="childName" name="childName" disabled value={formValues.childName} />
 
           <label htmlFor="dateCompleted">Date Completed*:</label>
-          <input type="date" id="dateCompleted" name="dateCompleted" onChange={handleInputChange} value={formValues.dateCompleted} />
+          <input type="date" id="dateCompleted" name="dateCompleted" disabled value={formValues.dateCompleted} />
 
           <div className="radio-section">
             <label>Timeframe*:</label>
             <label>
-              <input type="radio" name="timeframe" value="Enrollment" onChange={handleInputChange} checked={formValues.timeframe === 'Enrollment'} />
+              <input type="radio" name="timeframe" value="Enrollment" disabled checked={formValues.timeframe === 'Enrollment'} />
               Enrollment
             </label>
             <label>
-              <input type="radio" name="timeframe" value="Update" onChange={handleInputChange} checked={formValues.timeframe === 'Update'} />
+              <input type="radio" name="timeframe" value="Update" disabled checked={formValues.timeframe === 'Update'} />
               Update
             </label>
           </div>
@@ -79,57 +79,57 @@ function BriefChildReadOnly() {
           <div className="radio-section">
             <label>1. What kind of health insurance coverage does your child have? (check one)</label>
             <label>
-              <input type="radio" name="insuranceType" value="Medicaid" onChange={handleInputChange} checked={formValues.insuranceType === 'Medicaid'} />
+              <input type="radio" name="insuranceType" value="Medicaid" disabled checked={formValues.insuranceType === 'Medicaid'} />
               Medicaid or Texas KidCare
             </label>
             <label>
-              <input type="radio" name="insuranceType" value="Private" onChange={handleInputChange} checked={formValues.insuranceType === 'Private'} />
+              <input type="radio" name="insuranceType" value="Private" disabled checked={formValues.insuranceType === 'Private'} />
               Private health insurance
             </label>
             <label>
-              <input type="radio" name="insuranceType" value="TriCare" onChange={handleInputChange} checked={formValues.insuranceType === 'TriCare'} />
+              <input type="radio" name="insuranceType" value="TriCare" disabled checked={formValues.insuranceType === 'TriCare'} />
               Tri-Care
             </label>
             <label>
-              <input type="radio" name="insuranceType" value="None" onChange={handleInputChange} checked={formValues.insuranceType === 'None'} />
+              <input type="radio" name="insuranceType" value="None" disabled checked={formValues.insuranceType === 'None'} />
               No health insurance
             </label>
-            <input type="text" placeholder="Other" name="insuranceOther" onChange={handleInputChange} value={formValues.insuranceOther} />
+            <input type="text" placeholder="Other" name="insuranceOther" disabled value={formValues.insuranceOther} />
           </div>
 
           <div className="radio-section">
             <label>2. What is your child's usual source of medical care? (check one)</label>
             <label>
-              <input type="radio" name="medicalCareSource" value="Doctor" onChange={handleInputChange} checked={formValues.medicalCareSource === 'Doctor'} />
+              <input type="radio" name="medicalCareSource" value="Doctor" disabled checked={formValues.medicalCareSource === 'Doctor'} />
               Doctor's/Nurse Practitioner's Office
             </label>
             <label>
-              <input type="radio" name="medicalCareSource" value="Hospital" onChange={handleInputChange} checked={formValues.medicalCareSource === 'Hospital'} />
+              <input type="radio" name="medicalCareSource" value="Hospital" disabled checked={formValues.medicalCareSource === 'Hospital'} />
               Hospital Emergency Room
             </label>
             <label>
-              <input type="radio" name="medicalCareSource" value="Clinic" onChange={handleInputChange} checked={formValues.medicalCareSource === 'Clinic'} />
+              <input type="radio" name="medicalCareSource" value="Clinic" disabled checked={formValues.medicalCareSource === 'Clinic'} />
               Hospital Outpatient Clinic
             </label>
             <label>
-              <input type="radio" name="medicalCareSource" value="FQHC" onChange={handleInputChange} checked={formValues.medicalCareSource === 'FQHC'} />
+              <input type="radio" name="medicalCareSource" value="FQHC" disabled checked={formValues.medicalCareSource === 'FQHC'} />
               Federally Qualified Health Center
             </label>
             <label>
-              <input type="radio" name="medicalCareSource" value="None" onChange={handleInputChange} checked={formValues.medicalCareSource === 'None'} />
+              <input type="radio" name="medicalCareSource" value="None" disabled checked={formValues.medicalCareSource === 'None'} />
               No usual source of care
             </label>
-            <input type="text" placeholder="Other" name="medicalCareOther" onChange={handleInputChange} value={formValues.medicalCareOther} />
+            <input type="text" placeholder="Other" name="medicalCareOther" disabled value={formValues.medicalCareOther} />
           </div>
 
           <div className="radio-section">
             <label>3. Does your child have a usual source of dental care?</label>
             <label>
-              <input type="radio" name="dentalCare" value="Yes" onChange={handleInputChange} checked={formValues.dentalCare === 'Yes'} />
+              <input type="radio" name="dentalCare" value="Yes" disabled checked={formValues.dentalCare === 'Yes'} />
               Yes
             </label>
             <label>
-              <input type="radio" name="dentalCare" value="No" onChange={handleInputChange} checked={formValues.dentalCare === 'No'} />
+              <input type="radio" name="dentalCare" value="No" disabled checked={formValues.dentalCare === 'No'} />
               No
             </label>
           </div>
@@ -137,11 +137,11 @@ function BriefChildReadOnly() {
           <div className="radio-section">
             <label>4. In a typical week, how often do you or a family member read, tell stories, or sing songs to your child?</label>
             <label>
-              <input type="radio" name="familyInteraction" value="Daily" onChange={handleInputChange} checked={formValues.familyInteraction === 'Daily'} />
+              <input type="radio" name="familyInteraction" value="Daily" disabled checked={formValues.familyInteraction === 'Daily'} />
               Every day
             </label>
             <label>
-              <input type="radio" name="familyInteraction" value="SomeDays" onChange={handleInputChange} checked={formValues.familyInteraction === 'SomeDays'} />
+              <input type="radio" name="familyInteraction" value="SomeDays" disabled checked={formValues.familyInteraction === 'SomeDays'} />
               Some days
             </label>
           </div>

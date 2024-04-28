@@ -68,29 +68,29 @@ const ParentalMedicalHistoryReadOnly = () => {
           <h3 className={styles.formSectionTitle}>PRENATAL CARE (FOR CURRENT OR MOST RECENT PREGNANCY)</h3>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Complete with Participant:</label>
-            <input className={styles.inputBlock} type="text" name="participantComplete" value={formData.participantComplete} onChange={handleChange} />
+            <input className={styles.inputBlock} type="text" name="participantComplete" value={formData.participantComplete} disabled />
           </div>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc.:</label>
-            <input className={styles.inputBlock} type="text" name="followUp" value={formData.followUp} onChange={handleChange} />
+            <input className={styles.inputBlock} type="text" name="followUp" value={formData.followUp} disabled />
           </div>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Gestational Age at Entry of Care: Due Date:</label>
-            <input className={styles.inputBlock} type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} />
+            <input className={styles.inputBlock} type="date" name="dueDate" value={formData.dueDate} disabled />
           </div>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Gestational Age at Entry of Care: Delivery Date:</label>
-            <input className={styles.inputBlock} type="date" name="deliveryDate" value={formData.deliveryDate} onChange={handleChange} />
+            <input className={styles.inputBlock} type="date" name="deliveryDate" value={formData.deliveryDate} disabled />
           </div>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Planned Mode of Delivery:</label>
             <div className={styles.radioGroup}>
               <label>
-                <input type="radio" name="deliveryMode" value="vaginal" checked={formData.deliveryMode === 'vaginal'} onChange={handleChange} />
+                <input type="radio" name="deliveryMode" value="vaginal" checked={formData.deliveryMode === 'vaginal'} disabled />
                 Vaginal
               </label>
               <label>
-                <input type="radio" name="deliveryMode" value="cesarean" checked={formData.deliveryMode === 'cesarean'} onChange={handleChange} />
+                <input type="radio" name="deliveryMode" value="cesarean" checked={formData.deliveryMode === 'cesarean'} disabled />
                 Cesarean
               </label>
             </div>
@@ -99,11 +99,11 @@ const ParentalMedicalHistoryReadOnly = () => {
             <label className={styles.labelBlock}>Actual Mode of Delivery:</label>
             <div className={styles.radioGroup}>
               <label>
-                <input type="radio" name="actualDeliveryMode" value="vaginal" checked={formData.actualDeliveryMode === 'vaginal'} onChange={handleChange} />
+                <input type="radio" name="actualDeliveryMode" value="vaginal" checked={formData.actualDeliveryMode === 'vaginal'} disabled />
                 Vaginal
               </label>
               <label>
-                <input type="radio" name="actualDeliveryMode" value="cesarean" checked={formData.actualDeliveryMode === 'cesarean'} onChange={handleChange} />
+                <input type="radio" name="actualDeliveryMode" value="cesarean" checked={formData.actualDeliveryMode === 'cesarean'} disabled />
                 Cesarean
               </label>
             </div>
@@ -114,7 +114,7 @@ const ParentalMedicalHistoryReadOnly = () => {
           <h3 className={styles.formSectionTitle}>OBSTETRIC HISTORY</h3>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Total Number of Pregnancies:</label>
-            <input className={styles.inputBlock} type="number" name="totalPregnancies" value={formData.totalPregnancies} onChange={handleChange} />
+            <input className={styles.inputBlock} type="number" name="totalPregnancies" value={formData.totalPregnancies} disabled />
           </div>
         </div>
   
@@ -122,7 +122,7 @@ const ParentalMedicalHistoryReadOnly = () => {
           <h3 className={styles.formSectionTitle}>MEDICAL PROBLEMS REQUIRING ONGOING CARE</h3>
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Diagnoses/Conditions:</label>
-            <textarea name="diagnosesConditions" className={styles.largeTextArea} value={formData.diagnosesConditions} onChange={handleChange}></textarea>
+            <textarea name="diagnosesConditions" className={styles.largeTextArea} value={formData.diagnosesConditions} disabled></textarea>
           </div>
         </div>
       </form>

@@ -66,8 +66,8 @@ const PregnancyReadOnly = () => {
                 type="radio"
                 name={`question-${index}`}
                 value="yes"
-                onChange={() => handleRadioChange(index, 'yes')}
                 checked={answers[index] === 'yes'}
+                disabled
               /> Yes
             </label>
             <label>
@@ -75,8 +75,8 @@ const PregnancyReadOnly = () => {
                 type="radio"
                 name={`question-${index}`}
                 value="no"
-                onChange={() => handleRadioChange(index, 'no')}
                 checked={answers[index] === 'no'}
+                disabled
               /> No
             </label>
           </div>

@@ -13,8 +13,6 @@ function DUREL() {
 
     const [responses, setResponses] = useState(initialState);
 
-    
-
     const handleChange = (field, value) => {
         setResponses(prev => ({
             ...prev,

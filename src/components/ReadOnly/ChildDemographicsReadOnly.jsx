@@ -117,18 +117,18 @@ function ChildDemographicsReadOnly() {
 
       <label>
         Child's Name:
-        <input type="text" name="childName" value={childData.childName} onChange={handleChange} />
+        <input type="text" name="childName" value={childData.childName} disabled />
       </label>
 
       <label>
         Date of Birth:
-        <input type="date" name="dateOfBirth" value={childData.dateOfBirth} onChange={handleChange} />
+        <input type="date" name="dateOfBirth" value={childData.dateOfBirth} disabled />
       </label>
 
       <fieldset>
         <legend>Sex:</legend>
-        <label><input type="radio" name="sex" value="Female" checked={childData.sex === 'Female'} onChange={handleChange} /> Female</label>
-        <label><input type="radio" name="sex" value="Male" checked={childData.sex === 'Male'} onChange={handleChange} /> Male</label>
+        <label><input type="radio" name="sex" value="Female" checked={childData.sex === 'Female'} disabled /> Female</label>
+        <label><input type="radio" name="sex" value="Male" checked={childData.sex === 'Male'} disabled /> Male</label>
       </fieldset>
 
       <fieldset>
@@ -140,7 +140,7 @@ function ChildDemographicsReadOnly() {
             <label><input type="checkbox" name="fosterFamily" checked={childData.livingWith.fosterFamily} onChange={handleChangeLivingWith} /> Foster Family</label>
             <label>
                 Other:
-                <input type="text" name="livingWith.other" value={childData.livingWith.other} onChange={handleChange} />
+                <input type="text" name="livingWith.other" value={childData.livingWith.other} disabled />
             </label>
         </fieldset>
 
@@ -149,75 +149,75 @@ function ChildDemographicsReadOnly() {
           <div key={index}>
             <label>
               Parent Name:
-              <input type="text" name={`parents.${index}.name`} value={parent.name} onChange={handleChange} />
+              <input type="text" name={`parents.${index}.name`} value={parent.name} disabled />
             </label>
             <label>
               Involved in the child's life?
-              <input type="checkbox" name={`parents.${index}.involved`} checked={parent.involved} onChange={handleChange} /> Yes
+              <input type="checkbox" name={`parents.${index}.involved`} checked={parent.involved} disabled /> Yes
             </label>
           </div>
         ))}
 
         <label>
           Insurance Plan:
-          <input type="text" name="insurancePlan" value={childData.insurancePlan} onChange={handleChange} />
+          <input type="text" name="insurancePlan" value={childData.insurancePlan} disabled />
         </label>
         <label>
           Effective Date:
-          <input type="date" name="insuranceEffectiveDate" value={childData.insuranceEffectiveDate} onChange={handleChange} />
+          <input type="date" name="insuranceEffectiveDate" value={childData.insuranceEffectiveDate} disabled />
         </label>
         <label>
           Subscriber ID:
-          <input type="text" name="subscriberId" value={childData.subscriberId} onChange={handleChange} />
+          <input type="text" name="subscriberId" value={childData.subscriberId} disabled />
         </label>
         <label>
           Group ID:
-          <input type="text" name="groupId" value={childData.groupId} onChange={handleChange} />
+          <input type="text" name="groupId" value={childData.groupId} disabled />
         </label>
 
         <fieldset>
           <legend>MEDICAL HISTORY</legend>
           <label>
             Primary Care Provider:
-            <input type="text" name="medicalHistory.primaryCareProvider" value={childData.medicalHistory.primaryCareProvider} onChange={handleChange} />
+            <input type="text" name="medicalHistory.primaryCareProvider" value={childData.medicalHistory.primaryCareProvider} disabled />
           </label>
           <label>
             Phone:
-            <input type="tel" name="medicalHistory.providerPhone" value={childData.medicalHistory.providerPhone} onChange={handleChange} />
+            <input type="tel" name="medicalHistory.providerPhone" value={childData.medicalHistory.providerPhone} disabled />
           </label>
           <label>
             Birth Weight:
-            <input type="text" name="medicalHistory.birthWeight" value={childData.medicalHistory.birthWeight} onChange={handleChange} />
+            <input type="text" name="medicalHistory.birthWeight" value={childData.medicalHistory.birthWeight} disabled />
           </label>
           <label>
             Gestational Age at Birth:
-            <input type="text" name="medicalHistory.gestationalAgeAtBirth" value={childData.medicalHistory.gestationalAgeAtBirth} onChange={handleChange} />
+            <input type="text" name="medicalHistory.gestationalAgeAtBirth" value={childData.medicalHistory.gestationalAgeAtBirth} disabled />
           </label>
           <label>
             NICU stay?
-            <input type="checkbox" name="medicalHistory.nicuStay" checked={childData.medicalHistory.nicuStay} onChange={handleChange} /> No
-            <input type="text" name="medicalHistory.nicuDuration" placeholder="# of days" value={childData.medicalHistory.nicuDuration} onChange={handleChange} disabled={!childData.medicalHistory.nicuStay} />
+            <input type="checkbox" name="medicalHistory.nicuStay" checked={childData.medicalHistory.nicuStay} disabled /> No
+            <input type="text" name="medicalHistory.nicuDuration" placeholder="# of days" value={childData.medicalHistory.nicuDuration} disabled />
           </label>
           <label>
             Prenatal Drug Exposure:
-            <input type="checkbox" name="medicalHistory.prenatalDrugExposure" checked={childData.medicalHistory.prenatalDrugExposure} onChange={handleChange} /> No
-            <input type="text" name="medicalHistory.drugDetails" placeholder="What drug" value={childData.medicalHistory.drugDetails} onChange={handleChange} disabled={!childData.medicalHistory.prenatalDrugExposure} />
+            <input type="checkbox" name="medicalHistory.prenatalDrugExposure" checked={childData.medicalHistory.prenatalDrugExposure} disabled /> No
+            <input type="text" name="medicalHistory.drugDetails" placeholder="What drug" value={childData.medicalHistory.drugDetails} disabled />
           </label>
           <label>
             Medical Complications at Birth:
-            <input type="text" name="medicalHistory.medicalComplicationsAtBirth" value={childData.medicalHistory.medicalComplicationsAtBirth} onChange={handleChange} />
+            <input type="text" name="medicalHistory.medicalComplicationsAtBirth" value={childData.medicalHistory.medicalComplicationsAtBirth} disabled />
           </label>
           <label>
             Ongoing Medical Issues and Diagnoses:
-            <input type="text" name="medicalHistory.ongoingMedicalIssues" value={childData.medicalHistory.ongoingMedicalIssues} onChange={handleChange} />
+            <input type="text" name="medicalHistory.ongoingMedicalIssues" value={childData.medicalHistory.ongoingMedicalIssues} disabled />
           </label>
           <label>
           Ongoing Medications:
-            <input type="text" name="medicalHistory.ongoingMedications" value={childData.medicalHistory.ongoingMedications} onChange={handleChange} />
+            <input type="text" name="medicalHistory.ongoingMedications" value={childData.medicalHistory.ongoingMedications} disabled />
           </label>
           <label>
             Do you have any concerns about this child’s physical, mental, or behavioral health?
-            <textarea name="medicalHistory.healthConcerns" value={childData.medicalHistory.healthConcerns} onChange={handleChange} />
+            <textarea name="medicalHistory.healthConcerns" value={childData.medicalHistory.healthConcerns} disabled />
           </label>
         </fieldset>
 
@@ -225,19 +225,19 @@ function ChildDemographicsReadOnly() {
           <legend>RELATED HISTORY AND COMMUNITY LINKAGE</legend>
           <label>
             List any difficulties or services this child has received (difficulties breastfeeding, failure to thrive, etc.):
-            <textarea name="relatedHistory.serviceDifficulties" value={childData.relatedHistory.serviceDifficulties} onChange={handleChange} />
+            <textarea name="relatedHistory.serviceDifficulties" value={childData.relatedHistory.serviceDifficulties} disabled />
           </label>
           <label>
             Does your child have a relationship with a lactation consultant or other provider?
-            <input type="checkbox" name="relatedHistory.lactationConsultant" checked={childData.relatedHistory.lactationConsultant} onChange={handleChange} /> Yes
+            <input type="checkbox" name="relatedHistory.lactationConsultant" checked={childData.relatedHistory.lactationConsultant} disabled /> Yes
           </label>
           <label>
             Is your child involved with the court/legal system?
-            <input type="checkbox" name="relatedHistory.legalSystemInvolvement" checked={childData.relatedHistory.legalSystemInvolvement} onChange={handleChange} /> Yes
+            <input type="checkbox" name="relatedHistory.legalSystemInvolvement" checked={childData.relatedHistory.legalSystemInvolvement} disabled /> Yes
           </label>
           <label>
             Has your child had any involvement with Child Protective Service (CPS)?
-            <select name="relatedHistory.cpsInvolvement" value={childData.relatedHistory.cpsInvolvement} onChange={handleChange}>
+            <select name="relatedHistory.cpsInvolvement" value={childData.relatedHistory.cpsInvolvement} disabled>
               <option value="No">No, Never</option>
               <option value="Yes, Currently Involved">Yes, Currently Involved with CPS</option>
               <option value="Yes, Previously Involved">Yes, Previously Involved with CPS</option>
@@ -245,15 +245,15 @@ function ChildDemographicsReadOnly() {
           </label>
           <label>
             Caseworker:
-            <input type="text" name="relatedHistory.caseworker" value={childData.relatedHistory.caseworker} onChange={handleChange} />
+            <input type="text" name="relatedHistory.caseworker" value={childData.relatedHistory.caseworker} disabled />
           </label>
           <label>
             Phone Number:
-            <input type="tel" name="relatedHistory.caseworkerPhone" value={childData.relatedHistory.caseworkerPhone} onChange={handleChange} />
+            <input type="tel" name="relatedHistory.caseworkerPhone" value={childData.relatedHistory.caseworkerPhone} disabled />
           </label>
           <label>
             Other important information about this child:
-            <textarea name="relatedHistory.otherImportantInfo" value={childData.relatedHistory.otherImportantInfo} onChange={handleChange} />
+            <textarea name="relatedHistory.otherImportantInfo" value={childData.relatedHistory.otherImportantInfo} disabled />
           </label>
         </fieldset>
 

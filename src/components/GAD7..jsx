@@ -13,12 +13,16 @@ function GAD7() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const formData = {
+            responses: responses,
+            totalScore: totalScore
+        }
         try {
           const response = await fetch(`http://localhost:5000/api/insert_forms/gad7/${patientId}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(responses),
+            body: JSON.stringify(formData),
           });
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);

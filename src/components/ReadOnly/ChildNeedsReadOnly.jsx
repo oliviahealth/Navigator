@@ -67,16 +67,16 @@ function ChildNeedsReadOnly() {
             <tr key={item.id}>
               <td>{item.name}</td>
               <td>
-                <input type="radio" checked={item.status === 'Yes'} onChange={() => handleChange(item.id, 'status', 'Yes')} />
+                <input type="radio" checked={item.status === 'Yes'} disabled />
               </td>
               <td>
-                <input type="radio" checked={item.status === 'No'} onChange={() => handleChange(item.id, 'status', 'No')} />
+                <input type="radio" checked={item.status === 'No'} disabled/>
               </td>
               <td>
-                <input type="radio" checked={item.status === 'Pending'} onChange={() => handleChange(item.id, 'status', 'Pending')} />
+                <input type="radio" checked={item.status === 'Pending'} disabled />
               </td>
               <td>
-                <input type="text" value={item.notes} onChange={(e) => handleChange(item.id, 'notes', e.target.value)} />
+                <input type="text" value={item.notes} disabled/>
               </td>
             </tr>
           ))}

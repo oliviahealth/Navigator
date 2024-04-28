@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styles from '../styles/SmokingTobaccoUse.module.css';
+import styles from '../../styles/SmokingTobaccoUse.module.css';
 import { useParams } from 'react-router-dom';
 
-const SmokingTobaccoUse = () => {
+const SmokingTobaccoUseReadOnly = () => {
     const { patientId, log_id } = useParams();
     const [products, setProducts] = useState([
         'Cigarettes',
@@ -45,6 +45,30 @@ const SmokingTobaccoUse = () => {
         hasUsedMedications: ""
     });
 
+    useEffect(() => {
+        const fetchLog = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/get_read_only_data/smoking_tobacco_use/${patientId}/${log_id}`, {
+                  method: 'GET',
+                  credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                if (response.status === 204) { // Handling no content
+                    return; 
+                }
+                const data = await response.json();
+                setFormData(data[2]);
+                
+            } catch (error) {
+                console.error('Error fetching sipport system info:', error);
+            }
+        };
+    
+        fetchLog();
+    }, [patientId, log_id]);
+
     const handleCancel = () => {
         window.history.back();
     };
@@ -66,28 +90,9 @@ const SmokingTobaccoUse = () => {
         }
     };
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/smoking_tobacco_use/${patientId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          window.history.back();
-        } catch (error) {
-          console.error('Failed to submit:', error);
-        }
-      };
-
     return (
         <div className={styles.container}>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <h1 className={styles.title}>Tobacco Use Screening and Documentation Form</h1>
                 {/* Section for clients who had a baby in the past year */}
                 <section className={styles.section}>
@@ -100,7 +105,7 @@ const SmokingTobaccoUse = () => {
                             <input
                                 type="checkbox"
                                 checked={formData.smokingStatus[status] || false}
-                                onChange={(e) => handleChange(status, e.target.checked, 'smokingStatus')}
+                                disabled
                             />
                             {`Status ${status}`}
                         </label>
@@ -122,7 +127,7 @@ const SmokingTobaccoUse = () => {
                                                     type="radio"
                                                     name={`product${index}-time${i}`}
                                                     checked={formData.tobaccoUse[`product${index}-time${i}`] || false}
-                                                    onChange={(e) => handleChange(`product${index}-time${i}`, e.target.checked, 'tobaccoUse')}
+                                                    disabled
                                                 />
                                             </td>
                                         ))}
@@ -140,7 +145,7 @@ const SmokingTobaccoUse = () => {
                         rows="4"
                         placeholder="Describe your usage"
                         value={formData.typicalUsage}
-                        onChange={(e) => handleChange('typicalUsage', e.target.value)}
+                        disabled
                     />
                 </section>
 
@@ -153,7 +158,7 @@ const SmokingTobaccoUse = () => {
                                 name="mentholProductUse"
                                 value="yes"
                                 checked={formData.mentholProductUse === 'yes'}
-                                onChange={(e) => handleChange('mentholProductUse', e.target.value)}
+                                disabled
                             />
                             Yes
                         </label>
@@ -163,7 +168,7 @@ const SmokingTobaccoUse = () => {
                                 name="mentholProductUse"
                                 value="no"
                                 checked={formData.mentholProductUse === 'no'}
-                                onChange={(e) => handleChange('mentholProductUse', e.target.value)}
+                                disabled
                             />
                             No
                         </label>
@@ -177,7 +182,7 @@ const SmokingTobaccoUse = () => {
                         rows="2"
                         placeholder="List all brands"
                         value={formData.brandsUsed}
-                        onChange={(e) => handleChange('brandsUsed', e.target.value)}
+                        disabled
                     />
                 </section>
 
@@ -190,7 +195,7 @@ const SmokingTobaccoUse = () => {
                                 name="aroundChildren"
                                 value="smoke"
                                 checked={formData.exposure.aroundChildren === 'smoke'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Smoke
                         </label>
@@ -200,7 +205,7 @@ const SmokingTobaccoUse = () => {
                                 name="aroundChildren"
                                 value="vape"
                                 checked={formData.exposure.aroundChildren === 'vape'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Vape
                         </label>
@@ -210,7 +215,7 @@ const SmokingTobaccoUse = () => {
                                 name="aroundChildren"
                                 value="neither"
                                 checked={formData.exposure.aroundChildren === 'neither'}
-                                onChange={(e) => handleChange('aroundChildren', e.target.value, 'exposure')}
+                                disabled
                             />
                             Neither
                         </label>
@@ -245,7 +250,7 @@ const SmokingTobaccoUse = () => {
                                 name="wakeUpForTobacco"
                                 value="yes"
                                 checked={formData.wakeUpForTobacco === 'yes'}
-                                onChange={(e) => handleChange('wakeUpForTobacco', e.target.value)}
+                                disabled
                             />
                             Yes
                         </label>
@@ -255,7 +260,7 @@ const SmokingTobaccoUse = () => {
                                 name="wakeUpForTobacco"
                                 value="no"
                                 checked={formData.wakeUpForTobacco === 'no'}
-                                onChange={(e) => handleChange('wakeUpForTobacco', e.target.value)}
+                                disabled
                             />
                             No
                         </label>
@@ -267,7 +272,7 @@ const SmokingTobaccoUse = () => {
                                 className={styles.nightsPerWeekInput}
                                 placeholder="____ nights per week"
                                 value={formData.nightsPerWeek}
-                                onChange={(e) => handleChange('nightsPerWeek', e.target.value)}
+                                disabled
                             />
                         </label>
                     </div>
@@ -283,7 +288,7 @@ const SmokingTobaccoUse = () => {
                                     name="quitAttempts"
                                     value={attempt}
                                     checked={formData.quitAttempts === attempt}
-                                    onChange={(e) => handleChange('quitAttempts', e.target.value)}
+                                    disabled
                                 />
                                 {attempt}
                             </label>
@@ -310,7 +315,7 @@ const SmokingTobaccoUse = () => {
                                             type="text"
                                             name={`recentQuit${field}`}
                                             value={formData.pastQuitDetails[`recentQuit${field}`]}
-                                            onChange={(e) => handleChange(`recentQuit${field}`, e.target.value, 'pastQuitDetails')}
+                                            disabled
                                         />
                                     </td>
                                     <td>
@@ -318,7 +323,7 @@ const SmokingTobaccoUse = () => {
                                             type="text"
                                             name={`longestQuit${field}`}
                                             value={formData.pastQuitDetails[`longestQuit${field}`]}
-                                            onChange={(e) => handleChange(`longestQuit${field}`, e.target.value, 'pastQuitDetails')}
+                                            disabled
                                         />
                                     </td>
                                 </tr>
@@ -336,7 +341,7 @@ const SmokingTobaccoUse = () => {
                                     <input
                                         type="checkbox"
                                         checked={formData.medicationsUsed[medication] || false}
-                                        onChange={(e) => handleChange(medication, e.target.checked, 'medicationsUsed')}
+                                        disabled
                                     />
                                     {medication}
                                 </label>
@@ -345,10 +350,9 @@ const SmokingTobaccoUse = () => {
                     </div>
                 </section>
                 <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
-                <button type="submit" className={styles.button}>Submit</button>
             </form>
         </div>
     );
 };
 
-export default SmokingTobaccoUse;
+export default SmokingTobaccoUseReadOnly;

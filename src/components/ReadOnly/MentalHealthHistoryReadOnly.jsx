@@ -56,41 +56,40 @@ function MentalHealthHistoryReadOnly() {
       {diagnoses.map((entry, index) => (
         <div key={index}>
           <label>Diagnosis:
-            <input type="text" value={entry.diagnosis} onChange={(e) => handleDiagnosisChange(index, 'diagnosis', e.target.value)} />
+            <input type="text" value={entry.diagnosis} disabled />
           </label>
           <label>Date of Diagnosis:
-            <input type="date" value={entry.date} onChange={(e) => handleDiagnosisChange(index, 'date', e.target.value)} />
+            <input type="date" value={entry.date} disabled />
           </label>
           <label>Provider:
-            <input type="text" value={entry.provider} onChange={(e) => handleDiagnosisChange(index, 'provider', e.target.value)} />
+            <input type="text" value={entry.provider} disabled />
           </label>
           <label>Provider Phone:
-            <input type="text" value={entry.phone} onChange={(e) => handleDiagnosisChange(index, 'phone', e.target.value)} />
+            <input type="text" value={entry.phone} disabled />
           </label>
         </div>
       ))}
-      <button type="button" onClick={addDiagnosis}>Add Another Diagnosis</button>
 
       <div>
         <label>Are you currently taking any medications for these diagnoses?
           <label>
-            <input type="radio" name="takingMedications" value="Yes" checked={medications.takingMedications === 'Yes'} onChange={(e) => handleMedicationsChange('takingMedications', e.target.value)} />
+            <input type="radio" name="takingMedications" value="Yes" checked={medications.takingMedications === 'Yes'} disabled />
             Yes
           </label>
           <label>
-            <input type="radio" name="takingMedications" value="No" checked={medications.takingMedications === 'No'} onChange={(e) => handleMedicationsChange('takingMedications', e.target.value)} />
+            <input type="radio" name="takingMedications" value="No" checked={medications.takingMedications === 'No'} disabled />
             No
           </label>
         </label>
         {medications.takingMedications === 'Yes' && (
           <label>Please, explain:
-            <textarea value={medications.explanation} onChange={(e) => handleMedicationsChange('explanation', e.target.value)} />
+            <textarea value={medications.explanation} disabled />
           </label>
         )}
       </div>
 
       <label>Notes:
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
+        <textarea value={notes} disabled />
       </label>
     </form>
   );

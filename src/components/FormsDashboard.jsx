@@ -18,7 +18,7 @@ const FormsDashboard = () => {
     };
 
     const handleBack = () => {
-        navigate(-1);
+        navigate('/dashboard');
     }
 
     var formNames = {

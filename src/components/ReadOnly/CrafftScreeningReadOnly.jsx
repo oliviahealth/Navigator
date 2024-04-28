@@ -108,22 +108,22 @@ const CrafftScreeningReadOnly = () => {
               <label className={styles.question}>
                 1) During the PAST 12 MONTHS, on how many days did you:
                 <div>Drink more than a few sips of beer, wine, or any drink containing alcohol? Say “0” if none.</div>
-                <input type="number" name="q1" value={answers.q1} onChange={handleChange} min="0" className={styles.inputField} />
+                <input type="number" name="q1" value={answers.q1} disabled min="0" className={styles.inputField} />
               </label>
               {/* Question 2 */}
               <label className={styles.question}>
                 2) Use any marijuana (cannabis, weed, oil, wax, or hash by smoking, vaping, dabbing, or in edibles) or “synthetic marijuana” (like “K2,” “Spice”)? Say “0” if none.
-                <input type="number" name="q2" value={answers.q2} onChange={handleChange} min="0" className={styles.inputField} />
+                <input type="number" name="q2" value={answers.q2} disabled min="0" className={styles.inputField} />
               </label>
               {/* Question 3 */}
               <label className={styles.question}>
                 3) Use anything else to get high (like other illegal drugs, pills, prescription or over-the-counter medications, and things that you sniff, huff, vape, or inject)? Say “0” if none.
-                <input type="number" name="q3" value={answers.q3} onChange={handleChange} min="0" className={styles.inputField} />
+                <input type="number" name="q3" value={answers.q3} disabled min="0" className={styles.inputField} />
               </label>
               {/* Question 4 */}
               <label className={styles.question}>
                 4) Use a vaping device* containing nicotine and/or flavors, or use any tobacco products†? Say “0” if none.
-                <input type="number" name="q4" value={answers.q4} onChange={handleChange} min="0" className={styles.inputField} />
+                <input type="number" name="q4" value={answers.q4} disabled min="0" className={styles.inputField} />
               </label>
               <button type="button" onClick={checkAnswers} className={styles.checkButton}>
                 Check
@@ -140,11 +140,11 @@ const CrafftScreeningReadOnly = () => {
                 C: Have you ever ridden in a CAR driven by someone (including yourself) who was “high” or had been using alcohol or drugs?
                 <label>
                   Yes
-                  <input type="radio" name="c" value="yes" checked={partBAnswers.c === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="c" value="yes" checked={partBAnswers.c === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="c" value="no" checked={partBAnswers.c === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="c" value="no" checked={partBAnswers.c === 'no'} disabled />
                 </label>
               </div>
               {/* Question R */}
@@ -152,11 +152,11 @@ const CrafftScreeningReadOnly = () => {
                 R: Do you ever use alcohol or drugs to RELAX, feel better about yourself, or fit in?
                 <label>
                   Yes
-                  <input type="radio" name="r" value="yes" checked={partBAnswers.r === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="r" value="yes" checked={partBAnswers.r === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="r" value="no" checked={partBAnswers.r === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="r" value="no" checked={partBAnswers.r === 'no'} disabled />
                 </label>
               </div>
               {/* Question A */}
@@ -164,11 +164,11 @@ const CrafftScreeningReadOnly = () => {
                 A: Do you ever use alcohol or drugs while you are by yourself, or ALONE?
                 <label>
                   Yes
-                  <input type="radio" name="a" value="yes" checked={partBAnswers.a === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="a" value="yes" checked={partBAnswers.a === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="a" value="no" checked={partBAnswers.a === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="a" value="no" checked={partBAnswers.a === 'no'} disabled />
                 </label>
               </div>
               {/* Question F1 */}
@@ -176,11 +176,11 @@ const CrafftScreeningReadOnly = () => {
                 F: Do you ever FORGET things you did while using alcohol or drugs?
                 <label>
                   Yes
-                  <input type="radio" name="f1" value="yes" checked={partBAnswers.f1 === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="f1" value="yes" checked={partBAnswers.f1 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="f1" value="no" checked={partBAnswers.f1 === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="f1" value="no" checked={partBAnswers.f1 === 'no'} disabled />
                 </label>
               </div>
               {/* Question F2 */}
@@ -188,11 +188,11 @@ const CrafftScreeningReadOnly = () => {
                 F: Do your FAMILY or FRIENDS ever tell you that you should cut down on your drinking or drug use?
                 <label>
                   Yes
-                  <input type="radio" name="f2" value="yes" checked={partBAnswers.f2 === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="f2" value="yes" checked={partBAnswers.f2 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="f2" value="no" checked={partBAnswers.f2 === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="f2" value="no" checked={partBAnswers.f2 === 'no'} disabled />
                 </label>
               </div>
               {/* Question T */}
@@ -200,11 +200,11 @@ const CrafftScreeningReadOnly = () => {
                 T: Have you ever gotten into TROUBLE while you were using alcohol or drugs?
                 <label>
                   Yes
-                  <input type="radio" name="t" value="yes" checked={partBAnswers.t === 'yes'} onChange={handlePartBChange} />
+                  <input type="radio" name="t" value="yes" checked={partBAnswers.t === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="t" value="no" checked={partBAnswers.t === 'no'} onChange={handlePartBChange} />
+                  <input type="radio" name="t" value="no" checked={partBAnswers.t === 'no'} disabled />
                 </label>
               </div>
               <button type="button" onClick={checkPartBAnswers} className={styles.checkButton}>
@@ -222,11 +222,11 @@ const CrafftScreeningReadOnly = () => {
                 1. Have you ever tried to QUIT using, but couldn’t?
                 <label>
                   Yes
-                  <input type="radio" name="q1" value="yes" checked={partCAnswers.q1 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q1" value="yes" checked={partCAnswers.q1 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q1" value="no" checked={partCAnswers.q1 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q1" value="no" checked={partCAnswers.q1 === 'no'} disabled />
                 </label>
               </div>
               {/* Question 2 */}
@@ -234,11 +234,11 @@ const CrafftScreeningReadOnly = () => {
                 2. Do you vape or use tobacco NOW because it is really hard to quit?
                 <label>
                   Yes
-                  <input type="radio" name="q2" value="yes" checked={partCAnswers.q2 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q2" value="yes" checked={partCAnswers.q2 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q2" value="no" checked={partCAnswers.q2 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q2" value="no" checked={partCAnswers.q2 === 'no'} disabled />
                 </label>
               </div>
               {/* Question 3 */}
@@ -246,11 +246,11 @@ const CrafftScreeningReadOnly = () => {
                 3. Have you ever felt like you were ADDICTED to vaping or tobacco?
                 <label>
                   Yes
-                  <input type="radio" name="q3" value="yes" checked={partCAnswers.q3 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q3" value="yes" checked={partCAnswers.q3 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q3" value="no" checked={partCAnswers.q3 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q3" value="no" checked={partCAnswers.q3 === 'no'} disabled />
                 </label>
               </div>
               {/* Question 4 */}
@@ -258,11 +258,11 @@ const CrafftScreeningReadOnly = () => {
                 4. Do you ever have strong CRAVINGS to vape or use tobacco?
                 <label>
                   Yes
-                  <input type="radio" name="q4" value="yes" checked={partCAnswers.q4 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q4" value="yes" checked={partCAnswers.q4 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q4" value="no" checked={partCAnswers.q4 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q4" value="no" checked={partCAnswers.q4 === 'no'} disabled />
                 </label>
               </div>
               {/* Question 5 */}
@@ -270,11 +270,11 @@ const CrafftScreeningReadOnly = () => {
                 5. Have you ever felt like you really NEEDED to vape or use tobacco?
                 <label>
                   Yes
-                  <input type="radio" name="q5" value="yes" checked={partCAnswers.q5 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q5" value="yes" checked={partCAnswers.q5 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q5" value="no" checked={partCAnswers.q5 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q5" value="no" checked={partCAnswers.q5 === 'no'} disabled />
                 </label>
               </div>
               {/* Question 6 */}
@@ -282,11 +282,11 @@ const CrafftScreeningReadOnly = () => {
                 6. Is it hard to keep from vaping or using tobacco in PLACES where you are not supposed to, like school?
                 <label>
                   Yes
-                  <input type="radio" name="q6" value="yes" checked={partCAnswers.q6 === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q6" value="yes" checked={partCAnswers.q6 === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q6" value="no" checked={partCAnswers.q6 === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q6" value="no" checked={partCAnswers.q6 === 'no'} disabled />
                 </label>
               </div>
               {/* Sub-questions for Question 7 */}
@@ -295,38 +295,38 @@ const CrafftScreeningReadOnly = () => {
                 <div>a.) did you find it hard to CONCENTRATE because you couldn’t vape or use tobacco?</div>
                 <label>
                   Yes
-                  <input type="radio" name="q7a" value="yes" checked={partCAnswers.q7a === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7a" value="yes" checked={partCAnswers.q7a === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q7a" value="no" checked={partCAnswers.q7a === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7a" value="no" checked={partCAnswers.q7a === 'no'} disabled />
                 </label>
                 <div>b.) did you feel more IRRITABLE because you couldn’t vape or use tobacco?</div>
                 <label>
                   Yes
-                  <input type="radio" name="q7b" value="yes" checked={partCAnswers.q7b === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7b" value="yes" checked={partCAnswers.q7b === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q7b" value="no" checked={partCAnswers.q7b === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7b" value="no" checked={partCAnswers.q7b === 'no'} disabled />
                 </label>
                 <div>c.) did you feel a strong NEED or urge to vape or use tobacco?</div>
                 <label>
                   Yes
-                  <input type="radio" name="q7c" value="yes" checked={partCAnswers.q7c === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7c" value="yes" checked={partCAnswers.q7c === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q7c" value="no" checked={partCAnswers.q7c === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7c" value="no" checked={partCAnswers.q7c === 'no'} disabled />
                 </label>
                 <div>d.) did you feel NERVOUS, restless, or anxious because you couldn’t vape or use tobacco?</div>
                 <label>
                   Yes
-                  <input type="radio" name="q7d" value="yes" checked={partCAnswers.q7d === 'yes'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7d" value="yes" checked={partCAnswers.q7d === 'yes'} disabled />
                 </label>
                 <label>
                   No
-                  <input type="radio" name="q7d" value="no" checked={partCAnswers.q7d === 'no'} onChange={handlePartCChange} />
+                  <input type="radio" name="q7d" value="no" checked={partCAnswers.q7d === 'no'} disabled />
                 </label>
               </div>
               <button type="button" onClick={checkPartCAnswers} className={styles.checkButton}>

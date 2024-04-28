@@ -68,7 +68,7 @@ const AppointmentLogReadOnly = () => {
                             type="text" 
                             name="date" 
                             value={entry.date} 
-                            readOnly
+                            disabled
                         />
                         
                         <label>WHO is the appointment with</label>
@@ -76,7 +76,7 @@ const AppointmentLogReadOnly = () => {
                             type="text" 
                             name="who" 
                             value={entry.who} 
-                            readOnly
+                            disabled
                         />
 
                         <label>Location of the appointment</label>
@@ -84,14 +84,14 @@ const AppointmentLogReadOnly = () => {
                             type="text" 
                             name="location" 
                             value={entry.location} 
-                            readOnly
+                            disabled
                         />
 
                         <label>Notes</label>
                         <textarea 
                             name="notes" 
                             value={entry.notes} 
-                            readOnly
+                            disabled
                         />
                     </div>
                     <button type="button" onClick={handleCancel} className={styles.cancelButton}>Back</button>

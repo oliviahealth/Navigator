@@ -26,27 +26,27 @@ const SocialSupportFormReadOnly = () => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`http://localhost:5000/api/get_read_only_data/family_dynamics/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('Error fetching sipport system info:', error);
+      try {
+        const response = await fetch(`http://localhost:5000/api/get_read_only_data/family_dynamics/${patientId}/${log_id}`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('Error fetching sipport system info:', error);
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleInputChange = (index, name, value) => {
     setFormData(prevFormData => {
@@ -64,7 +64,7 @@ const SocialSupportFormReadOnly = () => {
       const newTotalScore = updatedSupportData.reduce((total, item) => {
         return item.noOne ? total : total + Number(item.satisfaction);
       }, 0);
-  
+
       return {
         ...prevFormData,
         supportData: updatedSupportData,
@@ -81,7 +81,7 @@ const SocialSupportFormReadOnly = () => {
       updatedSupportData[index].satisfaction = '1';
     }
     setFormData({ ...formData, supportData: updatedSupportData });
-  };  
+  };
 
   return (
     <div className="social-support-form">
@@ -93,7 +93,7 @@ const SocialSupportFormReadOnly = () => {
             type="text"
             name="fullName"
             value={formData.fullName}
-            onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+            disabled
           />
         </label>
 
@@ -103,7 +103,7 @@ const SocialSupportFormReadOnly = () => {
             type="date"
             name="dateSubmitted"
             value={formData.dateSubmitted}
-            onChange={(e) => setFormData({ ...formData, dateSubmitted: e.target.value })}
+            disabled
           />
         </label>
 
@@ -115,8 +115,7 @@ const SocialSupportFormReadOnly = () => {
               name="names"
               value={item.names.join(', ')}
               placeholder="Enter names separated by comma"
-              onChange={(e) => handleInputChange(e, index)}
-              disabled={item.noOne}
+              disabled
             />
             <label>
               No one
@@ -124,14 +123,13 @@ const SocialSupportFormReadOnly = () => {
                 type="checkbox"
                 name="noOne"
                 checked={item.noOne}
-                onChange={(e) => handleCheckboxChange(e, index)}
+                disabled
               />
             </label>
             <select
-  value={item.satisfaction}
-  onChange={(e) => handleInputChange(index, 'satisfaction', e.target.value)}
-  disabled={item.noOne}
->
+              value={item.satisfaction}
+              disabled
+            >
               <option value="1">(1) Very dissatisfied</option>
               <option value="2">(2) Fairly dissatisfied</option>
               <option value="3">(3) A little dissatisfied</option>
@@ -142,7 +140,7 @@ const SocialSupportFormReadOnly = () => {
           </div>
         ))}
 
-<div className="total-score">
+        <div className="total-score">
           <label>Total Score:</label>
           <input
             type="text"

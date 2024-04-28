@@ -114,7 +114,6 @@ const TenBReadOnly = () => {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             if (response.status === 204) { // Handling no content
-                console.log("No participant info found for the selected patient.");
                 return; 
             }
             const data = await response.json();
@@ -135,7 +134,7 @@ const TenBReadOnly = () => {
           <input
             type="checkbox"
             checked={!!checkedItems[`${parentId}${item.id}`]}
-            onChange={(e) => handleChange(`${parentId}${item.id}`, e.target.checked)}
+            disabled
           />
           {item.label}
         </label>

@@ -61,8 +61,8 @@ function PSSReadOnly() {
                                    "How often have you felt difficulties were piling up so high that you could not overcome them?"][i]}</p>
                     {Array.from({ length: 5 }).map((_, j) => (
                         <label key={j}>
-                            <input type="radio" name={`q${i + 1}`} value={j} 
-                                   onChange={() => handleChange(`q${i + 1}`, `${j}`)} /> 
+                            <input type="radio" name={`q${i + 1}`} value={j} checked={responses[`q${i + 1}`] === j}
+                                   disabled /> 
                             {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]} ({j})
                         </label>
                     ))}
