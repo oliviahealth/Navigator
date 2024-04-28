@@ -98,7 +98,7 @@ function DeliveryHistoryReadOnly() {
                       type="date"
                       name="date"
                       value={visit.date}
-                      onChange={(event) => handleInputChange(event, index)}
+                      disabled
                       className="form-control"
                     />
                   </td>
@@ -107,7 +107,7 @@ function DeliveryHistoryReadOnly() {
                       type="date"
                       name="realDate"
                       value={visit.realDate}
-                      onChange={(event) => handleInputChange(event, index)}
+                      disabled
                       className="form-control"
                     />
                   </td>
@@ -119,7 +119,7 @@ function DeliveryHistoryReadOnly() {
                           className="checkbox-input"
                           name="deliverySuccessTrue"
                           checked={visit.deliverySuccessTrue}
-                          onChange={(event) => handleInputChange(event, index)}
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -128,7 +128,7 @@ function DeliveryHistoryReadOnly() {
                           className="checkbox-input"
                           name="deliverySuccessFalse"
                           checked={visit.deliverySuccessFalse}
-                          onChange={(event) => handleInputChange(event, index)}
+                          disabled
                         /> No
                       </label>
                     </div>
@@ -141,7 +141,7 @@ function DeliveryHistoryReadOnly() {
                           className="checkbox-input"
                           name="ifyes"
                           checked={visit.ifyes}
-                          onChange={(event) => handleInputChange(event, index)}
+                          disabled
                         /> Yes
                       </label>
                       <label className="checkbox-label">
@@ -150,7 +150,7 @@ function DeliveryHistoryReadOnly() {
                           className="checkbox-input"
                           name="ifno"
                           checked={visit.ifno}
-                          onChange={(event) => handleInputChange(event, index)}
+                          disabled
                         /> No
                       </label>
                     </div>
@@ -164,9 +164,6 @@ function DeliveryHistoryReadOnly() {
           </table>
         </div>
 
-        <div className="form-group">
-          <button type="button" className="btn" onClick={addCareVisit}>Add Another Delivery</button>
-        </div>
       </form>
 
     </div>

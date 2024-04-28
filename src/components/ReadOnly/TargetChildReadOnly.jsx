@@ -94,7 +94,7 @@ function TargetChildReadOnly() {
             type="text"
             name="participantName"
             value={formData.participantName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -104,7 +104,7 @@ function TargetChildReadOnly() {
             type="text"
             name="caseID"
             value={formData.caseID}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -114,7 +114,7 @@ function TargetChildReadOnly() {
             type="text"
             name="staffName"
             value={formData.staffName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -124,7 +124,7 @@ function TargetChildReadOnly() {
             type="date"
             name="dateCompleted"
             value={formData.dateCompleted}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -134,7 +134,7 @@ function TargetChildReadOnly() {
             type="text"
             name="childName"
             value={formData.childName}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -143,7 +143,7 @@ function TargetChildReadOnly() {
             type="date"
             name="childDate"
             value={formData.childDate}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -152,7 +152,7 @@ function TargetChildReadOnly() {
             type="text"
             name="ssn"
             value={formData.ssn}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -161,7 +161,7 @@ function TargetChildReadOnly() {
             type="date"
             name="birthDate"
             value={formData.birthDate}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -170,7 +170,7 @@ function TargetChildReadOnly() {
             type="text"
             name="gestation"
             value={formData.gestation}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -182,14 +182,14 @@ function TargetChildReadOnly() {
               name="q1"
               value="Male"
               checked={formData.sleep === 'Male'}
-              onChange={handleChange}
+              disabled
             /> Male
             <input
               type="radio"
               name="q1"
               value="Female"
               checked={formData.sleep === 'Female'}
-              onChange={handleChange}
+              disabled
             /> Female
           </label>
 
@@ -202,14 +202,14 @@ function TargetChildReadOnly() {
               name="q1"
               value="Hispanic"
               checked={formData.sleep === 'Hispanic'}
-              onChange={handleChange}
+              disabled
             /> Hispanic or Latino/a
             <input
               type="radio"
               name="q1"
               value="nonHispanic"
               checked={formData.sleep === 'nonHispanic'}
-              onChange={handleChange}
+              disabled
             /> Not Hispanic or Latino/a
           </label>
 
@@ -222,42 +222,42 @@ function TargetChildReadOnly() {
               name="q1"
               value="African"
               checked={formData.sleep === 'African'}
-              onChange={handleChange}
+              disabled
             /> American Indian/Alaska Native
             <input
               type="checkbox"
               name="q1"
               value="Asian"
               checked={formData.sleep === 'Asian'}
-              onChange={handleChange}
+              disabled
             /> Asian
             <input
               type="checkbox"
               name="q1"
               value="Black"
               checked={formData.sleep === 'Black'}
-              onChange={handleChange}
+              disabled
             /> Black or African American
             <input
               type="checkbox"
               name="q1"
               value="NativePacificIslander"
               checked={formData.sleep === 'NativePacificIslander'}
-              onChange={handleChange}
+              disabled
             /> Native Hawaiian or Pacific Islander
             <input
               type="checkbox"
               name="q1"
               value="White"
               checked={formData.sleep === 'White'}
-              onChange={handleChange}
+              disabled
             /> White
             <input
               type="checkbox"
               name="q1"
               value="MoreThanOne"
               checked={formData.sleep === 'MoreThanOne'}
-              onChange={handleChange}
+              disabled
             /> More than one race - not specified
           </label>
 
@@ -270,13 +270,13 @@ function TargetChildReadOnly() {
               type="radio"
               name="isBiologicalMother"
               value="Yes"
-              onChange={handleChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="isBiologicalMother"
               value="No"
-              onChange={handleChange}
+              disabled
             /> No
           </label>
         </div>
@@ -294,7 +294,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit3_7Days"
                   checked={formData.wellChildVisit3_7Days || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -304,7 +304,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit2_4Weeks"
                   checked={formData.wellChildVisit2_4Weeks || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -314,7 +314,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit2_3Months"
                   checked={formData.wellChildVisit2_3Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -324,7 +324,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit4_5Months"
                   checked={formData.wellChildVisit4_5Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -334,7 +334,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit6_7Months"
                   checked={formData.wellChildVisit6_7Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -344,7 +344,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit9_10Months"
                   checked={formData.wellChildVisit9_10Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -353,7 +353,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit12_13Months"
                   checked={formData.wellChildVisit12_13Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -362,7 +362,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit15_16Months"
                   checked={formData.wellChildVisit15_16Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -371,7 +371,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit18_19Months"
                   checked={formData.wellChildVisit18_19Months || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -380,7 +380,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit2_2_5Years"
                   checked={formData.wellChildVisit2_2_5Years || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -389,7 +389,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit3_3_5Years"
                   checked={formData.wellChildVisit3_3_5Years || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
               <label>
@@ -398,7 +398,7 @@ function TargetChildReadOnly() {
                   type="checkbox"
                   name="wellChildVisit4_4_5Years"
                   checked={formData.wellChildVisit4_4_5Years || false}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -416,7 +416,7 @@ function TargetChildReadOnly() {
               name="childInsurance"
               value="Medicaid or Texas KidCare"
               checked={formData.childInsurance === 'Medicaid or Texas KidCare'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -426,7 +426,7 @@ function TargetChildReadOnly() {
               name="childInsurance"
               value="Private health insurance"
               checked={formData.childInsurance === 'Private health insurance'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -436,7 +436,7 @@ function TargetChildReadOnly() {
               name="childInsurance"
               value="Tri-Care"
               checked={formData.childInsurance === 'Tri-Care'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -446,7 +446,7 @@ function TargetChildReadOnly() {
               name="childInsurance"
               value="No health insurance"
               checked={formData.childInsurance === 'No health insurance'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -456,7 +456,7 @@ function TargetChildReadOnly() {
               name="childInsurance"
               value="Other health insurance"
               checked={formData.childInsurance === 'Other health insurance'}
-              onChange={handleChange}
+              disabled
             />
             {/* An additional text input can be provided if "Other health insurance" is selected */}
             {formData.childInsurance === 'Other health insurance' && (
@@ -464,7 +464,7 @@ function TargetChildReadOnly() {
                 type="text"
                 name="childInsuranceOther"
                 value={formData.childInsuranceOther || ''}
-                onChange={handleChange}
+                disabled
               />
             )}
           </label>

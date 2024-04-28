@@ -173,7 +173,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q1"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q1 === rating}
                   />
                   {rating}
@@ -188,7 +188,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q2"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q2 === rating}
                   />
                   {rating}
@@ -204,7 +204,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q3"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q3 === rating}
                   />
                   {rating}
@@ -221,7 +221,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q4"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q4 === rating}
                   />
                   {rating}
@@ -236,7 +236,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q5"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q5 === rating}
                   />
                   {rating}
@@ -251,7 +251,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q6"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q6 === rating}
                   />
                   {rating}
@@ -266,7 +266,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q7"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q7 === rating}
                   />
                   {rating}
@@ -281,7 +281,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q8"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q8 === rating}
                   />
                   {rating}
@@ -296,7 +296,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q9"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q9 === rating}
                   />
                   {rating}
@@ -311,7 +311,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q10"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q10 === rating}
                   />
                   {rating}
@@ -326,7 +326,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q11"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q11 === rating}
                   />
                   {rating}
@@ -341,7 +341,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q12"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q12 === rating}
                   />
                   {rating}
@@ -356,7 +356,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q13"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q13 === rating}
                   />
                   {rating}
@@ -371,7 +371,7 @@ function BreastFeedingReadOnly() {
                     type="radio"
                     name="q14"
                     value={rating}
-                    onChange={(e) => handleAssessmentChange(e.target.name, e.target.value)}
+                    disabled
                     checked={assessment.questions.q14 === rating}
                   />
                   {rating}

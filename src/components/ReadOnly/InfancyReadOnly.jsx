@@ -110,7 +110,7 @@ function InfancyReadOnly() {
             type="text"
             name="participantName"
             value={formData.participantName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -120,7 +120,7 @@ function InfancyReadOnly() {
             type="text"
             name="caseID"
             value={formData.caseID}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -130,7 +130,7 @@ function InfancyReadOnly() {
             type="text"
             name="staffName"
             value={formData.staffName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -140,7 +140,7 @@ function InfancyReadOnly() {
             type="date"
             name="dateCompleted"
             value={formData.dateCompleted}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -150,7 +150,7 @@ function InfancyReadOnly() {
             type="text"
             name="childName"
             value={formData.childName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -163,7 +163,7 @@ function InfancyReadOnly() {
               name="sleepOnBack"
               value="Yes"
               checked={formData.sleepOnBack === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
             No
             <input
@@ -171,7 +171,7 @@ function InfancyReadOnly() {
               name="sleepOnBack"
               value="No"
               checked={formData.sleepOnBack === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
 
@@ -181,7 +181,7 @@ function InfancyReadOnly() {
             <input
               type="checkbox"
               name="Birth – 1 month old"
-              onChange={handleCheckboxChange}
+              disabled
               checked={additionalQuestionsVisible["Birth – 1 month old"]}
             />
             Birth – 1 month old
@@ -190,7 +190,7 @@ function InfancyReadOnly() {
             <input
               type="checkbox"
               name="2 – 3 months old"
-              onChange={handleCheckboxChange}
+              disabled
               checked={additionalQuestionsVisible["2 – 3 months old"]}
             />
             2 – 3 months old
@@ -206,14 +206,14 @@ function InfancyReadOnly() {
               name="q1"
               value="Yes"
               checked={formData.sleep === 'Yes'}
-              onChange={handleChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="q1"
               value="No"
               checked={formData.sleep === 'No'}
-              onChange={handleChange}
+              disabled
             /> No
           </label>
 
@@ -226,14 +226,14 @@ function InfancyReadOnly() {
               name="q1"
               value="Yes"
               checked={formData.sleep === 'Yes'}
-              onChange={handleChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="q1"
               value="No"
               checked={formData.sleep === 'No'}
-              onChange={handleChange}
+              disabled
             /> No
           </label>
 
@@ -246,14 +246,14 @@ function InfancyReadOnly() {
               name="q1"
               value="Yes"
               checked={formData.sleep === 'Yes'}
-              onChange={handleChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="q1"
               value="No"
               checked={formData.sleep === 'No'}
-              onChange={handleChange}
+              disabled
             /> No
           </label>
 
@@ -266,14 +266,14 @@ function InfancyReadOnly() {
               name="q1"
               value="Yes"
               checked={formData.sleep === 'Yes'}
-              onChange={handleChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="q1"
               value="No"
               checked={formData.sleep === 'No'}
-              onChange={handleChange}
+              disabled
             /> No
           </label>
 
@@ -286,13 +286,13 @@ function InfancyReadOnly() {
               type="radio"
               name="isBiologicalMother"
               value="Yes"
-              onChange={handleMotherChange}
+              disabled
             /> Yes
             <input
               type="radio"
               name="isBiologicalMother"
               value="No"
-              onChange={handleMotherChange}
+              disabled
             /> No
           </label>
         </div>
@@ -307,14 +307,14 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
                 <input
                   type="radio"
                   name="q1"
                   value="No"
                   checked={formData.sleep === 'No'}
-                  onChange={handleChange}
+                  disabled
                 /> No
               </label>
 
@@ -326,7 +326,7 @@ function InfancyReadOnly() {
                   type="date"
                   name="datePartum"
                   checked={formData.datePartum}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -339,14 +339,14 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
                 <input
                   type="radio"
                   name="q1"
                   value="No"
                   checked={formData.sleep === 'No'}
-                  onChange={handleChange}
+                  disabled
                 /> No
               </label>
 
@@ -359,7 +359,7 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
               </label>
 
@@ -376,14 +376,14 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
                 <input
                   type="radio"
                   name="q1"
                   value="No"
                   checked={formData.sleep === 'No'}
-                  onChange={handleChange}
+                  disabled
                 /> No
               </label>
 
@@ -395,7 +395,7 @@ function InfancyReadOnly() {
                   type="date"
                   name="datePartum"
                   checked={formData.datePartum}
-                  onChange={handleChange}
+                  disabled
                 />
               </label>
 
@@ -408,14 +408,14 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
                 <input
                   type="radio"
                   name="q1"
                   value="No"
                   checked={formData.sleep === 'No'}
-                  onChange={handleChange}
+                  disabled
                 /> No
               </label>
 
@@ -428,7 +428,7 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
               </label>
 
@@ -441,14 +441,14 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
                 <input
                   type="radio"
                   name="q1"
                   value="No"
                   checked={formData.sleep === 'No'}
-                  onChange={handleChange}
+                  disabled
                 /> No
               </label>
 
@@ -461,7 +461,7 @@ function InfancyReadOnly() {
                   name="q1"
                   value="Yes"
                   checked={formData.sleep === 'Yes'}
-                  onChange={handleChange}
+                  disabled
                 /> Yes
               </label>
 
