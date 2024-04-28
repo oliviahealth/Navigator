@@ -72,7 +72,7 @@ function GAD7ReadOnly() {
                                 name={`q${i + 1}`}
                                 value={value}
                                 checked={responses[`q${i + 1}`] === value}
-                                onChange={() => handleChange(`q${i + 1}`, `${value}`)}
+                                disabled
                             /> {['Not at all', 'Several days', 'More than half the days', 'Nearly every day'][value]} ({value})
                         </label>
                     ))}

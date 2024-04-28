@@ -106,7 +106,7 @@ const SafetyProfileFormReadOnly = () => {
             type="text"
             name="participantName"
             value={formData.participantName}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -115,7 +115,7 @@ const SafetyProfileFormReadOnly = () => {
             type="text"
             name="caseId"
             value={formData.caseId}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -124,7 +124,7 @@ const SafetyProfileFormReadOnly = () => {
             type="date"
             name="dateCompleted"
             value={formData.dateCompleted}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -133,7 +133,7 @@ const SafetyProfileFormReadOnly = () => {
             type="text"
             name="staffName"
             value={formData.staffName}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -144,7 +144,7 @@ const SafetyProfileFormReadOnly = () => {
             type="checkbox"
             name="timeframeEnrollment"
             checked={formData.timeframeEnrollment}
-            onChange={handleChange}
+            disabled
           />
         </label>
         <label>
@@ -153,7 +153,7 @@ const SafetyProfileFormReadOnly = () => {
             type="checkbox"
             name="timeframeUpdate"
             checked={formData.timeframeUpdate}
-            onChange={handleChange}
+            disabled
           />
         </label>
 
@@ -167,7 +167,7 @@ const SafetyProfileFormReadOnly = () => {
               name="insuranceType"
               value="Medicaid or Texas KidCare"
               checked={formData.insuranceType === 'Medicaid or Texas KidCare'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -177,7 +177,7 @@ const SafetyProfileFormReadOnly = () => {
               name="insuranceType"
               value="Private insurance"
               checked={formData.insuranceType === 'Private insurance'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -187,7 +187,7 @@ const SafetyProfileFormReadOnly = () => {
               name="insuranceType"
               value="Tricare"
               checked={formData.insuranceType === 'Tricare'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -197,7 +197,7 @@ const SafetyProfileFormReadOnly = () => {
               name="insuranceType"
               value="No insurance"
               checked={formData.insuranceType === 'No insurance'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -206,7 +206,7 @@ const SafetyProfileFormReadOnly = () => {
               type="text"
               name="otherInsurance"
               value={formData.otherInsurance}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -221,7 +221,7 @@ const SafetyProfileFormReadOnly = () => {
               name="hasHighSchoolDiploma"
               value="Yes"
               checked={formData.hasHighSchoolDiploma === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -231,7 +231,7 @@ const SafetyProfileFormReadOnly = () => {
               name="hasHighSchoolDiploma"
               value="No"
               checked={formData.hasHighSchoolDiploma === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -248,7 +248,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="educationLevel"
                 value="HS diploma/GED"
                 checked={formData.educationLevel === 'HS diploma/GED'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -258,7 +258,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="educationLevel"
                 value="Some college/training"
                 checked={formData.educationLevel === 'Some college/training'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -268,7 +268,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="educationLevel"
                 value="Technical training/certification"
                 checked={formData.educationLevel === 'Technical training/certification'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -278,7 +278,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="educationLevel"
                 value="Associate's degree"
                 checked={formData.educationLevel === "Associate's degree"}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -288,7 +288,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="educationLevel"
                 value="Bachelor's degree or higher"
                 checked={formData.educationLevel === "Bachelor's degree or higher"}
-                onChange={handleChange}
+                disabled
               />
             </label>
           </div>
@@ -304,7 +304,7 @@ const SafetyProfileFormReadOnly = () => {
               name="currentlyEnrolled"
               value="Yes"
               checked={formData.currentlyEnrolled === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -314,7 +314,7 @@ const SafetyProfileFormReadOnly = () => {
               name="currentlyEnrolled"
               value="No"
               checked={formData.currentlyEnrolled === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -328,7 +328,7 @@ const SafetyProfileFormReadOnly = () => {
               name="employmentStatus"
               value="Employed full-time"
               checked={formData.employmentStatus === 'Employed full-time'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -338,7 +338,7 @@ const SafetyProfileFormReadOnly = () => {
               name="employmentStatus"
               value="Employed part-time"
               checked={formData.employmentStatus === 'Employed part-time'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -348,7 +348,7 @@ const SafetyProfileFormReadOnly = () => {
               name="employmentStatus"
               value="Not employed currently"
               checked={formData.employmentStatus === 'Not employed currently'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -364,7 +364,7 @@ const SafetyProfileFormReadOnly = () => {
               name="tobaccoUse"
               value="Yes"
               checked={formData.tobaccoUse === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -374,7 +374,7 @@ const SafetyProfileFormReadOnly = () => {
               name="tobaccoUse"
               value="No"
               checked={formData.tobaccoUse === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -390,7 +390,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="tobaccoCessation"
                 value="Yes"
                 checked={formData.tobaccoCessation === 'Yes'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -400,7 +400,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="tobaccoCessation"
                 value="No"
                 checked={formData.tobaccoCessation === 'No'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             {formData.tobaccoCessation === 'Yes' && (
@@ -409,7 +409,7 @@ const SafetyProfileFormReadOnly = () => {
                 placeholder="Service Provider"
                 name="tobaccoCessationProvider"
                 value={formData.tobaccoCessationProvider}
-                onChange={handleChange}
+                disabled
               />
             )}
           </div>
@@ -425,7 +425,7 @@ const SafetyProfileFormReadOnly = () => {
               name="currentPregnancy"
               value="Yes"
               checked={formData.currentPregnancy === 'Yes'}
-              onChange={handleChange}
+              disabled
             />
           </label>
           <label>
@@ -435,7 +435,7 @@ const SafetyProfileFormReadOnly = () => {
               name="currentPregnancy"
               value="No"
               checked={formData.currentPregnancy === 'No'}
-              onChange={handleChange}
+              disabled
             />
           </label>
         </div>
@@ -451,7 +451,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="futurePregnancyPlan"
                 value="Yes"
                 checked={formData.futurePregnancyPlan === 'Yes'}
-                onChange={handleChange}
+                disabled
               />
             </label>
             <label>
@@ -461,7 +461,7 @@ const SafetyProfileFormReadOnly = () => {
                 name="futurePregnancyPlan"
                 value="No"
                 checked={formData.futurePregnancyPlan === 'No'}
-                onChange={handleChange}
+                disabled
               />
             </label>
           </div>
@@ -473,7 +473,7 @@ const SafetyProfileFormReadOnly = () => {
             type="text"
             name="yearlyIncome"
             value={formData.yearlyIncome}
-            onChange={handleChange}
+            disabled
           />
           <h3>If income cannot be determined indicate the primary reason</h3>
           <div>
@@ -484,7 +484,7 @@ const SafetyProfileFormReadOnly = () => {
                   name="incomeReason"
                   value={reason}
                   checked={formData.incomeReason === reason}
-                  onChange={handleChange}
+                  disabled
                 />
                 {reason}
               </label>
@@ -494,7 +494,7 @@ const SafetyProfileFormReadOnly = () => {
                 type="text"
                 name="otherIncomeReason"
                 value={formData.otherIncomeReason}
-                onChange={handleChange}
+                disabled
               />
             )}
           </div>
@@ -507,7 +507,7 @@ const SafetyProfileFormReadOnly = () => {
             type="number"
             name="incomeDependents"
             value={formData.incomeDependents}
-            onChange={handleChange}
+            disabled
           />
         </div>
 
@@ -524,7 +524,7 @@ const SafetyProfileFormReadOnly = () => {
                     name="housingSituation"
                     value={option}
                     checked={formData.housingSituation === option}
-                    onChange={handleChange}
+                    disabled
                   />
                   {option}
                 </label>
@@ -539,7 +539,7 @@ const SafetyProfileFormReadOnly = () => {
                     name="housingSituation"
                     value={option}
                     checked={formData.housingSituation === option}
-                    onChange={handleChange}
+                    disabled
                   />
                   {option}
                 </label>

@@ -153,24 +153,24 @@ function CSSRSReadOnly() {
                     <div>
                         Lifetime:
                         <label>
-                            <input type="radio" name={`lifetimeResponse${index}`} value="Yes" checked={item.lifetimeResponse === 'Yes'} onChange={e => handleChange(index, 'lifetimeResponse', 'Yes')} /> Yes
+                            <input type="radio" name={`lifetimeResponse${index}`} value="Yes" checked={item.lifetimeResponse === 'Yes'} disabled /> Yes
                         </label>
                         <label>
-                            <input type="radio" name={`lifetimeResponse${index}`} value="No" checked={item.lifetimeResponse === 'No'} onChange={e => handleChange(index, 'lifetimeResponse', 'No')} /> No
+                            <input type="radio" name={`lifetimeResponse${index}`} value="No" checked={item.lifetimeResponse === 'No'} disabled /> No
                         </label>
                     </div>
                     <div>
                         Past Month:
                         <label>
-                            <input type="radio" name={`monthResponse${index}`} value="Yes" checked={item.monthResponse === 'Yes'} onChange={e => handleChange(index, 'monthResponse', 'Yes')} /> Yes
+                            <input type="radio" name={`monthResponse${index}`} value="Yes" checked={item.monthResponse === 'Yes'} disabled /> Yes
                         </label>
                         <label>
-                            <input type="radio" name={`monthResponse${index}`} value="No" checked={item.monthResponse === 'No'} onChange={e => handleChange(index, 'monthResponse', 'No')} /> No
+                            <input type="radio" name={`monthResponse${index}`} value="No" checked={item.monthResponse === 'No'} disabled /> No
                         </label>
                     </div>
                     <div>
                         <p>If yes, describe:</p>
-                        <textarea value={item.description} onChange={e => handleChange(index, 'description', e.target.value)} placeholder="Describe:" />
+                        <textarea value={item.description} disabled placeholder="Describe:" />
                     </div>
                 </div>
             ))}
@@ -184,7 +184,7 @@ function CSSRSReadOnly() {
                     <i>How many times have you had these thoughts?</i>
                 </p>
                 <label>Most Severe (Lifetime)</label>
-                <select value={intensityResponses.frequencyLifetime} onChange={e => handleChangeIntensity('frequencyLifetime', e.target.value)}>
+                <select value={intensityResponses.frequencyLifetime} disabled>
                     <option value="1">Less than once a week</option>
                     <option value="2">Once a week</option>
                     <option value="3">2-5 times in week</option>
@@ -192,7 +192,7 @@ function CSSRSReadOnly() {
                     <option value="5">Many times each day</option>
                 </select>
                 <label>Most Severe (Past Month)</label>
-                <select value={intensityResponses.frequencyMonth} onChange={e => handleChangeIntensity('frequencyMonth', e.target.value)}>
+                <select value={intensityResponses.frequencyMonth} disabled>
                     <option value="1">Less than once a week</option>
                     <option value="2">Once a week</option>
                     <option value="3">2-5 times in week</option>
@@ -207,7 +207,7 @@ function CSSRSReadOnly() {
                     <i>When you have the thoughts how long do they last?</i>
                 </p>
                 <label>Most Severe (Lifetime)</label>
-                <select value={intensityResponses.durationLifetime} onChange={e => handleChangeIntensity('durationLifetime', e.target.value)}>
+                <select value={intensityResponses.durationLifetime} disabled>
                     <option value="1">Fleeting - few seconds or minutes</option>
                     <option value="2">Less than 1 hour/some of the time</option>
                     <option value="3">1-4 hours/a lot of the time</option>
@@ -215,7 +215,7 @@ function CSSRSReadOnly() {
                     <option value="5">More than 8 hours/persistent or continuous</option>
                 </select>
                 <label>Most Severe (Past Month)</label>
-                <select value={intensityResponses.durationMonth} onChange={e => handleChangeIntensity('durationMonth', e.target.value)}>
+                <select value={intensityResponses.durationMonth} disabled>
                     <option value="1">Fleeting - few seconds or minutes</option>
                     <option value="2">Less than 1 hour/some of the time</option>
                     <option value="3">1-4 hours/a lot of the time</option>
@@ -230,7 +230,7 @@ function CSSRSReadOnly() {
                     <i>Could/can you stop thinking about killing yourself or wanting to die if you want to?</i>
                 </p>
                 <label>Most Severe (Lifetime)</label>
-                <select value={intensityResponses.controllabilityLifetime} onChange={e => handleChangeIntensity('controllabilityLifetime', e.target.value)}>
+                <select value={intensityResponses.controllabilityLifetime} disabled>
                     <option value="1">Easily able to control thoughts</option>
                     <option value="2">Can control thoughts with little difficulty</option>
                     <option value="3">Can control thoughts with some difficulty</option>
@@ -239,7 +239,7 @@ function CSSRSReadOnly() {
                     <option value="0">Does not attempt to control thoughts</option>
                 </select>
                 <label>Most Severe (Past Month)</label>
-                <select value={intensityResponses.controllabilityMonth} onChange={e => handleChangeIntensity('controllabilityMonth', e.target.value)}>
+                <select value={intensityResponses.controllabilityMonth} disabled>
                     <option value="1">Easily able to control thoughts</option>
                     <option value="2">Can control thoughts with little difficulty</option>
                     <option value="3">Can control thoughts with some difficulty</option>
@@ -255,7 +255,7 @@ function CSSRSReadOnly() {
                     <i>Are there things - anyone or anything (e.g., family, religion, pain of death) - that stopped you from wanting to die or acting on thoughts of suicide?</i>
                 </p>
                 <label>Most Severe (Lifetime)</label>
-                <select value={intensityResponses.deterrentsLifetime} onChange={e => handleChangeIntensity('deterrentsLifetime', e.target.value)}>
+                <select value={intensityResponses.deterrentsLifetime} disabled>
                     <option value="1">Deterrents definitely stopped you</option>
                     <option value="2">Deterrents probably stopped you</option>
                     <option value="3">Uncertain if deterrents stopped you</option>
@@ -264,7 +264,7 @@ function CSSRSReadOnly() {
                     <option value="0">Does not apply</option>
                 </select>
                 <label>Most Severe (Past Month)</label>
-                <select value={intensityResponses.deterrentsMonth} onChange={e => handleChangeIntensity('deterrentsMonth', e.target.value)}>
+                <select value={intensityResponses.deterrentsMonth} disabled>
                     <option value="1">Deterrents definitely stopped you</option>
                     <option value="2">Deterrents probably stopped you</option>
                     <option value="3">Uncertain if deterrents stopped you</option>
@@ -280,7 +280,7 @@ function CSSRSReadOnly() {
                     <i>What sort of reasons did you have for thinking about wanting to die or killing yourself?  Was it to end the pain or stop the way you were feeling (in other words you couldn’t go on living with this pain or how you were feeling) or was it to get attention, revenge or a reaction from others? Or both?</i>
                 </p>
                 <label>Most Severe (Lifetime)</label>
-                <select value={intensityResponses.reasonsLifetime} onChange={e => handleChangeIntensity('reasonsLifetime', e.target.value)}>
+                <select value={intensityResponses.reasonsLifetime} disabled>
                     <option value="1">Completely to get attention, revenge, or a reaction from others</option>
                     <option value="2">Mostly to get attention, revenge, or a reaction from others</option>
                     <option value="3">Equally to get attention, revenge, or a reaction from others and to end/stop the pain</option>
@@ -289,7 +289,7 @@ function CSSRSReadOnly() {
                     <option value="0">Does not apply</option>
                 </select>
                 <label>Most Severe (Past Month)</label>
-                <select value={intensityResponses.reasonsMonth} onChange={e => handleChangeIntensity('reasonsMonth', e.target.value)}>
+                <select value={intensityResponses.reasonsMonth} disabled>
                     <option value="1">Completely to get attention, revenge, or a reaction from others</option>
                     <option value="2">Mostly to get attention, revenge, or a reaction from others</option>
                     <option value="3">Equally to get attention, revenge, or a reaction from others and to end/stop the pain</option>
@@ -321,25 +321,25 @@ function CSSRSReadOnly() {
                     <p>Have you made an actual attempt? (Lifetime)</p>
                     <label>
                         Yes
-                        <input type="radio" name="lifetimeActualAttempt" value="Yes" checked={behaviorData.actualAttempt.lifetime === 'Yes'} onChange={(e) => handleBehaviorChange('actualAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeActualAttempt" value="Yes" checked={behaviorData.actualAttempt.lifetime === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="lifetimeActualAttempt" value="No" checked={behaviorData.actualAttempt.lifetime === 'No'} onChange={(e) => handleBehaviorChange('actualAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeActualAttempt" value="No" checked={behaviorData.actualAttempt.lifetime === 'No'} disabled />
                     </label>
 
                     <p>Have you made an actual attempt? (Past 3 Months)</p>
                     <label>
                         Yes
-                        <input type="radio" name="pastThreeMonthsActualAttempt" value="Yes" checked={behaviorData.actualAttempt.pastThreeMonths === 'Yes'} onChange={(e) => handleBehaviorChange('actualAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsActualAttempt" value="Yes" checked={behaviorData.actualAttempt.pastThreeMonths === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="pastThreeMonthsActualAttempt" value="No" checked={behaviorData.actualAttempt.pastThreeMonths === 'No'} onChange={(e) => handleBehaviorChange('actualAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsActualAttempt" value="No" checked={behaviorData.actualAttempt.pastThreeMonths === 'No'} disabled />
                     </label>
 
                     <p>If yes, describe:</p>
-                    <textarea value={behaviorData.actualAttempt.description} onChange={(e) => handleBehaviorChange('actualAttempt', 'description', e.target.value)} />
+                    <textarea value={behaviorData.actualAttempt.description} disabled />
                 </div>
 
                 <div>
@@ -347,21 +347,21 @@ function CSSRSReadOnly() {
                     <p>Have you engaged in self-injurious behavior? (Lifetime)</p>
                     <label>
                         Yes
-                        <input type="radio" name="lifetimeSelfInjuriousBehavior" value="Yes" checked={behaviorData.selfInjuriousBehavior.lifetime === 'Yes'} onChange={(e) => handleBehaviorChange('selfInjuriousBehavior', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeSelfInjuriousBehavior" value="Yes" checked={behaviorData.selfInjuriousBehavior.lifetime === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="lifetimeSelfInjuriousBehavior" value="No" checked={behaviorData.selfInjuriousBehavior.lifetime === 'No'} onChange={(e) => handleBehaviorChange('selfInjuriousBehavior', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeSelfInjuriousBehavior" value="No" checked={behaviorData.selfInjuriousBehavior.lifetime === 'No'} disabled />
                     </label>
 
                     <p>Have you engaged in self-injurious behavior? (Past 3 Months)</p>
                     <label>
                         Yes
-                        <input type="radio" name="pastThreeMonthsSelfInjuriousBehavior" value="Yes" checked={behaviorData.selfInjuriousBehavior.pastThreeMonths === 'Yes'} onChange={(e) => handleBehaviorChange('selfInjuriousBehavior', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsSelfInjuriousBehavior" value="Yes" checked={behaviorData.selfInjuriousBehavior.pastThreeMonths === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="pastThreeMonthsSelfInjuriousBehavior" value="No" checked={behaviorData.selfInjuriousBehavior.pastThreeMonths === 'No'} onChange={(e) => handleBehaviorChange('selfInjuriousBehavior', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsSelfInjuriousBehavior" value="No" checked={behaviorData.selfInjuriousBehavior.pastThreeMonths === 'No'} disabled />
                     </label>
                 </div>
 
@@ -375,25 +375,25 @@ function CSSRSReadOnly() {
                     <p>Has there been a time when you started to do something to end your life but someone or something stopped you before you actually did anything? (Lifetime)</p>
                     <label>
                         Yes
-                        <input type="radio" name="lifetimeInterruptedAttempt" value="Yes" checked={behaviorData.interruptedAttempt.lifetime === 'Yes'} onChange={(e) => handleBehaviorChange('interruptedAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeInterruptedAttempt" value="Yes" checked={behaviorData.interruptedAttempt.lifetime === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="lifetimeInterruptedAttempt" value="No" checked={behaviorData.interruptedAttempt.lifetime === 'No'} onChange={(e) => handleBehaviorChange('interruptedAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeInterruptedAttempt" value="No" checked={behaviorData.interruptedAttempt.lifetime === 'No'} disabled />
                     </label>
 
                     <p>Has there been a time when you started to do something to end your life but someone or something stopped you before you actually did anything? (Past 3 Months)</p>
                     <label>
                         Yes
-                        <input type="radio" name="pastThreeMonthsInterruptedAttempt" value="Yes" checked={behaviorData.interruptedAttempt.pastThreeMonths === 'Yes'} onChange={(e) => handleBehaviorChange('interruptedAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsInterruptedAttempt" value="Yes" checked={behaviorData.interruptedAttempt.pastThreeMonths === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="pastThreeMonthsInterruptedAttempt" value="No" checked={behaviorData.interruptedAttempt.pastThreeMonths === 'No'} onChange={(e) => handleBehaviorChange('interruptedAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsInterruptedAttempt" value="No" checked={behaviorData.interruptedAttempt.pastThreeMonths === 'No'} disabled />
                     </label>
 
                     <p>If yes, describe:</p>
-                    <textarea value={behaviorData.interruptedAttempt.description} onChange={(e) => handleBehaviorChange('interruptedAttempt', 'description', e.target.value)} />
+                    <textarea value={behaviorData.interruptedAttempt.description} disabled />
                 </div>
 
                 <div>
@@ -406,25 +406,25 @@ function CSSRSReadOnly() {
                     <p>Has there been a time when you started to do something to end your life but someone or something stopped you before you actually did anything? (Lifetime)</p>
                     <label>
                         Yes
-                        <input type="radio" name="lifetimeAbortedAttempt" value="Yes" checked={behaviorData.abortedAttempt.lifetime === 'Yes'} onChange={(e) => handleBehaviorChange('abortedAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeAbortedAttempt" value="Yes" checked={behaviorData.abortedAttempt.lifetime === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="lifetimeAbortedAttempt" value="No" checked={behaviorData.abortedAttempt.lifetime === 'No'} onChange={(e) => handleBehaviorChange('abortedAttempt', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimeAbortedAttempt" value="No" checked={behaviorData.abortedAttempt.lifetime === 'No'} disabled />
                     </label>
 
                     <p>Has there been a time when you started to do something to end your life but someone or something stopped you before you actually did anything? (Past 3 Months)</p>
                     <label>
                         Yes
-                        <input type="radio" name="pastThreeMonthsAbortedAttempt" value="Yes" checked={behaviorData.abortedAttempt.pastThreeMonths === 'Yes'} onChange={(e) => handleBehaviorChange('abortedAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsAbortedAttempt" value="Yes" checked={behaviorData.abortedAttempt.pastThreeMonths === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="pastThreeMonthsAbortedAttempt" value="No" checked={behaviorData.abortedAttempt.pastThreeMonths === 'No'} onChange={(e) => handleBehaviorChange('abortedAttempt', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsAbortedAttempt" value="No" checked={behaviorData.abortedAttempt.pastThreeMonths === 'No'} disabled />
                     </label>
 
                     <p>If yes, describe:</p>
-                    <textarea value={behaviorData.abortedAttempt.description} onChange={(e) => handleBehaviorChange('abortedAttempt', 'description', e.target.value)} />
+                    <textarea value={behaviorData.abortedAttempt.description} disabled />
                 </div>
 
                 <div>
@@ -435,32 +435,32 @@ function CSSRSReadOnly() {
                     <p>Have you taken any steps towards making a suicide attempt or preparing to kill yourself (such as collecting pills, getting a gun, giving valuables away or writing a suicide note)? (Lifetime)</p>
                     <label>
                         Yes
-                        <input type="radio" name="lifetimePreparatoryActs" value="Yes" checked={behaviorData.preparatoryActs.lifetime === 'Yes'} onChange={(e) => handleBehaviorChange('preparatoryActs', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimePreparatoryActs" value="Yes" checked={behaviorData.preparatoryActs.lifetime === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="lifetimePreparatoryActs" value="No" checked={behaviorData.preparatoryActs.lifetime === 'No'} onChange={(e) => handleBehaviorChange('preparatoryActs', 'lifetime', e.target.value)} />
+                        <input type="radio" name="lifetimePreparatoryActs" value="No" checked={behaviorData.preparatoryActs.lifetime === 'No'} disabled />
                     </label>
 
                     <p>Have you taken any steps towards making a suicide attempt or preparing to kill yourself (such as collecting pills, getting a gun, giving valuables away or writing a suicide note)? (Past 3 Months)</p>
                     <label>
                         Yes
-                        <input type="radio" name="pastThreeMonthsPreparatoryActs" value="Yes" checked={behaviorData.preparatoryActs.pastThreeMonths === 'Yes'} onChange={(e) => handleBehaviorChange('preparatoryActs', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsPreparatoryActs" value="Yes" checked={behaviorData.preparatoryActs.pastThreeMonths === 'Yes'} disabled />
                     </label>
                     <label>
                         No
-                        <input type="radio" name="pastThreeMonthsPreparatoryActs" value="No" checked={behaviorData.preparatoryActs.pastThreeMonths === 'No'} onChange={(e) => handleBehaviorChange('preparatoryActs', 'pastThreeMonths', e.target.value)} />
+                        <input type="radio" name="pastThreeMonthsPreparatoryActs" value="No" checked={behaviorData.preparatoryActs.pastThreeMonths === 'No'} disabled />
                     </label>
 
                     <p>If yes, describe:</p>
-                    <textarea value={behaviorData.preparatoryActs.description} onChange={(e) => handleBehaviorChange('preparatoryActs', 'description', e.target.value)} />
+                    <textarea value={behaviorData.preparatoryActs.description} disabled />
                 </div>
 
                 <div>
                 <h2>Lethality and Severity Scoring</h2>
                     <div>
                         <h4>Most Recent Attempt - Actual Lethality Score:</h4>
-                        <select value={lethalityData.mostRecentAttemptLethality} onChange={(e) => handleLethalityChange('mostRecentAttemptLethality', e.target.value)}>
+                        <select value={lethalityData.mostRecentAttemptLethality} disabled>
                             <option value="0">No physical damage or very minor physical damage</option>
                             <option value="1">Minor physical damage</option>
                             <option value="2">Moderate physical damage; medical attention needed</option>
@@ -470,14 +470,14 @@ function CSSRSReadOnly() {
                         </select>
 
                         <h4>Most Recent Attempt - Potential Lethality (Only if Actual Lethality = 0):</h4>
-                        <select value={lethalityData.potentialLethalityMostRecent} onChange={(e) => handleLethalityChange('potentialLethalityMostRecent', e.target.value)}>
+                        <select value={lethalityData.potentialLethalityMostRecent} disabled>
                             <option value="0">Behavior not likely to result in injury</option>
                             <option value="1">Behavior likely to result in injury but not likely to cause death</option>
                             <option value="2">Behavior likely to result in death despite available medical care</option>
                         </select>
 
                         <h4>Most Lethal Attempt - Actual Lethality Score:</h4>
-                        <select value={lethalityData.mostLethalAttemptLethality} onChange={(e) => handleLethalityChange('mostLethalAttemptLethality', e.target.value)}>
+                        <select value={lethalityData.mostLethalAttemptLethality} disabled>
                             <option value="0">No physical damage or very minor physical damage</option>
                             <option value="1">Minor physical damage</option>
                             <option value="2">Moderate physical damage; medical attention needed</option>
@@ -487,14 +487,14 @@ function CSSRSReadOnly() {
                         </select>
 
                         <h4>Most Lethal Attempt - Potential Lethality (Only if Actual Lethality = 0):</h4>
-                        <select value={lethalityData.potentialLethalityMostLethal} onChange={(e) => handleLethalityChange('potentialLethalityMostLethal', e.target.value)}>
+                        <select value={lethalityData.potentialLethalityMostLethal} disabled>
                             <option value="0">Behavior not likely to result in injury</option>
                             <option value="1">Behavior likely to result in injury but not likely to cause death</option>
                             <option value="2">Behavior likely to result in death despite available medical care</option>
                         </select>
 
                         <h4>First Attempt - Actual Lethality Score:</h4>
-                        <select value={lethalityData.firstAttemptLethality} onChange={(e) => handleLethalityChange('firstAttemptLethality', e.target.value)}>
+                        <select value={lethalityData.firstAttemptLethality} disabled>
                             <option value="0">No physical damage or very minor physical damage</option>
                             <option value="1">Minor physical damage</option>
                             <option value="2">Moderate physical damage; medical attention needed</option>
@@ -504,7 +504,7 @@ function CSSRSReadOnly() {
                         </select>
 
                         <h4>First Attempt - Potential Lethality (Only if Actual Lethality = 0):</h4>
-                        <select value={lethalityData.potentialLethalityFirstAttempt} onChange={(e) => handleLethalityChange('potentialLethalityFirstAttempt', e.target.value)}>
+                        <select value={lethalityData.potentialLethalityFirstAttempt} disabled>
                             <option value="0">Behavior not likely to result in injury</option>
                             <option value="1">Behavior likely to result in injury but not likely to cause death</option>
                             <option value="2">Behavior likely to result in death despite available medical care</option>

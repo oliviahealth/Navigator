@@ -214,12 +214,14 @@ const App = () => {
         <Route path="/crafft-screening-read-only/:patientId/:log_id" element={<CrafftScreeningReadOnly />} />
         <Route path="/drug-abuse-screening-read-only/:patientId/:log_id" element={<DrugAbuseScreeningReadOnly />} />
         <Route path="/cage-screening-read-only/:patientId/:log_id" element={<CageScreeningReadOnly />} />
+
         <Route path="/asq-read-only/:patientId/:log_id" element={<ASQReadOnly />} /> 
         <Route path="/brief-child-read-only/:patientId/:log_id" element={<BriefChildReadOnly />} />
         <Route path="/delivery-history-read-only/:patientId/:log_id" element={<DeliveryHistoryReadOnly/>} />  
         <Route path="/breastfeeding-read-only/:patientId/:log_id" element={<BreastFeedingReadOnly />} /> 
         <Route path="/infancy-quest-read-only/:patientId/:log_id" element={<InfancyReadOnly />} />
         <Route path="/target-child-read-only/:patientId/:log_id" element={<TargetChildReadOnly />} /> 
+        
         <Route path="/prenatal-care-read-only/:patientId/:log_id" element={<PrenatalCareReadOnly />} /> 
       
         <Route path="/drug-screening-results-read-only/:patientId/:log_id" element={<DrugScreeningResultsReadOnly />} />

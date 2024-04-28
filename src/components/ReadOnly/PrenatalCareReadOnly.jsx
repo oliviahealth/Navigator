@@ -51,18 +51,18 @@ function PrenatalCareReadOnly() {
       <h1>Prenatal Care</h1>
       <form>
         <label htmlFor="pregDate">If currently pregnant, do you attend regular visits with your OB/GYN or Nurse Practitioner?</label>
-        <input type="date" id="pregDate" name="pregDate" value={formValues.pregDate} onChange={handleInputChange} />
+        <input type="date" id="pregDate" name="pregDate" value={formValues.pregDate} disabled />
 
         <label htmlFor="startDate">When did you start your prenatal care?</label>
-        <input type="date" id="startDate" name="startDate" value={formValues.startDate} onChange={handleInputChange} />
+        <input type="date" id="startDate" name="startDate" value={formValues.startDate} disabled />
 
         <h2>Provide the contact information for your prenatal care in the Care Provider section.</h2>
         <label htmlFor="name">Name</label>
-        <input type="text" id="name" name="name" value={formValues.name} onChange={handleInputChange} />
+        <input type="text" id="name" name="name" value={formValues.name} disabled />
         <label htmlFor="phoneNum">Phone Number</label>
-        <input type="text" id="phoneNum" name="phoneNum" value={formValues.phoneNum} onChange={handleInputChange} />
+        <input type="text" id="phoneNum" name="phoneNum" value={formValues.phoneNum} disabled />
         <label htmlFor="email">Email</label>
-        <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
+        <input type="text" id="email" name="email" value={formValues.email} disabled />
       </form>
     </div>
   );
