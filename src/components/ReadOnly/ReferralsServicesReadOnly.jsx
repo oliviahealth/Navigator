@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 function ReferralsServicesReadOnly() {
   const { patientId, log_id } = useParams();
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   const initialServices = {
     "Support Services": [
       "Parenting Classes",
@@ -157,6 +161,8 @@ function ReferralsServicesReadOnly() {
           <textarea value={services.notes} disabled style={{ width: '100%', height: '100px' }} />
         </label>
       </div>
+
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

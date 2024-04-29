@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 
 const PatientDemographicsReadOnly = () => {
     const { patientId, log_id } = useParams();
+
+    const handleCancel = () => {
+        window.history.back();
+      };
     
   // Initial form state
   const [formData, setFormData] = useState({
@@ -477,6 +481,8 @@ const PatientDemographicsReadOnly = () => {
             /> No
         </label>
         </div>
+
+        <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 };

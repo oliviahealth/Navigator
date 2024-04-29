@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 
 function DURELReadOnly() {
     const { patientId, log_id } = useParams();
+    const handleCancel = () => {
+        window.history.back();
+    };
     const initialState = {
         attendance: '',
         privateActivities: '',
@@ -108,6 +111,7 @@ function DURELReadOnly() {
                 <label><input type="radio" name="religionInLife" value="Somewhat true" checked={responses.religionInLife === 'Somewhat true'} disabled /> Somewhat true</label>
                 <label><input type="radio" name="religionInLife" value="Definitely true" checked={responses.religionInLife === 'Definitely true'} disabled /> Definitely true</label>
             </div>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
     

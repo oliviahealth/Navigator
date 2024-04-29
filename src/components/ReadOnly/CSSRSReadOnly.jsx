@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom'
 
 function CSSRSReadOnly() {
     const { patientId, log_id } = useParams();
+    const handleCancel = () => {
+        window.history.back();
+    };
     const initialIdeationState = [
         {
             question: "1. Wish to be Dead",
@@ -511,6 +514,7 @@ function CSSRSReadOnly() {
                         </select>
                     </div>
             </div>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
 }

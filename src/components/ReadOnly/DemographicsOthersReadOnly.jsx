@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 
 const DemographicsOthersReadOnly = () => {
   const { patientId, log_id } = useParams();
+  const handleCancel = () => {
+    window.history.back();
+  };
   const [formData, setFormData] = useState({
     name: '',
     dateOfBirth: '',
@@ -244,6 +247,7 @@ const DemographicsOthersReadOnly = () => {
           <textarea name="medicalProblems" value={formData.medicalProblems} disabled />
         </label>
       </fieldset>
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 };

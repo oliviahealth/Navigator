@@ -11,6 +11,10 @@ function GAD7ReadOnly() {
     const [responses, setResponses] = useState(initialState);
     const [totalScore, setTotalScore] = useState(0);
 
+    const handleCancel = () => {
+        window.history.back();
+      };
+
     useEffect(() => {
         const fetchLog = async () => {
             try {
@@ -81,6 +85,7 @@ function GAD7ReadOnly() {
 
             <h3>Total Score: {totalScore}</h3>
             <p>Risk Level: {getRiskLevel(totalScore)}</p>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
 }

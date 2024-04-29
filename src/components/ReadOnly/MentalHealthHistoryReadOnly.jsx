@@ -12,6 +12,10 @@ function MentalHealthHistoryReadOnly() {
   });
   const [notes, setNotes] = useState('');
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   useEffect(() => {
     const fetchLog = async () => {
         try {
@@ -91,6 +95,8 @@ function MentalHealthHistoryReadOnly() {
       <label>Notes:
         <textarea value={notes} disabled />
       </label>
+
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }
