@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 
 function ChildDemographicsReadOnly() {
   const { patientId, log_id } = useParams();
+  const handleCancel = () => {
+    window.history.back();
+  };
   const [childData, setChildData] = useState({
     childName: '',
     dateOfBirth: '',
@@ -256,7 +259,7 @@ function ChildDemographicsReadOnly() {
             <textarea name="relatedHistory.otherImportantInfo" value={childData.relatedHistory.otherImportantInfo} disabled />
           </label>
         </fieldset>
-
+        <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

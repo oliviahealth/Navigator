@@ -12,6 +12,10 @@ function PHQ9ReadOnly() {
     const [totalScore, setTotalScore] = useState(0);
     const [suicideRisk, setSuicideRisk] = useState(false);
 
+    const handleCancel = () => {
+        window.history.back();
+      };
+
     useEffect(() => {
         const fetchLog = async () => {
             try {
@@ -84,6 +88,8 @@ function PHQ9ReadOnly() {
                 <p>Depression Level: {getDepressionLevel(totalScore)}</p>
                 {suicideRisk && <p><strong>Attention:</strong> Suicide risk assessment needed due to response to question 9.</p>}
             </div>
+
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
 }

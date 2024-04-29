@@ -3,6 +3,9 @@ import { useParams } from 'react-router-dom';
 
 function EPDSReadOnly() {
     const { patientId, log_id } = useParams();
+    const handleCancel = () => {
+        window.history.back();
+      };
     const initialState = {
         q1: '',
         q2: '',
@@ -194,6 +197,7 @@ function EPDSReadOnly() {
                     <textarea value={ehrInfo.notes} disabled></textarea>
                 </label>
             </div>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
 }

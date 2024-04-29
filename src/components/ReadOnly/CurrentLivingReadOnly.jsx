@@ -4,6 +4,11 @@ import { useParams } from 'react-router-dom';
 function CurrentLivingReadOnly() {
   const { patientId, log_id } = useParams();
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
+
   const [formData, setFormData] = useState({
     livingWith: [
       { name: '', dateOfBirth: '', relation: '' }
@@ -150,6 +155,7 @@ function CurrentLivingReadOnly() {
           disabled
         />
       </label>  
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
   

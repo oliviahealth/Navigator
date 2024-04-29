@@ -4,6 +4,11 @@ import { useParams } from 'react-router-dom';
 function GoalPlanningReadOnly() {
   const { patientId, log_id } = useParams();
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
+
   const [goalInfo, setGoalInfo] = useState({
     goal: '',
     steps: ['', '', ''], // Assuming 3 steps for simplicity; adjust as needed
@@ -112,6 +117,8 @@ function GoalPlanningReadOnly() {
         </label>
         <textarea name="progress" value={goalInfo.progress} disabled style={{ width: '100%', height: '60px' }} />
       </div>
+
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

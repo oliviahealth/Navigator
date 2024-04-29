@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 function EmergencyContactReadOnly() {
   const { patientId, log_id } = useParams();
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   const initialData = {
     emergencyContacts: [{ id: 1, name: '', phone: '' }],
     pediatrician: { name: '', phone: '' },
@@ -124,6 +128,8 @@ function EmergencyContactReadOnly() {
           )}
         </div>
       ))}
+
+<button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

@@ -4,6 +4,10 @@ import { useParams } from 'react-router-dom';
 function ChildNeedsReadOnly() {
   const { patientId, log_id } = useParams();
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   const [items, setItems] = useState([
     { id: 1, name: 'Breast Pump', status: '', notes: '' },
     { id: 2, name: 'Breastfeeding Support', status: '', notes: '' },
@@ -82,6 +86,7 @@ function ChildNeedsReadOnly() {
           ))}
         </tbody>
       </table>
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

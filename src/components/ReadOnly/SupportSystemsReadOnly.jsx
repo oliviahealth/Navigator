@@ -10,6 +10,10 @@ function SupportSystemsReadOnly() {
     yourGoals: ''
   });
 
+  const handleCancel = () => {
+    window.history.back();
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData(prevFormData => ({
@@ -85,6 +89,8 @@ function SupportSystemsReadOnly() {
           rows="5"
         />
       </label>
+
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

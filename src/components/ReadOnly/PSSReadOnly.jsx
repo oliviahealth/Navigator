@@ -11,6 +11,10 @@ function PSSReadOnly() {
     const [responses, setResponses] = useState(initialState);
     const [totalScore, setTotalScore] = useState(0);
 
+    const handleCancel = () => {
+        window.history.back();
+      };
+
     useEffect(() => {
         const fetchLog = async () => {
             try {
@@ -73,6 +77,8 @@ function PSSReadOnly() {
                 <h3>Total Score: {totalScore}</h3>
                 <p>Stress Level: {getStressLevel(totalScore)}</p>
             </div>
+
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
 }
