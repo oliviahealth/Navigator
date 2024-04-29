@@ -89,7 +89,7 @@ def create_form_table():
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             Create_table = """
-            CREATE TABLE IF NOT EXISTS general_information (
+            CREATE TABLE IF NOT EXISTS care_providers (
                 id SERIAL PRIMARY KEY,
                 date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                 data JSONB NOT NULL,
@@ -154,7 +154,6 @@ def get_read_only_data(formType, patientId, logId):
     else:
         return jsonify({"error": "Log not found"}), 404
 
-
 @app.post("/api/signup")
 def signup():
     data = request.get_json()
@@ -188,7 +187,7 @@ def signup():
         "message": "User created successfully.",
         "access_token": access_token
     }), 201
-####################################
+
 @app.post("/api/login")
 def login():
     try:
@@ -233,7 +232,7 @@ def get_patients():
     finally:
         connection_pool.putconn(connection)
         return response
-#############################################################
+
 @app.post('/api/add_patient')
 @jwt_required()
 def add_patient():

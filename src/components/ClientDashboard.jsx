@@ -439,6 +439,7 @@ const ClientDashboard = () => {
                            <Link to={`/forms-dashboard/referrals-services/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Referrals and Services </Link>
                            <Link to={`/forms-dashboard/emergency-contact/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Emergency Contact Information </Link>
                            <Link to={`/forms-dashboard/goal-planning/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Goal Planning Tool </Link>
+                           <Link to={`/forms-dashboard/care-providers/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>Care Providers Contact List </Link>
                         </div>
                      )}
                   </div>
