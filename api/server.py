@@ -3,6 +3,7 @@ import psycopg2
 from dotenv import load_dotenv 
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
+from datetime import timedelta
 from passlib.hash import argon2
 from datetime import datetime
 from psycopg2.extras import Json
@@ -20,6 +21,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 connection_pool = psycopg2.pool.SimpleConnectionPool(minconn=1, maxconn=20, dsn=postgres_url)
 
 app.config['JWT_SECRET_KEY'] = '}NN~V6Yl%/W&U^(yp;|bMr8W})fn5O'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=30)
 jwt = JWTManager(app)
 
 CREATE_USER_TABLE = """
@@ -66,13 +68,28 @@ def get_forms(formType, patientId):
 
     return jsonify(logs_list)
 
+@app.route("/api/get_general_information/<int:patientId>", methods=['GET'])
+def get_general_information(patientId):
+    try:
+        connection = connection_pool.getconn()
+
+        with connection.cursor() as cursor:
+                cursor.execute(f"SELECT * FROM general_information WHERE patient_id = %s ORDER BY date_time DESC LIMIT 1;", (patientId,))
+
+                logs = cursor.fetchone()
+    finally:
+        connection_pool.putconn(connection)    
+    return jsonify(logs)
+
+
+
 @app.route("/api/create_form_table", methods=['POST'])
 def create_form_table():
     try:
         connection = connection_pool.getconn()
         with connection.cursor() as cursor:
             Create_table = """
-            CREATE TABLE IF NOT EXISTS housing_vist (
+            CREATE TABLE IF NOT EXISTS general_information (
                 id SERIAL PRIMARY KEY,
                 date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
                 data JSONB NOT NULL,
@@ -137,6 +154,7 @@ def get_read_only_data(formType, patientId, logId):
     else:
         return jsonify({"error": "Log not found"}), 404
 
+
 @app.post("/api/signup")
 def signup():
     data = request.get_json()
@@ -183,11 +201,12 @@ def login():
             cursor.execute("SELECT id, password FROM \"user\" WHERE username = %s", (username,))
             user = cursor.fetchone()
             access_token = create_access_token(identity=user[0])
-            print(access_token)
-            if user and argon2.verify(password, user[1]):  # Verify the password against the stored hash
+            if user and argon2.verify(password, user[1]):  
                 return jsonify({"status": "success", "message": "Login successful", "access_token": access_token})
             else:
                 return jsonify({"status": "error", "message": "Invalid username or password"}), 401
+    except Exception as e:
+        response = jsonify({'error': str(e)}), 500
     finally:
         connection_pool.putconn(connection)
 

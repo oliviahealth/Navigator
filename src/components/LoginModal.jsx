@@ -26,7 +26,7 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
       return response.json();
     })
     .then(data => {
-      Cookies.set('accessToken', data.access_token, { expires: 1 });
+      Cookies.set('accessToken', data.access_token, { expires: 30 });
       
       onLoginSuccess(); // Handle successful login
     })

@@ -8,14 +8,75 @@ import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons
 import Cookies from 'js-cookie';
 
 const ClientDashboard = () => {
-   
-   
+
+
    const navigate = useNavigate();
 
-   const [patients, setPatients] = useState([]); // State to store patient data
+   const initialData = {
+      name: "First Name Last name",
+      dob: "01/01/2000",
+      gender: "Male",
+      phoneNumber: "+1(000)-0000-0000",
+      email: "myemail@gmail.com",
+      address: "0000 Street Name Drive",
+      zipCode: "00000",
+      cityState: "City, State",
+      country: "United States"
+   }
+
+   const [formData, setFormData] = useState({
+      name: "First Name Last name",
+      dob: "01/01/2000",
+      gender: "Male",
+      phoneNumber: "+1(000)-0000-0000",
+      email: "myemail@gmail.com",
+      address: "0000 Street Name Drive",
+      zipCode: "00000",
+      cityState: "City, State",
+      country: "United States"
+   });
 
    const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
    const [selectedPatientObj, setSelectedPatientObj] = useState(null);
+
+   const fetch_general_info = async () => {
+      const storedIndex = localStorage.getItem('selectedPatientIndex');
+      const storedPatient = localStorage.getItem('selectedPatientObj');
+
+      if (storedPatient == null) {
+         return;
+      }
+
+      if (storedIndex && storedPatient) {
+         setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
+         setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
+      }
+
+      try {
+         const response = await fetch(`http://localhost:5000/api/get_general_information/${selectedPatientObj.patient_id}`, {
+            method: 'GET',
+            credentials: 'include',
+         });
+         if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+         }
+         if (response.status === 204) { // Handling no content
+            return;
+         }
+         const data = await response.json();
+         if (data == null) {
+            setFormData(initialData);
+         } else {
+            setFormData(data[2]);
+         }
+
+      } catch (error) {
+         console.error('Error fetching sipport system info:', error);
+      }
+   };
+
+
+   const [patients, setPatients] = useState([]); // State to store patient data
 
    const [searchInput, setSearchInput] = useState("");
 
@@ -23,16 +84,79 @@ const ClientDashboard = () => {
       setSearchInput(event.target.value);
    };
 
+   const handleChange = (field, value) => {
+      setFormData({
+         ...formData,
+         [field]: value
+      });
+   };
+
+   const handleSave = async (event) => {
+      event.preventDefault();
+      try {
+         const response = await fetch(`http://localhost:5000/api/insert_forms/general_information/${selectedPatientObj.patient_id}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+         });
+         if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+         }
+         const data = await response.json();
+      } catch (error) {
+         console.error('Failed to submit:', error);
+      }
+      setIsEditable(false);
+   };
+
+   const [isEditable, setIsEditable] = useState(false);
+
    const handlePatientClick = (index, patient) => {
+      setIsActive(false)
       setSelectedPatientIndex(index);
       setSelectedPatientObj(patient);
 
       localStorage.setItem('selectedPatientIndex', index);
       localStorage.setItem('selectedPatientObj', JSON.stringify(patient));
+
+      const fetchLog = async () => {
+         try {
+            const response = await fetch(`http://localhost:5000/api/get_general_information/${selectedPatientObj.patient_id}`, {
+               method: 'GET',
+               credentials: 'include',
+            });
+            if (!response.ok) {
+               throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            if (response.status === 204) { // Handling no content
+               return;
+            }
+            const data = await response.json();
+            if (data == null) {
+               setFormData(initialData);
+            } else {
+               setFormData(data[2]);
+            }
+
+
+         } catch (error) {
+            console.error('Error fetching support system info:', error);
+         }
+      };
+
+      fetchLog();
    };
 
-   ///////////////////////////////////////////////////////////////////////////////
    useEffect(() => {
+      const storedIndex = localStorage.getItem('selectedPatientIndex');
+      const storedPatient = localStorage.getItem('selectedPatientObj');
+
+      if (storedIndex && storedPatient) {
+         setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
+         setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
+      }
+
       const accessToken = Cookies.get('accessToken');
       const fetchPatients = async () => {
          try {
@@ -54,16 +178,9 @@ const ClientDashboard = () => {
       };
 
       fetchPatients();
-
-      const storedIndex = localStorage.getItem('selectedPatientIndex');
-      const storedPatient = localStorage.getItem('selectedPatientObj');
-
-      if (storedIndex && storedPatient) {
-         setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
-         setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
-      }
    }, []);
-   /////////////////////////////////////////////////////////////////////////////////
+
+
 
    const handleLogout = () => {
       localStorage.removeItem('selectedPatientIndex');
@@ -140,8 +257,10 @@ const ClientDashboard = () => {
                      </span>
                   </div>
                   <div className={styles.dropdown}>
-                     <div className={styles["dropdown-btn"]} onClick={(e) =>
-                        toggleDropdown('generalInformation')}>General Information
+                     <div className={styles["dropdown-btn"]} onClick={(e) => {
+                        toggleDropdown('generalInformation');
+                        fetch_general_info();
+                     }}>General Information
                         <FontAwesomeIcon icon={faCaretDown} />
                      </div>
                      {isActive.generalInformation && (
@@ -149,22 +268,131 @@ const ClientDashboard = () => {
                            <div className={styles["generalInfo"]}>
                               <div className={styles["generalInfoBody"]}>
                                  <div className={styles["infoBlock"]}>
-                                    <p><strong>Name:</strong> First Name Last name</p>
-                                    <p><strong>Date of Birth:</strong> 01/01/2000</p>
-                                    <p><strong>Gender:</strong> Male</p>
+                                    <p>
+                                       <strong>Name:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.name}
+                                             onChange={(e) => handleChange("name", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.name
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>Date of Birth:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.dob}
+                                             onChange={(e) => handleChange("dob", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.dob
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>Gender:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.gender}
+                                             onChange={(e) => handleChange("gender", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.gender
+                                       )}
+                                    </p>
                                  </div>
                                  <div className={styles["infoBlock"]}>
-                                    <p><strong>Phone number:</strong> +1(000)-0000-0000</p>
-                                    <p><strong>Email:</strong> myemail@gmail.com</p>
+                                    <p>
+                                       <strong>Phone number:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.phoneNumber}
+                                             onChange={(e) => handleChange("phoneNumber", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.phoneNumber
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>Email:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.email}
+                                             onChange={(e) => handleChange("email", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.email
+                                       )}
+                                    </p>
                                  </div>
                                  <div className={styles["infoBlock"]}>
-                                    <p><strong>Address:</strong> 0000 Street Name Drive</p>
-                                    <p><strong>Zip code:</strong> 00000</p>
-                                    <p><strong>City, State:</strong> City, State</p>
-                                    <p><strong>Country:</strong> United States</p>
+                                    <p>
+                                       <strong>Address:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.address}
+                                             onChange={(e) => handleChange("address", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.address
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>Zip code:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.zipCode}
+                                             onChange={(e) => handleChange("zipCode", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.zipCode
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>City, State:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.cityState}
+                                             onChange={(e) => handleChange("cityState", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.cityState
+                                       )}
+                                    </p>
+                                    <p>
+                                       <strong>Country:</strong>{" "}
+                                       {isEditable ? (
+                                          <input
+                                             type="text"
+                                             value={formData.country}
+                                             onChange={(e) => handleChange("country", e.target.value)}
+                                          />
+                                       ) : (
+                                          formData.country
+                                       )}
+                                    </p>
                                  </div>
                               </div>
-                              <button className={styles["editButton"]}>Edit</button>
+                              <button
+                                 className={styles["editButton"]}
+                                 onClick={() => setIsEditable(!isEditable)}
+                              >
+                                 {isEditable ? "Close" : "Edit"}
+                              </button>
+                              {isEditable && (
+                                 <button className={styles["saveButton"]} onClick={handleSave}>
+                                    Save
+                                 </button>
+                              )}
                            </div>
                         </div>
                      )}
