@@ -31,18 +31,24 @@ function EPDS() {
     const [ehrInfo, setEhrInfo] = useState(ehrState);
 
     const handleChange = (field, value) => {
+        // Sanitize 'field' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
         setResponses(prev => ({
             ...prev,
-            [field]: value
+            [sanitized_field]: value
         }));
     };
 
     const handleEhrChange = (field, value) => {
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
         setEhrInfo(prev => ({
             ...prev,
-            [field]: value
+            [sanitized_field]: value
         }));
     };
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -65,6 +71,10 @@ function EPDS() {
         } catch (error) {
           console.error('Failed to submit:', error);
         }
+      };
+
+      const handleCancel = () => {
+        window.history.back();
       };
 
     return (
@@ -190,8 +200,8 @@ function EPDS() {
                 </label>
             </div>
 
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
-            <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
             
         </form>
     );

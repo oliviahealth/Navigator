@@ -14,9 +14,12 @@ function DUREL() {
     const [responses, setResponses] = useState(initialState);
 
     const handleChange = (field, value) => {
+        // Sanitize 'field' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
         setResponses(prev => ({
             ...prev,
-            [field]: value
+            [sanitized_field]: value
         }));
     };
 
@@ -37,6 +40,10 @@ function DUREL() {
         } catch (error) {
           console.error('Failed to submit:', error);
         }
+      };
+
+      const handleCancel = () => {
+        window.history.back();
       };
 
     return (
@@ -90,6 +97,7 @@ function DUREL() {
                 <label><input type="radio" name="religionInLife" value="e" onChange={() => handleChange('religionInLife', 'Definitely true')} /> Definitely true</label>
             </div>
 
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
         </form>
     );

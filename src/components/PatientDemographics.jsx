@@ -54,29 +54,36 @@ const PatientDemographics = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+    const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
+
     if (type === 'checkbox') {
-      if (name === 'race') {
-        setFormData(prev => ({
-          ...prev,
-          race: checked ? [...prev.race, value] : prev.race.filter(r => r !== value)
-        }));
-      } else {
-    
-        setFormData(prev => ({
-          ...prev,
-          [name]: checked
-        }));
-      }
+        if (sanitized_name === 'race') {
+            setFormData(prev => ({
+                ...prev,
+                race: checked ? [...prev.race, value] : prev.race.filter(r => r !== value)
+            }));
+        } else {
+            setFormData(prev => ({
+                ...prev,
+                [sanitized_name]: checked
+            }));
+        }
     } else {
-      setFormData(prev => ({
-        ...prev,
-        [name]: value
-      }));
+        setFormData(prev => ({
+            ...prev,
+            [sanitized_name]: value
+        }));
     }
+};
+
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
     <form onSubmit={handleSubmit}>
+      <h2>Participant Demographics</h2>
       <label>Program Start Date*</label>
       <input type="date" name="programStartDate" value={formData.programStartDate} onChange={handleChange} required />
       <label>Case ID*</label>
@@ -170,7 +177,42 @@ const PatientDemographics = () => {
             onChange={handleChange}
             /> Black or African American
         </label>
-        {/* Add other races following the same pattern */}
+        <label>
+            <input
+            type="checkbox"
+            name="race"
+            value="Native Hawaiian or Pacific Islander"
+            checked={formData.race.includes('Native Hawaiian or Pacific Islander')}
+            onChange={handleChange}
+            /> Native Hawaiian or Pacific Islander
+        </label>
+        <label>
+            <input
+            type="checkbox"
+            name="race"
+            value="White"
+            checked={formData.race.includes('White')}
+            onChange={handleChange}
+            /> White
+        </label>
+        <label>
+            <input
+            type="checkbox"
+            name="race"
+            value="More than one race – not specified"
+            checked={formData.race.includes('More than one race – not specified')}
+            onChange={handleChange}
+            /> More than one race – not specified
+        </label>
+        <label>
+            <input
+            type="checkbox"
+            name="race"
+            value="Declined to identify"
+            checked={formData.race.includes('Declined to identify')}
+            onChange={handleChange}
+            /> Declined to identify
+        </label>
         </fieldset>
 
         {/* Primary Language Selection */}
@@ -200,7 +242,6 @@ const PatientDemographics = () => {
             type="text"
             name="otherLanguage"
             value={formData.otherLanguage}
-            disabled={formData.primaryLanguage !== 'Other'}
             onChange={handleChange}
             />
         </label>
@@ -474,7 +515,9 @@ const PatientDemographics = () => {
             /> No
         </label>
         </div>
-        <input type="submit" value="Submit" />
+        <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
+        <button type="button" onClick={handleSubmit} style={{ backgroundColor: 'green', color: 'white' }}>Submit</button>
+
     </form>
   );
 };

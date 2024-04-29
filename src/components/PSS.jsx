@@ -48,14 +48,25 @@ function PSS() {
     }, [responses]);  // Dependency array to track changes in responses
 
     const handleChange = (question, value) => {
-        setResponses(prev => ({ ...prev, [question]: parseInt(value) }));
+        const sanitized_question = question.replace(/[^a-zA-Z0-9_]/g, '');
+        const parsedValue = parseInt(value, 10);
+    
+        setResponses(prev => ({
+            ...prev,
+            [sanitized_question]: isNaN(parsedValue) ? 0 : parsedValue
+        }));
     };
+    
 
     const getStressLevel = (score) => {
         if (score < 14) return 'Low stress';
         if (score < 27) return 'Moderate stress';
         return 'High perceived stress';
     };
+
+    const handleCancel = () => {
+        window.history.back();
+      };
 
     return (
         <form onSubmit={handleSubmit}> 
@@ -89,6 +100,7 @@ function PSS() {
                 <h3>Total Score: {totalScore}</h3>
                 <p>Stress Level: {getStressLevel(totalScore)}</p>
             </div>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
         </form>
     );

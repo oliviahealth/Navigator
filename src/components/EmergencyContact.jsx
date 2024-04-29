@@ -61,14 +61,27 @@ function EmergencyContact() {
   };
 
   const handleInputChange = (section, index, field, value) => {
-    const updatedSection = [...formData[section]];
-    if (typeof updatedSection[index] === 'object') {
-      updatedSection[index] = { ...updatedSection[index], [field]: value };
+    // Sanitize 'section' and 'field' to allow only alphanumeric characters and underscores
+    const sanitized_section = section.replace(/[^a-zA-Z0-9_]/g, '');
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+
+    // Ensure the 'section' is part of formData before accessing it
+    if (formData.hasOwnProperty(sanitized_section)) {
+        const updatedSection = [...formData[sanitized_section]];
+        if (typeof updatedSection[index] === 'object' && updatedSection[index] !== null) {
+            // Update the object at the given index
+            updatedSection[index] = { ...updatedSection[index], [sanitized_field]: value };
+        } else {
+            // Replace the item at the given index with the new value
+            updatedSection[index] = value;
+        }
+        // Update the formData state with the new section
+        setFormData({ ...formData, [sanitized_section]: updatedSection });
     } else {
-      updatedSection[index] = value;
+        console.error('Invalid section:', sanitized_section);
     }
-    setFormData({ ...formData, [section]: updatedSection });
-  };
+};
+
 
   const formatSectionTitle = (title) => {
     return title.replace(/([A-Z])/g, ' $1')
@@ -95,6 +108,10 @@ function EmergencyContact() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -144,6 +161,7 @@ function EmergencyContact() {
           )}
         </div>
       ))}
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );

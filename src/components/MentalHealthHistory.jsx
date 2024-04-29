@@ -37,18 +37,33 @@ function MentalHealthHistory() {
   };
 
   const handleDiagnosisChange = (index, field, value) => {
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
     const updatedDiagnoses = [...diagnoses];
-    updatedDiagnoses[index][field] = value;
-    setDiagnoses(updatedDiagnoses);
-  };
+
+    if (index >= 0 && index < updatedDiagnoses.length && updatedDiagnoses[index] != null) {
+        updatedDiagnoses[index][sanitized_field] = value;
+        setDiagnoses(updatedDiagnoses);
+    } else {
+        console.error('Invalid index or field:', index, sanitized_field);
+    }
+};
+
 
   const addDiagnosis = () => {
     setDiagnoses([...diagnoses, { diagnosis: '', date: '', provider: '', phone: '' }]);
   };
 
   const handleMedicationsChange = (field, value) => {
-    setMedications({ ...medications, [field]: value });
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+
+    setMedications({ ...medications, [sanitized_field]: value });
+};
+
+
+  const handleCancel = () => {
+    window.history.back();
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>Mental Health History (Brief Update)</h2>
@@ -92,6 +107,7 @@ function MentalHealthHistory() {
         <textarea value={notes} onChange={(e) => setNotes(e.target.value)} />
       </label>
 
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );

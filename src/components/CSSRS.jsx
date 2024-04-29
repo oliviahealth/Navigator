@@ -87,30 +87,62 @@ function CSSRS() {
     const [lethalityData, setLethalityData] = useState(initialLethalityState);
 
     const handleChange = (index, field, value) => {
+        // Sanitize 'field' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
+        // Clone the current state to a new array
         const updatedResponses = [...ideationResponses];
-        updatedResponses[index][field] = value;
-        setIdeationResponses(updatedResponses);
+        
+        // Check if index is within the array bounds
+        if (index >= 0 && index < updatedResponses.length) {
+            // Safely update the field if it exists, preventing prototype pollution
+            if (Object.prototype.hasOwnProperty.call(updatedResponses[index], sanitized_field)) {
+                updatedResponses[index][sanitized_field] = value;
+            } else {
+                console.error('Invalid field:', sanitized_field);
+                return;
+            }
+            // Update state with the new array
+            setIdeationResponses(updatedResponses);
+        } else {
+            console.error('Invalid index:', index);
+        }
     };
 
     const handleChangeIntensity = (field, value) => {
-        const updatedIntensity = { ...intensityResponses, [field]: value };
-        setIntensityResponses(updatedIntensity);
+        // Sanitize 'field' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
+        // Update the intensity responses safely
+        const updatedIntensity = { ...intensityResponses };
+        if (Object.prototype.hasOwnProperty.call(updatedIntensity, sanitized_field)) {
+            updatedIntensity[sanitized_field] = value;
+            setIntensityResponses(updatedIntensity);
+        } else {
+            console.error('Invalid field:', sanitized_field);
+        }
     };
-
     const handleBehaviorChange = (field, subfield, value) => {
+        // Sanitize 'field' and 'subfield' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+        const sanitized_subfield = subfield.replace(/[^a-zA-Z0-9_]/g, '');
+    
         setBehaviorData(prev => ({
             ...prev,
-            [field]: {
-                ...prev[field],
-                [subfield]: value
+            [sanitized_field]: {
+                ...prev[sanitized_field],
+                [sanitized_subfield]: value
             }
         }));
     };
 
     const handleLethalityChange = (field, value) => {
+        // Sanitize 'field' to allow only alphanumeric characters and underscores
+        const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+    
         setLethalityData(prev => ({
             ...prev,
-            [field]: value
+            [sanitized_field]: value
         }));
     };
 
@@ -140,8 +172,13 @@ function CSSRS() {
         }
       };
 
+      const handleCancel = () => {
+        window.history.back();
+      };
+
     return (
         <form onSubmit={handleSubmit}>
+            <h2>Columbia Suicide Severity Risk Scale</h2>
             <h2>Suicidal Ideation</h2>
             <p style={{backgroundColor: "#f7f7f7", padding: "10px", border: "1px solid #ccc"}}>
                 Ask questions 1 and 2. If both are negative, proceed to “Suicidal Behavior” section. If the answer to question 2 is “yes”, ask questions 3, 4, and 5. If the answer to question 1 and/or 2 is “yes”, complete “Intensity of Ideation” section below.
@@ -511,7 +548,8 @@ function CSSRS() {
                         </select>
                     </div>
             </div>
-
+            
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit Responses</button>
         </form>
     );

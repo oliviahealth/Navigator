@@ -41,22 +41,29 @@ const DemographicsOthers = () => {
   });
 
   const handleChange = ({ target: { name, value, type, checked } }) => {
-    if (name.includes('.')) {
-      const [section, key] = name.split('.');
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        [section]: {
-          ...prevFormData[section],
-          [key]: type === 'checkbox' ? checked : value,
-        },
-      }));
+    // Sanitize 'name' to ensure it's safe for use in object keys
+    const sanitized_name = name.replace(/[^a-zA-Z0-9_.]/g, '');
+
+    if (sanitized_name.includes('.')) {
+        const parts = sanitized_name.split('.');
+        const section = parts[0];
+        const key = parts[1];
+
+        // Sanitize 'section' and 'key' further if necessary (already sanitized via 'sanitized_name')
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [section]: {
+                ...prevFormData[section],
+                [key]: type === 'checkbox' ? checked : value,
+            },
+        }));
     } else {
-      setFormData(prevFormData => ({
-        ...prevFormData,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [sanitized_name]: type === 'checkbox' ? checked : value,
+        }));
     }
-  };
+};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -75,6 +82,10 @@ const DemographicsOthers = () => {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -239,6 +250,7 @@ const DemographicsOthers = () => {
         </label>
       </fieldset>
 
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );

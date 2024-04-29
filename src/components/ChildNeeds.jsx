@@ -20,10 +20,13 @@ function ChildNeeds() {
   const [generalNotes, setGeneralNotes] = useState('');
 
   const handleChange = (id, field, value) => {
-    setItems(items.map(item => 
-      item.id === id ? { ...item, [field]: value } : item
+    // Sanitize 'field' to allow only alphanumeric characters and underscores
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+
+    setItems(items.map(item =>
+      item.id === id ? { ...item, [sanitized_field]: value } : item
     ));
-  };
+};
 
   const addOtherItem = () => {
     setItems([...items, { id: nextId, name: 'Other', status: '', notes: '' }]);
@@ -47,6 +50,10 @@ function ChildNeeds() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -89,8 +96,8 @@ function ChildNeeds() {
           <textarea value={generalNotes} onChange={(e) => setGeneralNotes(e.target.value)} />
         </label>
       </div>
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
-      <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
     </form>
   );
 }
