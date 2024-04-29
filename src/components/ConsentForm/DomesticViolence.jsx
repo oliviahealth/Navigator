@@ -17,6 +17,11 @@ const DomesticViolenceScreenForm = () => {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+  
+    if (!['yes', 'no'].includes(value)) {
+      console.error('Invalid input: value must be either "yes" or "no"');
+      return;
+    }
     setAnswers({
       ...answers,
       [name]: value

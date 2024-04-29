@@ -24,7 +24,11 @@ const SocialSupportForm = () => {
 
   const [formData, setFormData] = useState(initialFormData);
 
-  const handleInputChange = (index, name, value) => {
+  const handleInputChange = (event, index, name) => {
+    const { value } = event.target;
+    if (/</.test(value)) {
+      return;
+    }
     setFormData(prevFormData => {
       const updatedSupportData = prevFormData.supportData.map((data, i) => {
         if (i === index) {
@@ -48,7 +52,6 @@ const SocialSupportForm = () => {
       };
     });
   };
-
   const handleCheckboxChange = (e, index) => {
     const updatedSupportData = [...formData.supportData];
     updatedSupportData[index].noOne = !updatedSupportData[index].noOne;
@@ -124,6 +127,7 @@ const SocialSupportForm = () => {
                 onChange={(e) => handleCheckboxChange(e, index)}
               />
             </label>
+            <p>How satisfied are you with the social support given to you by these people overall?</p>
             <select
   value={item.satisfaction}
   onChange={(e) => handleInputChange(index, 'satisfaction', e.target.value)}

@@ -30,12 +30,52 @@ function App() {
 
   const handleInputChange = (event, index) => {
     const { name, value, type, checked } = event.target;
-    const newVisits = formData.visits.map((visit, visitIndex) =>
-      index === visitIndex ? { ...visit, [name]: type === 'checkbox' ? checked : value } : visit
-    );
+    
+    const isValidDate = (dateStr) => {
+      return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+    };
+  
 
-    setFormData({ ...formData, visits: newVisits });
+    if (type === 'checkbox') {
+     
+      const newVisits = formData.visits.map((visit, visitIndex) =>
+        index === visitIndex ? { ...visit, [name]: checked } : visit
+      );
+      setFormData({ ...formData, visits: newVisits });
+    } else if (type === 'date') {
+      
+      if (value && !isValidDate(value)) {
+        alert('Please enter a valid date in the format YYYY-MM-DD');
+        return;
+      }
+      const newVisits = formData.visits.map((visit, visitIndex) =>
+        index === visitIndex ? { ...visit, [name]: value } : visit
+      );
+      setFormData({ ...formData, visits: newVisits });
+    } else if (type === 'text') {
+  
+      if (name === 'staff' || name === 'careVisitReason' || name === 'visitCompleted') {
+        
+        if (/<|>/.test(value)) {
+          alert('Please do not use angle brackets <>');
+          return;
+        }
+      } else if (name === 'careVisitDate') {
+        
+        const dates = value.split(',').map(date => date.trim());
+        if (dates.some(date => date && !isValidDate(date))) {
+          alert('Please enter valid date(s) separated by commas in the format YYYY-MM-DD');
+          return;
+        }
+      }
+
+      const newVisits = formData.visits.map((visit, visitIndex) =>
+        index === visitIndex ? { ...visit, [name]: value } : visit
+      );
+      setFormData({ ...formData, visits: newVisits });
+    }
   };
+  
 
   const addCareVisit = () => {
     setFormData({
@@ -277,7 +317,7 @@ return (
     <li>Toddler: 9-10 months old, 12-13 months old, 15-16 months old</li>
     <li>Preschool: 18-19 months old, 2 - 2.5 years old, 3 - 3.5 years old</li>
     <li>School Age: 4 - 4.5 years old</li>
-    {/* Add more list items as necessary */}
+
   </ul>
 </div>
 

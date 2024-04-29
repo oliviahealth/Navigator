@@ -11,6 +11,12 @@ const IntimatePartnerViolenceForm = () => {
   });
 
   const handleAssessmentChange = (name, value) => {
+
+    if (!['1', '2', '3', '4', '5'].includes(value)) {
+      console.error('Invalid input: value must be between 1 and 5');
+      return;
+    }
+  
     setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value

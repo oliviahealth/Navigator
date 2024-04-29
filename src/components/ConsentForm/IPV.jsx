@@ -29,7 +29,13 @@ const IPVScreeningAndAssessmentForm = () => {
   });
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
+    if (type === 'radio' && !['yes', 'no'].includes(value)) {
+      return;
+    }
+    if (type === 'text' && /<|>/.test(value)) {
+      return;
+    }
     setResponses(prev => ({
       ...prev,
       [name]: value

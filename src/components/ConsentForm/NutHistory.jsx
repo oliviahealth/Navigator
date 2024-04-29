@@ -69,29 +69,45 @@ function NutHistory() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-
+  
     if (type === 'checkbox') {
-      // Handling checkboxes that are part of a group (array in state)
+      if (Array.isArray(formValues[name])) {
+        setFormValues(prev => ({
+          ...prev,
+          [name]: checked
+            ? [...prev[name], value]
+            : prev[name].filter(item => item !== value)
+        }));
+      } else {
+        setFormValues(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
+    } else if (type === 'radio') {
       setFormValues(prev => ({
         ...prev,
-        [name]: checked
-          ? [...prev[name], value]
-          : prev[name].filter(item => item !== value)
+        [name]: value
       }));
-    } else if (type === 'radio') {
-      // Handling radio buttons
+    } else if (name === 'numberPregnancies' || name === 'numberLiveBabies' || name === 'pregnantTwentyWeeksCount' ||
+               name === 'healthProviderVisits' || name === 'babyAge' || name === 'mealsPerDay' || name === 'snacksPerDay' || 
+               name === 'milkPerDay') {
+      if (value && (isNaN(value) || parseInt(value, 10) < 0)) {
+        return;
+      }
       setFormValues(prev => ({
         ...prev,
         [name]: value
       }));
     } else {
-      // Handling other inputs like 'text', 'date', etc.
       setFormValues(prev => ({
         ...prev,
         [name]: value
       }));
     }
   };
+  
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();

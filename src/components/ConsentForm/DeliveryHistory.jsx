@@ -22,6 +22,15 @@ function DeliveryHistory() {
 
   const handleInputChange = (event, index) => {
     const { name, value, type, checked } = event.target;
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+
     const newVisits = formData.visits.map((visit, visitIndex) =>
       index === visitIndex ? { ...visit, [name]: type === 'checkbox' ? checked : value } : visit
     );

@@ -26,11 +26,47 @@ const ParentalMedicalHistory = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    const dateFields = ['gestationalAge', 'dueDate', 'deliveryDate'];
+    const numberFields = ['totalPregnancies', 'childrenLivingWithYou', 'gravida', 'term', 'preterm', 'abortions', 'living'];
+    const textFields = ['diagnosesConditions', 'outcomesOfPriorPregnancies', 'datesOfPriorPregnancies'];
+    const radioFields = ['deliveryMode', 'actualDeliveryMode'];
+  
+    if (dateFields.includes(name) && value && !dateRegex.test(value)) {
+      alert('Please enter a valid date in the format YYYY-MM-DD');
+      return;
+    }
+  
+    if (numberFields.includes(name) && value && (isNaN(value) || parseInt(value, 10) < 0)) {
+      alert('Please enter a valid number');
+      return;
+    }
+  
+    if (name === 'datesOfPriorPregnancies') {
+      const dates = value.split(',');
+      if (dates.some(date => date && !dateRegex.test(date.trim()))) {
+        alert('Please enter valid dates separated by commas in the format YYYY-MM-DD');
+        return;
+      }
+    }
+  
+    if (textFields.includes(name) && /<|>/.test(value)) {
+      alert('Please do not use angle brackets <>');
+      return;
+    }
+  
+    if (radioFields.includes(name) && !['vaginal', 'cesarean'].includes(value)) {
+      alert('Invalid selection');
+      return;
+    }
+
     setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value
     }));
   };
+  
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -113,9 +149,7 @@ const ParentalMedicalHistory = () => {
           <div className={styles.questionContainer}>
             <label className={styles.labelBlock}>Diagnoses/Conditions:</label>
             <textarea name="diagnosesConditions" className={styles.largeTextArea} value={formData.diagnosesConditions} onChange={handleChange}></textarea>
-            <label className={styles.labelBlock}>Total Number of Pregnancies:</label>
-      <input className={styles.inputBlock} type="number" name="totalPregnancies" value={formData.totalPregnancies} onChange={handleChange} />
-
+           
       <label className={styles.labelBlock}>Number of Children Currently Living with You:</label>
       <input className={styles.inputBlock} type="number" name="childrenLivingWithYou" value={formData.childrenLivingWithYou} onChange={handleChange} />
 

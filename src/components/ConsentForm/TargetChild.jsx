@@ -40,22 +40,20 @@ function TargetChild() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    if (type === 'checkbox') {
-      setFormData(prevState => ({
-        ...prevState,
-        [name]: checked,
-      }));
-    } else if (type === 'radio') {
-      setFormData(prevState => ({
-        ...prevState,
-        [name]: value,
-      }));
-    } else {
-      setFormData(prevState => ({
-        ...prevState,
-        [name]: value,
-      }));
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
     }
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: newValue,
+    }));
   };
   
 
@@ -453,7 +451,6 @@ function TargetChild() {
       checked={formData.childInsurance === 'Other health insurance'}
       onChange={handleChange}
     />
-    {/* An additional text input can be provided if "Other health insurance" is selected */}
     {formData.childInsurance === 'Other health insurance' && (
       <input
         type="text"

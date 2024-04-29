@@ -10,15 +10,27 @@ function PrenatalCare() {
     name: '',
     phoneNum: '',
     email: '',
+    attendRegularVisits: null,
   });
 
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+
+    const inputValue = type === 'radio' ? value : type === 'checkbox' ? checked : value;
     setFormValues(prevValues => ({
       ...prevValues,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: inputValue,
     }));
   };
 
@@ -45,11 +57,25 @@ function PrenatalCare() {
     <div className="prenatal-care-form">
       <h1>Prenatal Care</h1>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="pregDate">If currently pregnant, do you attend regular visits with your OB/GYN or Nurse Practitioner?</label>
-        <input type="date" id="pregDate" name="pregDate" value={formValues.pregDate} onChange={handleInputChange} />
-
-        <label htmlFor="startDate">When did you start your prenatal care?</label>
-        <input type="date" id="startDate" name="startDate" value={formValues.startDate} onChange={handleInputChange} />
+        <label htmlFor="attendRegularVisits">Are you currently attending regular visits with your OB/GYN or Nurse Practitioner?</label>
+        <div>
+          <input
+            type="radio"
+            id="yesVisits"
+            name="attendRegularVisits"
+            value="Yes"
+            checked={formValues.attendRegularVisits === 'Yes'}
+            onChange={handleInputChange}
+          /> Yes
+          <input
+            type="radio"
+            id="noVisits"
+            name="attendRegularVisits"
+            value="No"
+            checked={formValues.attendRegularVisits === 'No'}
+            onChange={handleInputChange}
+          /> No
+        </div>
 
         <h2>Provide the contact information for your prenatal care in the Care Provider section.</h2>
         <label htmlFor="name">Name</label>
@@ -60,11 +86,7 @@ function PrenatalCare() {
         <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
         
         <button type="submit">Submit</button>
-        <button
-  type="button"
-  onClick={() => navigate('/dashboard')}>
-  Cancel
-</button>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );

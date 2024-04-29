@@ -32,6 +32,18 @@ function ASQ() {
     const { name, value, type, checked } = e.target;
     let inputValue;
   
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+  
+    if (type === 'number' && (isNaN(value) || parseFloat(value) < 0)) {
+      return;
+    }
+  
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+  
     switch (type) {
       case 'checkbox':
         inputValue = name === 'questionnaireUsed' ? value : checked;
@@ -44,10 +56,10 @@ function ASQ() {
         break;
     }
   
-    setFormValues({
-      ...formValues,
+    setFormValues(prevValues => ({
+      ...prevValues,
       [name]: inputValue,
-    });
+    }));
   };
 
   const handleSubmit = async (event) => {

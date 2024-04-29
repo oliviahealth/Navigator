@@ -19,7 +19,16 @@ const IPVDisclosureForm = () => {
   });
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
+    const { name, value, type } = event.target;
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+    if (type === 'text' && /<|>/.test(value)) {
+      return;
+    }
+    if (type === 'number' && (isNaN(value) || value < 0)) {
+      return;
+    }
     setFormData(prevData => ({
       ...prevData,
       [name]: value,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/BriefChild.css';
 
-function PrenatalCare() {
+function BriefChild() {
   const { patientId } = useParams()
   const [formValues, setFormValues] = useState({
     childName: '',
@@ -20,10 +20,22 @@ function PrenatalCare() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+
+    const inputValue = type === 'checkbox' ? checked : value;
+
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: inputValue,
+    }));
   };
 
   const handleSubmit = async (event) => {
@@ -153,4 +165,4 @@ function PrenatalCare() {
   );
 }
 
-export default PrenatalCare;
+export default BriefChild;
