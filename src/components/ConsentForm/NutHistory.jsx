@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/NutHistoryStyle.css';
-// Import any additional components or hooks you may need
+
 
 function NutHistory() {
   const [formValues, setFormValues] = useState({
-    // Initialize your state with all the fields you have in the form.
-    // For example:
+    
     todayDate: '',
     yourName: '',
     educationLevel: '',
     maritalStatus: false,
-    // ...other fields
+    
   });
   
   const navigate = useNavigate();
@@ -82,7 +81,7 @@ function NutHistory() {
       <h1>Nutrition History and Assessment</h1>
       
       <form onSubmit={handleSubmit}>
-        {/* Basic information */}
+  
         <label htmlFor="todays-date">Today's Date</label>
         <input type="date" id="todays-date" name="todaysDate" />
 
@@ -92,7 +91,7 @@ function NutHistory() {
         <label htmlFor="education-level">How many grades of school have you completed?</label>
         <input type="text" id="education-level" name="educationLevel" />
 
-        {/* Marital Status */}
+     
         <fieldset>
           <legend>Are you currently?</legend>
           <label>
@@ -103,7 +102,7 @@ function NutHistory() {
           </label>
         </fieldset>
 
-        {/* Ethnicity and Race */}
+  
         <label>Are you Hispanic or Latino?</label>
         <label>
           <input type="radio" name="ethnicity" value="hispanic" /> Yes
@@ -120,10 +119,10 @@ function NutHistory() {
           <label>
             <input type="checkbox" name="race" value="asian" /> Asian
           </label>
-          {/* ...additional races... */}
+
         </div>
 
-        {/* Pregnancy Information */}
+ 
         <label htmlFor="last-menstrual-period">What was the date of your last menstrual period?</label>
         <input type="date" id="last-menstrual-period" name="lastMenstrualPeriod" />
 

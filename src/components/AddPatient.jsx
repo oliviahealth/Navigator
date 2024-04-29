@@ -19,16 +19,38 @@ const AddPatientForm = ({ onSubmit }) => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
+  
     fetch('http://localhost:5000/api/add_patient', {
       method: 'POST',
+      credentials: "include",
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+      }),
     })
-    window.history.back()
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json(); // Assuming your server responds with JSON
+    })
+    .then(data => {
+      console.log('Success:', data);
+      // Handle success. For instance, redirect or inform the user
+      window.history.back();
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+      // Handle errors here, such as informing the user
+    });
   };
+  
 
   return (
     <div className={styles.formContainer}> {/* Adjusted from modalOverlay to formContainer */}

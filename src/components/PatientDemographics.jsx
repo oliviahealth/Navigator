@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import '../styles/PatientDemographics.css';
 import { Link } from 'react-router-dom';
 
-const ParticipantForm = () => {
-  // Initial form state
+const PatientDemographics = () => {
+ 
   const [formData, setFormData] = useState({
     programStartDate: '',
     caseId: '',
@@ -34,7 +34,6 @@ const ParticipantForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // Handle form submission, such as sending data to a backend
   };
 
   // Handle input change
@@ -42,20 +41,18 @@ const ParticipantForm = () => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
       if (name === 'race') {
-        // Special handling for checkboxes that support multiple selections
         setFormData(prev => ({
           ...prev,
           race: checked ? [...prev.race, value] : prev.race.filter(r => r !== value)
         }));
       } else {
-        // For checkboxes with single boolean value
+    
         setFormData(prev => ({
           ...prev,
           [name]: checked
         }));
       }
     } else {
-      // For other input types (text, radio, date)
       setFormData(prev => ({
         ...prev,
         [name]: value
@@ -65,7 +62,6 @@ const ParticipantForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Basic Information */}
       <label>Program Start Date*</label>
       <input type="date" name="programStartDate" value={formData.programStartDate} onChange={handleChange} required />
       <label>Case ID*</label>
@@ -395,7 +391,6 @@ const ParticipantForm = () => {
             </label>
         </div>
         
-        {/* U.S. Armed Forces */}
         <div>
             <label>Is Participant an active/former member of the U.S. military? Is Participant or child a dependent of an active/former member of the U.S. military?</label>
             <label>
@@ -469,4 +464,4 @@ const ParticipantForm = () => {
   );
 };
 
-export default ParticipantForm;
+export default PatientDemographics;

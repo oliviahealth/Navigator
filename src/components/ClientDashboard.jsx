@@ -8,18 +8,67 @@ import { faCaretDown, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import PatientDemographics from "./PatientDemographics";
-import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
+// import AppointmentLogModal from './ConsentForm/AppointmentLogModal.jsx';
 
 const ClientDashboard = () => {
 const navigate = useNavigate();
 
-const [patients, setPatients] = useState([]); // State to store patient data
+const [patients, setPatients] = useState([]);
+
+const [selectedPatientIndex, setSelectedPatientIndex] = useState(null);
+const [selectedPatientObj, setSelectedPatientObj] = useState(null);
+
+const [searchInput, setSearchInput] = useState("");
+
+const handleSearchChange = (event) => {
+   setSearchInput(event.target.value);
+ };
+
+ const setPatientSession = async(patient) => {
+   try {
+      const response = await fetch('http://localhost:5000/api/select_patient', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // for sessions to work properly
+        body: JSON.stringify({
+          firstName: patient.first_name,
+          lastName: patient.last_name,
+          email: patient.email,
+          phone: patient.phone,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      // Handle success
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+ }
+ 
+
+const handlePatientClick = (index, patient) => {
+   setSelectedPatientIndex(index);
+   setSelectedPatientObj(patient);
+   setPatientSession(patient);
+   
+   localStorage.setItem('selectedPatientIndex', index);
+   localStorage.setItem('selectedPatientObj', JSON.stringify(patient));
+ };
+ 
 
     useEffect(() => {
         const fetchPatients = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/patients', {
-                  method: 'GET'
+                  method: 'GET',
+                  credentials: 'include',
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -32,6 +81,14 @@ const [patients, setPatients] = useState([]); // State to store patient data
         };
 
         fetchPatients();
+
+         const storedIndex = localStorage.getItem('selectedPatientIndex');
+         const storedPatient = localStorage.getItem('selectedPatientObj');
+
+         if (storedIndex && storedPatient) {
+            setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
+            setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
+         }
     }, []); 
 
 
@@ -49,8 +106,8 @@ return (
 <div className={styles.clientDashboard}>
    <header className={styles.header}>
       <div className={styles.logoContainer}>
-         <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
-         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span>
+         {/* <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
+         <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span> */}
          <span className={styles.recordName}>Electronic Health Records</span>
       </div>
       <nav className={styles.nav}>
@@ -61,19 +118,32 @@ return (
    </header>
    <div className={styles.clientDashboardContainer}>
       <div className={styles.patientSidebar}>
-         <h3>Patients (10)</h3>
+         <h3>Patients ({patients.length})</h3>
          <div className={styles.searchContainer}>
-            <FontAwesomeIcon icon={faSearch} className={styles.searchIcon} />
-            <input type="text" className={styles.searchInput} placeholder="Search for patients" />
+         
+         <input
+            type="text"
+            className={styles.searchInput}
+            placeholder="Search for patients"
+            value={searchInput}
+            onChange={handleSearchChange}
+         />
          </div>
+
 
          <a href="/add-patient">
             <button>Add Patient</button>
          </a>
 
          <div className={styles.sidebarContent}>
-         {patients.map((patient, index) => (
-                        <div key={index} className={styles.patientSidebarItem}>
+         {patients
+         .filter((patient) =>
+         `${patient.first_name} ${patient.last_name}`.toLowerCase().includes(searchInput.toLowerCase())
+         )
+         .map((patient, index) => (
+                        <div key={index} 
+    className={`${styles.patientSidebarItem} ${index === selectedPatientIndex ? styles.selectedPatient : ''}`} 
+    onClick={() => handlePatientClick(index, patient)}>
                             <div className={styles.patientInfo}>
                                 <div className={styles.patientName}>{patient.first_name} {patient.last_name}</div>
                                 <div className={styles.patientStatusWithIcon}>
@@ -89,10 +159,12 @@ return (
 
 
       </div>
+      {selectedPatientIndex !== null && (
       <div className = {styles.clientDropdowns}>
          <div className={styles.titleContainer}>
-            <span className={styles.title}>First Name Last Name</span>
-            <button className={styles.ellipsisBtn} onClick={() => console.log('Button clicked')}>...</button>
+            <span className={styles.title}>
+              {selectedPatientObj.first_name} {selectedPatientObj.last_name}
+            </span>
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
@@ -132,11 +204,11 @@ return (
         </div>
         {isActive.consentForm && (
             <div className={styles["dropdown-content"]}>
-                <Link to="/communications-log" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/communications_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Communications Log Form</span>
                 </Link>
             <div className={styles["dropdown-item"]}>
-                <Link to="/apppointment-log" className={styles["dropdown-item"]}>
+                <Link to={`/forms-dashboard/appointment_log/${selectedPatientObj.patient_id}`} className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Apppointment Log Form</span>
                 </Link>
             </div>
@@ -175,10 +247,31 @@ return (
             {isActive.demographics && (
             <div className={styles["dropdown-content"]}>
                <div className={styles["dropdown-item"]}>
-               <Link to="/participants-demographic-record">Participants Demographics Record</Link>
+                  <Link to="/participants-demographic-record">Participants Demographics Record</Link>
                </div>
                <div className={styles["dropdown-item"]}>
-                  Child Demographics Record
+                  <Link to="/demographics-others">Participant Record for Others Involved</Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/child-demographics">Child Demographics Record</Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/support-systems">Support Systems, Strengths, Areas For Improvement & Goals </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/current-living">Current Living Arrangement </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/child-needs">Child(ren) Needs </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/referrals-services">Referrals and Services </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/emergency-contact">Emergency Contact Information </Link>
+               </div>
+               <div className={styles["dropdown-item"]}>
+                  <Link to="/goal-planning">Goal Planning Tool </Link>
                </div>
             </div>
             )}
@@ -233,6 +326,11 @@ return (
                 <Link to="/addiction-belief-scale" className={styles["dropdown-item"]}>
                     <span className={styles.highlighted}>Addiction Belief Scale</span>
                 </Link>
+                </div>
+                <div className={styles["dropdown-item"]}>
+                <Link to="/cage-screening" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>CAGE-Aid Screening Tool</span>
+                </Link>
             </div>
             </div>
             )}
@@ -243,12 +341,41 @@ return (
                <FontAwesomeIcon icon={faCaretDown} />
             </div>
             {isActive.InterRel && (
-            <div className={styles["dropdown-content"]}>
-            {interpersonalRelationsAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
+            <div className={styles["dropdown-item"]}>
+            <Link to="/partnerViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Intimate Partner Violence </span>
+                </Link>
+                <div className={styles["dropdown-item"]}>
+            <Link to="/domesticViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Domestic Violence Screen for Pediatric Settings</span>
+                </Link>
+                
             </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/ipv" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>IPV Screening and Assessment Questions </span>
+                </Link>
+                
+            </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/intimateViolence" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Intimate Partner Violence (IPV) Disclosure Screening Tool</span>
+                </Link>
+                
+            </div>
+            <div className={styles["dropdown-item"]}>
+            <Link to="/familyDynamics" className={styles["dropdown-item"]}>
+                    <span className={styles.highlighted}>Family Dynamics Social Support Questionnaire (SSQ6)	 </span>
+                </Link>
+                
+            </div>
+                
+            </div>
+            
+            
+            
             )}
+            
          </div>
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
@@ -277,18 +404,26 @@ return (
             )}
          </div>
          <div className={styles.dropdown}>
-            <div className={styles["dropdown-btn"]} onClick={(e) =>
-               toggleDropdown('hsa')}>Home Safety Assessments
-               <FontAwesomeIcon icon={faCaretDown} />
-            </div>
-            {isActive.hsa && (
-            <div className={styles["dropdown-content"]}>
-            {homeSafetyAssessmentsOptions.map((option, index) => (
-                <div key={index} className="dropdownItem">{option}</div>
-            ))}
-            </div>
-            )}
-         </div>
+  <div className={styles["dropdown-btn"]} onClick={(e) => toggleDropdown('hsa')}>Home Safety Assessments
+    <FontAwesomeIcon icon={faCaretDown} />
+  </div>
+  {isActive.hsa && (
+    <div className={styles["dropdown-content"]}>
+      <div className={styles["dropdown-item"]}>
+        <Link to="/housingVisit" className={styles["dropdown-item"]}>
+          <span className={styles.highlighted}>Housing Security Home Visit Form </span>
+        </Link>
+      </div>
+      <div className={styles["dropdown-item"]}>
+        <Link to="/housingSafety" className={styles["dropdown-item"]}>
+          <span className={styles.highlighted}>Household Housing Safety Profile </span>
+        </Link>
+      </div>
+     
+    </div>
+  )}
+</div>
+
          <div className={styles.dropdown}>
             <div className={styles["dropdown-btn"]} onClick={(e) =>
                toggleDropdown('PrenatalCare')}>Prenatal Care
@@ -345,6 +480,7 @@ return (
             )}
          </div>
       </div>
+      )}
    </div>
 </div>
 );

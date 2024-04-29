@@ -164,17 +164,6 @@ height: 100vh;
   border-right: 1px solid #ccc; 
 }
 
-.searchContainer {
-  margin-bottom: 20px; /* Spacing below the search bar */
-}
-
-.searchInput {
-  width: 100%; /* Full width of the sidebar */
-  padding: 10px;
-  margin-bottom: 20px; /* Spacing below the search bar */
-  box-sizing: border-box; /* Includes padding in the element's total width */
-}
-
 .sidebarContent {
   height: calc(100% - 40px); /* Adjust height based on the search bar and padding */
 }
@@ -195,6 +184,7 @@ height: 100vh;
   display: flex;
   align-items: center; /* Aligns the icon and input text vertically */
   box-sizing: border-box;
+  background-color: transparent;
 }
 
 .searchInput {
@@ -230,6 +220,10 @@ height: 100vh;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   margin-bottom: 10px; /* Space between items */
+}
+
+.selectedPatient {
+  box-shadow: 0px 15px 15px rgba(0, 0, 0, 0.1);
 }
 
 .patientInfo {

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from '../styles/LandingPage.module.css';
-import texasLogo from '../assets/texas_a_and_m_logo.png';
 import oliviaLogo from '../assets/olivia_health_logo.png';
 import ollieHeadLogo from '../assets/ollie_head_logo.png';
 import LoginModal from './LoginModal';
@@ -27,8 +26,6 @@ const LandingPage = () => {
         <div className={styles.ehrLandingPage}>
             <header className={styles.header}>
                 <div className={styles.logoContainer}>
-                    <img src={texasLogo} alt="Texas A&M University Logo" className={styles.universityLogo} />
-                    <span className={styles.universityName}>TEXAS A&M UNIVERSITY</span>
                     <span className={styles.recordName}>Electronic Health Records</span>
                 </div>
                 <nav className={styles.nav}>
