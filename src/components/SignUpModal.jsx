@@ -42,7 +42,7 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
       })
         .then(response => response.json())
         .then(data => {
-          Cookies.set('accessToken', data.access_token, { expires: 1 });
+          Cookies.set('accessToken', data.access_token, { expires: 30 });
           onSignUpSuccess();
           onClose();
         })
