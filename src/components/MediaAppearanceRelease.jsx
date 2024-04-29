@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/MediaAppearanceRelease.module.css';
+import { useParams } from 'react-router-dom';
 
 const MediaAppearanceRelease = () => {
+  const { patientId } = useParams();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [formData, setFormData] = useState({
     participant: '',
@@ -22,9 +25,23 @@ const MediaAppearanceRelease = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData); // Here you can handle the submission of the formData to a backend, for example.
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/media_appearance_release/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   const handleCancel = () => {

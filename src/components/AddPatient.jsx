@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import styles from '../styles/PatientModal.module.css'; // Update the CSS file name accordingly
+import Cookies from 'js-cookie';
 
 const AddPatientForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -20,12 +21,13 @@ const AddPatientForm = ({ onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-  
+    const accessToken = Cookies.get('accessToken');
     fetch('http://localhost:5000/api/add_patient', {
       method: 'POST',
       credentials: "include",
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
       },
       body: JSON.stringify({
         firstName: formData.firstName,
@@ -38,16 +40,13 @@ const AddPatientForm = ({ onSubmit }) => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json(); // Assuming your server responds with JSON
+      return response.json();
     })
     .then(data => {
-      console.log('Success:', data);
-      // Handle success. For instance, redirect or inform the user
       window.history.back();
     })
     .catch((error) => {
       console.error('Error:', error);
-      // Handle errors here, such as informing the user
     });
   };
   

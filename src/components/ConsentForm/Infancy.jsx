@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/Infancy.css';
 
 function Infancy() {
+  const { patientId } = useParams()
   const [formData, setFormData] = useState({
     participantName: '',
     caseID: '',
@@ -82,10 +83,23 @@ function Infancy() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    navigate('/dashboard');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/infancy_quest/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(-1);
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
   return (
     <div className="infancy-questionnaire">
@@ -424,6 +438,11 @@ function Infancy() {
       )}
 
       <button type="submit">Submit</button>
+      <button
+  type="button"
+  onClick={() => navigate('/dashboard')}>
+  Cancel
+</button>
 
   
 </form>

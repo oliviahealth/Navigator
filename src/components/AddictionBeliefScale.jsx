@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/AddictionBeliefScale.module.css';
+import { useParams } from 'react-router-dom';
 
 const questions = [
   { 
@@ -77,6 +78,7 @@ const questions = [
 ];
 
 const AddictionBeliefScale = () => {
+  const { patientId } = useParams();
   const [answersData, setAnswersData] = useState({
     addictionBeliefs: questions.map((question, index) => ({
       id: index,
@@ -95,10 +97,23 @@ const AddictionBeliefScale = () => {
     }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(answersData);
-    
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/addiction_belief_scale/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(answersData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit');
+    }
   };
 
   return (

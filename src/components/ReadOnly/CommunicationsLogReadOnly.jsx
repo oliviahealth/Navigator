@@ -24,7 +24,6 @@ const CommunicationsLogReadOnly = () => {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    console.log("No communication log found for the selected patient.");
                     return; // Early return if no content
                 }
                 const data = await response.json();
@@ -65,25 +64,23 @@ const CommunicationsLogReadOnly = () => {
                         <tbody>
                             {/* Single row for entry */}
                             <tr>
-                                <td><input type="text" name="date" value={entry.date} readOnly /></td>
                                 <td>
                                     {/* Radio buttons for method selection */}
                                     <div>
-                                        <input type="radio" name="method" value="Phone" checked={entry.method === "Phone"} /> Phone
-                                        <input type="radio" name="method" value="Email" checked={entry.method === "Email"} /> Email/Letter
-                                        <input type="radio" name="method" value="InPerson" checked={entry.method === "InPerson"} /> In Person
-                                        <input type="radio" name="method" value="VideoCall" checked={entry.method === "VideoCall"} /> Video Call
-                                        <input type="radio" name="method" value="Other" checked={entry.method === "Other"} /> Other
+                                        <input type="radio" name="method" value="Phone" checked={entry.method === "Phone"} disabled /> Phone
+                                        <input type="radio" name="method" value="Email" checked={entry.method === "Email"} disabled /> Email/Letter
+                                        <input type="radio" name="method" value="InPerson" checked={entry.method === "InPerson"} disabled /> In Person
+                                        <input type="radio" name="method" value="VideoCall" checked={entry.method === "VideoCall"} disabled /> Video Call
+                                        <input type="radio" name="method" value="Other" checked={entry.method === "Other"} disabled /> Other
                                     </div>
                                 </td>
-                                <td><input type="text" name="organization" value={entry.organization} readOnly/></td>
-                                <td><input type="text" name="purpose" value={entry.purpose} readOnly/></td>
-                                <td><input type="text" name="notes" value={entry.notes} readOnly /></td>
+                                <td><input type="text" name="organization" value={entry.organization} disabled/></td>
+                                <td><input type="text" name="purpose" value={entry.purpose} disabled/></td>
+                                <td><input type="text" name="notes" value={entry.notes} disabled /></td>
                                 <td>
-                                    {/* Checkbox for followUp */}
                                     <div>
-                                        <input type="checkbox" name="followUp" value="Yes" checked={entry.followUp === "Yes"} /> Yes
-                                        <input type="checkbox" name="followUp" value="No" checked={entry.followUp === "No"} /> No
+                                        <input type="checkbox" name="followUp" value="Yes" checked={entry.followUp === "Yes"} disabled/> Yes
+                                        <input type="checkbox" name="followUp" value="No" checked={entry.followUp === "No"} disabled/> No
                                     </div>
                                 </td>
                             </tr>

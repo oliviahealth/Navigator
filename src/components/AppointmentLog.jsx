@@ -58,7 +58,6 @@ const AppointmentLog = () => {
             }
 
             const data = await response.json();
-            console.log('Successfully submitted:', data);
             
             setEntry({ date: '', who: '', location: '', notes: '' });
             window.history.back();

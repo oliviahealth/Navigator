@@ -44,7 +44,6 @@ const CommunicationsLog = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Adjusted to match the Flask backend expectation
         try {
             const response = await fetch(`http://localhost:5000/api/communications_log/${patientId}`, {
                 method: 'POST',
@@ -65,11 +64,9 @@ const CommunicationsLog = () => {
             }
 
             const data = await response.json();
-            console.log('Successfully submitted:', data);
             window.history.back();
         } catch (error) {
             console.error('Failed to submit:', error);
-            // Handle submission error here
         }
     };
 

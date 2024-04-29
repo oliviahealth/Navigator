@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 // import '../styles/SafetyProfileForm.css';
 
 const SafetyProfileForm = () => {
   const incomeReasons = ['Family refusal', 'In foster care', 'Other'];
+  const incomeReasons = ['Family refusal', 'In foster care', 'Other'];
   const navigate = useNavigate();
+  const { patientId } = useParams();
   const { patientId } = useParams();
   const [formData, setFormData] = useState({
     participantName: '',
@@ -45,6 +48,26 @@ const SafetyProfileForm = () => {
   };
 
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/housing_safety/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      navigate(-1);
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
+  };
+
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
   
@@ -62,7 +85,7 @@ const SafetyProfileForm = () => {
   
     setFormData(prevFormData => {
       let newFormData = { ...prevFormData };
-  
+
       if (type === 'radio') {
         newFormData = {
           ...newFormData,
@@ -82,10 +105,12 @@ const SafetyProfileForm = () => {
       } else {
         newFormData[name] = value;
       }
-  
+
       return newFormData;
     });
   };
+
+
 
 
 
@@ -146,6 +171,7 @@ const SafetyProfileForm = () => {
           />
         </label>
 
+
         {/* Timeframe */}
         <label>
           Enrollment
@@ -165,6 +191,7 @@ const SafetyProfileForm = () => {
             onChange={handleChange}
           />
         </label>
+
 
         {/* Health Insurance Coverage */}
         <div className="form-question">
@@ -220,6 +247,7 @@ const SafetyProfileForm = () => {
           </label>
         </div>
 
+
         {/* High School Diploma or GED */}
         <div className="form-question">
           <h3>2. Do you have a high school diploma or GED?</h3>
@@ -246,6 +274,63 @@ const SafetyProfileForm = () => {
         </div>
 
 
+
+        {/* Education Level (conditional based on having a diploma or GED) */}
+        {formData.hasHighSchoolDiploma === 'Yes' && (
+          <div className="form-question">
+            <h3>3. If Yes, what is the highest level of education completed? (check one)</h3>
+            <label>
+              HS diploma/GED
+              <input
+                type="radio"
+                name="educationLevel"
+                value="HS diploma/GED"
+                checked={formData.educationLevel === 'HS diploma/GED'}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Some college/training
+              <input
+                type="radio"
+                name="educationLevel"
+                value="Some college/training"
+                checked={formData.educationLevel === 'Some college/training'}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Technical training/certification
+              <input
+                type="radio"
+                name="educationLevel"
+                value="Technical training/certification"
+                checked={formData.educationLevel === 'Technical training/certification'}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Associate's degree
+              <input
+                type="radio"
+                name="educationLevel"
+                value="Associate's degree"
+                checked={formData.educationLevel === "Associate's degree"}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              Bachelor's degree or higher
+              <input
+                type="radio"
+                name="educationLevel"
+                value="Bachelor's degree or higher"
+                checked={formData.educationLevel === "Bachelor's degree or higher"}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        )}
         {/* Education Level (conditional based on having a diploma or GED) */}
         {formData.hasHighSchoolDiploma === 'Yes' && (
           <div className="form-question">
@@ -327,7 +412,64 @@ const SafetyProfileForm = () => {
             />
           </label>
         </div>
+        {/* Current Enrollment in Education or Training */}
+        <div className="form-question">
+          <h3>4. Are you currently enrolled in any type of school or training program?</h3>
+          <label>
+            Yes
+            <input
+              type="radio"
+              name="currentlyEnrolled"
+              value="Yes"
+              checked={formData.currentlyEnrolled === 'Yes'}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            No
+            <input
+              type="radio"
+              name="currentlyEnrolled"
+              value="No"
+              checked={formData.currentlyEnrolled === 'No'}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
 
+        <div className="form-question">
+          <p>5. What is your employment status?</p>
+          <label>
+            Employed full-time
+            <input
+              type="radio"
+              name="employmentStatus"
+              value="Employed full-time"
+              checked={formData.employmentStatus === 'Employed full-time'}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Employed part-time
+            <input
+              type="radio"
+              name="employmentStatus"
+              value="Employed part-time"
+              checked={formData.employmentStatus === 'Employed part-time'}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Not employed currently
+            <input
+              type="radio"
+              name="employmentStatus"
+              value="Not employed currently"
+              checked={formData.employmentStatus === 'Not employed currently'}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
         <div className="form-question">
           <p>5. What is your employment status?</p>
           <label>
@@ -363,6 +505,30 @@ const SafetyProfileForm = () => {
         </div>
 
 
+        {/* Question 6: Tobacco Use */}
+        <div className="form-question">
+          <h3>6. Do you use tobacco?</h3>
+          <label>
+            Yes
+            <input
+              type="radio"
+              name="tobaccoUse"
+              value="Yes"
+              checked={formData.tobaccoUse === 'Yes'}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            No
+            <input
+              type="radio"
+              name="tobaccoUse"
+              value="No"
+              checked={formData.tobaccoUse === 'No'}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
         {/* Question 6: Tobacco Use */}
         <div className="form-question">
           <h3>6. Do you use tobacco?</h3>
@@ -423,6 +589,41 @@ const SafetyProfileForm = () => {
             )}
           </div>
         )}
+        {/* Question 7: Tobacco Cessation Services (conditional) */}
+        {formData.tobaccoUse === 'Yes' && (
+          <div className="form-question">
+            <h3>7. If Yes, are you currently receiving tobacco cessation services?</h3>
+            <label>
+              Yes
+              <input
+                type="radio"
+                name="tobaccoCessation"
+                value="Yes"
+                checked={formData.tobaccoCessation === 'Yes'}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              No
+              <input
+                type="radio"
+                name="tobaccoCessation"
+                value="No"
+                checked={formData.tobaccoCessation === 'No'}
+                onChange={handleChange}
+              />
+            </label>
+            {formData.tobaccoCessation === 'Yes' && (
+              <input
+                type="text"
+                placeholder="Service Provider"
+                name="tobaccoCessationProvider"
+                value={formData.tobaccoCessationProvider}
+                onChange={handleChange}
+              />
+            )}
+          </div>
+        )}
 
         {/* Question 8: Pregnancy Status (for female participants only) */}
         <div className="form-question">
@@ -448,7 +649,59 @@ const SafetyProfileForm = () => {
             />
           </label>
         </div>
+        {/* Question 8: Pregnancy Status (for female participants only) */}
+        <div className="form-question">
+          <h3>8. Are you currently pregnant?</h3>
+          <label>
+            Yes
+            <input
+              type="radio"
+              name="currentPregnancy"
+              value="Yes"
+              checked={formData.currentPregnancy === 'Yes'}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            No
+            <input
+              type="radio"
+              name="currentPregnancy"
+              value="No"
+              checked={formData.currentPregnancy === 'No'}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
 
+        {/* Question 9: Future Pregnancy Plans (conditional) */}
+        {formData.currentPregnancy === 'No' && (
+          <div className="form-question">
+            <h3>9. If No, would you like to become pregnant in the next year?</h3>
+            <label>
+              Yes
+              <input
+                type="radio"
+                name="futurePregnancyPlan"
+                value="Yes"
+                checked={formData.futurePregnancyPlan === 'Yes'}
+                onChange={handleChange}
+              />
+            </label>
+            <label>
+              No
+              <input
+                type="radio"
+                name="futurePregnancyPlan"
+                value="No"
+                checked={formData.futurePregnancyPlan === 'No'}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+        )}
+        {/* Question 10 */}
+        <div className="form-question">
         {/* Question 9: Future Pregnancy Plans (conditional) */}
         {formData.currentPregnancy === 'No' && (
           <div className="form-question">
@@ -509,6 +762,7 @@ const SafetyProfileForm = () => {
           </div>
         </div>
 
+
         {/* Question 11 */}
         <div className="form-question">
           <h3>11. How many people depend on this income?</h3>
@@ -519,6 +773,9 @@ const SafetyProfileForm = () => {
             onChange={handleChange}
           />
         </div>
+
+        {/* Question 12 */}
+        <div className="form-question">
 
         {/* Question 12 */}
         <div className="form-question">
