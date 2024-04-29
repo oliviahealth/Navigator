@@ -13,7 +13,6 @@ const initialERVisit = { date: '', reason: 'Injury' };
 
 
 const HousingVisitReadOnly = () => {
-  const navigate = useNavigate();
   const { patientId, log_id } = useParams();
   const [formData, setFormData] = useState({
     participantName: '',

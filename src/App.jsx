@@ -109,6 +109,7 @@ import HousingVisitReadOnly from './components/ReadOnly/HousingVisitReadOnly';
 import SafetyProfileFormReadOnly from './components/ReadOnly/HousingSafetyReadOnly';
 import SmokingTobaccoUseReadOnly from './components/ReadOnly/SmokingTobaccoUseReadOnly';
 import CareProvidersReadOnly from './components/ReadOnly/CareProvidersReadOnly';
+import PatientDashboard from './components/PatientDashboard.jsx';
 
 const App = () => {
   return (
@@ -119,6 +120,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/add-patient" element={<AddPatientModal />} />
         <Route path="/forms-dashboard/:formType/:patientId" element={<FormsDashboard />} />
+        <Route path="patient-dashboard" element={<PatientDashboard />}/>
 
         {/* Tab-1: Communication and Information Forms */}
         <Route path="/communications_log/:patientId" element={<CommunicationsLog />} />
