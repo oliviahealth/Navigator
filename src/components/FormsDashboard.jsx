@@ -71,7 +71,8 @@ const FormsDashboard = () => {
         "pss": "Perceived Stress Scale (PSS)",
         "phq9": "PHQ-9",
         "housingVisit": "Housing Security Home Visit Form",
-        "housingSafety": "Household Housing Safety Profile"
+        "housingSafety": "Household Housing Safety Profile",
+        "care-providers": "Care Providers Contact List"
     };
 
     var dbTableNames = {
@@ -124,7 +125,8 @@ const FormsDashboard = () => {
         "pss": "pss",
         "phq9": "phq9",
         "housingVisit": "housing_vist",
-        "housingSafety": "housing_safety"
+        "housingSafety": "housing_safety",
+        "care-providers": "care_providers"
     }
 
     useEffect(() => {

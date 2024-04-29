@@ -56,6 +56,7 @@ import PSS from './components/PSS';
 import PHQ9 from './components/PHQ9';
 import HousingVisit from './components/HousingVisit';
 import SafetyProfileForm from './components/HousingSafety';
+import CareProviders from './components/CareProviders';
 
 import CommunicationsLogReadOnly from './components/ReadOnly/CommunicationsLogReadOnly';
 import AppointmentLogReadOnly from './components/ReadOnly/AppointmentLogReadOnly';
@@ -107,6 +108,7 @@ import PHQ9ReadOnly from './components/ReadOnly/PHQ9ReadOnly';
 import HousingVisitReadOnly from './components/ReadOnly/HousingVisitReadOnly';
 import SafetyProfileFormReadOnly from './components/ReadOnly/HousingSafetyReadOnly';
 import SmokingTobaccoUseReadOnly from './components/ReadOnly/SmokingTobaccoUseReadOnly';
+import CareProvidersReadOnly from './components/ReadOnly/CareProvidersReadOnly';
 
 const App = () => {
   return (
@@ -135,7 +137,8 @@ const App = () => {
         <Route path="/referrals-services/:patientId" element={<ReferralsServices />} />
         <Route path="/emergency-contact/:patientId" element={<EmergencyContact />} />
         <Route path="/goal-planning/:patientId" element={<GoalPlanning />} />
-        
+        <Route path="/care-providers/:patientId" element={<CareProviders />} />
+
         {/* Tab-3: Medical and Nutritional History */}
         <Route path="/parental-medical-history/:patientId" element={<ParentalMedicalHistory />} /> 
         <Route path="/encounter-form/:patientId" element={<EncounterForm />} /> 
@@ -251,6 +254,8 @@ const App = () => {
         <Route path="housingSafety-read-only/:patientId/:log_id" element={<SafetyProfileFormReadOnly/>} />
       
         <Route path="/smoking-tobacco-use-read-only/:patientId/:log_id" element={<SmokingTobaccoUseReadOnly />} />
+      
+        <Route path="/care-providers-read-only/:patientId/:log_id" element={<CareProvidersReadOnly />} />
       </Routes>
     </Router>
   );
