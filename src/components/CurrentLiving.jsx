@@ -14,13 +14,17 @@ function CurrentLiving() {
   });
 
   const handleChange = (section, index, field, value) => {
+    // Sanitize 'section' and 'field' to allow only alphanumeric characters and underscores
+    const sanitized_section = section.replace(/[^a-zA-Z0-9_]/g, '');
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+
     setFormData(prev => ({
-      ...prev,
-      [section]: prev[section].map((item, i) => 
-        i === index ? { ...item, [field]: value } : item
-      )
+        ...prev,
+        [sanitized_section]: prev[sanitized_section].map((item, i) => 
+            i === index ? { ...item, [sanitized_field]: value } : item
+        )
     }));
-  };
+};
 
   const addRow = (section) => {
     const newRow = section === 'livingWith' ? { name: '', dateOfBirth: '', relation: '' } : { name: '', dateOfBirth: '', caregiverContact: '' };
@@ -54,6 +58,10 @@ function CurrentLiving() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -145,7 +153,8 @@ function CurrentLiving() {
           onChange={(e) => handleNotesChange(e.target.value)}
         />
       </label>
-  
+      
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );

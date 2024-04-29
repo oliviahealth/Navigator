@@ -43,8 +43,15 @@ function PHQ9() {
     }, [responses]);
 
     const handleChange = (question, value) => {
-        setResponses(prev => ({ ...prev, [question]: parseInt(value) }));
+        const sanitized_question = question.replace(/[^a-zA-Z0-9_]/g, '');
+        const parsedValue = parseInt(value, 10);
+    
+        setResponses(prev => ({
+            ...prev,
+            [sanitized_question]: isNaN(parsedValue) ? 0 : parsedValue
+        }));
     };
+    
 
     const getDepressionLevel = (score) => {
         if (score <= 4) return 'Minimal depression';
@@ -53,6 +60,10 @@ function PHQ9() {
         if (score <= 19) return 'Moderately severe depression';
         return 'Severe depression';
     };
+
+    const handleCancel = () => {
+        window.history.back();
+      };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -88,6 +99,7 @@ function PHQ9() {
                 <p>Depression Level: {getDepressionLevel(totalScore)}</p>
                 {suicideRisk && <p><strong>Attention:</strong> Suicide risk assessment needed due to response to question 9.</p>}
             </div>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
         </form>
     );

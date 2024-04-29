@@ -69,14 +69,28 @@ function ReferralsServices() {
   });
 
   const handleServiceChange = (category, index, field, value) => {
+    const sanitized_category = category.replace(/[^a-zA-Z0-9_]/g, '');
+    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
+
     const updatedItems = { ...services.items };
-    if (field in updatedItems[category][index]) {
-      updatedItems[category][index][field] = typeof value === 'boolean' ? value : value.target.value;
+
+    // Ensure category and index are valid to avoid errors
+    if (sanitized_category in updatedItems && index in updatedItems[sanitized_category]) {
+        if (sanitized_field in updatedItems[sanitized_category][index]) {
+            updatedItems[sanitized_category][index][sanitized_field] = 
+                typeof value === 'boolean' ? value : value.target.value;
+        } else {
+            // Fallback to updating notes if field is not recognized
+            updatedItems[sanitized_category][index].notes = value.target.value;
+        }
     } else {
-      updatedItems[category][index].notes = value.target.value;
+        console.error('Invalid category or index:', sanitized_category, index);
+        return; // Stop execution if category or index is invalid
     }
+
     setServices({ ...services, items: updatedItems });
-  };
+};
+
 
   const addOtherService = (category) => {
     const newService = { name: 'Other', discussed: false, needed: false, referred: false, participating: false, completed: false, na: false, notes: '' };
@@ -102,6 +116,10 @@ function ReferralsServices() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -133,6 +151,7 @@ function ReferralsServices() {
           <textarea value={services.notes} onChange={e => setServices({ ...services, notes: e.target.value })} style={{ width: '100%', height: '100px' }} />
         </label>
       </div>
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit" style={{ marginTop: '10px' }}>Submit</button>
     </form>
   );

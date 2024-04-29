@@ -12,11 +12,14 @@ function SupportSystems() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
+    const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
+
     setFormData(prevFormData => ({
-      ...prevFormData,
-      [name]: value
+        ...prevFormData,
+        [sanitized_name]: value
     }));
-  };
+};
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,6 +38,10 @@ function SupportSystems() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -81,6 +88,7 @@ function SupportSystems() {
         />
       </label>
 
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );

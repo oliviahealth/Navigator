@@ -49,41 +49,54 @@ function ChildDemographics() {
   });
 
   const handleChangeLivingWith = (event) => {
-    const { name, checked } = event.target;
+    // Extract values from event target
+    let { name, checked } = event.target;
+
+    // Sanitize 'name' to allow only alphanumeric characters and underscores
+    const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
+
+    checked = !!checked;
+
+    // Update state with sanitized values
     setChildData(prevData => ({
-      ...prevData,
-      livingWith: {
-        ...prevData.livingWith,
-        [name]: checked
-      }
+        ...prevData,
+        livingWith: {
+            ...prevData.livingWith,
+            [sanitized_name]: checked
+        }
     }));
-  };
+};
 
-  const handleChange = ({ target: { name, value, type, checked } }) => {
-    // For fields directly under childData
-    if (name in childData) {
-      setChildData({ ...childData, [name]: type === 'checkbox' ? checked : value });
+const handleChange = ({ target: { name, value, type, checked } }) => {
+  // Sanitize 'name' to allow only alphanumeric characters, underscores, and dots for nested paths
+  const sanitized_name = name.replace(/[^a-zA-Z0-9_.]/g, '');
+
+  // For fields directly under childData
+  if (sanitized_name in childData) {
+      setChildData({ ...childData, [sanitized_name]: type === 'checkbox' ? checked : value });
       return;
-    }
+  }
 
-    // For nested fields
-    const keys = name.split('.');
-    setChildData(prevData => {
+  // For nested fields
+  const keys = sanitized_name.split('.');
+  setChildData(prevData => {
       const newData = { ...prevData };
       let currentSection = newData;
       keys.forEach((key, index) => {
-        if (index === keys.length - 1) {
-          currentSection[key] = type === 'checkbox' ? checked : value;
-        } else {
-          if (!(key in currentSection)) {
-            currentSection[key] = {};
+          // Further sanitize each key in the path to remove dots which are not needed in keys
+          const sanitized_key = key.replace(/[\W]+/g, '');
+          if (index === keys.length - 1) {
+              currentSection[sanitized_key] = type === 'checkbox' ? checked : value;
+          } else {
+              if (!(sanitized_key in currentSection)) {
+                  currentSection[sanitized_key] = {};
+              }
+              currentSection = currentSection[sanitized_key];
           }
-          currentSection = currentSection[key];
-        }
       });
       return newData;
-    });
-  };
+  });
+};
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -102,6 +115,10 @@ function ChildDemographics() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -250,6 +267,7 @@ function ChildDemographics() {
           </label>
         </fieldset>
 
+        <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         <button type="submit">Submit</button>
     </form>
   );

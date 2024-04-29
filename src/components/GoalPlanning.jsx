@@ -16,15 +16,22 @@ function GoalPlanning() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name.startsWith('step')) {
-      const index = parseInt(name.replace('step', ''), 10) - 1;
-      const updatedSteps = [...goalInfo.steps];
-      updatedSteps[index] = value;
-      setGoalInfo({ ...goalInfo, steps: updatedSteps });
+    const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
+
+    if (sanitized_name.startsWith('step')) {
+        const index = parseInt(sanitized_name.replace('step', ''), 10) - 1;
+        const updatedSteps = [...goalInfo.steps];
+        if (index >= 0 && index < updatedSteps.length) {
+            updatedSteps[index] = value;
+            setGoalInfo({ ...goalInfo, steps: updatedSteps });
+        } else {
+            console.error('Invalid step index:', index);
+        }
     } else {
-      setGoalInfo({ ...goalInfo, [name]: value });
+        setGoalInfo({ ...goalInfo, [sanitized_name]: value });
     }
-  };
+};
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -43,6 +50,10 @@ function GoalPlanning() {
     } catch (error) {
       console.error('Failed to submit:', error);
     }
+  };
+
+  const handleCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -107,6 +118,7 @@ function GoalPlanning() {
         <textarea name="progress" value={goalInfo.progress} onChange={handleChange} style={{ width: '100%', height: '60px' }} />
       </div>
 
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit" style={{ display: 'block', width: '100%', padding: '10px', backgroundColor: '#4CAF50', color: 'white', fontSize: '16px', cursor: 'pointer' }}>Submit</button>
     </form>
   );

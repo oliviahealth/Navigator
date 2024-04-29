@@ -41,9 +41,12 @@ function GAD7() {
     }, [responses]); // Dependency array, recalculate when responses change
 
     const handleChange = (question, value) => {
+        const sanitized_question = question.replace(/[^a-zA-Z0-9_]/g, '');
+        const parsedValue = parseInt(value, 10);
+    
         setResponses(prev => ({
             ...prev,
-            [question]: parseInt(value)
+            [sanitized_question]: parsedValue
         }));
     };
 
@@ -53,6 +56,10 @@ function GAD7() {
         if (score < 15) return 'Moderate (Further Evaluation Recommended and referral to mental health program)';
         return 'Severe (Further Evaluation Recommended and referral to mental health program)';
     };
+
+    const handleCancel = () => {
+        window.history.back();
+      };
 
     return (
         <form onSubmit={handleSubmit}>
@@ -78,6 +85,7 @@ function GAD7() {
 
             <h3>Total Score: {totalScore}</h3>
             <p>Risk Level: {getRiskLevel(totalScore)}</p>
+            <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
         </form>
     );

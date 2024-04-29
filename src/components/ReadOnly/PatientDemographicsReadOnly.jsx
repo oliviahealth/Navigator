@@ -83,6 +83,7 @@ const PatientDemographicsReadOnly = () => {
 
   return (
     <form>
+      <h2>Participant Demographics</h2>
       <label>Program Start Date*</label>
       <input type="date" name="programStartDate" value={formData.programStartDate} disabled/>
       <label>Case ID*</label>
