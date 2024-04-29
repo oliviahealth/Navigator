@@ -140,7 +140,7 @@ const TenB = () => {
 
   return (
     <div className={styles.checklistContainer}>
-      <h1 className={styles.title}>Checklist: The 10 Bs</h1>
+      <h1 className={styles.title}>10 B's: 1 month, 3/6/9/12 month postpartum appointment assessment</h1>
       <form onSubmit={(e) => e.preventDefault()}>
         <ul className={styles.checklist}>
           {renderChecklist(checklistItems)}

@@ -54,6 +54,7 @@ const DrugScreeningResults = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.drugScreeningResultsForm}>
+    <h1>Drug Screening Results</h1>
     <p>
         Complete with Participant 
         <br></br><br></br>

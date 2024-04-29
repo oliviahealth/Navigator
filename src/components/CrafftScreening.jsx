@@ -78,6 +78,7 @@ const CrafftScreening = () => {
     if (currentPart === 'A') {
         return (
             <div className={styles.formSection}>
+              <h1>CRAFFT Screening Tool</h1>
               <div className={styles.formHeader}>Part A</div>
               {/* Question 1 */}
               <label className={styles.question}>

@@ -50,12 +50,13 @@ const SubstanceUseRelapse = () => {
   };
 
   const handleCancel = () => {
-    // Cancel logic here
+    window.history.back();
   };
 
   return (
     <div className={styles.formContainer}>
       <form className={styles.form} onSubmit={handleSubmit}>
+        <h1>SUBSTANCE USE RELAPSE PREVENTION PLAN</h1>
         <table className={styles.table}>
           <tbody>
             <tr>
