@@ -41,6 +41,7 @@ const CageScreening = ({ onSubmit, onCancel }) => {
 
   return (
     <form className={styles.cageScreening} onSubmit={handleSubmit}>
+      <h1>CAGE-Aid Screening Tool</h1>
       <div className={styles.question}>
         <label>C: Have you ever felt the need to cut down on your drinking or drug use?</label>
         <div>

@@ -118,6 +118,7 @@ const AddictionBeliefScale = () => {
 
   return (
     <form className={styles.addictionBeliefScale} onSubmit={handleSubmit}>
+      <h1>Addiction Belief Scale</h1>
       {['disease', 'free-will'].map((model, sectionIndex) => (
         <section key={model}>
           <h2>{model.charAt(0).toUpperCase() + model.slice(1)} Model</h2>

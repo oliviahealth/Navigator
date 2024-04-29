@@ -44,7 +44,7 @@ const PregnancySpacing = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Ask the following questions regarding Pregnancy Spacing:</h2>
+      <h2>Pregnancy spacing Assessment</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.question}>
           <label htmlFor="spacing">

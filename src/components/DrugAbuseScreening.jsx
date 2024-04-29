@@ -56,7 +56,7 @@ const DrugAbuseScreening = () => {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit}>
-        <p>Drug Abuse Screening Test (DAST-10)</p>
+        <h1>Drug Abuse Screening Test (DAST-10)</h1>
         <p>
         I’m going to read you a list of questions concerning information about your potential involvement with drugs, excluding alcohol and tobacco, during the past 12 months.  
         <br></br>
