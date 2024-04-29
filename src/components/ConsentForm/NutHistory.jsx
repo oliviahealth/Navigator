@@ -18,19 +18,63 @@ function NutHistory() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Handle the change for checkboxes differently
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+  
+    if (type === 'checkbox') {
+      if (Array.isArray(formValues[name])) {
+        setFormValues(prev => ({
+          ...prev,
+          [name]: checked
+            ? [...prev[name], value]
+            : prev[name].filter(item => item !== value)
+        }));
+      } else {
+        setFormValues(prev => ({
+          ...prev,
+          [name]: checked
+        }));
+      }
+    } else if (type === 'radio') {
+      setFormValues(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    } else if (name === 'numberPregnancies' || name === 'numberLiveBabies' || name === 'pregnantTwentyWeeksCount' ||
+               name === 'healthProviderVisits' || name === 'babyAge' || name === 'mealsPerDay' || name === 'snacksPerDay' || 
+               name === 'milkPerDay') {
+      if (value && (isNaN(value) || parseInt(value, 10) < 0)) {
+        return;
+      }
+      setFormValues(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    } else {
+      setFormValues(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
+  
+  
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Process the formData here
-    console.log(formValues);
-    // After processing your form you can navigate to the Dashboard
-    navigate('/dashboard');
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:5000/api/insert_forms/nut_history/${patientId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formValues),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      window.history.back();
+    } catch (error) {
+      console.error('Failed to submit:', error);
+    }
   };
 
   return (

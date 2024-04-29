@@ -36,19 +36,21 @@ function BreastFeeding() {
         
 
 
-        }
-      });
-    
-      const handleAssessmentChange = (name, value) => {
-        setAssessment(prevAssessment => ({
-          ...prevAssessment,
-          questions: {
-            ...prevAssessment.questions,
-            [name]: Number(value),
-          }
-        }));
-      };
+    }
+  });
 
+  const handleAssessmentChange = (name, value) => {
+
+    const sanitizedValue = Math.max(1, Math.min(5, Number(value)));
+
+    setAssessment(prevAssessment => ({
+      ...prevAssessment,
+      questions: {
+        ...prevAssessment.questions,
+        [name]: sanitizedValue,
+      }
+    }));
+  };
   const navigate = useNavigate();
 
 

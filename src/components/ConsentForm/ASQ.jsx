@@ -17,11 +17,36 @@ function ASQ() {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+    let inputValue;
+  
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+  
+    if (type === 'number' && (isNaN(value) || parseFloat(value) < 0)) {
+      return;
+    }
+  
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+  
+    switch (type) {
+      case 'checkbox':
+        inputValue = name === 'questionnaireUsed' ? value : checked;
+        break;
+      case 'number':
+        inputValue = parseFloat(value);
+        break;
+      default:
+        inputValue = value;
+        break;
+    }
+  
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: inputValue,
+    }));
   };
 
   const handleSubmit = (e) => {

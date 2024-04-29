@@ -9,19 +9,29 @@ function PrenatalCare() {
     startDate: '',
     name: '',
     phoneNum: '',
-    email:'',
-    
+    email: '',
+    attendRegularVisits: null,
   });
   
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    // Handle the change for checkboxes differently
-    setFormValues({
-      ...formValues,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+
+    const inputValue = type === 'radio' ? value : type === 'checkbox' ? checked : value;
+    setFormValues(prevValues => ({
+      ...prevValues,
+      [name]: inputValue,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -37,9 +47,25 @@ function PrenatalCare() {
       <h1>Prenatal Care</h1>
       
       <form onSubmit={handleSubmit}>
-       
-        <label htmlFor="pregDate">If currently pregnant, do you attend regular visits with your OB/GYN or Nurse Practicioner? </label>
-        <input type="date" id="pregDate" name="pregDate" />
+        <label htmlFor="attendRegularVisits">Are you currently attending regular visits with your OB/GYN or Nurse Practitioner?</label>
+        <div>
+          <input
+            type="radio"
+            id="yesVisits"
+            name="attendRegularVisits"
+            value="Yes"
+            checked={formValues.attendRegularVisits === 'Yes'}
+            onChange={handleInputChange}
+          /> Yes
+          <input
+            type="radio"
+            id="noVisits"
+            name="attendRegularVisits"
+            value="No"
+            checked={formValues.attendRegularVisits === 'No'}
+            onChange={handleInputChange}
+          /> No
+        </div>
 
         <label htmlFor="pregDate">When did you start your prenatal care?  </label>
         <input type="text" id="pregDate" name="pregDate" />
@@ -54,9 +80,10 @@ function PrenatalCare() {
 
         
         <button type="submit">Submit</button>
-            </form>
-            </div>
-        );
-        }
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
+      </form>
+    </div>
+  );
+}
 
 export default PrenatalCare;

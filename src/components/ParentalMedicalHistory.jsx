@@ -24,8 +24,52 @@ const ParentalMedicalHistory = () => {
   
   
   const navigate = useNavigate();
-  // Define a function to handle form submission
-  const handleSubmit = (event) => {
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+    const dateFields = ['gestationalAge', 'dueDate', 'deliveryDate'];
+    const numberFields = ['totalPregnancies', 'childrenLivingWithYou', 'gravida', 'term', 'preterm', 'abortions', 'living'];
+    const textFields = ['diagnosesConditions', 'outcomesOfPriorPregnancies', 'datesOfPriorPregnancies'];
+    const radioFields = ['deliveryMode', 'actualDeliveryMode'];
+  
+    if (dateFields.includes(name) && value && !dateRegex.test(value)) {
+      alert('Please enter a valid date in the format YYYY-MM-DD');
+      return;
+    }
+  
+    if (numberFields.includes(name) && value && (isNaN(value) || parseInt(value, 10) < 0)) {
+      alert('Please enter a valid number');
+      return;
+    }
+  
+    if (name === 'datesOfPriorPregnancies') {
+      const dates = value.split(',');
+      if (dates.some(date => date && !dateRegex.test(date.trim()))) {
+        alert('Please enter valid dates separated by commas in the format YYYY-MM-DD');
+        return;
+      }
+    }
+  
+    if (textFields.includes(name) && /<|>/.test(value)) {
+      alert('Please do not use angle brackets <>');
+      return;
+    }
+  
+    if (radioFields.includes(name) && !['vaginal', 'cesarean'].includes(value)) {
+      alert('Invalid selection');
+      return;
+    }
+
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+  
+  
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     navigate('/dashboard');
     
@@ -172,10 +216,34 @@ const ParentalMedicalHistory = () => {
 
         {/* Medical Problems Requiring Ongoing Care */}
         <div className={styles.formSection}>
-        <h3 className={styles.formSectionTitle}>MEDICAL PROBLEMS REQUIRING ONGOING CARE</h3>
-          <div className="diagnosesConditions">
-            <label>Diagnoses/Conditions:</label>
-            <textarea name="diagnosesConditions" className={styles.largeTextArea}></textarea>
+          <h3 className={styles.formSectionTitle}>MEDICAL PROBLEMS REQUIRING ONGOING CARE</h3>
+          <div className={styles.questionContainer}>
+            <label className={styles.labelBlock}>Diagnoses/Conditions:</label>
+            <textarea name="diagnosesConditions" className={styles.largeTextArea} value={formData.diagnosesConditions} onChange={handleChange}></textarea>
+           
+      <label className={styles.labelBlock}>Number of Children Currently Living with You:</label>
+      <input className={styles.inputBlock} type="number" name="childrenLivingWithYou" value={formData.childrenLivingWithYou} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Dates of Prior Pregnancies(Please seperate by comma):</label>
+      <input className={styles.inputBlock} type="text" name="datesOfPriorPregnancies" value={formData.datesOfPriorPregnancies} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Outcomes of Prior Pregnancies:</label>
+      <input className={styles.inputBlock} type="text" name="outcomesOfPriorPregnancies" value={formData.outcomesOfPriorPregnancies} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Gravida (Total Number of Pregnancies):</label>
+      <input className={styles.inputBlock} type="number" name="gravida" value={formData.gravida} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Term (Total Number of Deliveries @ 37 weeks or higher):</label>
+      <input className={styles.inputBlock} type="number" name="term" value={formData.term} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Preterm (Total Number of Deliveries between 20 & 36 weeks):</label>
+      <input className={styles.inputBlock} type="number" name="preterm" value={formData.preterm} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Abortions (Total Number of Miscarriages and/or Elective Abortions):</label>
+      <input className={styles.inputBlock} type="number" name="abortions" value={formData.abortions} onChange={handleChange} />
+
+      <label className={styles.labelBlock}>Living (Total Number of Living Children):</label>
+      <input className={styles.inputBlock} type="number" name="living" value={formData.living} onChange={handleChange} />
           </div>
         </div>
 
