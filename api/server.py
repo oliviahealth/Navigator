@@ -154,6 +154,133 @@ def get_read_only_data(formType, patientId, logId):
     else:
         return jsonify({"error": "Log not found"}), 404
 
+@app.route("/api/get_demographic_information/<int:patientId>", methods=['GET'])
+def get_demographic_information(patientId):
+    print(patientId)
+    try:
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            query = f"SELECT * FROM participant_info WHERE patient_id = %s ORDER BY date_time DESC LIMIT 1;"
+            cursor.execute(query, (str(patientId)))
+            log = cursor.fetchone()
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+    
+    if log is not None:
+        return jsonify(log)
+    else:
+        return jsonify({"error": "Log not found"}), 404
+
+db_table_names = [
+    ["Communication Log, Appointment Log, & Consent Forms", "communications_log"],
+    ["Communication Log, Appointment Log, & Consent Forms", "appointment_log"],
+    ["Communication Log, Appointment Log, & Consent Forms", "release_of_information"],
+    ["Communication Log, Appointment Log, & Consent Forms", "media_appearance_release"],
+    ["Demographics", "participant_info"],
+    ["Demographics", "demographics_others"],
+    ["Demographics", "child_demographics"],
+    ["Demographics", "support_systems"],
+    ["Demographics", "current_living"],
+    ["Demographics", "child_needs"],
+    ["Demographics", "referrals_services"],
+    ["Demographics", "emergency_contact"],
+    ["Demographics", "goal_planning"],
+    ["Demographics", "care_providers"],
+    ["Medical & Nutrition History", "parental_medical_history"],
+    ["Medical & Nutrition History", "encounter_form"],
+    ["Medical & Nutrition History", "nut_history"],
+    ["Medications", "medications"],
+    ["Substance Use Assessments", "pregnancy"],
+    ["Substance Use Assessments", "addiction_belief_scale"],
+    ["Substance Use Assessments", "cage_screening"],
+    ["Substance Use Assessments", "crafft_screening"],
+    ["Substance Use Assessments", "drug_abuse_screening"],
+    ["Substance Use Assessments", "drug_screening_results"],
+    ["Substance Use Assessments", "smoking_tobacco_use"],
+    ["Substance Use Assessments", "substance_use_history"],
+    ["Substance Use Assessments", "tweak_test"],
+    ["Substance Use Assessments", "substance_use_relapse"],
+    ["Interpersonal Relations Assessments", "partner_violence"],
+    ["Interpersonal Relations Assessments", "domestic_violence"],
+    ["Interpersonal Relations Assessments", "ipv"],
+    ["Interpersonal Relations Assessments", "intimate_violence"],
+    ["Interpersonal Relations Assessments", "family_dynamics"],
+    ["Physical Assessments", "ten_b"],
+    ["Physical Assessments", "pregnancy_spacing"],
+    ["Mental Health Assessments", "mentalhealthhistory"],
+    ["Mental Health Assessments", "cssrs"],
+    ["Mental Health Assessments", "durel"],
+    ["Mental Health Assessments", "epds"],
+    ["Mental Health Assessments", "gad7"],
+    ["Mental Health Assessments", "pss"],
+    ["Mental Health Assessments", "phq9"],
+    ["Home Safety Assessments", "housing_vist"],
+    ["Home Safety Assessments", "housing_safety"],
+    ["Prenatal Care", "prenatal_care"],
+    ["Child Records", "asq_three"],
+    ["Child Records", "brief_child"],
+    ["Child Records", "delivery_history"],
+    ["Child Records", "breastfeeding"],
+    ["Child Records", "infancy_quest"],
+    ["Child Records", "target_child"]
+]
+
+@app.route("/api/get_count_tabs/<int:patientId>", methods=['GET'])
+def get_count_tabs(patientId):
+    category_counts = {}
+    try:
+        connection = connection_pool.getconn()
+
+        with connection.cursor() as cursor:
+            for category, table_name in db_table_names:
+                query = f"SELECT EXISTS(SELECT 1 FROM {table_name} WHERE patient_id = %s);"
+                cursor.execute(query, (patientId,))
+
+                exists = cursor.fetchone()[0]
+
+                if category not in category_counts:
+                    category_counts[category] = {'with_fk': 0, 'total': 0}
+            
+                category_counts[category]['total'] += 1
+                if exists:
+                    category_counts[category]['with_fk'] += 1
+    except Exception as e:
+            print(f"Error checking table {table_name}: {e}")
+    finally:
+        connection_pool.putconn(connection)
+    
+    results = []
+    for category, counts in category_counts.items():
+        results.append([
+            category,
+            counts['with_fk'],
+            counts['total']
+        ])
+
+    return jsonify(results)
+
+@app.route("/api/get_medication_information/<int:patientId>", methods=['GET'])
+def get_medications_information(patientId):
+    try:
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            query = f"SELECT * FROM medications WHERE patient_id = %s ORDER BY date_time DESC LIMIT 1;"
+            cursor.execute(query, (str(patientId)))
+            log = cursor.fetchone()
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+    
+    if log is not None:
+        return jsonify(log)
+    else:
+        return jsonify({"error": "Log not found"}), 404
+
 @app.post("/api/signup")
 def signup():
     data = request.get_json()

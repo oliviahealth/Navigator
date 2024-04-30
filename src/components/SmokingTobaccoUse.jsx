@@ -89,10 +89,7 @@ const SmokingTobaccoUse = () => {
         <div className={styles.container}>
             <form onSubmit={handleSubmit}>
                 <h1 className={styles.title}>Smoking / Tobacco Use before, during Pregnancy and at 1, 3, 6, 9, & 12 Months Postpartum</h1>
-                {/* Section for clients who had a baby in the past year */}
                 <section className={styles.section}>
-                    {/* This section should ideally use radio buttons for single selection */}
-                    {/* Here are checkboxes for demonstration. Adjust as needed */}
                     <p>For clients who had a baby in the past year:</p>
                     <p><b>1.) Ask the Participant to choose the statement that best describes their smoking status: </b></p>
                     {['NEVER', 'BEFORE', 'AFTER', 'DURING', 'NOW'].map((status, index) => (

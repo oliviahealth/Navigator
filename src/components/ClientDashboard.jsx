@@ -201,8 +201,20 @@ const ClientDashboard = () => {
                <span className={styles.recordName}>Olivia-NAVIGATOR</span>
             </div>
             <nav className={styles.nav}>
-               <Link to="/dashboard" className={styles.dashboardLink}>
-                  Client Dashboard</Link>
+               <button
+                  className={styles.yourButtonClass} 
+                  style={{ fontSize: '12px', backgroundColor: 'green' }} 
+                  onClick={() => {
+                     if (selectedPatientObj) {
+                        navigate(`/participant-dashboard/${selectedPatientObj.patient_id}`); 
+                     } else {
+                        alert('No participant selected. Please select a participant to proceed.'); 
+                     }
+                  }}
+               >
+                  Participant Dashboard
+               </button>
+
                <button onClick={handleLogout}>Logout</button>
             </nav>
          </header>
