@@ -4,9 +4,35 @@ import navStyles from '../styles/ClientDashboard.module.css';
 import Styles from '../styles/ParticipantDashboard.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCapsules } from '@fortawesome/free-solid-svg-icons';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import modelOutput from '../assets/model_output.png';
 
+const ImageModal = ({ isOpen, handleClose, src }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.9)',
+        zIndex: 2
+      }} onClick={handleClose}>
+        <img src={src} alt="Enlarged model output" style={{ maxHeight: '90%', maxWidth: '90%', zIndex: 3 }} onClick={e => e.stopPropagation()} />
+      </div>
+    );
+  };
+  
 
 const ParticipantDashboard = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const toggleModal = () => setIsModalOpen(!isModalOpen);
+
     const [demographicData, setDemographicData] = useState({
         programStartDate: '',
         caseId: '',
@@ -37,8 +63,21 @@ const ParticipantDashboard = () => {
     const [medications, setMedications] = useState([{ medication: '', dose: '', prescriber: '', notes: '' }]);
     const [isMedications, setIsMedications] = useState(false);
 
+    const [categoryData, setCategoryData] = useState([]);
+
+    const [appointmentData, setAppointmentData] = useState([]);
+
     const navigate = useNavigate();
     const { patientId } = useParams();
+
+    const processAppointmentData = (data) => {
+        const counts = {};
+        data.forEach(item => {
+            const month = new Date(item.date_time).toLocaleString('default', { month: 'long', year: 'numeric' });
+            counts[month] = (counts[month] || 0) + 1;
+        });
+        setAppointmentData(Object.keys(counts).map(key => ({ month: key, count: counts[key] })));
+    };
 
     useEffect(() => {
         const fetchDemographics = async () => {
@@ -86,6 +125,50 @@ const ParticipantDashboard = () => {
         };
 
         fetchMedications();
+
+        const fetchCount = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/get_count_tabs/${patientId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                if (response.status === 204) { // Handling no content
+                    return;
+                }
+                const data = await response.json();
+                setCategoryData(data);
+
+            } catch (error) {
+                console.error('Error fetching info:', error);
+            }
+        };
+
+        fetchCount();
+
+        const getDates = async () => {
+            try {
+                const response = await fetch(`http://localhost:5000/api/forms/appointment_log/${patientId}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                if (response.status === 204) { // Handling no content
+                    return;
+                }
+                const data = await response.json();
+                processAppointmentData(data);
+
+            } catch (error) {
+                console.error('Error fetching info:', error);
+            }
+        };
+
+        getDates();
 
     }, []);
 
@@ -140,9 +223,41 @@ const ParticipantDashboard = () => {
                         <p>No Medication Information for Participant is Present</p>
                     )}
                 </div>
-                <div className={Styles.dashboardBox}>Appointment Frequency</div>
-                <div className={Styles.dashboardBox}>MODEL</div>
-                <div className={Styles.dashboardBox}>Care Provider Contact List</div>
+                <div className={Styles.dashboardBox}>
+                    <h3>Forms Completed</h3>
+                    {categoryData.map((item, index) => (
+                        <div key={index}>
+                            <h4>{item[0]}</h4>
+                            <div className={Styles.progressBarContainer}>
+                                <div
+                                    className={Styles.progressBar}
+                                    style={{ width: `${(item[1] / item[2]) * 100}%` }}
+                                >
+                                    {Math.round((item[1] / item[2]) * 100)}%
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+
+                <div className={Styles.dashboardBox}>
+                    <img src={modelOutput} alt="Model Output" style={{ maxWidth: '100%' }} onClick={toggleModal} />
+                </div>
+
+                <ImageModal isOpen={isModalOpen} handleClose={toggleModal} src={modelOutput} />
+
+                <div className={Styles.dashboardBox}>
+                    <h3>Appointment Frequency</h3>
+                    <BarChart width={500} height={150} data={appointmentData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="month" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="count" fill="#8884d8" name="Appointments" />
+                    </BarChart>
+                </div>
             </main>
         </div>
     );

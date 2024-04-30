@@ -58,6 +58,8 @@
   grid-column: 3 / 5;
   grid-row: 1 / 3;
   height: 350px;
+  overflow-y: auto;
+  background-color: #ffdddd;
 }
 
 .dashboardBox:nth-child(4) {
@@ -70,7 +72,8 @@
   grid-column: 3 / 5;
   grid-row: 2.25 / 4;
   margin-top: -50px;
-  height: 200px;
+  height: 225px;
+  background-color: #feffac;
 }
 
 .medicationItem {
@@ -87,4 +90,19 @@
 .medicationItem svg {
   color: #507dbc;
   margin-right: 0.5rem; 
+}
+
+.progressBarContainer {
+  background-color: #e0e0e0;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.progressBar {
+  height: 20px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 20px;
+  color: white;
+  border-radius: 8px;
 }
