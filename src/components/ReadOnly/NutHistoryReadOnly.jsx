@@ -291,6 +291,7 @@ function NutHistoryReadOnly() {
           <label htmlFor="fastFoodDetails">If yes, what kind?</label>
           <input type="text" id="fastFoodDetails" name="fastFoodDetails" value={formValues.fastFoodDetails} disabled />
         </fieldset>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );
