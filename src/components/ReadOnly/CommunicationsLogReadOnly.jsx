@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../styles/CommunicationsLog.module.css';
+import Cookies from 'js-cookie';
 
 const CommunicationsLogReadOnly = () => {
     const [entry, setEntry] = useState({
@@ -14,11 +15,16 @@ const CommunicationsLogReadOnly = () => {
     const { patientId, log_id } = useParams();
 
     useEffect(() => {
+        const accessToken = Cookies.get('accessToken');
         const fetchLog = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_communication_log/${patientId}/${log_id}`, {
                   method: 'GET',
-                  credentials: 'include',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

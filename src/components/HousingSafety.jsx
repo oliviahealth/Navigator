@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 // import '../styles/SafetyProfileForm.css';
+import Cookies from 'js-cookie';
 
 const SafetyProfileForm = () => {
   const incomeReasons = ['Family refusal', 'In foster care', 'Other'];
@@ -27,11 +28,15 @@ const SafetyProfileForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/housing_safety/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -49,19 +54,19 @@ const SafetyProfileForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-  
+
     if (type === 'text' && /<|>|;|'|"/.test(value)) {
       return;
     }
-  
+
     if (type === 'number' && (isNaN(value) || parseInt(value, 10) < 0)) {
       return;
     }
-  
+
     if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       return;
     }
-  
+
     setFormData(prevFormData => {
       let newFormData = { ...prevFormData };
 

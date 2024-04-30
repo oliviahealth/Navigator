@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function CurrentLivingReadOnly() {
   const { patientId, log_id } = useParams();
@@ -21,33 +22,38 @@ function CurrentLivingReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/current_living/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      const accessToken = Cookies.get('accessToken');
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/current_living/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
 
   const handleChange = (section, index, field, value) => {
     setFormData(prev => ({
       ...prev,
-      [section]: prev[section].map((item, i) => 
+      [section]: prev[section].map((item, i) =>
         i === index ? { ...item, [field]: value } : item
       )
     }));
@@ -71,7 +77,7 @@ function CurrentLivingReadOnly() {
   return (
     <form>
       <h2>Current Living Arrangement</h2>
-      
+
       <h3>List of People Living with You</h3>
       <table>
         <thead>
@@ -109,7 +115,7 @@ function CurrentLivingReadOnly() {
           ))}
         </tbody>
       </table>
-  
+
       <h3>List of Children NOT Living with You</h3>
       <table>
         <thead>
@@ -147,18 +153,18 @@ function CurrentLivingReadOnly() {
           ))}
         </tbody>
       </table>
-  
+
       <label>
         Notes:
         <textarea
           value={formData.notes}
           disabled
         />
-      </label>  
+      </label>
       <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
-  
+
 }
 
 export default CurrentLivingReadOnly;

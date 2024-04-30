@@ -1,6 +1,7 @@
 import '../../styles/EncounterFormStyle.css';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function DeliveryHistoryReadOnly() {
   const { patientId, log_id } = useParams()
@@ -31,27 +32,32 @@ function DeliveryHistoryReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/delivery_history/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      const accessToken = Cookies.get('accessToken');
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/delivery_history/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const addCareVisit = () => {
     setFormData({

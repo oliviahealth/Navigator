@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/SocialSupportForm.css';
+import Cookies from 'js-cookie';
 
 const questionTitles = [
   "Who can you really count on to be dependable when you need help?",
@@ -44,7 +45,7 @@ const SocialSupportForm = () => {
       const newTotalScore = updatedSupportData.reduce((total, item) => {
         return item.noOne ? total : total + Number(item.satisfaction);
       }, 0);
-  
+
       return {
         ...prevFormData,
         supportData: updatedSupportData,
@@ -64,11 +65,15 @@ const SocialSupportForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/family_dynamics/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -81,7 +86,7 @@ const SocialSupportForm = () => {
     }
   };
 
-  
+
 
   return (
     <div className="social-support-form">
@@ -129,10 +134,10 @@ const SocialSupportForm = () => {
             </label>
             <p>How satisfied are you with the social support given to you by these people overall?</p>
             <select
-  value={item.satisfaction}
-  onChange={(e) => handleInputChange(index, 'satisfaction', e.target.value)}
-  disabled={item.noOne}
->
+              value={item.satisfaction}
+              onChange={(e) => handleInputChange(index, 'satisfaction', e.target.value)}
+              disabled={item.noOne}
+            >
               <option value="1">(1) Very dissatisfied</option>
               <option value="2">(2) Fairly dissatisfied</option>
               <option value="3">(3) A little dissatisfied</option>
@@ -143,7 +148,7 @@ const SocialSupportForm = () => {
           </div>
         ))}
 
-<div className="total-score">
+        <div className="total-score">
           <label>Total Score:</label>
           <input
             type="text"

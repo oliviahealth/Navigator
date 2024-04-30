@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/CrafftScreening.module.css';
 import { useParams } from 'react-router-dom' 
+import Cookies from 'js-cookie';
 
 const CrafftScreening = () => {
   const { patientId } = useParams();
@@ -316,6 +317,7 @@ const CrafftScreening = () => {
 
     const handleSubmit = async (event) => {
     event.preventDefault();
+    const accessToken = Cookies.get('accessToken');
 
     const fullFormData = {
         partA: answers,
@@ -327,8 +329,10 @@ const CrafftScreening = () => {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/crafft_screening/${patientId}`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
           },
+          credentials: 'omit',
           body: JSON.stringify(fullFormData)
         });
   

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/DrugScreeningResults.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const initialRow = {
   dateCollected: '',
@@ -14,7 +15,7 @@ const initialRow = {
 const DrugScreeningResultsReadOnly = () => {
   const { patientId, log_id } = useParams();
   const [rows, setRows] = useState([initialRow]);
-  
+
   const addRow = () => {
     setRows(rows.concat({ ...initialRow }));
   };
@@ -35,47 +36,52 @@ const DrugScreeningResultsReadOnly = () => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/drug_screening_results/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setRows(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/drug_screening_results/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setRows(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   return (
     <form className={styles.drugScreeningResultsForm}>
-    <p>
-        Complete with Participant 
+      <p>
+        Complete with Participant
         <br></br><br></br>
-        Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc. 
+        Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc.
         <br></br><br></br>
-        If client/Participant has test positive for any substance, check in and complete as necessary at any subsequent visit if appropriate.   
-    </p>
+        If client/Participant has test positive for any substance, check in and complete as necessary at any subsequent visit if appropriate.
+      </p>
       <table className={styles.drugScreeningResultsTable}>
         <thead>
           <tr>
-          <th colSpan="7">
+            <th colSpan="7">
               DRUG SCREENING RESULTS
               <br />
               Complete as indicated with client/Participant.
               <br />
               Follow up as indicated with: Provider ordering UDS, Recovery Coach, etc.
-          </th>
+            </th>
           </tr>
           <tr>
             <th>Serial No.</th>

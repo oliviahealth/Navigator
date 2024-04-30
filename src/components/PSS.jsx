@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function PSS() {
     const { patientId } = useParams();
@@ -13,26 +14,30 @@ function PSS() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+const accessToken = Cookies.get('accessToken');
         const formData = {
-          responses: responses,
-          totalScore: totalScore,
+            responses: responses,
+            totalScore: totalScore,
         }
         try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/pss/${patientId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          window.history.back();
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/pss/${patientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            window.history.back();
         } catch (error) {
-          console.error('failed to submit');
+            console.error('failed to submit');
         }
-      };
+    };
 
     useEffect(() => {
         // Calculate the total score by summing the responses, considering reverse scoring for specific items
@@ -50,13 +55,13 @@ function PSS() {
     const handleChange = (question, value) => {
         const sanitized_question = question.replace(/[^a-zA-Z0-9_]/g, '');
         const parsedValue = parseInt(value, 10);
-    
+
         setResponses(prev => ({
             ...prev,
             [sanitized_question]: isNaN(parsedValue) ? 0 : parsedValue
         }));
     };
-    
+
 
     const getStressLevel = (score) => {
         if (score < 14) return 'Low stress';
@@ -66,30 +71,30 @@ function PSS() {
 
     const handleCancel = () => {
         window.history.back();
-      };
+    };
 
     return (
-        <form onSubmit={handleSubmit}> 
+        <form onSubmit={handleSubmit}>
             <h2>Perceived Stress Scale (PSS)</h2>
             <p>The questions ask about your feelings and thoughts during the last month. In each case, indicate how often you felt or thought a certain way.</p>
-            
+
             {Array.from({ length: 10 }).map((_, i) => (
                 <div key={i}>
                     <p>{i + 1}. {[
-                                   "How often have you been upset because of something that happened unexpectedly?",
-                                   "How often have you felt that you were unable to control the important things in your life?",
-                                   "How often have you felt nervous and 'stressed'?",
-                                   "How often have you felt confident about your ability to handle your personal problems?",
-                                   "How often have you felt that things were going your way?",
-                                   "How often have you found that you could not cope with all the things that you had to do?",
-                                   "How often have you been able to control irritations in your life?",
-                                   "How often have you felt that you were on top of things?",
-                                   "How often have you been angered because of things that were outside your control?",
-                                   "How often have you felt difficulties were piling up so high that you could not overcome them?"][i]}</p>
+                        "How often have you been upset because of something that happened unexpectedly?",
+                        "How often have you felt that you were unable to control the important things in your life?",
+                        "How often have you felt nervous and 'stressed'?",
+                        "How often have you felt confident about your ability to handle your personal problems?",
+                        "How often have you felt that things were going your way?",
+                        "How often have you found that you could not cope with all the things that you had to do?",
+                        "How often have you been able to control irritations in your life?",
+                        "How often have you felt that you were on top of things?",
+                        "How often have you been angered because of things that were outside your control?",
+                        "How often have you felt difficulties were piling up so high that you could not overcome them?"][i]}</p>
                     {Array.from({ length: 5 }).map((_, j) => (
                         <label key={j}>
-                            <input type="radio" name={`q${i + 1}`} value={j} 
-                                   onChange={() => handleChange(`q${i + 1}`, `${j}`)} /> 
+                            <input type="radio" name={`q${i + 1}`} value={j}
+                                onChange={() => handleChange(`q${i + 1}`, `${j}`)} />
                             {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]} ({j})
                         </label>
                     ))}

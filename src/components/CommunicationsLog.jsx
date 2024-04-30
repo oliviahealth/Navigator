@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../styles/CommunicationsLog.module.css';
+import Cookies from 'js-cookie';
 
 const CommunicationsLog = () => {
-
-
     function getCurrentDateTime() {
         const now = new Date();
         const year = now.getFullYear();
@@ -43,12 +42,16 @@ const CommunicationsLog = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const accessToken = Cookies.get('accessToken');
 
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/communications_log/${patientId}`, {
                 method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
                 body: JSON.stringify({
                     dateTime: entry.date,
                     method: entry.method,

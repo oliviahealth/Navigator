@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const DemographicsOthers = () => {
   const { patientId } = useParams();
@@ -45,33 +46,37 @@ const DemographicsOthers = () => {
     const sanitized_name = name.replace(/[^a-zA-Z0-9_.]/g, '');
 
     if (sanitized_name.includes('.')) {
-        const parts = sanitized_name.split('.');
-        const section = parts[0];
-        const key = parts[1];
+      const parts = sanitized_name.split('.');
+      const section = parts[0];
+      const key = parts[1];
 
-        // Sanitize 'section' and 'key' further if necessary (already sanitized via 'sanitized_name')
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [section]: {
-                ...prevFormData[section],
-                [key]: type === 'checkbox' ? checked : value,
-            },
-        }));
+      // Sanitize 'section' and 'key' further if necessary (already sanitized via 'sanitized_name')
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [section]: {
+          ...prevFormData[section],
+          [key]: type === 'checkbox' ? checked : value,
+        },
+      }));
     } else {
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [sanitized_name]: type === 'checkbox' ? checked : value,
-        }));
+      setFormData(prevFormData => ({
+        ...prevFormData,
+        [sanitized_name]: type === 'checkbox' ? checked : value,
+      }));
     }
-};
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/demographics_others/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -92,7 +97,7 @@ const DemographicsOthers = () => {
     <form onSubmit={handleSubmit}>
       <h2>Participant Record for Others Involved</h2>
       <p>For other people who may participate in the Program, Complete at initial intake and update as indicated.</p>
-  
+
       <label>
         Name:
         <input type="text" name="name" value={formData.name} onChange={handleChange} />
@@ -101,7 +106,7 @@ const DemographicsOthers = () => {
         Date of Birth:
         <input type="date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
       </label>
-  
+
       <fieldset>
         <legend>Current Living Arrangement:</legend>
         <label><input type="radio" name="currentLivingArrangement" value="Rent/Own a Home" onChange={handleChange} /> Rent/Own a Home</label>
@@ -112,7 +117,7 @@ const DemographicsOthers = () => {
         <label><input type="radio" name="currentLivingArrangement" value="Emergency Shelter" onChange={handleChange} /> Emergency Shelter</label>
         <label><input type="radio" name="currentLivingArrangement" value="Other" onChange={handleChange} /> Other</label>
       </fieldset>
-  
+
       <label>
         Street Address:
         <input type="text" name="streetAddress" value={formData.streetAddress} onChange={handleChange} />
@@ -133,12 +138,12 @@ const DemographicsOthers = () => {
         County:
         <input type="text" name="county" value={formData.county} onChange={handleChange} />
       </label>
-  
+
       <label>
         Primary Phone Numbers:
         <input type="tel" name="primaryPhoneNumber" value={formData.primaryPhoneNumber} onChange={handleChange} />
       </label>
-  
+
       <label>
         Emergency Contact:
         <input type="text" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
@@ -151,7 +156,7 @@ const DemographicsOthers = () => {
         Relationship:
         <input type="text" name="emergencyRelationship" value={formData.emergencyRelationship} onChange={handleChange} />
       </label>
-  
+
       <fieldset>
         <legend>Marital Status:</legend>
         <label><input type="radio" name="maritalStatus" value="Single" onChange={handleChange} /> Single</label>
@@ -160,7 +165,7 @@ const DemographicsOthers = () => {
         <label><input type="radio" name="maritalStatus" value="Widowed" onChange={handleChange} /> Widowed</label>
         <label><input type="radio" name="maritalStatus" value="Separated" onChange={handleChange} /> Separated</label>
       </fieldset>
-  
+
       <label>
         Insurance Plan:
         <input type="text" name="insurancePlan" value={formData.insurancePlan} onChange={handleChange} />
@@ -177,49 +182,49 @@ const DemographicsOthers = () => {
         Group ID:
         <input type="text" name="groupId" value={formData.groupId} onChange={handleChange} />
       </label>
-  
+
       <fieldset>
         <legend>Prenatal Care (for current or most recent pregnancy)</legend>
         <label>
-        Gestational Age at Entry of Care:
-        <input type="text" name="prenatalCare.gestationalAgeAtEntry" value={formData.prenatalCare.gestationalAgeAtEntry} onChange={handleChange} />
-      </label>
-      <label>
-        Due Date:
-        <input type="date" name="prenatalCare.dueDate" value={formData.prenatalCare.dueDate} onChange={handleChange} />
-      </label>
-      <label>
-        Delivery Date:
-        <input type="date" name="prenatalCare.deliveryDate" value={formData.prenatalCare.deliveryDate} onChange={handleChange} />
-      </label>
-      <label>
-        Planned Mode of Delivery:
-        <select name="prenatalCare.plannedModeOfDelivery" value={formData.prenatalCare.plannedModeOfDelivery} onChange={handleChange}>
-          <option value="">Select</option>
-          <option value="Vaginal">Vaginal</option>
-          <option value="Cesarean">Cesarean</option>
-        </select>
-      </label>
-      <label>
-        Actual Mode of Delivery:
-        <select name="prenatalCare.actualModeOfDelivery" value={formData.prenatalCare.actualModeOfDelivery} onChange={handleChange}>
-          <option value="">Select</option>
-          <option value="Vaginal">Vaginal</option>
-          <option value="Cesarean">Cesarean</option>
-        </select>
-      </label>
-      <label>
-        Attended Postpartum Visit:
-        <input type="checkbox" name="prenatalCare.attendedPostpartumVisit" checked={formData.prenatalCare.attendedPostpartumVisit} onChange={handleChange} /> Yes
-      </label>
-      <label>
-        If so, Location:
-        <input type="text" name="prenatalCare.postpartumVisitLocation" value={formData.prenatalCare.postpartumVisitLocation} onChange={handleChange} />
-      </label>
-      <label>
-        Date Completed:
-        <input type="date" name="prenatalCare.dateCompleted" value={formData.prenatalCare.dateCompleted} onChange={handleChange} />
-      </label>
+          Gestational Age at Entry of Care:
+          <input type="text" name="prenatalCare.gestationalAgeAtEntry" value={formData.prenatalCare.gestationalAgeAtEntry} onChange={handleChange} />
+        </label>
+        <label>
+          Due Date:
+          <input type="date" name="prenatalCare.dueDate" value={formData.prenatalCare.dueDate} onChange={handleChange} />
+        </label>
+        <label>
+          Delivery Date:
+          <input type="date" name="prenatalCare.deliveryDate" value={formData.prenatalCare.deliveryDate} onChange={handleChange} />
+        </label>
+        <label>
+          Planned Mode of Delivery:
+          <select name="prenatalCare.plannedModeOfDelivery" value={formData.prenatalCare.plannedModeOfDelivery} onChange={handleChange}>
+            <option value="">Select</option>
+            <option value="Vaginal">Vaginal</option>
+            <option value="Cesarean">Cesarean</option>
+          </select>
+        </label>
+        <label>
+          Actual Mode of Delivery:
+          <select name="prenatalCare.actualModeOfDelivery" value={formData.prenatalCare.actualModeOfDelivery} onChange={handleChange}>
+            <option value="">Select</option>
+            <option value="Vaginal">Vaginal</option>
+            <option value="Cesarean">Cesarean</option>
+          </select>
+        </label>
+        <label>
+          Attended Postpartum Visit:
+          <input type="checkbox" name="prenatalCare.attendedPostpartumVisit" checked={formData.prenatalCare.attendedPostpartumVisit} onChange={handleChange} /> Yes
+        </label>
+        <label>
+          If so, Location:
+          <input type="text" name="prenatalCare.postpartumVisitLocation" value={formData.prenatalCare.postpartumVisitLocation} onChange={handleChange} />
+        </label>
+        <label>
+          Date Completed:
+          <input type="date" name="prenatalCare.dateCompleted" value={formData.prenatalCare.dateCompleted} onChange={handleChange} />
+        </label>
       </fieldset>
 
       <fieldset>
@@ -258,4 +263,3 @@ const DemographicsOthers = () => {
 
 export default DemographicsOthers;
 
-  

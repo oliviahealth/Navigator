@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function CareProviders() {
     const { patientId } = useParams();
@@ -9,23 +10,27 @@ function CareProviders() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const accessToken = Cookies.get('accessToken');
         try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/care_providers/${patientId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(providers),
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          window.history.back();
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/care_providers/${patientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
+                body: JSON.stringify(providers),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            window.history.back();
         } catch (error) {
-          console.error('failed to submit');
+            console.error('failed to submit');
         }
-      };
-    
+    };
+
 
     const providerTypes = [
         "Primary Care Physician",
@@ -59,7 +64,7 @@ function CareProviders() {
 
     const handleCancel = () => {
         window.history.back();
-      };
+    };
 
     return (
         <div>

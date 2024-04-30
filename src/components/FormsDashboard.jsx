@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'js-cookie';
 
 const FormsDashboard = () => {
     const navigate = useNavigate();
@@ -131,20 +132,21 @@ const FormsDashboard = () => {
 
     useEffect(() => {
         const fetchForms = async () => {
+            const accessToken = Cookies.get('accessToken');
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/forms/${dbTableNames[formType]}/${patientId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
                     },
-                    credentials: 'include',
+                    credentials: 'omit',
                     mode: 'cors',
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const data = await response.json();
-                // Convert object to array
                 const formsArray = Object.values(data);
                 setForms(formsArray);
             } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function ReferralsServices() {
   const { patientId } = useParams();
@@ -76,20 +77,20 @@ function ReferralsServices() {
 
     // Ensure category and index are valid to avoid errors
     if (sanitized_category in updatedItems && index in updatedItems[sanitized_category]) {
-        if (sanitized_field in updatedItems[sanitized_category][index]) {
-            updatedItems[sanitized_category][index][sanitized_field] = 
-                typeof value === 'boolean' ? value : value.target.value;
-        } else {
-            // Fallback to updating notes if field is not recognized
-            updatedItems[sanitized_category][index].notes = value.target.value;
-        }
+      if (sanitized_field in updatedItems[sanitized_category][index]) {
+        updatedItems[sanitized_category][index][sanitized_field] =
+          typeof value === 'boolean' ? value : value.target.value;
+      } else {
+        // Fallback to updating notes if field is not recognized
+        updatedItems[sanitized_category][index].notes = value.target.value;
+      }
     } else {
-        console.error('Invalid category or index');
-        return; // Stop execution if category or index is invalid
+      console.error('Invalid category or index');
+      return; // Stop execution if category or index is invalid
     }
 
     setServices({ ...services, items: updatedItems });
-};
+  };
 
 
   const addOtherService = (category) => {
@@ -101,11 +102,15 @@ function ReferralsServices() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/referrals_services/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(services),
       });
       if (!response.ok) {

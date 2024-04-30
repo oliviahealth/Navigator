@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/SocialSupportForm.css';
+import Cookies from 'js-cookie';
 
 const questionTitles = [
   "Who can you really count on to be dependable when you need help?",
@@ -27,9 +28,14 @@ const SocialSupportFormReadOnly = () => {
   useEffect(() => {
     const fetchLog = async () => {
       try {
+        const accessToken = Cookies.get('accessToken');
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/family_dynamics/${patientId}/${log_id}`, {
           method: 'GET',
-          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import styles from '../styles/DrugAbuseScreening.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const DrugAbuseScreening = () => {
-    const { patientId } = useParams();
+  const { patientId } = useParams();
   const [answers, setAnswers] = useState(new Array(10).fill('0'));
   const [submitted, setSubmitted] = useState(false);
   const [score, setScore] = useState(null);
 
-  
+
 
   const [showModal, setShowModal] = useState(false);
 
@@ -20,22 +21,24 @@ const DrugAbuseScreening = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/drug_abuse_screening/${patientId}`, {
-          method: 'POST',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(answers),
-        });
-  
-      } catch (error) {
-        console.error('Error with submission');
-      }
-  
-      window.history.back();
-  };  
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/drug_abuse_screening/${patientId}`, {
+        method: 'POST',
+        credentials: 'omit',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
+      });
+
+    } catch (error) {
+      console.error('Error with submission');
+    }
+
+    window.history.back();
+  };
 
   const handleCancel = () => {
     window.history.back();
@@ -58,13 +61,13 @@ const DrugAbuseScreening = () => {
       <form onSubmit={handleSubmit}>
         <h1>Drug Abuse Screening Test (DAST-10)</h1>
         <p>
-        I’m going to read you a list of questions concerning information about your potential involvement with drugs, excluding alcohol and tobacco, during the past 12 months.  
-        <br></br>
-        <br></br>
-        When the words “drug abuse” are used, they mean the use of prescribed or over‐the‐counter medications/drugs in excess of the directions and any non‐medical use of drugs. The various classes of drugs may include: cannabis (e.g., marijuana, hash), solvents, tranquilizers (e.g., Valium), barbiturates, cocaine, stimulants (e.g., speed), hallucinogens (e.g., LSD) or narcotics (e.g., heroin). Remember that the questions do not include alcohol or tobacco.  
-        <br></br>
-        <br></br>
-        If you have difficulty with a statement, then choose the response that is mostly right. You may choose to answer or not answer any of the questions in this section.  
+          I’m going to read you a list of questions concerning information about your potential involvement with drugs, excluding alcohol and tobacco, during the past 12 months.
+          <br></br>
+          <br></br>
+          When the words “drug abuse” are used, they mean the use of prescribed or over‐the‐counter medications/drugs in excess of the directions and any non‐medical use of drugs. The various classes of drugs may include: cannabis (e.g., marijuana, hash), solvents, tranquilizers (e.g., Valium), barbiturates, cocaine, stimulants (e.g., speed), hallucinogens (e.g., LSD) or narcotics (e.g., heroin). Remember that the questions do not include alcohol or tobacco.
+          <br></br>
+          <br></br>
+          If you have difficulty with a statement, then choose the response that is mostly right. You may choose to answer or not answer any of the questions in this section.
         </p>
         <table className={styles.table}>
           <thead>
@@ -105,17 +108,17 @@ const DrugAbuseScreening = () => {
           <button type="submit" className={styles.submitButton}>Submit</button>
         </div>
         {submitted && showModal && (
-        <div className={`${styles.modal} ${showModal ? styles.showModal : ''}`}>
+          <div className={`${styles.modal} ${showModal ? styles.showModal : ''}`}>
             <div className={styles.modalContent}>
-            <span className={styles.close} onClick={closeModal}>&times;</span>
-            <p><span className={styles.bold}>DAST-10 Score:</span> {score}</p>
-            <p>
-                <span className={styles.bold}>Degrees of Problems Related to Drug Abuse:</span> 
+              <span className={styles.close} onClick={closeModal}>&times;</span>
+              <p><span className={styles.bold}>DAST-10 Score:</span> {score}</p>
+              <p>
+                <span className={styles.bold}>Degrees of Problems Related to Drug Abuse:</span>
                 {score <= 2 ? 'Low level' : score <= 5 ? 'Moderate level' : score <= 8 ? 'Substantial level' : 'Severe level'}
-            </p>
-            <p><span className={styles.bold}>Suggested Action:</span> {getSuggestedAction(score)}</p>
+              </p>
+              <p><span className={styles.bold}>Suggested Action:</span> {getSuggestedAction(score)}</p>
             </div>
-        </div>
+          </div>
         )}
       </form>
     </div>
@@ -123,17 +126,17 @@ const DrugAbuseScreening = () => {
 };
 
 const questions = [
-    'Have you used drugs other than those required for medical reasons?',
-    'Do you abuse more than one drug at a time?',
-    'Are you always able to stop using drugs when you want to? (If never use drugs, answer “Yes.”)',
-    'Have you had “blackouts” or “flashbacks” as a result of drug use?',
-    'Do you ever feel bad or guilty about your drug use? (If never use drugs, choose “No.”)',
-    'Does your spouse or (or parents) ever complain about your involvement with drugs?',
-    'Have you neglected your family because of your use of drugs?',
-    'Have you engaged in illegal activities in order to obtain drugs?',
-    'Have you ever experienced withdrawal symptoms (felt sick) when you stopped taking drugs?',
-    'Have you had medical problems as a result of your drug use (e.g., memory loss, hepatitis, convulsions, bleeding, etc.)?'
-  ];
-  
+  'Have you used drugs other than those required for medical reasons?',
+  'Do you abuse more than one drug at a time?',
+  'Are you always able to stop using drugs when you want to? (If never use drugs, answer “Yes.”)',
+  'Have you had “blackouts” or “flashbacks” as a result of drug use?',
+  'Do you ever feel bad or guilty about your drug use? (If never use drugs, choose “No.”)',
+  'Does your spouse or (or parents) ever complain about your involvement with drugs?',
+  'Have you neglected your family because of your use of drugs?',
+  'Have you engaged in illegal activities in order to obtain drugs?',
+  'Have you ever experienced withdrawal symptoms (felt sick) when you stopped taking drugs?',
+  'Have you had medical problems as a result of your drug use (e.g., memory loss, hepatitis, convulsions, bleeding, etc.)?'
+];
+
 
 export default DrugAbuseScreening;

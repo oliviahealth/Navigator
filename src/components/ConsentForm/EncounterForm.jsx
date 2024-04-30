@@ -104,11 +104,15 @@ function App() {
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/encounter_form/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+	'Content-Type': 'application/json',
+	'Authorization': `Bearer ${accessToken}`
+},
+credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {

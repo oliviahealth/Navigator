@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/ReleaseOfInformation.module.css';
 import { useParams } from 'react-router-dom'; 
+import Cookies from 'js-cookie';
 
 const ReleaseOfInformationReadOnly = () => {
     const { patientId, log_id } = useParams();
@@ -77,11 +78,17 @@ const ReleaseOfInformationReadOnly = () => {
     };
 
     useEffect(() => {
+        const accessToken = Cookies.get('accessToken');
         const fetchLog = async () => {
             try {
+                const accessToken = Cookies.get('accessToken');
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/release_of_information/${patientId}/${log_id}`, {
                   method: 'GET',
-                  credentials: 'include',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

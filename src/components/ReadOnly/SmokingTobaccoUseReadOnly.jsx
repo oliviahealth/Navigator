@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/SmokingTobaccoUse.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const SmokingTobaccoUseReadOnly = () => {
     const { patientId, log_id } = useParams();
@@ -48,24 +49,29 @@ const SmokingTobaccoUseReadOnly = () => {
     useEffect(() => {
         const fetchLog = async () => {
             try {
+                const accessToken = Cookies.get('accessToken');
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/smoking_tobacco_use/${patientId}/${log_id}`, {
-                  method: 'GET',
-                  credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    return; 
+                    return;
                 }
                 const data = await response.json();
                 setFormData(data[2]);
-                
+
             } catch (error) {
                 console.error('failed to fetch');
             }
         };
-    
+
         fetchLog();
     }, [patientId, log_id]);
 

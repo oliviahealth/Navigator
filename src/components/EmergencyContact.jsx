@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function EmergencyContact() {
   const { patientId } = useParams();
@@ -33,7 +34,7 @@ function EmergencyContact() {
   const getCurrentDateTime = () => {
     const now = new Date();
     const year = now.getFullYear();
-    const month = now.getMonth() + 1; 
+    const month = now.getMonth() + 1;
     const day = now.getDate();
     const hours = now.getHours();
     const minutes = now.getMinutes();
@@ -67,37 +68,41 @@ function EmergencyContact() {
 
     // Ensure the 'section' is part of formData before accessing it
     if (formData.hasOwnProperty(sanitized_section)) {
-        const updatedSection = [...formData[sanitized_section]];
-        if (typeof updatedSection[index] === 'object' && updatedSection[index] !== null) {
-            // Update the object at the given index
-            updatedSection[index] = { ...updatedSection[index], [sanitized_field]: value };
-        } else {
-            // Replace the item at the given index with the new value
-            updatedSection[index] = value;
-        }
-        // Update the formData state with the new section
-        setFormData({ ...formData, [sanitized_section]: updatedSection });
+      const updatedSection = [...formData[sanitized_section]];
+      if (typeof updatedSection[index] === 'object' && updatedSection[index] !== null) {
+        // Update the object at the given index
+        updatedSection[index] = { ...updatedSection[index], [sanitized_field]: value };
+      } else {
+        // Replace the item at the given index with the new value
+        updatedSection[index] = value;
+      }
+      // Update the formData state with the new section
+      setFormData({ ...formData, [sanitized_section]: updatedSection });
     } else {
-        console.error('Invalid section');
+      console.error('Invalid section');
     }
-};
+  };
 
 
   const formatSectionTitle = (title) => {
     return title.replace(/([A-Z])/g, ' $1')
-                .replace(/^./, str => str.toUpperCase())
-                .trim()
-                .replace('Info', ' Information') // Expand common abbreviations
-                .replace('Dob', 'Date of Birth'); // Proper case for specific fields
+      .replace(/^./, str => str.toUpperCase())
+      .trim()
+      .replace('Info', ' Information') // Expand common abbreviations
+      .replace('Dob', 'Date of Birth'); // Proper case for specific fields
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/emergency_contact/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {

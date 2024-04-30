@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/ReleaseOfInformation.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const ReleaseOfInformation = () => {
     const { patientId } = useParams();
@@ -69,12 +70,16 @@ const ReleaseOfInformation = () => {
     };
 
     const handleSubmit = async (event) => {
+      const accessToken = Cookies.get('accessToken');
       event.preventDefault();
       try {
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/release_of_information/${patientId}`, {
           method: 'POST',
-          credentials: 'include',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
           body: JSON.stringify(formData),
         });
         if (!response.ok) {

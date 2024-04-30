@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function MentalHealthHistory() {
   const { patientId } = useParams();
@@ -14,6 +15,7 @@ function MentalHealthHistory() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     const formData = {
       diagnoses: diagnoses,
       medications: medications,
@@ -22,8 +24,11 @@ function MentalHealthHistory() {
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/mentalhealthhistory/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -41,12 +46,12 @@ function MentalHealthHistory() {
     const updatedDiagnoses = [...diagnoses];
 
     if (index >= 0 && index < updatedDiagnoses.length && updatedDiagnoses[index] != null) {
-        updatedDiagnoses[index][sanitized_field] = value;
-        setDiagnoses(updatedDiagnoses);
+      updatedDiagnoses[index][sanitized_field] = value;
+      setDiagnoses(updatedDiagnoses);
     } else {
-        console.error('Invalid index or field');
+      console.error('Invalid index or field');
     }
-};
+  };
 
 
   const addDiagnosis = () => {
@@ -57,7 +62,7 @@ function MentalHealthHistory() {
     const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
 
     setMedications({ ...medications, [sanitized_field]: value });
-};
+  };
 
 
   const handleCancel = () => {

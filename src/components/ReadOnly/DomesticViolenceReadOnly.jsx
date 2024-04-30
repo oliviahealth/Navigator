@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/DomesticViolenceStyle.css';
+import Cookies from 'js-cookie';
 
 const DomesticViolenceScreenFormReadOnly = () => {
   const { patientId, log_id } = useParams();
@@ -25,30 +26,35 @@ const DomesticViolenceScreenFormReadOnly = () => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/domestic_violence/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setAnswers(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      const accessToken = Cookies.get('accessToken');
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/domestic_violence/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setAnswers(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleCancel = () => {
-    navigate('/dashboard'); 
+    navigate('/dashboard');
   };
 
   const handlePopupClose = () => {
@@ -71,7 +77,7 @@ const DomesticViolenceScreenFormReadOnly = () => {
       <form>
         {Object.entries(questions).map(([key, question]) => {
           if (key === 'threatenedOrHurtPets' && answers.petsInHouse !== 'yes') {
-            return null; 
+            return null;
           }
           return (
             <div className="question" key={key}>
@@ -102,15 +108,15 @@ const DomesticViolenceScreenFormReadOnly = () => {
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
       {showPopup && (
-  <div className="overlay">
-    <div className="popup">
-      <p>WARNING: Your situation is concerning. You will be referred to an in-house social worker and may be directed to a domestic violence program, local women’s center, legal services, and/or family counseling (Siegel et al. 1999).</p>
-      <p>Please visit this link for more information:</p>
-      <a href="https://www.leegov.com/dhs/Documents/HMIS/Triage-Psychosocial-Assessment.pdf" target="_blank" rel="noopener noreferrer">Triage Psychosocial Assessment</a>
-      <button onClick={handlePopupClose}>Confirm</button>
-    </div>
-  </div>
-)}
+        <div className="overlay">
+          <div className="popup">
+            <p>WARNING: Your situation is concerning. You will be referred to an in-house social worker and may be directed to a domestic violence program, local women’s center, legal services, and/or family counseling (Siegel et al. 1999).</p>
+            <p>Please visit this link for more information:</p>
+            <a href="https://www.leegov.com/dhs/Documents/HMIS/Triage-Psychosocial-Assessment.pdf" target="_blank" rel="noopener noreferrer">Triage Psychosocial Assessment</a>
+            <button onClick={handlePopupClose}>Confirm</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

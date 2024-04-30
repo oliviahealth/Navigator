@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function GoalPlanning() {
   const { patientId } = useParams();
@@ -19,27 +20,31 @@ function GoalPlanning() {
     const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
 
     if (sanitized_name.startsWith('step')) {
-        const index = parseInt(sanitized_name.replace('step', ''), 10) - 1;
-        const updatedSteps = [...goalInfo.steps];
-        if (index >= 0 && index < updatedSteps.length) {
-            updatedSteps[index] = value;
-            setGoalInfo({ ...goalInfo, steps: updatedSteps });
-        } else {
-            console.error('Invalid step index');
-        }
+      const index = parseInt(sanitized_name.replace('step', ''), 10) - 1;
+      const updatedSteps = [...goalInfo.steps];
+      if (index >= 0 && index < updatedSteps.length) {
+        updatedSteps[index] = value;
+        setGoalInfo({ ...goalInfo, steps: updatedSteps });
+      } else {
+        console.error('Invalid step index');
+      }
     } else {
-        setGoalInfo({ ...goalInfo, [sanitized_name]: value });
+      setGoalInfo({ ...goalInfo, [sanitized_name]: value });
     }
-};
+  };
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/goal_planning/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(goalInfo),
       });
       if (!response.ok) {

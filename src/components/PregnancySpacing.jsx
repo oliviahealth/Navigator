@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/PregnancySpacing.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const PregnancySpacing = () => {
-    const { patientId } = useParams();
+  const { patientId } = useParams();
   const [pregnancySpacing, setPregnancySpacing] = useState('');
   const [familyPlanningInterest, setFamilyPlanningInterest] = useState('');
 
@@ -17,15 +18,19 @@ const PregnancySpacing = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     const formData = {
-        pregnancySpacing: pregnancySpacing,
-        familyPlanningInterest: familyPlanningInterest
+      pregnancySpacing: pregnancySpacing,
+      familyPlanningInterest: familyPlanningInterest
     }
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/pregnancy_spacing/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {

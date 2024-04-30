@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function ChildNeeds() {
   const { patientId } = useParams();
@@ -26,7 +27,7 @@ function ChildNeeds() {
     setItems(items.map(item =>
       item.id === id ? { ...item, [sanitized_field]: value } : item
     ));
-};
+  };
 
   const addOtherItem = () => {
     setItems([...items, { id: nextId, name: 'Other', status: '', notes: '' }]);
@@ -35,11 +36,15 @@ function ChildNeeds() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/child_needs/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(items),
       });
       if (!response.ok) {

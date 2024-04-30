@@ -44,11 +44,15 @@ const IPVScreeningAndAssessmentForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/ipv/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+	'Content-Type': 'application/json',
+	'Authorization': `Bearer ${accessToken}`
+},
+credentials: 'omit',
         body: JSON.stringify(responses),
       });
       if (!response.ok) {

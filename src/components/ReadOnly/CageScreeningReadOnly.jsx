@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/CageScreening.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const CageScreeningReadOnly = ({ onSubmit, onCancel }) => {
   const { patientId, log_id } = useParams();
@@ -13,27 +14,32 @@ const CageScreeningReadOnly = ({ onSubmit, onCancel }) => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/cage_screening/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setAnswers(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/cage_screening/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setAnswers(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +48,7 @@ const CageScreeningReadOnly = ({ onSubmit, onCancel }) => {
 
   const handleCancel = () => {
     window.history.back();
-};
+  };
 
   return (
     <form className={styles.cageScreening}>

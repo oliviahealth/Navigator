@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; 
+import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function ReferralsServicesReadOnly() {
   const { patientId, log_id } = useParams();
@@ -76,15 +77,20 @@ function ReferralsServicesReadOnly() {
   useEffect(() => {
     const fetchLog = async () => {
       try {
+        const accessToken = Cookies.get('accessToken');
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/referrals_services/${patientId}/${log_id}`, {
           method: 'GET',
-          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
         });
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-  
+
         if (data && data[2].items) {
           // Assuming data.items should be an object with keys matching service categories
           const transformedData = Object.keys(initialServices).reduce((acc, category) => {
@@ -110,10 +116,10 @@ function ReferralsServicesReadOnly() {
         console.error('failed to fetch');
       }
     };
-  
+
     fetchLog();
   }, [patientId, log_id]);
-  
+
 
 
   const handleServiceChange = (category, index, field, value) => {
@@ -146,7 +152,7 @@ function ReferralsServicesReadOnly() {
                 <label><input type="checkbox" checked={service.discussed} disabled /> Discussed</label>
                 <label><input type="checkbox" checked={service.needed} /> Needed</label>
                 <label><input type="checkbox" checked={service.referred} disabled /> Referred</label>
-                <label><input type="checkbox" checked={service.participating} disabled/> Participating</label>
+                <label><input type="checkbox" checked={service.participating} disabled /> Participating</label>
                 <label><input type="checkbox" checked={service.completed} disabled /> Completed</label>
                 <label><input type="checkbox" checked={service.na} disabled /> N/A</label>
                 <input type="text" placeholder="Notes" value={service.notes} disabled style={{ marginTop: '5px' }} />

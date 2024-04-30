@@ -51,11 +51,16 @@ const ClientDashboard = () => {
          setSelectedPatientIndex(parseInt(storedIndex, 10)); // Convert string back to number
          setSelectedPatientObj(JSON.parse(storedPatient)); // Parse the JSON string back to an object
       }
+      const accessToken = Cookies.get('accessToken');
 
       try {
          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_general_information/${selectedPatientObj.patient_id}`, {
             method: 'GET',
-            credentials: 'include',
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${accessToken}`
+            },
+            credentials: 'omit',
          });
          if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -92,11 +97,15 @@ const ClientDashboard = () => {
 
    const handleSave = async (event) => {
       event.preventDefault();
+      const accessToken = Cookies.get('accessToken');
       try {
          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/general_information/${selectedPatientObj.patient_id}`, {
             method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+               'Content-Type': 'application/json',
+               'Authorization': `Bearer ${accessToken}`
+            },
+            credentials: 'omit',
             body: JSON.stringify(formData),
          });
          if (!response.ok) {
@@ -120,10 +129,15 @@ const ClientDashboard = () => {
       localStorage.setItem('selectedPatientObj', JSON.stringify(patient));
 
       const fetchLog = async () => {
+         const accessToken = Cookies.get('accessToken');
          try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_general_information/${selectedPatientObj.patient_id}`, {
                method: 'GET',
-               credentials: 'include',
+               headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${accessToken}`
+               },
+               credentials: 'omit',
             });
             if (!response.ok) {
                throw new Error(`HTTP error! status: ${response.status}`);
@@ -160,7 +174,7 @@ const ClientDashboard = () => {
          try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/patients`, {
                method: 'GET',
-               credentials: 'include',
+               credentials: 'omit',
                headers: {
                   'Authorization': `Bearer ${accessToken}`
                }
@@ -201,13 +215,13 @@ const ClientDashboard = () => {
             </div>
             <nav className={styles.nav}>
                <button
-                  className={styles.yourButtonClass} 
-                  style={{ fontSize: '12px', backgroundColor: 'green' }} 
+                  className={styles.yourButtonClass}
+                  style={{ fontSize: '12px', backgroundColor: 'green' }}
                   onClick={() => {
                      if (selectedPatientObj) {
-                        navigate(`/participant-dashboard/${selectedPatientObj.patient_id}`); 
+                        navigate(`/participant-dashboard/${selectedPatientObj.patient_id}`);
                      } else {
-                        alert('No participant selected. Please select a participant to proceed.'); 
+                        alert('No participant selected. Please select a participant to proceed.');
                      }
                   }}
                >
@@ -295,7 +309,7 @@ const ClientDashboard = () => {
                                        <strong>Date of Birth:</strong>{" "}
                                        {isEditable ? (
                                           <input
-                                             type="text"
+                                             type="date"
                                              value={formData.dob}
                                              onChange={(e) => handleChange("dob", e.target.value)}
                                           />

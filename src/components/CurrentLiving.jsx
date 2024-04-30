@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function CurrentLiving() {
   const { patientId } = useParams();
@@ -19,12 +20,12 @@ function CurrentLiving() {
     const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
 
     setFormData(prev => ({
-        ...prev,
-        [sanitized_section]: prev[sanitized_section].map((item, i) => 
-            i === index ? { ...item, [sanitized_field]: value } : item
-        )
+      ...prev,
+      [sanitized_section]: prev[sanitized_section].map((item, i) =>
+        i === index ? { ...item, [sanitized_field]: value } : item
+      )
     }));
-};
+  };
 
   const addRow = (section) => {
     const newRow = section === 'livingWith' ? { name: '', dateOfBirth: '', relation: '' } : { name: '', dateOfBirth: '', caregiverContact: '' };
@@ -43,11 +44,15 @@ function CurrentLiving() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/current_living/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -67,7 +72,7 @@ function CurrentLiving() {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Current Living Arrangement</h2>
-      
+
       <h3>List of People Living with You</h3>
       <table>
         <thead>
@@ -106,7 +111,7 @@ function CurrentLiving() {
         </tbody>
       </table>
       <button type="button" onClick={() => addRow('livingWith')}>Add Row</button>
-  
+
       <h3>List of Children NOT Living with You</h3>
       <table>
         <thead>
@@ -145,7 +150,7 @@ function CurrentLiving() {
         </tbody>
       </table>
       <button type="button" onClick={() => addRow('notLivingWith')}>Add Row</button>
-  
+
       <label>
         Notes:
         <textarea
@@ -153,12 +158,12 @@ function CurrentLiving() {
           onChange={(e) => handleNotesChange(e.target.value)}
         />
       </label>
-      
+
       <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
       <button type="submit">Submit</button>
     </form>
   );
-  
+
 }
 
 export default CurrentLiving;

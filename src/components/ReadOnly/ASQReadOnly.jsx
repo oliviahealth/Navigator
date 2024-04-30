@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/ASQ-3.css';
+import Cookies from 'js-cookie';
 
 function ASQReadOnly() {
   const { patientId, log_id } = useParams()
@@ -30,32 +31,37 @@ function ASQReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/asq_three/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormValues(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/asq_three/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormValues(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     let inputValue;
-  
+
     switch (type) {
       case 'checkbox':
         inputValue = name === 'questionnaireUsed' ? value : checked;
@@ -67,7 +73,7 @@ function ASQReadOnly() {
         inputValue = value;
         break;
     }
-  
+
     setFormValues({
       ...formValues,
       [name]: inputValue,

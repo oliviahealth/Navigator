@@ -11,6 +11,7 @@ const AppointmentLogModal = ({ isOpen, toggleModal }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     const formData = new FormData(event.target);
     const newAppointment = {
       date: formData.get('date'),

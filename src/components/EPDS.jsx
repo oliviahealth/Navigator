@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function EPDS() {
     const { patientId } = useParams();
@@ -33,7 +34,7 @@ function EPDS() {
     const handleChange = (field, value) => {
         // Sanitize 'field' to allow only alphanumeric characters and underscores
         const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
-    
+
         setResponses(prev => ({
             ...prev,
             [sanitized_field]: value
@@ -42,46 +43,50 @@ function EPDS() {
 
     const handleEhrChange = (field, value) => {
         const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
-    
+
         setEhrInfo(prev => ({
             ...prev,
             [sanitized_field]: value
         }));
     };
-    
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+const accessToken = Cookies.get('accessToken');
         const formData = {
             responses: responses,
             ehrInfo: ehrInfo
         }
         try {
-          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/epds/${patientId}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-          });
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          const data = await response.json();
-          window.history.back();
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/epds/${patientId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                credentials: 'omit',
+                body: JSON.stringify(formData),
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            window.history.back();
         } catch (error) {
-          console.error('Failed to submit');
+            console.error('Failed to submit');
         }
-      };
+    };
 
-      const handleCancel = () => {
+    const handleCancel = () => {
         window.history.back();
-      };
+    };
 
     return (
         <form onSubmit={handleSubmit}>
             <h2>Edinburgh Postnatal Depression Scale (EPDS)</h2>
             <p>Please underline the answer which comes closest to how you have felt in the past 7 days, not just how you feel today.</p>
-            
+
             <div>
                 <p>1. I have been able to laugh and see the funny side of things</p>
                 <label><input type="radio" name="q1" value="0" onChange={() => handleChange('q1', '0')} /> As much as I always could (0)</label>
@@ -202,7 +207,7 @@ function EPDS() {
 
             <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
             <button type="submit">Submit</button>
-            
+
         </form>
     );
 }

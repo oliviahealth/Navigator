@@ -51,6 +51,7 @@ def serve():
     return send_from_directory(app.static_folder, 'index.html')
 
 @app.route("/api/forms/<formType>/<int:patientId>", methods=['GET'])
+@jwt_required()
 def get_forms(formType, patientId):
     try:
         connection = connection_pool.getconn()
@@ -69,6 +70,7 @@ def get_forms(formType, patientId):
     return jsonify(logs_list)
 
 @app.route("/api/get_general_information/<int:patientId>", methods=['GET'])
+@jwt_required()
 def get_general_information(patientId):
     try:
         connection = connection_pool.getconn()
@@ -80,8 +82,6 @@ def get_general_information(patientId):
     finally:
         connection_pool.putconn(connection)    
     return jsonify(logs)
-
-
 
 @app.route("/api/create_form_table", methods=['POST'])
 def create_form_table():
@@ -107,6 +107,7 @@ def create_form_table():
         connection_pool.putconn(connection)
 
 @app.route("/api/insert_forms/<formType>/<int:patientId>", methods=['POST'])
+@jwt_required()
 def insert_form(formType, patientId):
     data = request.get_json()
     # print(data)
@@ -136,6 +137,7 @@ def insert_form(formType, patientId):
     return jsonify({"inserted_id": 0}), 201
 
 @app.route("/api/get_read_only_data/<formType>/<int:patientId>/<logId>", methods=['GET'])
+@jwt_required()
 def get_read_only_data(formType, patientId, logId):
     try:
         connection = connection_pool.getconn()
@@ -155,6 +157,7 @@ def get_read_only_data(formType, patientId, logId):
         return jsonify({"error": "Log not found"}), 404
 
 @app.route("/api/get_demographic_information/<int:patientId>", methods=['GET'])
+@jwt_required()
 def get_demographic_information(patientId):
     print(patientId)
     try:
@@ -165,7 +168,6 @@ def get_demographic_information(patientId):
             log = cursor.fetchone()
     except Exception as e:
         connection.rollback()
-        return jsonify({"error": str(e)}), 500
     finally:
         connection_pool.putconn(connection)
     
@@ -229,6 +231,7 @@ db_table_names = [
 ]
 
 @app.route("/api/get_count_tabs/<int:patientId>", methods=['GET'])
+@jwt_required()
 def get_count_tabs(patientId):
     category_counts = {}
     try:
@@ -248,7 +251,7 @@ def get_count_tabs(patientId):
                 if exists:
                     category_counts[category]['with_fk'] += 1
     except Exception as e:
-            print(f"Error checking table {table_name}: {e}")
+        return jsonify({"Does not exist"})
     finally:
         connection_pool.putconn(connection)
     
@@ -263,6 +266,7 @@ def get_count_tabs(patientId):
     return jsonify(results)
 
 @app.route("/api/get_medication_information/<int:patientId>", methods=['GET'])
+@jwt_required()
 def get_medications_information(patientId):
     try:
         connection = connection_pool.getconn()
@@ -272,7 +276,7 @@ def get_medications_information(patientId):
             log = cursor.fetchone()
     except Exception as e:
         connection.rollback()
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"Does not exist"})
     finally:
         connection_pool.putconn(connection)
     
@@ -407,6 +411,7 @@ ADD CONSTRAINT fk_patient
 """
 
 @app.post("/api/communications_log/<int:patientId>")
+@jwt_required()
 def add_communications_log_entry(patientId):
     try:
         connection = connection_pool.getconn()
@@ -431,159 +436,8 @@ def add_communications_log_entry(patientId):
 
     return jsonify({"status": "success", "message": "Communicaition Log Added"}), 201
 
-@app.post("/api/participant_info/<int:patientId>")
-def add_participant_info(patientId):
-    requestData = request.get_json()
-
-    current_time = datetime.now()
-
-    try:
-        connection = connection_pool.getconn()
-
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO participant_info (date_time, data, patient_id)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-            """, (
-                current_time,  
-                Json(requestData),  
-                patientId,  
-            ))
-            inserted_id = cursor.fetchone()[0]  # Fetch the returned id
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-    return jsonify({"status": "success", "message": "Participant info added", "insertedId": inserted_id}), 201
-
-@app.post("/api/demographics-others/<int:patientId>")
-def add_demographics_others(patientId):
-    try:
-        connection = connection_pool.getconn()
-        requestData = request.get_json()
-
-        current_time = datetime.now()
-
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO demographics_others (date_time, data, patient_id)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-            """, (
-                current_time,  
-                Json(requestData),  
-                patientId,  
-            ))
-            inserted_id = cursor.fetchone()[0]  # Fetch the returned id
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-
-    return jsonify({"status": "success", "message": "demographics other info added", "insertedId": inserted_id}), 201
-
-@app.post("/api/child-demographics/<int:patientId>")
-def add_child_demographics(patientId):
-    try:
-        connection = connection_pool.getconn()
-        requestData = request.get_json()
-
-        current_time = datetime.now()
-
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO child_demographics (date_time, data, patient_id)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-            """, (
-                current_time,  
-                Json(requestData),  
-                patientId,  
-            ))
-            inserted_id = cursor.fetchone()[0]  # Fetch the returned id
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-
-    return jsonify({"status": "success", "message": "child demographics info added", "insertedId": inserted_id}), 201
-
-@app.post("/api/support-systems/<int:patientId>")
-def add_support_systems(patientId):
-    try:
-        connection = connection_pool.getconn()
-        requestData = request.get_json()
-
-        current_time = datetime.now()
-
-        with connection.cursor() as cursor:
-            cursor.execute("""
-                INSERT INTO support_systems (date_time, data, patient_id)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-            """, (
-                current_time,  
-                Json(requestData),  
-                patientId,  
-            ))
-            inserted_id = cursor.fetchone()[0]  # Fetch the returned id
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-
-    return jsonify({"status": "success", "message": "support systems info added", "insertedId": inserted_id}), 201
-
-Create_table = """
-CREATE TABLE IF NOT EXISTS pregnancy (
-    id SERIAL PRIMARY KEY,
-    date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    data JSONB NOT NULL,
-    patient_id INTEGER,
-    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
-);
-"""
-
-@app.post("/api/pregnancy/<int:patientId>")
-def add_pregnancy(patientId):
-    try:
-        connection = connection_pool.getconn()
-        requestData = request.get_json()
-
-        current_time = datetime.now()
-
-        with connection.cursor() as cursor:
-            cursor.execute(Create_table)
-            cursor.execute("""
-                INSERT INTO pregnancy (date_time, data, patient_id)
-                VALUES (%s, %s, %s)
-                RETURNING id;
-            """, (
-                current_time,  
-                Json(requestData),  
-                patientId,  
-            ))
-            inserted_id = cursor.fetchone()[0]  # Fetch the returned id
-            connection.commit()
-    finally:
-        connection_pool.putconn(connection)
-
-    return jsonify({"status": "success", "message": "pregnancy info added", "insertedId": inserted_id}), 201
-
-
-
-@app.route("/api/get_participant_info", methods=['GET'])
-def get_participant_info():
-    try:
-        connection = connection_pool.getconn()
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM demographics_others;")
-            participants = cursor.fetchall() 
-    finally:
-        connection_pool.putconn(connection)
-
-    return jsonify({"status": "success", "message": "Participant info added", "insertedId": participants}), 201
-
-
-
 @app.route("/api/get_communication_log/<int:patient_id>/<log_id>", methods=['GET'])
+@jwt_required()
 def get_communication_log(patient_id, log_id):
     try:
         connection = connection_pool.getconn()
@@ -610,30 +464,8 @@ def get_communication_log(patient_id, log_id):
     
     return jsonify(log_dict)
 
-PATIENT_TABLE = """
-CREATE TABLE IF NOT EXISTS patients (
-    patient_id SERIAL PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
-    phone VARCHAR(20),
-    admin_id INTEGER,
-    FOREIGN KEY (admin_id) REFERENCES \"user\"(id)
-);
-"""
-
-CREATE_APPOINTMENT_LOG_TABLE = """
-CREATE TABLE IF NOT EXISTS appointment_log (
-    id SERIAL PRIMARY KEY,
-    date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    who VARCHAR(255) NOT NULL,
-    location VARCHAR(255) NOT NULL,
-    notes TEXT,
-    patient_id INTEGER,
-    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
-);
-"""
 @app.post("/api/appointment_log/<int:patientId>")
+@jwt_required()
 def add_appointment_log_entry(patientId):
     try:
         connection = connection_pool.getconn()
@@ -659,6 +491,7 @@ def add_appointment_log_entry(patientId):
     return jsonify({"status": "success", "message": "appointment log created"}), 201
 
 @app.route("/api/get_appointment_log/<int:patientId>/<log_id>", methods=['GET'])
+@jwt_required()
 def get_appointment_log(patientId, log_id):
     try:
         connection = connection_pool.getconn()
@@ -685,26 +518,6 @@ def get_appointment_log(patientId, log_id):
     else:
         # No entry found for the selected patient
         return jsonify({}), 204  # No content
-
-CREATE_PREGNANCY_TABLE = """
-CREATE TABLE IF NOT EXISTS pregnancy_log (
-    id SERIAL PRIMARY KEY,
-    date_time TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    drugs_during_pregnancy BOOLEAN,
-    drugs_in_past BOOLEAN,
-    partner_drugs BOOLEAN,
-    parents_addicted BOOLEAN,
-    FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
-);
-"""
-
-# @app.route("/api/pregnancy_log/<int:patientId>")
-# def create_patient_log(patientId):
-#     data = request.get_json()
-
-#     with connection.cursor():
-#         cursos.execute(CREATE_PREGNANCY_TABLE)
-#         cursos.execute("INSERT INTO pregnancy_log (date_time, drugs_during_pregnancy, drugs_in_past, partner_drugs, parents_addicted)")
 
 if __name__ == "__main__":
     app.run(debug=True)

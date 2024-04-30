@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function SupportSystems() {
-  const { patientId } = useParams(); 
+  const { patientId } = useParams();
   const [formData, setFormData] = useState({
     currentSupportSystem: '',
     yourStrengths: '',
@@ -15,19 +16,23 @@ function SupportSystems() {
     const sanitized_name = name.replace(/[^a-zA-Z0-9_]/g, '');
 
     setFormData(prevFormData => ({
-        ...prevFormData,
-        [sanitized_name]: value
+      ...prevFormData,
+      [sanitized_name]: value
     }));
-};
+  };
 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/support_systems/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {

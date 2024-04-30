@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import '../../styles/HousingVisit.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const ageRanges = [
   'Newborn', '3-7 days old', '2-4 weeks old', '2-3 months old',
@@ -29,27 +30,32 @@ const HousingVisitReadOnly = () => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/housing_vist/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/housing_vist/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

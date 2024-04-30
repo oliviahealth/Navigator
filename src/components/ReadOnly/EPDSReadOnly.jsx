@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function EPDSReadOnly() {
     const { patientId, log_id } = useParams();
     const handleCancel = () => {
         window.history.back();
-      };
+    };
     const initialState = {
         q1: '',
         q2: '',
@@ -36,15 +37,20 @@ function EPDSReadOnly() {
     useEffect(() => {
         const fetchLog = async () => {
             try {
+                const accessToken = Cookies.get('accessToken');
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/epds/${patientId}/${log_id}`, {
-                  method: 'GET',
-                  credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    return; 
+                    return;
                 }
                 const data = await response.json();
                 setResponses(
@@ -53,11 +59,11 @@ function EPDSReadOnly() {
                 setEhrInfo(
                     data[2].ehrInfo
                 );
-                
+
             } catch (error) {
             }
         };
-    
+
         fetchLog();
     }, [patientId, log_id]);
 
@@ -79,12 +85,12 @@ function EPDSReadOnly() {
         <form>
             <h2>Edinburgh Postnatal Depression Scale (EPDS)</h2>
             <p>Please underline the answer which comes closest to how you have felt in the past 7 days, not just how you feel today.</p>
-            
+
             <div>
                 <p>1. I have been able to laugh and see the funny side of things</p>
                 <label><input type="radio" name="q1" value="0" checked={responses.q1 === '0'} disabled /> As much as I always could (0)</label>
                 <label><input type="radio" name="q1" value="1" checked={responses.q1 === '1'} disabled /> Not quite so much now (1)</label>
-                <label><input type="radio" name="q1" value="2" checked={responses.q1 === '2'} disabled/> Definitely not so much now (2)</label>
+                <label><input type="radio" name="q1" value="2" checked={responses.q1 === '2'} disabled /> Definitely not so much now (2)</label>
                 <label><input type="radio" name="q1" value="3" checked={responses.q1 === '3'} disabled /> Not at all (3)</label>
             </div>
 
@@ -100,16 +106,16 @@ function EPDSReadOnly() {
                 <p>3. I have blamed myself unnecessarily when things went wrong</p>
                 <label><input type="radio" name="q3" value="3" checked={responses.q3 === '3'} disabled /> Yes, most of the time (3)</label>
                 <label><input type="radio" name="q3" value="2" checked={responses.q3 === '2'} disabled /> Yes, some of the time (2)</label>
-                <label><input type="radio" name="q3" value="1" checked={responses.q3 === '1'} disabled/> Not very often (1)</label>
+                <label><input type="radio" name="q3" value="1" checked={responses.q3 === '1'} disabled /> Not very often (1)</label>
                 <label><input type="radio" name="q3" value="0" checked={responses.q3 === '0'} disabled /> No, never (0)</label>
             </div>
 
             <div>
                 <p>4. I have been anxious or worried for no good reason</p>
-                <label><input type="radio" name="q4" value="0" checked={responses.q4 === '0'} disabled/> No, not at all (0)</label>
-                <label><input type="radio" name="q4" value="1" checked={responses.q4 === '1'}  disabled /> Hardly ever (1)</label>
+                <label><input type="radio" name="q4" value="0" checked={responses.q4 === '0'} disabled /> No, not at all (0)</label>
+                <label><input type="radio" name="q4" value="1" checked={responses.q4 === '1'} disabled /> Hardly ever (1)</label>
                 <label><input type="radio" name="q4" value="2" checked={responses.q4 === '2'} disabled /> Yes, sometimes (2)</label>
-                <label><input type="radio" name="q4" value="3" checked={responses.q4 === '3'} disabled/> Yes, very often (3)</label>
+                <label><input type="radio" name="q4" value="3" checked={responses.q4 === '3'} disabled /> Yes, very often (3)</label>
             </div>
 
             <div>
@@ -130,10 +136,10 @@ function EPDSReadOnly() {
 
             <div>
                 <p>7. I have been so unhappy that I have had difficulty sleeping</p>
-                <label><input type="radio" name="q7" value="3"  disabled /> Yes, most of the time (3)</label>
+                <label><input type="radio" name="q7" value="3" disabled /> Yes, most of the time (3)</label>
                 <label><input type="radio" name="q7" value="2" checked={responses.q7 === '2'} disabled /> Yes, sometimes (2)</label>
                 <label><input type="radio" name="q7" value="1" checked={responses.q7 === '1'} disabled /> Not very often (1)</label>
-                <label><input type="radio" name="q7" value="0" checked={responses.q7 === '0'} disabled/> No, not at all (0)</label>
+                <label><input type="radio" name="q7" value="0" checked={responses.q7 === '0'} disabled /> No, not at all (0)</label>
             </div>
 
             <div>

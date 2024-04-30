@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function ChildNeedsReadOnly() {
   const { patientId, log_id } = useParams();
@@ -24,31 +25,36 @@ function ChildNeedsReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/child_needs/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setItems(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      const accessToken = Cookies.get('accessToken');
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/child_needs/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setItems(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
 
   const handleChange = (id, field, value) => {
-    setItems(items.map(item => 
+    setItems(items.map(item =>
       item.id === id ? { ...item, [field]: value } : item
     ));
   };
@@ -74,13 +80,13 @@ function ChildNeedsReadOnly() {
                 <input type="radio" checked={item.status === 'Yes'} disabled />
               </td>
               <td>
-                <input type="radio" checked={item.status === 'No'} disabled/>
+                <input type="radio" checked={item.status === 'No'} disabled />
               </td>
               <td>
                 <input type="radio" checked={item.status === 'Pending'} disabled />
               </td>
               <td>
-                <input type="text" value={item.notes} disabled/>
+                <input type="text" value={item.notes} disabled />
               </td>
             </tr>
           ))}

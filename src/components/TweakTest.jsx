@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/TweakTest.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const TweakTest = () => {
   const { patientId } = useParams();
@@ -32,11 +33,14 @@ const TweakTest = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/tweak_test/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
         body: JSON.stringify(answers),
       });
       if (!response.ok) {
@@ -83,39 +87,39 @@ const TweakTest = () => {
         </div>
 
         <div className={styles.question}>
-        <label>
+          <label>
             E. Eye openers: Do you sometimes take a drink in the morning when you first get up?
             <input
-            type="checkbox"
-            name="eyeOpeners"
-            checked={answers.eyeOpeners}
-            onChange={handleInputChange}
+              type="checkbox"
+              name="eyeOpeners"
+              checked={answers.eyeOpeners}
+              onChange={handleInputChange}
             />
-        </label>
+          </label>
         </div>
 
         <div className={styles.question}>
-        <label>
+          <label>
             A: Amnesia: Has a friend or family member ever told you about things you said or did while you were drinking that you could not remember?
             <input
-            type="checkbox"
-            name="amnesia"
-            checked={answers.amnesia}
-            onChange={handleInputChange}
+              type="checkbox"
+              name="amnesia"
+              checked={answers.amnesia}
+              onChange={handleInputChange}
             />
-        </label>
+          </label>
         </div>
 
         <div className={styles.question}>
-        <label>
+          <label>
             K. Kut down: Do you sometimes feel the need to cut down on your drinking?
             <input
-            type="checkbox"
-            name="kutDown"
-            checked={answers.kutDown}
-            onChange={handleInputChange}
+              type="checkbox"
+              name="kutDown"
+              checked={answers.kutDown}
+              onChange={handleInputChange}
             />
-        </label>
+          </label>
         </div>
 
         <button type="submit" className={styles.submitButton}>Submit</button>

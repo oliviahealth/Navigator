@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../../styles/ParentalMedicalHistory.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const ParentalMedicalHistoryReadOnly = () => {
   const { patientId, log_id } = useParams();
@@ -30,27 +31,32 @@ const ParentalMedicalHistoryReadOnly = () => {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/parental_medical_history/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/parental_medical_history/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -63,7 +69,7 @@ const ParentalMedicalHistoryReadOnly = () => {
     <div className="page">
       <h2>Parental Medical History</h2>
       <form className={styles.formContainer}>
-        
+
         <div className={styles.formSection}>
           <h3 className={styles.formSectionTitle}>PRENATAL CARE (FOR CURRENT OR MOST RECENT PREGNANCY)</h3>
           <div className={styles.questionContainer}>
@@ -109,7 +115,7 @@ const ParentalMedicalHistoryReadOnly = () => {
             </div>
           </div>
         </div>
-  
+
         <div className={styles.formSection}>
           <h3 className={styles.formSectionTitle}>OBSTETRIC HISTORY</h3>
           <div className={styles.questionContainer}>
@@ -117,7 +123,7 @@ const ParentalMedicalHistoryReadOnly = () => {
             <input className={styles.inputBlock} type="number" name="totalPregnancies" value={formData.totalPregnancies} disabled />
           </div>
         </div>
-  
+
         <div className={styles.formSection}>
           <h3 className={styles.formSectionTitle}>MEDICAL PROBLEMS REQUIRING ONGOING CARE</h3>
           <div className={styles.questionContainer}>
@@ -129,7 +135,7 @@ const ParentalMedicalHistoryReadOnly = () => {
       </form>
     </div>
   );
-  
+
 
 };
 

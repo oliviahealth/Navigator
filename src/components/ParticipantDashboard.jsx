@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCapsules } from '@fortawesome/free-solid-svg-icons';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import modelOutput from '../assets/model_output.png';
+import Cookies from 'js-cookie';
 
 const ImageModal = ({ isOpen, handleClose, src }) => {
     if (!isOpen) return null;
@@ -80,14 +81,18 @@ const ParticipantDashboard = () => {
     };
 
     useEffect(() => {
+        const accessToken = Cookies.get('accessToken');
         const fetchDemographics = async () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_demographic_information/${patientId}`, {
                     method: 'GET',
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
                     return;
@@ -97,7 +102,6 @@ const ParticipantDashboard = () => {
                 setDemographicData(data[2])
 
             } catch (error) {
-                console.error('failed to fetch');
             }
         };
 
@@ -107,10 +111,13 @@ const ParticipantDashboard = () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_medication_information/${patientId}`, {
                     method: 'GET',
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
                     return;
@@ -120,7 +127,6 @@ const ParticipantDashboard = () => {
                 setMedications(data[2]);
 
             } catch (error) {
-                console.error('failed to fetch');
             }
         };
 
@@ -130,10 +136,13 @@ const ParticipantDashboard = () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_count_tabs/${patientId}`, {
                     method: 'GET',
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
                     return;
@@ -142,7 +151,6 @@ const ParticipantDashboard = () => {
                 setCategoryData(data);
 
             } catch (error) {
-                console.error('failed to fetch');
             }
         };
 
@@ -152,7 +160,11 @@ const ParticipantDashboard = () => {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/forms/appointment_log/${patientId}`, {
                     method: 'GET',
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -164,7 +176,6 @@ const ParticipantDashboard = () => {
                 processAppointmentData(data);
 
             } catch (error) {
-                console.error('failed to fetch');
             }
         };
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function DURELReadOnly() {
     const { patientId, log_id } = useParams();
@@ -22,11 +23,16 @@ function DURELReadOnly() {
     useEffect(() => {
         const fetchLog = async () => {
             try {
+                const accessToken = Cookies.get('accessToken');
                 setLoading(true);
                 setError(null);
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/durel/${patientId}/${log_id}`, {
                     method: 'GET',
-                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +50,7 @@ function DURELReadOnly() {
         fetchLog();
     }, [patientId, log_id]);
 
-    
+
 
     const handleChange = (field, value) => {
         setResponses(prev => ({
@@ -52,7 +58,7 @@ function DURELReadOnly() {
             [field]: value
         }));
     };
-    
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -64,7 +70,7 @@ function DURELReadOnly() {
     return (
         <form>
             <h2>Duke University Religion Index (DUREL)</h2>
-    
+
             <div>
                 <p>1. How often do you attend church, synagogue, or other religious meetings?</p>
                 <label><input type="radio" name="attendance" value="Never" checked={responses.attendance === 'Never'} disabled /> Never</label>
@@ -74,7 +80,7 @@ function DURELReadOnly() {
                 <label><input type="radio" name="attendance" value="Once a week" checked={responses.attendance === 'Once a week'} disabled /> Once a week</label>
                 <label><input type="radio" name="attendance" value="More than once a week" checked={responses.attendance === 'More than once a week'} disabled /> More than once a week</label>
             </div>
-    
+
             <div>
                 <p>2. How often do you spend time in private religious activities, such as prayer, meditation or Bible study?</p>
                 <label><input type="radio" name="privateActivities" value="Rarely or never" checked={responses.privateActivities === 'Rarely or never'} disabled /> Rarely or never</label>
@@ -84,7 +90,7 @@ function DURELReadOnly() {
                 <label><input type="radio" name="privateActivities" value="Once a day" checked={responses.privateActivities === 'Once a day'} disabled /> Once a day</label>
                 <label><input type="radio" name="privateActivities" value="More than once a day" checked={responses.privateActivities === 'More than once a day'} disabled /> More than once a day</label>
             </div>
-    
+
             <div>
                 <p>3. In my life, I experience the presence of the Divine.</p>
                 <label><input type="radio" name="presenceDivine" value="Definitely not true" checked={responses.presenceDivine === 'Definitely not true'} disabled /> Definitely not true</label>
@@ -93,7 +99,7 @@ function DURELReadOnly() {
                 <label><input type="radio" name="presenceDivine" value="Somewhat true" checked={responses.presenceDivine === 'Somewhat true'} disabled /> Somewhat true</label>
                 <label><input type="radio" name="presenceDivine" value="Definitely true" checked={responses.presenceDivine === 'Definitely true'} disabled /> Definitely true</label>
             </div>
-    
+
             <div>
                 <p>4. My religious beliefs are what really lie behind my whole approach to life.</p>
                 <label><input type="radio" name="beliefsApproach" value="Definitely not true" checked={responses.beliefsApproach === 'Definitely not true'} disabled /> Definitely not true</label>
@@ -102,7 +108,7 @@ function DURELReadOnly() {
                 <label><input type="radio" name="beliefsApproach" value="Somewhat true" checked={responses.beliefsApproach === 'Somewhat true'} disabled /> Somewhat true</label>
                 <label><input type="radio" name="beliefsApproach" value="Definitely true" checked={responses.beliefsApproach === 'Definitely true'} disabled /> Definitely true</label>
             </div>
-    
+
             <div>
                 <p>5. I try hard to carry my religion over into other dealings in life.</p>
                 <label><input type="radio" name="religionInLife" value="Definitely not true" checked={responses.religionInLife === 'Definitely not true'} disabled /> Definitely not true</label>
@@ -114,7 +120,7 @@ function DURELReadOnly() {
             <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
         </form>
     );
-    
+
 }
 
 export default DURELReadOnly;

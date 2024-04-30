@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from '../styles/DrugScreeningResults.module.css';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const initialRow = {
   dateCollected: '',
@@ -14,7 +15,7 @@ const initialRow = {
 const DrugScreeningResults = () => {
   const { patientId } = useParams();
   const [rows, setRows] = useState([initialRow]);
-  
+
   const addRow = () => {
     setRows(rows.concat({ ...initialRow }));
   };
@@ -31,11 +32,15 @@ const DrugScreeningResults = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/drug_screening_results/${patientId}`, {
         method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(rows),
       });
       if (!response.ok) {
@@ -54,24 +59,24 @@ const DrugScreeningResults = () => {
 
   return (
     <form onSubmit={handleSubmit} className={styles.drugScreeningResultsForm}>
-    <h1>Drug Screening Results</h1>
-    <p>
-        Complete with Participant 
+      <h1>Drug Screening Results</h1>
+      <p>
+        Complete with Participant
         <br></br><br></br>
-        Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc. 
+        Follow up as indicated with Provider, Social Worker, Case Manager, Recovery Coach, etc.
         <br></br><br></br>
-        If client/Participant has test positive for any substance, check in and complete as necessary at any subsequent visit if appropriate.   
-    </p>
+        If client/Participant has test positive for any substance, check in and complete as necessary at any subsequent visit if appropriate.
+      </p>
       <table className={styles.drugScreeningResultsTable}>
         <thead>
           <tr>
-          <th colSpan="7">
+            <th colSpan="7">
               DRUG SCREENING RESULTS
               <br />
               Complete as indicated with client/Participant.
               <br />
               Follow up as indicated with: Provider ordering UDS, Recovery Coach, etc.
-          </th>
+            </th>
           </tr>
           <tr>
             <th>Serial No.</th>
@@ -150,7 +155,7 @@ const DrugScreeningResults = () => {
                 />
               </td>
               <td>
-              <button type="button" className={styles.removeButton} onClick={() => removeRow(index)}>Remove</button>
+                <button type="button" className={styles.removeButton} onClick={() => removeRow(index)}>Remove</button>
               </td>
             </tr>
           ))}

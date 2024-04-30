@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function EmergencyContactReadOnly() {
   const { patientId, log_id } = useParams();
@@ -36,27 +37,32 @@ function EmergencyContactReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}E_API_URL}/api/get_read_only_data/emergency_contact/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormData(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}E_API_URL}/api/get_read_only_data/emergency_contact/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormData(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     }; fetchLog();
   }, [patientId, log_id]);
 
-  
+
 
   const addNewEntry = (key) => {
     const newEntry = key === 'children' || key === 'emergencyContacts' || key === 'safeCaregivers' ?
@@ -64,7 +70,7 @@ function EmergencyContactReadOnly() {
     setFormData({ ...formData, [key]: [...formData[key], newEntry] });
   };
 
-  
+
 
   const handleInputChange = (section, index, field, value) => {
     const updatedSection = [...formData[section]];
@@ -78,10 +84,10 @@ function EmergencyContactReadOnly() {
 
   const formatSectionTitle = (title) => {
     return title.replace(/([A-Z])/g, ' $1')
-                .replace(/^./, str => str.toUpperCase())
-                .trim()
-                .replace('Info', ' Information') // Expand common abbreviations
-                .replace('Dob', 'Date of Birth'); // Proper case for specific fields
+      .replace(/^./, str => str.toUpperCase())
+      .trim()
+      .replace('Info', ' Information') // Expand common abbreviations
+      .replace('Dob', 'Date of Birth'); // Proper case for specific fields
   };
 
   return (
@@ -129,7 +135,7 @@ function EmergencyContactReadOnly() {
         </div>
       ))}
 
-<button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
+      <button type="button" onClick={handleCancel} style={{ backgroundColor: 'red', color: 'white' }}>Cancel</button>
     </form>
   );
 }

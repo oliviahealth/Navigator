@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function NutHistoryReadOnly() {
   const { patientId, log_id } = useParams();
@@ -69,27 +70,32 @@ function NutHistoryReadOnly() {
 
   useEffect(() => {
     const fetchLog = async () => {
-        try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/nut_history/${patientId}/${log_id}`, {
-              method: 'GET',
-              credentials: 'include',
-            });
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            if (response.status === 204) { // Handling no content
-                return; 
-            }
-            const data = await response.json();
-            setFormValues(data[2])
-            
-        } catch (error) {
-            console.error('failed to fetch');
+      try {
+        const accessToken = Cookies.get('accessToken');
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/nut_history/${patientId}/${log_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+          },
+          credentials: 'omit',
+        });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+        if (response.status === 204) { // Handling no content
+          return;
+        }
+        const data = await response.json();
+        setFormValues(data[2])
+
+      } catch (error) {
+        console.error('failed to fetch');
+      }
     };
 
     fetchLog();
-}, [patientId, log_id]);
+  }, [patientId, log_id]);
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -240,7 +246,7 @@ function NutHistoryReadOnly() {
 
           <input type="checkbox" id="dental-problems-no" name="dentalProblems" value="no" checked={formValues.dentalProblems.includes('no')} disabled />
           <label htmlFor="dental-problems-no">No</label>
-          
+
           <label htmlFor="cigarettes-prepregnancy">In the 3 months before you were pregnant, how many cigarettes did you smoke on an average day?</label>
           <input type="number" id="cigarettes-prepregnancy" name="cigarettesPrepregnancy" value={formValues.cigarettesPrepregnancy} disabled />
 
@@ -254,12 +260,12 @@ function NutHistoryReadOnly() {
           <input type="radio" name="householdSmoking" value="yes" checked={formValues.householdSmoking === 'yes'} disabled /> Yes
           <input type="radio" name="householdSmoking" value="no" checked={formValues.householdSmoking === 'no'} disabled /> No
           <input type="radio" name="householdSmoking" value="unknown" checked={formValues.householdSmoking === 'unknown'} disabled /> Unknown
-          
+
           <label>Alcohol consumption before pregnancy?</label>
           <input type="radio" name="alcoholBeforePregnancy" value="didNotDrink" checked={formValues.alcoholBeforePregnancy === 'didNotDrink'} disabled /> Did not drink
           <input type="radio" name="alcoholBeforePregnancy" value="drankButQuantityUnknown" checked={formValues.alcoholBeforePregnancy === 'drankButQuantityUnknown'} disabled /> Drank, but quantity unknown
           <input type="radio" name="alcoholBeforePregnancy" value="unknownOrRefusedAlcohol" checked={formValues.alcoholBeforePregnancy === 'unknownOrRefusedAlcohol'} disabled /> Unknown or refused
-          
+
           <label>Alcohol during pregnancy?</label>
           <input type="radio" name="alcoholDuringPregnancy" value="yes" checked={formValues.alcoholDuringPregnancy === 'yes'} disabled /> Yes
           <input type="radio" name="alcoholDuringPregnancy" value="no" checked={formValues.alcoholDuringPregnancy === 'no'} disabled /> No
@@ -287,7 +293,7 @@ function NutHistoryReadOnly() {
           <label htmlFor="fastFoodFrequency">Fast Food per week</label>
           <input type="radio" name="fastFoodFrequency" value="yes" checked={formValues.fastFoodFrequency === 'yes'} disabled /> Yes
           <input type="radio" name="fastFoodFrequency" value="no" checked={formValues.fastFoodFrequency === 'no'} disabled /> No
-          
+
           <label htmlFor="fastFoodDetails">If yes, what kind?</label>
           <input type="text" id="fastFoodDetails" name="fastFoodDetails" value={formValues.fastFoodDetails} disabled />
         </fieldset>

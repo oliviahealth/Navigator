@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function GAD7ReadOnly() {
     const { patientId, log_id } = useParams();
@@ -13,30 +14,35 @@ function GAD7ReadOnly() {
 
     const handleCancel = () => {
         window.history.back();
-      };
+    };
 
     useEffect(() => {
         const fetchLog = async () => {
             try {
+                const accessToken = Cookies.get('accessToken');
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/gad7/${patientId}/${log_id}`, {
-                  method: 'GET',
-                  credentials: 'include',
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${accessToken}`
+                    },
+                    credentials: 'omit',
                 });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 if (response.status === 204) { // Handling no content
-                    return; 
+                    return;
                 }
                 const data = await response.json();
                 setResponses(data[2].responses);
                 setTotalScore(data[2].totalScore);
-                
+
             } catch (error) {
                 console.error('failed to fetch');
             }
         };
-    
+
         fetchLog();
     }, [patientId, log_id]);
 
@@ -58,17 +64,17 @@ function GAD7ReadOnly() {
         <form>
             <h2>GAD-7 Anxiety Scale</h2>
             <p>Over the last 2 weeks, how often have you been bothered by any of the following problems?</p>
-            
+
             {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i}>
-                    <p>{i + 1}. {["Feeling nervous, anxious or on edge", 
-                                   "Not being able to stop or control worrying", 
-                                   "Worrying too much about different things", 
-                                   "Trouble relaxing", 
-                                   "Being so restless that it is hard to sit still", 
-                                   "Becoming easily annoyed or irritable", 
-                                   "Feeling afraid as if something awful might happen",
-                                   "If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?"][i]}</p>
+                    <p>{i + 1}. {["Feeling nervous, anxious or on edge",
+                        "Not being able to stop or control worrying",
+                        "Worrying too much about different things",
+                        "Trouble relaxing",
+                        "Being so restless that it is hard to sit still",
+                        "Becoming easily annoyed or irritable",
+                        "Feeling afraid as if something awful might happen",
+                        "If you checked off any problems, how difficult have these made it for you to do your work, take care of things at home, or get along with other people?"][i]}</p>
                     {Array.from({ length: 4 }).map((_, value) => (
                         <label key={value}>
                             <input
