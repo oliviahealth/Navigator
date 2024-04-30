@@ -107,7 +107,7 @@ function ReferralsServicesReadOnly() {
         } else {
         }
       } catch (error) {
-        console.error('Error fetching referrals services info:', error);
+        console.error('failed to fetch');
       }
     };
   

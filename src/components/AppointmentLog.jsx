@@ -62,7 +62,7 @@ const AppointmentLog = () => {
             setEntry({ date: '', who: '', location: '', notes: '' });
             window.history.back();
         } catch (error) {
-            console.error('Failed to submit:', error);
+            console.error('Failed to submit');
             // Handle submission error here
         }
     };

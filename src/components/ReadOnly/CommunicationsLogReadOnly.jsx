@@ -37,7 +37,7 @@ const CommunicationsLogReadOnly = () => {
                     followUp: data.follow_up_needed ? "Yes" : "No",
                 });
             } catch (error) {
-                console.error('Error fetching communication log:', error);
+                console.error('failed to fetch');
             }
         };
     

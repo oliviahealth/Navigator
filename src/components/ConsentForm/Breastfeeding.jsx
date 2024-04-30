@@ -71,7 +71,7 @@ function BreastFeeding() {
       const data = await response.json();
       navigate(-1);
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 

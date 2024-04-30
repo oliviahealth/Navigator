@@ -78,7 +78,7 @@ function EmergencyContact() {
         // Update the formData state with the new section
         setFormData({ ...formData, [sanitized_section]: updatedSection });
     } else {
-        console.error('Invalid section:', sanitized_section);
+        console.error('Invalid section');
     }
 };
 
@@ -106,7 +106,7 @@ function EmergencyContact() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('Failed to submit');
     }
   };
 

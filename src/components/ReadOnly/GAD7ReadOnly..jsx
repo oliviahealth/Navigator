@@ -33,7 +33,7 @@ function GAD7ReadOnly() {
                 setTotalScore(data[2].totalScore);
                 
             } catch (error) {
-                console.error('Error fetching sipport system info:', error);
+                console.error('failed to fetch');
             }
         };
     

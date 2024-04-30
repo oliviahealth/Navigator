@@ -47,7 +47,7 @@ const MedicationsReadOnly = () => {
             setMedications(data[2])
             
         } catch (error) {
-            console.error('Error fetching  info:', error);
+            console.error('failed to fetch');
         }
     };
 

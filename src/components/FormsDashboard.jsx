@@ -148,7 +148,7 @@ const FormsDashboard = () => {
                 const formsArray = Object.values(data);
                 setForms(formsArray);
             } catch (error) {
-                console.error('Error fetching logs:', error);
+                console.error('Error fetching logs');
             }
         };
 

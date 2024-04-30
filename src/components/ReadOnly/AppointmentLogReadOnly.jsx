@@ -50,7 +50,7 @@ const AppointmentLogReadOnly = () => {
               notes: data.notes || '',
             });
           } catch (error) {
-            console.error('Error fetching communication log:', error);
+            console.error('failed to fetch');
           }
         };
       

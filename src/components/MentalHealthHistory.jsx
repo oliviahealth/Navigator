@@ -32,7 +32,7 @@ function MentalHealthHistory() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 
@@ -44,7 +44,7 @@ function MentalHealthHistory() {
         updatedDiagnoses[index][sanitized_field] = value;
         setDiagnoses(updatedDiagnoses);
     } else {
-        console.error('Invalid index or field:', index, sanitized_field);
+        console.error('Invalid index or field');
     }
 };
 

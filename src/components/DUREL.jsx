@@ -38,7 +38,7 @@ function DUREL() {
           const data = await response.json();
           window.history.back();
         } catch (error) {
-          console.error('Failed to submit:', error);
+          console.error('Failed to submit');
         }
       };
 

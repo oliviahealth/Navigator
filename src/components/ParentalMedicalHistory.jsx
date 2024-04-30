@@ -83,7 +83,7 @@ const ParentalMedicalHistory = () => {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 

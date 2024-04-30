@@ -42,7 +42,7 @@ const MediaAppearanceReleaseReadOnly = () => {
             setFormData(data[2]);
             
         } catch (error) {
-            console.error('Error fetching media appearance release:', error);
+            console.error('failed to fetch');
         }
     };
 

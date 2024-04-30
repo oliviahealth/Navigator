@@ -37,7 +37,7 @@ const PregnancySpacingReadOnly = () => {
             setFamilyPlanningInterest(data[2].familyPlanningInterest)
             
         } catch (error) {
-            console.error('Error fetching participant info:', error);
+            console.error('failed to fetch');
         }
     };
 

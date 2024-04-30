@@ -25,7 +25,7 @@ function GoalPlanning() {
             updatedSteps[index] = value;
             setGoalInfo({ ...goalInfo, steps: updatedSteps });
         } else {
-            console.error('Invalid step index:', index);
+            console.error('Invalid step index');
         }
     } else {
         setGoalInfo({ ...goalInfo, [sanitized_name]: value });
@@ -48,7 +48,7 @@ function GoalPlanning() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('Failed to submit');
     }
   };
 

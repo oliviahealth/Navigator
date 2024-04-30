@@ -44,7 +44,7 @@ const HousingVisitReadOnly = () => {
             setFormData(data[2])
             
         } catch (error) {
-            console.error('Error fetching sipport system info:', error);
+            console.error('failed to fetch');
         }
     };
 

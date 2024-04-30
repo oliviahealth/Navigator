@@ -339,7 +339,7 @@ const CrafftScreening = () => {
         const result = await response.json();
   
       } catch (error) {
-        console.error('Failed to submit form:', error);
+        console.error('Failed to submit form');
         alert('Failed to submit form. Please try again.');
       }
 

@@ -97,7 +97,7 @@ const ParticipantDashboard = () => {
                 setDemographicData(data[2])
 
             } catch (error) {
-                console.error('Error fetching support system info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -120,7 +120,7 @@ const ParticipantDashboard = () => {
                 setMedications(data[2]);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -142,7 +142,7 @@ const ParticipantDashboard = () => {
                 setCategoryData(data);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -164,7 +164,7 @@ const ParticipantDashboard = () => {
                 processAppointmentData(data);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 

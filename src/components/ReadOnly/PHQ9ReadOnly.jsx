@@ -35,7 +35,7 @@ function PHQ9ReadOnly() {
                 setSuicideRisk(data[2].suicideRisk);
                 
             } catch (error) {
-                console.error('Error fetching sipport system info:', error);
+                console.error('failed to fetch');
             }
         };
     

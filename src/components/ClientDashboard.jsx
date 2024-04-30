@@ -104,7 +104,7 @@ const ClientDashboard = () => {
          }
          const data = await response.json();
       } catch (error) {
-         console.error('Failed to submit:', error);
+         console.error('Failed to submit');
       }
       setIsEditable(false);
    };
@@ -171,7 +171,7 @@ const ClientDashboard = () => {
             const data = await response.json();
             setPatients(data); // Assuming the API returns an array of patient objects
          } catch (error) {
-            console.error('Error fetching participants', error);
+            console.error('Error fetching participants');
          }
       };
 

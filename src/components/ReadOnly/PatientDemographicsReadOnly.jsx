@@ -53,7 +53,7 @@ const PatientDemographicsReadOnly = () => {
             setFormData(data[2]);
             
         } catch (error) {
-            console.error('Error fetching participant info:', error);
+            console.error('failed to fetch');
         }
     };
 

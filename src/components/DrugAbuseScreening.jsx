@@ -31,7 +31,7 @@ const DrugAbuseScreening = () => {
         });
   
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error with submission');
       }
   
       window.history.back();

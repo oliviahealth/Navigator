@@ -84,7 +84,7 @@ function ReferralsServices() {
             updatedItems[sanitized_category][index].notes = value.target.value;
         }
     } else {
-        console.error('Invalid category or index:', sanitized_category, index);
+        console.error('Invalid category or index');
         return; // Stop execution if category or index is invalid
     }
 
@@ -114,7 +114,7 @@ function ReferralsServices() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 
