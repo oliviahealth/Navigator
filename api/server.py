@@ -154,6 +154,46 @@ def get_read_only_data(formType, patientId, logId):
     else:
         return jsonify({"error": "Log not found"}), 404
 
+@app.route("/api/get_demographic_information/<int:patientId>", methods=['GET'])
+def get_demographic_information(patientId):
+    print(patientId)
+    try:
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            query = f"SELECT * FROM participant_info WHERE patient_id = %s ORDER BY date_time DESC LIMIT 1;"
+            cursor.execute(query, (str(patientId)))
+            log = cursor.fetchone()
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+    
+    if log is not None:
+        return jsonify(log)
+    else:
+        return jsonify({"error": "Log not found"}), 404
+
+@app.route("/api/get_medication_information/<int:patientId>", methods=['GET'])
+def get_medications_information(patientId):
+    print(patientId)
+    try:
+        connection = connection_pool.getconn()
+        with connection.cursor() as cursor:
+            query = f"SELECT * FROM medications WHERE patient_id = %s ORDER BY date_time DESC LIMIT 1;"
+            cursor.execute(query, (str(patientId)))
+            log = cursor.fetchone()
+    except Exception as e:
+        connection.rollback()
+        return jsonify({"error": str(e)}), 500
+    finally:
+        connection_pool.putconn(connection)
+    
+    if log is not None:
+        return jsonify(log)
+    else:
+        return jsonify({"error": "Log not found"}), 404
+
 @app.post("/api/signup")
 def signup():
     data = request.get_json()
