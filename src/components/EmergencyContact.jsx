@@ -78,7 +78,7 @@ function EmergencyContact() {
         // Update the formData state with the new section
         setFormData({ ...formData, [sanitized_section]: updatedSection });
     } else {
-        console.error('Invalid section:', sanitized_section);
+        console.error('Invalid section');
     }
 };
 
@@ -94,7 +94,7 @@ function EmergencyContact() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/emergency_contact/${patientId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/emergency_contact/${patientId}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -106,7 +106,7 @@ function EmergencyContact() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('Failed to submit');
     }
   };
 

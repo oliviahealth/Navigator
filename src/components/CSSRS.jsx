@@ -99,13 +99,13 @@ function CSSRS() {
             if (Object.prototype.hasOwnProperty.call(updatedResponses[index], sanitized_field)) {
                 updatedResponses[index][sanitized_field] = value;
             } else {
-                console.error('Invalid field:', sanitized_field);
+                console.error('Invalid field');
                 return;
             }
             // Update state with the new array
             setIdeationResponses(updatedResponses);
         } else {
-            console.error('Invalid index:', index);
+            console.error('Invalid index');
         }
     };
 
@@ -119,7 +119,7 @@ function CSSRS() {
             updatedIntensity[sanitized_field] = value;
             setIntensityResponses(updatedIntensity);
         } else {
-            console.error('Invalid field:', sanitized_field);
+            console.error('Invalid field');
         }
     };
     const handleBehaviorChange = (field, subfield, value) => {
@@ -156,7 +156,7 @@ function CSSRS() {
             lethalityData: lethalityData
         }
         try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/cssrs/${patientId}`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/cssrs/${patientId}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -168,7 +168,7 @@ function CSSRS() {
           const data = await response.json();
           window.history.back();
         } catch (error) {
-          console.error('Failed to submit:', error);
+          console.error('Failed to submit');
         }
       };
 

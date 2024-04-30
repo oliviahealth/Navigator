@@ -48,7 +48,7 @@ const SmokingTobaccoUseReadOnly = () => {
     useEffect(() => {
         const fetchLog = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/get_read_only_data/smoking_tobacco_use/${patientId}/${log_id}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/smoking_tobacco_use/${patientId}/${log_id}`, {
                   method: 'GET',
                   credentials: 'include',
                 });
@@ -62,7 +62,7 @@ const SmokingTobaccoUseReadOnly = () => {
                 setFormData(data[2]);
                 
             } catch (error) {
-                console.error('Error fetching sipport system info:', error);
+                console.error('failed to fetch');
             }
         };
     

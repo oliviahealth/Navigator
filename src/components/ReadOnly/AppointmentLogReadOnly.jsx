@@ -25,7 +25,7 @@ const AppointmentLogReadOnly = () => {
         const fetchLog = async () => {
           try {
             const response = await fetch(
-              `http://localhost:5000/api/get_appointment_log/${patientId}/${log_id}`,
+              `${import.meta.env.VITE_API_URL}/api/get_appointment_log/${patientId}/${log_id}`,
               {
                 method: 'GET',
                 credentials: 'include',
@@ -50,7 +50,7 @@ const AppointmentLogReadOnly = () => {
               notes: data.notes || '',
             });
           } catch (error) {
-            console.error('Error fetching communication log:', error);
+            console.error('failed to fetch');
           }
         };
       

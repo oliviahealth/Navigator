@@ -57,7 +57,7 @@ function EPDS() {
             ehrInfo: ehrInfo
         }
         try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/epds/${patientId}`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/epds/${patientId}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -69,7 +69,7 @@ function EPDS() {
           const data = await response.json();
           window.history.back();
         } catch (error) {
-          console.error('Failed to submit:', error);
+          console.error('Failed to submit');
         }
       };
 

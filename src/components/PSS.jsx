@@ -18,7 +18,7 @@ function PSS() {
           totalScore: totalScore,
         }
         try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/pss/${patientId}`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/pss/${patientId}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -30,7 +30,7 @@ function PSS() {
           const data = await response.json();
           window.history.back();
         } catch (error) {
-          console.error('Failed to submit:', error);
+          console.error('failed to submit');
         }
       };
 

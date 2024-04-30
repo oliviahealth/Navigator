@@ -84,7 +84,7 @@ function ReferralsServices() {
             updatedItems[sanitized_category][index].notes = value.target.value;
         }
     } else {
-        console.error('Invalid category or index:', sanitized_category, index);
+        console.error('Invalid category or index');
         return; // Stop execution if category or index is invalid
     }
 
@@ -102,7 +102,7 @@ function ReferralsServices() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/referrals_services/${patientId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/referrals_services/${patientId}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -114,7 +114,7 @@ function ReferralsServices() {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 

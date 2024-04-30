@@ -21,7 +21,7 @@ const DrugAbuseScreening = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-        const response = await fetch(`http://localhost:5000/api/insert_forms/drug_abuse_screening/${patientId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/drug_abuse_screening/${patientId}`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -31,7 +31,7 @@ const DrugAbuseScreening = () => {
         });
   
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error with submission');
       }
   
       window.history.back();

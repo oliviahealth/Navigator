@@ -11,7 +11,7 @@ const LoginModal = ({ showModal, setShowModal, onLoginSuccess }) => {
     e.preventDefault();
     setError(''); // Reset the error message
   
-    fetch('http://localhost:5000/api/login', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
       method: 'POST',
       credentials: 'include',
       headers: {

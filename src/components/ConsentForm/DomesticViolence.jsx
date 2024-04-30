@@ -35,7 +35,7 @@ const DomesticViolenceScreenForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/domestic_violence/${patientId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/domestic_violence/${patientId}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -47,7 +47,7 @@ const DomesticViolenceScreenForm = () => {
       const data = await response.json();
       navigate(-1);
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('failed to submit');
     }
   };
 

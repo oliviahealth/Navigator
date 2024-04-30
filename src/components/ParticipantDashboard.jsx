@@ -82,7 +82,7 @@ const ParticipantDashboard = () => {
     useEffect(() => {
         const fetchDemographics = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/get_demographic_information/${patientId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_demographic_information/${patientId}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -97,7 +97,7 @@ const ParticipantDashboard = () => {
                 setDemographicData(data[2])
 
             } catch (error) {
-                console.error('Error fetching support system info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -105,7 +105,7 @@ const ParticipantDashboard = () => {
 
         const fetchMedications = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/get_medication_information/${patientId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_medication_information/${patientId}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -120,7 +120,7 @@ const ParticipantDashboard = () => {
                 setMedications(data[2]);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -128,7 +128,7 @@ const ParticipantDashboard = () => {
 
         const fetchCount = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/get_count_tabs/${patientId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_count_tabs/${patientId}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -142,7 +142,7 @@ const ParticipantDashboard = () => {
                 setCategoryData(data);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 
@@ -150,7 +150,7 @@ const ParticipantDashboard = () => {
 
         const getDates = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/forms/appointment_log/${patientId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/forms/appointment_log/${patientId}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
@@ -164,7 +164,7 @@ const ParticipantDashboard = () => {
                 processAppointmentData(data);
 
             } catch (error) {
-                console.error('Error fetching info:', error);
+                console.error('failed to fetch');
             }
         };
 

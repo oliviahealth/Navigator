@@ -132,7 +132,7 @@ const FormsDashboard = () => {
     useEffect(() => {
         const fetchForms = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/forms/${dbTableNames[formType]}/${patientId}`, {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/forms/${dbTableNames[formType]}/${patientId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ const FormsDashboard = () => {
                 const formsArray = Object.values(data);
                 setForms(formsArray);
             } catch (error) {
-                console.error('Error fetching logs:', error);
+                console.error('Error fetching logs');
             }
         };
 

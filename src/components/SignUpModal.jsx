@@ -33,7 +33,7 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
     // More validations can be added here
     if (Object.keys(newErrors).length === 0) {
       // Submit data
-      fetch('http://localhost:5000/api/signup', {
+      fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,13 +66,13 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
         </button> */}
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
-          <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
-          <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
-          <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-          <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} />
-          <input type="text" name="username" placeholder="Username" onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-          <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} />
+          <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} required/>
+          <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} required/>
+          <input type="email" name="email" placeholder="Email" onChange={handleChange} required/>
+          <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required/>
+          <input type="text" name="username" placeholder="Username" onChange={handleChange} required/>
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} required/>
+          <input type="password" name="confirmPassword" placeholder="Confirm Password" onChange={handleChange} required/>
           <button type="submit">Sign Up</button>
           {Object.keys(errors).map((key) => (
             <div key={key} className={styles.error}>

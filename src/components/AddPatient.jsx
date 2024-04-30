@@ -22,7 +22,7 @@ const AddPatientForm = ({ onSubmit }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const accessToken = Cookies.get('accessToken');
-    fetch('http://localhost:5000/api/add_patient', {
+    fetch(`${import.meta.env.VITE_API_URL}/api/add_patient`, {
       method: 'POST',
       credentials: "include",
       headers: {
@@ -46,7 +46,7 @@ const AddPatientForm = ({ onSubmit }) => {
       window.history.back();
     })
     .catch((error) => {
-      console.error('Error:', error);
+      console.error('Error creating participant');
     });
   };
   
@@ -92,6 +92,7 @@ const AddPatientForm = ({ onSubmit }) => {
           />
         </label>
         <button type="submit" className={styles.submitButton}>Submit</button>
+        <button type="button" onClick={() => window.history.back()} style={{ backgroundColor: 'red', color: 'white' }}>Back</button>
       </form>
     </div>
   );

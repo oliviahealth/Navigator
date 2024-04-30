@@ -19,7 +19,7 @@ const CageScreening = ({ onSubmit, onCancel }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5000/api/insert_forms/cage_screening/${patientId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/cage_screening/${patientId}`, {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ const CageScreening = ({ onSubmit, onCancel }) => {
       const data = await response.json();
       window.history.back();
     } catch (error) {
-      console.error('Failed to submit:', error);
+      console.error('Failed to submit');
     }
   };
 

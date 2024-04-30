@@ -21,7 +21,7 @@ function PHQ9() {
           suicideRisk: suicideRisk
         }
         try {
-          const response = await fetch(`http://localhost:5000/api/insert_forms/phq9/${patientId}`, {
+          const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/phq9/${patientId}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -33,7 +33,7 @@ function PHQ9() {
           const data = await response.json();
           window.history.back();
         } catch (error) {
-          console.error('Failed to submit:', error);
+          console.error('failed to submit');
         }
       };
 

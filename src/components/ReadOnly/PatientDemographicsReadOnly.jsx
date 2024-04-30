@@ -39,7 +39,7 @@ const PatientDemographicsReadOnly = () => {
   useEffect(() => {
     const fetchLog = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/api/get_read_only_data/participant_info/${patientId}/${log_id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/participant_info/${patientId}/${log_id}`, {
               method: 'GET',
               credentials: 'include',
             });
@@ -53,7 +53,7 @@ const PatientDemographicsReadOnly = () => {
             setFormData(data[2]);
             
         } catch (error) {
-            console.error('Error fetching participant info:', error);
+            console.error('failed to fetch');
         }
     };
 

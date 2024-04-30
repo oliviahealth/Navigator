@@ -304,7 +304,7 @@ def signup():
             with connection.cursor() as cursor:
                 cursor.execute(CREATE_USER_TABLE)
                 cursor.execute(INSERT_USER, (username, firstName, lastName, email, phone, hashed_password, is_admin, admin_id))  # Store the hashed password
-                user_id = cursor.fetchone()[0]
+                user = cursor.fetchone()
                 access_token = create_access_token(identity=user[0])
                 connection.commit()
     finally:

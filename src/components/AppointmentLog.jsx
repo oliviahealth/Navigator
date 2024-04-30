@@ -41,7 +41,7 @@ const AppointmentLog = () => {
         event.preventDefault();
         
         try {
-            const response = await fetch(`http://localhost:5000/api/appointment_log/${patientId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/appointment_log/${patientId}`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },
@@ -62,7 +62,7 @@ const AppointmentLog = () => {
             setEntry({ date: '', who: '', location: '', notes: '' });
             window.history.back();
         } catch (error) {
-            console.error('Failed to submit:', error);
+            console.error('Failed to submit');
             // Handle submission error here
         }
     };

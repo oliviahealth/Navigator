@@ -324,7 +324,7 @@ const CrafftScreening = () => {
       };
   
       try {
-        const response = await fetch(`http://localhost:5000/api/insert_forms/crafft_screening/${patientId}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/crafft_screening/${patientId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -339,7 +339,7 @@ const CrafftScreening = () => {
         const result = await response.json();
   
       } catch (error) {
-        console.error('Failed to submit form:', error);
+        console.error('Failed to submit form');
         alert('Failed to submit form. Please try again.');
       }
 
