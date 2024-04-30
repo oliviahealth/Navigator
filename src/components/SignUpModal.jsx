@@ -33,7 +33,7 @@ const SignUpModal = ({ show, onClose, onSignUpSuccess }) => {
     // More validations can be added here
     if (Object.keys(newErrors).length === 0) {
       // Submit data
-      fetch('http://localhost:5000/api/signup', {
+      fetch(`${import.meta.env.VITE_API_URL}/api/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ const AppointmentLogReadOnly = () => {
         const fetchLog = async () => {
           try {
             const response = await fetch(
-              `http://localhost:5000/api/get_appointment_log/${patientId}/${log_id}`,
+              `${import.meta.env.VITE_API_URL}/api/get_appointment_log/${patientId}/${log_id}`,
               {
                 method: 'GET',
                 credentials: 'include',

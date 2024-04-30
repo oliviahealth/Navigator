@@ -53,7 +53,7 @@ const ClientDashboard = () => {
       }
 
       try {
-         const response = await fetch(`http://localhost:5000/api/get_general_information/${selectedPatientObj.patient_id}`, {
+         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_general_information/${selectedPatientObj.patient_id}`, {
             method: 'GET',
             credentials: 'include',
          });
@@ -71,7 +71,6 @@ const ClientDashboard = () => {
          }
 
       } catch (error) {
-         console.error('Error fetching sipport system info:', error);
       }
    };
 
@@ -94,7 +93,7 @@ const ClientDashboard = () => {
    const handleSave = async (event) => {
       event.preventDefault();
       try {
-         const response = await fetch(`http://localhost:5000/api/insert_forms/general_information/${selectedPatientObj.patient_id}`, {
+         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/general_information/${selectedPatientObj.patient_id}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -122,7 +121,7 @@ const ClientDashboard = () => {
 
       const fetchLog = async () => {
          try {
-            const response = await fetch(`http://localhost:5000/api/get_general_information/${selectedPatientObj.patient_id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_general_information/${selectedPatientObj.patient_id}`, {
                method: 'GET',
                credentials: 'include',
             });
@@ -141,7 +140,6 @@ const ClientDashboard = () => {
 
 
          } catch (error) {
-            console.error('Error fetching support system info:', error);
          }
       };
 
@@ -160,7 +158,7 @@ const ClientDashboard = () => {
       const accessToken = Cookies.get('accessToken');
       const fetchPatients = async () => {
          try {
-            const response = await fetch('http://localhost:5000/api/patients', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/patients`, {
                method: 'GET',
                credentials: 'include',
                headers: {
@@ -173,7 +171,7 @@ const ClientDashboard = () => {
             const data = await response.json();
             setPatients(data); // Assuming the API returns an array of patient objects
          } catch (error) {
-            console.error('Error fetching patients:', error);
+            console.error('Error fetching participants', error);
          }
       };
 
@@ -183,6 +181,7 @@ const ClientDashboard = () => {
 
 
    const handleLogout = () => {
+      Cookies.remove('accessToken');
       localStorage.removeItem('selectedPatientIndex');
       localStorage.removeItem('selectedPatientObj');
       navigate('/');
