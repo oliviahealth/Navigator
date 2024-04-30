@@ -125,6 +125,7 @@ const ParentalMedicalHistoryReadOnly = () => {
             <textarea name="diagnosesConditions" className={styles.largeTextArea} value={formData.diagnosesConditions} disabled></textarea>
           </div>
         </div>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
     </div>
   );

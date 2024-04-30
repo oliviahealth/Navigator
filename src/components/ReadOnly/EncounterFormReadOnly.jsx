@@ -267,6 +267,7 @@ return (
             </tbody>
           </table>
         </div>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
      
       <div className="list-container">
