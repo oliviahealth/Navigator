@@ -202,25 +202,14 @@ function Infancy() {
         </div>
 
         <div className="general-questions">
-          <label>
-            Do you always place your baby to sleep on his or her back?
-            <input
-              type="radio"
-              name="sleepOnBack"
-              value="Yes"
-              checked={formData.sleepOnBack === 'Yes'}
-              onChange={handleChange}
-            /> Yes
-            <input
-              type="radio"
-              name="sleepOnBack"
-              value="No"
-              checked={formData.sleepOnBack === 'No'}
-              onChange={handleChange}
-            /> No
-          </label>
-
-        </div>
+  <label style={{ marginRight: '30px' }}>
+    Do you always place your baby to sleep on his or her back?
+    <input  type="radio" name="sleepOnBack" value="Yes" checked={formData.sleepOnBack === 'Yes'} onChange={handleChange} />
+    Yes
+    <input type="radio" name="sleepOnBack" value="No" checked={formData.sleepOnBack === 'No'} onChange={handleChange} />
+    No
+  </label>
+</div>
         <div className="general-questions">
           <label>
             Do you always place your baby to sleep alone without bed sharing?
@@ -242,7 +231,7 @@ function Infancy() {
 
         </div>
         <div className="general-questions">
-          <label>
+          <label style={{ marginRight: '30px' }}>
             Do you always place your baby to sleep without so bedding?
             <input
               type="radio"
@@ -282,7 +271,7 @@ function Infancy() {
 
         </div>
 
-        <div className="biological-mother-question">
+        <div className="general-questions">
           <label>
             Is the Participant the biological mother of the child?
             <input

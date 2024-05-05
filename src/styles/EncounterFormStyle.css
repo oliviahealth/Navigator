@@ -1,12 +1,11 @@
 /* EncounterFormStyle.css */
 
 .encounter-form {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-  }
+  max-width: 100%;  /* Change this from a fixed px value to 100% or a larger px value */
+  padding: 20px;    /* Adjust padding as necessary */
+  margin: auto;     /* Center align the form if needed */
+  border: 1px solid #ccc;
+}
   
   .encounter-form h2 {
     text-align: center;
@@ -17,6 +16,8 @@
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
+    margin-right: 40px;
+  
   }
   
   .encounter-form table, .encounter-form th, .encounter-form td {
@@ -43,12 +44,13 @@
   }
   
   .encounter-form .form-control {
-    width: 100%;
+    box-sizing: border-box; /* Includes padding and border in the element's total width */
+    width: 100%; /* Adjust this to decrease if elements are too wide */
     padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-  }
+}
   
   .encounter-form .btn {
     padding: 8px 15px;
@@ -66,21 +68,23 @@
   .encounter-form .btn-submit {
     background-color: #5cb85c;
   }
-  
-  .checkbox-group {
+
+  td:empty {
+    background: none;
+}
+  .radio-group {
     display: flex;
     flex-direction: column;
-    align-items: start; /* Aligns checkboxes to the start of the flex container */
-    gap: 5px; /* Provides some space between each checkbox */
+    align-items: start;
+    gap: 5px;
   }
   
-  .checkbox-label {
-    display: block; /* Ensures label takes full width of its container for better click area */
+  .radio-label {
+    display: block;
   }
-  
-  /* You might want to style the checkbox inputs a bit as well */
-  .checkbox-input {
-    margin-right: 5px; /* Gives a little space between the checkbox and the label */
+
+  .radio-input {
+    margin-right: 5px;
   }
   
   .encounter-form .list-title {

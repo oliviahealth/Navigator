@@ -114,7 +114,8 @@ const accessToken = Cookies.get('accessToken');
 
         {formData.supportData.map((item, index) => (
           <div key={index} className="support-question">
-            <p>{index + 1}. {questionTitles[index]}</p>
+            <p style={{ fontWeight: 'bold' }}>{index + 1}. {questionTitles[index]}</p>
+
             <input
               type="text"
               name="names"
@@ -123,15 +124,6 @@ const accessToken = Cookies.get('accessToken');
               onChange={(e) => handleInputChange(e, index)}
               disabled={item.noOne}
             />
-            <label>
-              No one
-              <input
-                type="checkbox"
-                name="noOne"
-                checked={item.noOne}
-                onChange={(e) => handleCheckboxChange(e, index)}
-              />
-            </label>
             <p>How satisfied are you with the social support given to you by these people overall?</p>
             <select
               value={item.satisfaction}
@@ -145,6 +137,16 @@ const accessToken = Cookies.get('accessToken');
               <option value="5">(5) Fairly satisfied</option>
               <option value="6">(6) Very satisfied</option>
             </select>
+            <label style={{ fontSize: '12px' }}>or</label>
+            <label>
+              I view no one as dependable
+              <input
+                type="checkbox"
+                name="noOne"
+                checked={item.noOne}
+                onChange={(e) => handleCheckboxChange(e, index)}
+              />
+            </label>
           </div>
         ))}
 

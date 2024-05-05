@@ -11,96 +11,89 @@ function App() {
       {
         date: '',
         staff: '',
-        healthInsuranceYes: false,
-        healthInsuranceNo: false,
-        parentConcernsYes: false,
-        parentConcernsNo: false,
-        parentConcernsDidNotAsk: false,
-        careVisitYes: false,
-        careVisitNo: false,
+        healthInsurance: '',
+        parentConcerns: '',
+        careVisit: '',
         careVisitDate: '',
         careVisitReason: '',
-        wellChildVisitYes: false,
-        wellChildVisitNo: false,
+        wellChildVisit: '',
+     
         visitCompleted: '',
       },
     ],
   });
   const navigate = useNavigate();
-
   const handleInputChange = (event, index) => {
     const { name, value, type, checked } = event.target;
-    
-    const isValidDate = (dateStr) => {
-      return /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
-    };
   
-
-    if (type === 'checkbox') {
-     
-      const newVisits = formData.visits.map((visit, visitIndex) =>
-        index === visitIndex ? { ...visit, [name]: checked } : visit
-      );
-      setFormData({ ...formData, visits: newVisits });
-    } else if (type === 'date') {
-      
-      if (value && !isValidDate(value)) {
-        alert('Please enter a valid date in the format YYYY-MM-DD');
-        return;
-      }
-      const newVisits = formData.visits.map((visit, visitIndex) =>
-        index === visitIndex ? { ...visit, [name]: value } : visit
-      );
-      setFormData({ ...formData, visits: newVisits });
-    } else if (type === 'text') {
-  
-      if (name === 'staff' || name === 'careVisitReason' || name === 'visitCompleted') {
-        
-        if (/<|>/.test(value)) {
-          alert('Please do not use angle brackets <>');
-          return;
-        }
-      } else if (name === 'careVisitDate') {
-        
-        const dates = value.split(',').map(date => date.trim());
-        if (dates.some(date => date && !isValidDate(date))) {
-          alert('Please enter valid date(s) separated by commas in the format YYYY-MM-DD');
-          return;
-        }
-      }
-
-      const newVisits = formData.visits.map((visit, visitIndex) =>
-        index === visitIndex ? { ...visit, [name]: value } : visit
-      );
-      setFormData({ ...formData, visits: newVisits });
+    // Handle the input change for checkboxes, radios, and text (including non-finalized date inputs)
+    if (type === 'checkbox' || type === 'radio') {
+      setFormData(prevFormData => {
+        const newVisits = [...prevFormData.visits];
+        newVisits[index] = { ...newVisits[index], [name.split('-')[0]]: type === 'radio' ? value : checked };
+        return { ...prevFormData, visits: newVisits };
+      });
+    } else {
+      // Directly update the state for text and provisional date inputs
+      setFormData(prevFormData => {
+        const newVisits = [...prevFormData.visits];
+        newVisits[index] = { ...newVisits[index], [name.split('-')[0]]: value };
+        return { ...prevFormData, visits: newVisits };
+      });
     }
   };
   
-
-  const addCareVisit = () => {
-    setFormData({
-      ...formData,
-      visits: [
-        ...formData.visits,
-        {
-          date: '',
-          staff: '',
-          healthInsuranceYes: false,
-          healthInsuranceNo: false,
-          parentConcernsYes: false,
-          parentConcernsNo: false,
-          parentConcernsDidNotAsk: false,
-          careVisitYes: false,
-          careVisitNo: false,
-          careVisitDate: '',
-          careVisitReason: '',
-          wellChildVisitYes: false,
-          wellChildVisitNo: false,
-          visitCompleted: '',
-        },
-      ],
-    });
+  const handleInputBlur = (event, index) => {
+    const { name, value } = event.target;
+    // Perform date validation on blur
+    const isValidDate = (dateStr) => /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
+  
+    if (name.includes('Date') && value && !isValidDate(value)) {
+      alert('Please enter a valid date in the format YYYY-MM-DD');
+      // Optionally, clear the invalid input
+      setFormData(prevFormData => {
+        const newVisits = [...prevFormData.visits];
+        newVisits[index] = { ...newVisits[index], [name.split('-')[0]]: '' };
+        return { ...prevFormData, visits: newVisits };
+      });
+      return; // Stop further processing if the date is not valid
+    }
   };
+
+  
+  
+
+  
+
+const addCareVisit = () => {
+  setFormData(prevFormData => ({
+    ...prevFormData,
+    visits: [
+      ...prevFormData.visits,
+      {
+        date: '',
+        staff: '',
+        healthInsurance: '',
+        parentConcerns: '',
+        careVisit: '',
+        careVisitDate: '',
+        careVisitReason: '',
+        wellChildVisit: '',
+        visitCompleted: '',
+      }
+    ],
+  }));
+};
+
+
+const removeCareVisit = (index) => {
+  setFormData(prevFormData => {
+    return {
+      ...prevFormData,
+      visits: prevFormData.visits.filter((_, idx) => idx !== index)
+    };
+  });
+};
 
   const onSubmitHandler = async (event) => {
     event.preventDefault();
@@ -125,9 +118,8 @@ credentials: 'omit',
     }
   };
 
-  // ...
 
-return (
+  return (
     <div className="App">
       <form onSubmit={onSubmitHandler} className="encounter-form">
         <h2>Encounter Form / Home Visit Form</h2>
@@ -135,18 +127,19 @@ return (
         
         <div className="table-responsive">
           <table>
-          <thead>
-  <tr>
-    <th className="date-column">Date of Visit*</th>
-    <th className="staff-column">Staff</th>
-    <th className="health-insurance-column">1. Health Insurance</th>
-    <th className="parent-concerns-column">2. Parent concerns about child</th>
-    <th className="care-visits-column">3. Care Visits</th>
-    <th className="care-reasons-column">4. Care Visit Dates and Reasons</th>
-    <th className="well-child-visits-column">5. Well-child visits</th>
-    <th className="completed-visits-column">Visit(s) Completed(See Well-Child Visits List Below)</th>
-  </tr>
-</thead>
+            <thead>
+              <tr>
+                <th className="date-column">Date of Visit*</th>
+                <th className="staff-column">Staff</th>
+                <th className="health-insurance-column">1. Health Insurance</th>
+                <th className="parent-concerns-column">2. Parent concerns about child</th>
+                <th className="care-visits-column">3. Care Visits</th>
+                <th className="care-reasons-column">4. Care Visit Dates and Reasons( Please enter valid date(s) separated by commas in the format YYYY-MM-DD)</th>
+                <th className="well-child-visits-column">5. Well-child visits</th>
+                <th className="completed-visits-column">Visit(s) Completed(See Well-Child Visits List Below)</th>
+                <th className="remove">Remove Visit</th>
+              </tr>
+            </thead>
             <tbody>
               {formData.visits.map((visit, index) => (
                 <tr key={index}>
@@ -169,148 +162,161 @@ return (
                     />
                   </td>
                   <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="healthInsuranceYes" 
-                          checked={visit.healthInsuranceYes} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> Yes
-                      </label>
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="healthInsuranceNo" 
-                          checked={visit.healthInsuranceNo} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> No
-                      </label>
-                    </div>
+                  <div className="radio-group">
+          <label className="radio-label">
+            <input 
+              type="radio" 
+              className="radio-input" 
+              name={`healthInsurance-${index}`} 
+              value="Yes"
+              checked={visit.healthInsurance === 'Yes'} 
+              onChange={(event) => handleInputChange(event, index)} 
+            /> Yes
+          </label>
+          <label className="radio-label">
+            <input 
+              type="radio" 
+              className="radio-input" 
+              name={`healthInsurance-${index}`}
+              value="No"
+              checked={visit.healthInsurance === 'No'} 
+              onChange={(event) => handleInputChange(event, index)} 
+            /> No
+          </label>
+        </div>
                   </td>
                   <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
+                    <div className="radio-group">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="parentConcernsYes" 
-                          checked={visit.parentConcernsYes} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`parentConcerns-${index}`}
+                          value="Yes"
+                          checked={visit.parentConcerns === 'Yes'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> Yes
                       </label>
-                      <label className="checkbox-label">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="parentConcernsNo" 
-                          checked={visit.parentConcernsNo} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`parentConcerns-${index}`}
+                          value="No"
+                          checked={visit.parentConcerns === 'No'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> No
                       </label>
-                      <label className="checkbox-label">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="parentConcernsDidNotAsk" 
-                          checked={visit.parentConcernsDidNotAsk} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`parentConcerns-${index}`}
+                          value="DidNotAsk"
+                          checked={visit.parentConcerns === 'DidNotAsk'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> Did not ask
                       </label>
                     </div>
                   </td>
                   <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
+                    <div className="radio-group">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="careVisitYes" 
-                          checked={visit.careVisitYes} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`careVisit-${index}`}
+                          value="Yes"
+                          checked={visit.careVisit === 'Yes'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> Yes
                       </label>
-                      <label className="checkbox-label">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="careVisitNo" 
-                          checked={visit.careVisitNo} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`careVisit-${index}`}
+                          value="No"
+                          checked={visit.careVisit === 'No'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> No
                       </label>
                     </div>
                   </td>
-                  {visit.careVisitYes && (
-                    <td>
-                      <input 
-                        type="text" 
-                        name="careVisitDate" 
-                        value={visit.careVisitDate} 
-                        placeholder="Visit Date"
-                        onChange={(event) => handleInputChange(event, index)} 
-                        className="form-control"
-                      />
-                      <input 
-                        type="text" 
-                        name="careVisitReason" 
-                        value={visit.careVisitReason} 
-                        placeholder="Reason"
-                        onChange={(event) => handleInputChange(event, index)} 
-                        className="form-control"
-                      />
-                    </td>
-                  )}
-                  {!visit.careVisitYes && <td></td>}
                   <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
+                    {visit.careVisit === 'Yes' ? (
+                      <>
+                       <input
+                          type="date"
+                          name={`careVisitDate-${index}`}
+                          value={visit.careVisitDate}
+                          onChange={(event) => handleInputChange(event, index)}
+                          onBlur={(event) => handleInputBlur(event, index)}
+                          className="form-control"
+                        />
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="wellChildVisitYes" 
-                          checked={visit.wellChildVisitYes} 
+                          type="text" 
+                          name= {`careVisitReason-${index}`} 
+                          value={visit.careVisitReason} 
+                          placeholder="Reason"
+                          onChange={(event) => handleInputChange(event, index)} 
+                          className="form-control"
+                        />
+                      </>
+                    ) : <td></td>}
+                  </td>
+                  <td>
+                    <div className="radio-group">
+                      <label className="radio-label">
+                        <input 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`wellChildVisit-${index}`}
+                          value="Yes"
+                          checked={visit.wellChildVisit === 'Yes'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> Yes
                       </label>
-                      <label className="checkbox-label">
+                      <label className="radio-label">
                         <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="wellChildVisitNo" 
-                          checked={visit.wellChildVisitNo} 
+                          type="radio" 
+                          className="radio-input" 
+                          name= {`wellChildVisit-${index}`}
+                          value="No"
+                          checked={visit.wellChildVisit === 'No'} 
                           onChange={(event) => handleInputChange(event, index)} 
                         /> No
                       </label>
                     </div>
                   </td>
-                  {visit.wellChildVisitYes && (
-                    <td>
+                  <td>
+                    {visit.wellChildVisit === 'Yes' ? (
                       <input 
                         type="text" 
-                        name="visitCompleted" 
+                        name= {`visitCompleted-${index}`} 
                         value={visit.visitCompleted} 
                         placeholder="Visit(s) Completed"
                         onChange={(event) => handleInputChange(event, index)} 
                         className="form-control"
                       />
-                    </td>
-                  )}
-                  {!visit.wellChildVisitYes && <td></td>}
+                    ) : <td></td>}
+                    
+                  </td>
+                  <td>
+        <button type="button" onClick={() => removeCareVisit(index)}>
+          Remove Visit
+        </button>
+      </td>
+                  
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
   
-          <button type="button" className="btn" onClick={addCareVisit}>Add Another Visit</button>
-       
-       
-          <button className="btn" type="submit">Submit</button>
-          <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
-       
+        <button type="button" className="btn" onClick={addCareVisit}>Add Another Visit</button>
+        <button className="btn" type="submit">Submit</button>
+        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
      
       <div className="list-container">

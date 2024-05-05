@@ -12,7 +12,6 @@ const SafetyProfileForm = () => {
     caseId: '',
     dateCompleted: '',
     staffName: '',
-    insuranceCoverage: '',
     highSchoolDiploma: '',
     highestEducationLevel: '',
     currentlyEnrolled: '',
@@ -24,6 +23,10 @@ const SafetyProfileForm = () => {
     yearlyIncome: '',
     incomeDependents: '',
     housingSituation: '',
+    timeFrame:'',
+    insuranceType:'',
+    insuranceTypeName:'',
+
   });
 
   const handleSubmit = async (event) => {
@@ -49,7 +52,13 @@ const accessToken = Cookies.get('accessToken');
     }
   };
 
+  function formatCurrency(value) {
+  
+    const numericValue = value.replace(/\D/g, '');
+    const formattedValue = (parseInt(numericValue, 10) / 100).toFixed(2);
 
+    return isNaN(formattedValue) ? '' : `$${formattedValue}`;
+}
 
 
   const handleChange = (e) => {
@@ -66,6 +75,14 @@ const accessToken = Cookies.get('accessToken');
     if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       return;
     }
+  
+     if (name === "yearlyIncome") {
+      const formattedValue = formatCurrency(value);
+      setFormData(prevState => ({
+          ...prevState,
+          [name]: formattedValue
+      }));
+  }
 
     setFormData(prevFormData => {
       let newFormData = { ...prevFormData };
@@ -115,9 +132,10 @@ const accessToken = Cookies.get('accessToken');
 
   return (
     <div className="housing-safety-form">
-      <h2>Household Housing Safety Profile</h2>
+    
       <form onSubmit={handleSubmit}>
-        {/* Participant Information Section */}
+      <h2>Household Housing Safety Profile</h2>
+
         <label>
           Participant Name:
           <input
@@ -156,25 +174,27 @@ const accessToken = Cookies.get('accessToken');
         </label>
 
 
-        {/* Timeframe */}
+        <h2>Timeframe</h2>
         <label>
-          Enrollment
-          <input
-            type="checkbox"
-            name="timeframeEnrollment"
-            checked={formData.timeframeEnrollment}
-            onChange={handleChange}
-          />
-        </label>
-        <label>
-          Update
-          <input
-            type="checkbox"
-            name="timeframeUpdate"
-            checked={formData.timeframeUpdate}
-            onChange={handleChange}
-          />
-        </label>
+  Enrollment
+  <input
+    type="radio"
+    name="timeFrame"
+    value="Enrollment"
+    checked={formData.timeFrame === 'Enrollment'}
+    onChange={handleChange}
+  />
+</label>
+<label>
+  Update
+  <input
+    type="radio"
+    name="timeFrame"
+    value="Update"
+    checked={formData.timeFrame === 'Update'}
+    onChange={handleChange}
+  />
+</label>
 
 
         {/* Health Insurance Coverage */}
@@ -223,16 +243,25 @@ const accessToken = Cookies.get('accessToken');
           <label>
             Other insurance:
             <input
-              type="text"
-              name="otherInsurance"
-              value={formData.otherInsurance}
+              type="radio"
+              name="insuranceType"
+              value="insurance"
+              checked={formData.insuranceType === 'insurance'}
               onChange={handleChange}
             />
           </label>
+          {formData.insuranceType === 'insurance' && (
+              <input
+                type="text"
+                placeholder="Other Insurance Name"
+                name="otherInsuranceName"
+                value={formData.insuranceTypeName}
+                onChange={handleChange}
+              />
+            )}
         </div>
 
 
-        {/* High School Diploma or GED */}
         <div className="form-question">
           <h3>2. Do you have a high school diploma or GED?</h3>
           <label>
@@ -315,88 +344,6 @@ const accessToken = Cookies.get('accessToken');
             </label>
           </div>
         )}
-        {/* Education Level (conditional based on having a diploma or GED) */}
-        {formData.hasHighSchoolDiploma === 'Yes' && (
-          <div className="form-question">
-            <h3>3. If Yes, what is the highest level of education completed? (check one)</h3>
-            <label>
-              HS diploma/GED
-              <input
-                type="radio"
-                name="educationLevel"
-                value="HS diploma/GED"
-                checked={formData.educationLevel === 'HS diploma/GED'}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Some college/training
-              <input
-                type="radio"
-                name="educationLevel"
-                value="Some college/training"
-                checked={formData.educationLevel === 'Some college/training'}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Technical training/certification
-              <input
-                type="radio"
-                name="educationLevel"
-                value="Technical training/certification"
-                checked={formData.educationLevel === 'Technical training/certification'}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Associate's degree
-              <input
-                type="radio"
-                name="educationLevel"
-                value="Associate's degree"
-                checked={formData.educationLevel === "Associate's degree"}
-                onChange={handleChange}
-              />
-            </label>
-            <label>
-              Bachelor's degree or higher
-              <input
-                type="radio"
-                name="educationLevel"
-                value="Bachelor's degree or higher"
-                checked={formData.educationLevel === "Bachelor's degree or higher"}
-                onChange={handleChange}
-              />
-            </label>
-          </div>
-        )}
-
-        {/* Current Enrollment in Education or Training */}
-        <div className="form-question">
-          <h3>4. Are you currently enrolled in any type of school or training program?</h3>
-          <label>
-            Yes
-            <input
-              type="radio"
-              name="currentlyEnrolled"
-              value="Yes"
-              checked={formData.currentlyEnrolled === 'Yes'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            No
-            <input
-              type="radio"
-              name="currentlyEnrolled"
-              value="No"
-              checked={formData.currentlyEnrolled === 'No'}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
-        {/* Current Enrollment in Education or Training */}
         <div className="form-question">
           <h3>4. Are you currently enrolled in any type of school or training program?</h3>
           <label>
@@ -422,7 +369,7 @@ const accessToken = Cookies.get('accessToken');
         </div>
 
         <div className="form-question">
-          <p>5. What is your employment status?</p>
+          <h3>5. What is your employment status?</h3>
           <label>
             Employed full-time
             <input
@@ -481,7 +428,7 @@ const accessToken = Cookies.get('accessToken');
           </label>
         </div>
 
-        {/* Question 7: Tobacco Cessation Services (conditional) */}
+     
         {formData.tobaccoUse === 'Yes' && (
           <div className="form-question">
             <h3>7. If Yes, are you currently receiving tobacco cessation services?</h3>
@@ -570,37 +517,39 @@ const accessToken = Cookies.get('accessToken');
         )}
         {/* Question 10 */}
         <div className="form-question">
-          <h3>10. During the past 12 months, what was your yearly total household income before taxes?</h3>
-          <input
-            type="text"
-            name="yearlyIncome"
-            value={formData.yearlyIncome}
-            onChange={handleChange}
-          />
-          <h3>If income cannot be determined indicate the primary reason</h3>
-          <div>
-            {incomeReasons.map((reason, index) => (
-              <label key={index}>
-                <input
-                  type="radio"
-                  name="incomeReason"
-                  value={reason}
-                  checked={formData.incomeReason === reason}
-                  onChange={handleChange}
-                />
-                {reason}
-              </label>
-            ))}
-            {formData.incomeReason === 'Other' && (
-              <input
-                type="text"
-                name="otherIncomeReason"
-                value={formData.otherIncomeReason}
-                onChange={handleChange}
-              />
-            )}
-          </div>
-        </div>
+  <h3>10. During the past 12 months, what was your yearly total household income before taxes?</h3>
+  <input
+    type="text"
+    name="yearlyIncome"
+    value={formData.yearlyIncome}
+    onChange={handleChange}
+    placeholder="$0.00"
+  />
+  <h3>If income cannot be determined indicate the primary reason</h3>
+  <div>
+    {incomeReasons.map((reason, index) => (
+      <label key={index}>
+        <input
+          type="radio"
+          name="incomeReason"
+          value={reason}
+          checked={formData.incomeReason === reason}
+          onChange={handleChange}
+        />
+        {reason}
+      </label>
+    ))}
+    {formData.incomeReason === 'Other' && (
+      <input
+        type="text"
+        name="otherIncomeReason"
+        value={formData.otherIncomeReason}
+        onChange={handleChange}
+      />
+    )}
+  </div>
+</div>
+
 
         {/* Question 11 */}
         <div className="form-question">

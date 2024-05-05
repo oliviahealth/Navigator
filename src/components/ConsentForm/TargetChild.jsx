@@ -12,6 +12,11 @@ function TargetChild() {
         childName: '',
         socialSecurityNumber: '',
         timeframe: '',
+        birthDate: '',
+        gestation: '',
+        gender: '',
+        ethnicity: '',
+        childRace: '',
         wellChildVisitNewborn: false,
         wellChildVisit3_7Days: false,
         wellChildVisit2_4Weeks: false,
@@ -176,16 +181,16 @@ credentials: 'omit',
          Child Gender:
           <input
             type="radio"
-            name="q1"
+            name="gender"
             value="Male"
-            checked={formData.sleep === 'Male'}
+            checked={formData.gender === 'Male'}
             onChange={handleChange}
           /> Male
           <input
             type="radio"
-            name="q1"
+            name="gender"
             value="Female"
-            checked={formData.sleep === 'Female'}
+            checked={formData.gender === 'Female'}
             onChange={handleChange}
           /> Female
         </label>
@@ -196,71 +201,92 @@ credentials: 'omit',
         Child Ethnicity
           <input
             type="radio"
-            name="q1"
+            name="ethnicity"
             value="Hispanic"
-            checked={formData.sleep === 'Hispanic'}
+            checked={formData.ethnicity === 'Hispanic'}
             onChange={handleChange}
-          /> Hispanic or Latino/a
+          /> Hispanic or Latino
           <input
             type="radio"
-            name="q1"
+            name="ethnicity"
             value="nonHispanic"
-            checked={formData.sleep === 'nonHispanic'}
+            checked={formData.ethnicity === 'nonHispanic'}
             onChange={handleChange}
-          /> Not Hispanic or Latino/a
+          /> Not Hispanic or Latino
         </label>
         
       </div>
       <div className="general-questions">
-        <label>
-         Child race? (select all that apply)
-          <input
-            type="checkbox"
-            name="q1"
-            value="African"
-            checked={formData.sleep === 'African'}
-            onChange={handleChange}
-          /> American Indian/Alaska Native
-          <input
-            type="checkbox"
-            name="q1"
-            value="Asian"
-            checked={formData.sleep === 'Asian'}
-            onChange={handleChange}
-          /> Asian
-          <input
-            type="checkbox"
-            name="q1"
-            value="Black"
-            checked={formData.sleep === 'Black'}
-            onChange={handleChange}
-          /> Black or African American
-        <input
-            type="checkbox"
-            name="q1"
-            value="NativePacificIslander"
-            checked={formData.sleep === 'NativePacificIslander'}
-            onChange={handleChange}
-          /> Native Hawaiian or Pacific Islander 
-          <input
-            type="checkbox"
-            name="q1"
-            value="White"
-            checked={formData.sleep === 'White'}
-            onChange={handleChange}
-          /> White
-          <input
-            type="checkbox"
-            name="q1"
-            value="MoreThanOne"
-            checked={formData.sleep === 'MoreThanOne'}
-            onChange={handleChange}
-          /> More than one race - not specified
-         </label>
-         
-      </div>
+    <label>
+        Child race?
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="African"
+                checked={formData.childRace === 'African'}
+                onChange={handleChange}
+            /> American Indian/Alaska Native
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="Asian"
+                checked={formData.childRace === 'Asian'}
+                onChange={handleChange}
+            /> Asian
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="Black"
+                checked={formData.childRace === 'Black'}
+                onChange={handleChange}
+            /> Black or African American
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="NativePacificIslander"
+                checked={formData.childRace === 'NativePacificIslander'}
+                onChange={handleChange}
+            /> Native Hawaiian or Pacific Islander
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="White"
+                checked={formData.childRace === 'White'}
+                onChange={handleChange}
+            /> White
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="MoreThanOne"
+                checked={formData.childRace === 'MoreThanOne'}
+                onChange={handleChange}
+            /> More than one race - not specified
+        </div>
+        <div className="radio-option">
+            <input
+                type="radio"
+                name="childRace"
+                value="notTold"
+                checked={formData.childRace === 'notTold'}
+                onChange={handleChange}
+            /> Decline to Identify
+        </div>
+    </label>
+</div>
 
-      <div className="biological-mother-question">
+
+      <div className="general-questions">
         <label>
           Is the Participant the biological mother of the child?
           <input
@@ -277,10 +303,9 @@ credentials: 'omit',
           /> No
         </label>
       </div>
-      <div className="general-questions">
- 
 
-      <div className="question-item">
+
+      <div className="general-questions">
   <p>Well-child visits completed to date (check all that apply):</p>
   <div className="checkbox-group">
     {/* Newborn checkbox is assumed to be above */}
@@ -403,8 +428,8 @@ credentials: 'omit',
   </div>
 </div>
 
-</div>
-<div className="question-item">
+
+<div className="general-questions">
   <p>What kind of health insurance coverage does your child have? (check one)</p>
   <label>
     Medicaid or Texas KidCare
