@@ -113,3 +113,41 @@
   .question-item input[type="radio"] {
     margin-right: 10px; /* Spacing before the label text */
   }
+
+
+  /* Styles for the general questions container */
+.general-questions {
+  margin: 20px;
+  padding: 10px;
+  background-color: #f9f9f9; /* Light grey background */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for some depth */
+}
+
+/* Styling the label which contains the question and answers */
+.general-questions label {
+  display: block;
+  padding: 10px;
+  font-size: 16px;
+  color: #333; /* Dark grey color for text */
+}
+
+/* Styling for each radio button and its text */
+.general-questions input[type="radio"] {
+  margin-right: 10px;
+  margin-top: 10px;
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Additional styling for radio button labels (optional, requires extra HTML or JS to implement) */
+.general-questions .radio-label {
+  margin-right: 20px;
+  display: inline-block; /* Align items in a line */
+  font-size: 14px;
+}
+
+/* Ensures that each option is on a new line for clarity */
+.general-questions .radio-option {
+  display: block; /* Each option is displayed on a new line */
+  margin-top: 5px; /* Spacing between options */
+}

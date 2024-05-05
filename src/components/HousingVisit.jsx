@@ -69,17 +69,13 @@ const handleChange = (e) => {
   }));
 };
 
-const handleERVisitChange = (index, e) => {
+const handleERVisitChange = (id, e) => {
   const { name, value } = e.target;
-  if (name === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    return;
-  }
-  const newERVisits = formData.erVisits.map((visit, i) =>
-    i === index ? { ...visit, [name]: value } : visit
+  const newERVisits = formData.erVisits.map((visit) =>
+    visit.id === id ? { ...visit, [name]: value } : visit
   );
   setFormData({ ...formData, erVisits: newERVisits });
 };
-
 const handleWellChildVisitChange = (childIndex, visitIndex) => {
   const newChildren = formData.children.map((child, i) =>
     i === childIndex ? {
@@ -92,20 +88,36 @@ const handleWellChildVisitChange = (childIndex, visitIndex) => {
   setFormData({ ...formData, children: newChildren });
 };
 
+const handleChildNameChange = (index, event) => {
+  const newName = event.target.value;
+  const updatedChildren = formData.children.map((child, idx) => {
+    if (idx === index) {
+      return { ...child, name: newName };
+    }
+    return child;
+  });
+
+  setFormData(prevFormData => ({
+    ...prevFormData,
+    children: updatedChildren
+  }));
+};
+
 const addERVisit = () => {
   setFormData(prevFormData => ({
     ...prevFormData,
-    erVisits: [...prevFormData.erVisits, { ...initialERVisit }]
+    erVisits: [...prevFormData.erVisits, { ...initialERVisit, id: prevFormData.erVisits.length + 1 }]
   }));
 };
 
 
-const removeERVisit = (index) => {
+const removeERVisit = (visitId) => {
   setFormData(prevFormData => ({
     ...prevFormData,
-    erVisits: prevFormData.erVisits.filter((_, i) => i !== index)
+    erVisits: prevFormData.erVisits.filter(visit => visit.id !== visitId)
   }));
 };
+
 
 
 const addChild = () => {
@@ -248,35 +260,36 @@ return (
 
       {formData.visitedER === 'Yes' && (
         <div>
-          {formData.erVisits.map((visit, index) => (
-            <div key={index} className="er-visit-details">
-              <label>
-                ER Visit {index + 1} Date:
-                <input
-                  type="date"
-                  name={`erVisitDate${index}`}
-                  value={visit.date}
-                  onChange={(e) => handleERVisitChange(index, e)}
-                />
-              </label>
-              <label>
-                ER Visit {index + 1} Reason:
-                <select
-                  name={`erVisitReason${index}`}
-                  value={visit.reason}
-                  onChange={(e) => handleERVisitChange(index, e)}
-                >
-                  <option value="Injury">Injury</option>
-                  <option value="Other">Other reason</option>
-                </select>
-              </label>
-              {index !== 0 && (
-                <button type="button" onClick={() => removeERVisit(index)}>
-                  Remove ER Visit
-                </button>
-              )}
-            </div>
-          ))}
+         {formData.erVisits.map((visit) => (
+  <div key={visit.id} className="er-visit-details">
+    <label>
+      ER Visit Date:
+      <input
+        type="date"
+        name="date"
+        value={visit.date}
+        onChange={(e) => handleERVisitChange(visit.id, e)}
+      />
+    </label>
+    <label>
+      ER Visit Reason:
+      <select
+        name="reason"
+        value={visit.reason}
+        onChange={(e) => handleERVisitChange(visit.id, e)}
+      >
+        <option value="Injury">Injury</option>
+        <option value="Other">Other reason</option>
+      </select>
+    </label>
+    {visit.id !== formData.erVisits[0].id && (
+      <button type="button" onClick={() => removeERVisit(visit.id)}>
+        Remove ER Visit
+      </button>
+    )}
+  </div>
+))}
+
           <button type="button" onClick={addERVisit}>Add Another ER Visit</button>
         </div>
       )}
@@ -309,33 +322,34 @@ return (
 
       {formData.hadWellChildVisits === 'Yes' && (
         <>
-          {formData.children.map((child, childIndex) => (
-            <div key={childIndex} className="child-section">
-              <label>
-                Child Name:
-                <input
-                  type="text"
-                  name={`childName${childIndex}`}
-                  value={child.name}
-                  onChange={(e) => handleChildNameChange(childIndex, e)}
-                />
-              </label>
+          {formData.children.map((child, index) => (
+            <div key={index} className="child-section">
+            <label>
+              <h4>Child Name:</h4>
+              <input
+                type="text"
+                name={`childName${index}`}
+                value={child.name}
+                onChange={(e) => handleChildNameChange(index, e)}
+              />
+            </label>
+        
 
-              <div className="well-child-visit-checkboxes">
-                {child.wellChildVisits.map((checked, visitIndex) => (
-                  <label key={visitIndex}>
-                    <input
-                      type="checkbox"
-                      name={`child${childIndex}Visit${visitIndex}`}
-                      checked={checked}
-                      onChange={() => handleWellChildVisitChange(childIndex, visitIndex)}
-                    />
-                    {ageRanges[visitIndex]}
-                  </label>
-                ))}
-              </div>
-              {childIndex !== 0 && (
-                <button type="button" onClick={() => removeChild(childIndex)}>
+            <div className="well-child-visit-checkboxes">
+              <h4>Fill in Well-Child visits completed on these timeframes after birth </h4>
+              {child.wellChildVisits.map((visited, visitIndex) => (
+                <label key={visitIndex}>
+                  <input
+                    type="checkbox"
+                    checked={visited}
+                    onChange={() => handleWellChildVisitChange(index, visitIndex)}
+                  /> {ageRanges[visitIndex]}
+                </label>
+              ))}
+            </div>
+        
+              {index !== 0 && (
+                <button type="button" onClick={() => removeChild(index)}>
                   Remove Child
                 </button>
               )}

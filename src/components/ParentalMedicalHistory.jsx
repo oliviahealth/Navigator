@@ -43,13 +43,15 @@ const ParentalMedicalHistory = () => {
       return;
     }
 
-    if (name === 'datesOfPriorPregnancies') {
-      const dates = value.split(',');
-      if (dates.some(date => date && !dateRegex.test(date.trim()))) {
-        alert('Please enter valid dates separated by commas in the format YYYY-MM-DD');
-        return;
-      }
-    }
+    // if (name === 'datesOfPriorPregnancies') {
+    //   const dateRegex = /^\d{4}-\d{2}-\d{2}$/; 
+    //   const dates = value.split(',').map(date => date.trim());
+    
+    //   if (dates.some(date => date && !dateRegex.test(date))) {
+    //     alert('Please enter valid dates separated by commas in the format YYYY-MM-DD');
+    //     return;
+    //   }
+    // }
 
     if (textFields.includes(name) && /<|>/.test(value)) {
       alert('Please do not use angle brackets <>');
@@ -66,6 +68,21 @@ const ParentalMedicalHistory = () => {
       [name]: value
     }));
   };
+
+  function validateDates(inputName, inputValue) {
+    if (inputName === 'datesOfPriorPregnancies') {
+      const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+      const dates = inputValue.split(',').map(date => date.trim());
+  
+      if (dates.some(date => date && !dateRegex.test(date))) {
+        alert('Please enter valid dates separated by commas in the format YYYY-MM-DD');
+        return false;
+      }
+      return true;
+    }
+    return true;
+  };
+  
 
 
 
@@ -94,8 +111,9 @@ const accessToken = Cookies.get('accessToken');
 
   return (
     <div className="page">
-      <h2>Parental Medical History</h2>
+     
       <form onSubmit={handleSubmit} className={styles.formContainer}>
+      <h2>Parental Medical History</h2>
 
         <div className={styles.formSection}>
           <h3 className={styles.formSectionTitle}>PRENATAL CARE (FOR CURRENT OR MOST RECENT PREGNANCY)</h3>
@@ -104,13 +122,13 @@ const accessToken = Cookies.get('accessToken');
           <div className={styles.questionContainer}>
           </div>
           <div className={styles.questionContainer}>
-            <label className={styles.labelBlock}>Gestational Age at Entry of Care:</label>
+            <label className={styles.labelBlock}>Gestational Age at Entry of Care (when did you first recieve medical care once pregnant):</label>
             <input className={styles.inputBlock} type="date" name="gestationalAge" value={formData.gestationalAge} onChange={handleChange} />
-            <label className={styles.labelBlock}> Due Date:</label>
+            <label className={styles.labelBlock}>Expected Due Date of Child:</label>
             <input className={styles.inputBlock} type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} />
           </div>
           <div className={styles.questionContainer}>
-            <label className={styles.labelBlock}>Delivery Date:</label>
+            <label className={styles.labelBlock}> Actual Delivery Date of Child:</label>
             <input className={styles.inputBlock} type="date" name="deliveryDate" value={formData.deliveryDate} onChange={handleChange} />
           </div>
           <div className={styles.questionContainer}>
@@ -158,8 +176,15 @@ const accessToken = Cookies.get('accessToken');
             <label className={styles.labelBlock}>Number of Children Currently Living with You:</label>
             <input className={styles.inputBlock} type="number" name="childrenLivingWithYou" value={formData.childrenLivingWithYou} onChange={handleChange} />
 
-            <label className={styles.labelBlock}>Dates of Prior Pregnancies(Please seperate by comma):</label>
-            <input className={styles.inputBlock} type="text" name="datesOfPriorPregnancies" value={formData.datesOfPriorPregnancies} onChange={handleChange} />
+            <label className={styles.labelBlock}>Dates of Prior Pregnancies (Please separate by comma in this format YYYY-MM-DD):</label>
+            <input
+              className={styles.inputBlock}
+              type="text"
+              name="datesOfPriorPregnancies"
+              value={formData.datesOfPriorPregnancies}
+              onChange={handleChange}
+              onBlur={(e) => validateDates(e.target.name, e.target.value)}  // Validates when user leaves the field
+            />
 
             <label className={styles.labelBlock}>Outcomes of Prior Pregnancies:</label>
             <input className={styles.inputBlock} type="text" name="outcomesOfPriorPregnancies" value={formData.outcomesOfPriorPregnancies} onChange={handleChange} />

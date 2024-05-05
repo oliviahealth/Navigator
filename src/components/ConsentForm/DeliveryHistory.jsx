@@ -12,32 +12,37 @@ function DeliveryHistory() {
       {
         date: '',
         realDate: '',
-        deliverySucessTrue: false,
-        deliverySucessFalse: false,
-        ifyes:false,
-        ifno:false,
+        deliverySuccess: '',
+        childEnrolled: '',
       },
     ],
   });
   const navigate = useNavigate();
 
   const handleInputChange = (event, index) => {
-    const { name, value, type, checked } = event.target;
+  const { name, value, type, checked } = event.target;
 
-    if (type === 'text' && /<|>|;|'|"/.test(value)) {
-      return;
+  const newVisits = formData.visits.map((visit, visitIndex) => {
+    if (index === visitIndex) {
+      const updatedVisit = { ...visit };
+      if (type === 'radio') {
+        updatedVisit[name.split('-')[0]] = value;
+        if (name.includes("deliverySuccess") && value === "false") {
+          updatedVisit['childEnrolled'] = '';
+        }
+      } else {
+        updatedVisit[name] = type === 'checkbox' ? checked : value;
+      }
+      return updatedVisit;
     }
+    return visit;
+  });
 
-    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-      return;
-    }
+  setFormData({ ...formData, visits: newVisits });
+};
 
-    const newVisits = formData.visits.map((visit, visitIndex) =>
-      index === visitIndex ? { ...visit, [name]: type === 'checkbox' ? checked : value } : visit
-    );
-
-    setFormData({ ...formData, visits: newVisits });
-  };
+  
+  
 
   const addCareVisit = () => {
     setFormData({
@@ -47,10 +52,8 @@ function DeliveryHistory() {
         {
           date: '',
           realDate: '',
-          deliverySucessTrue: false,
-          deliverySucessFalse: false,
-          ifyes:false,
-          ifno:false,
+          deliverySuccess: '',
+          childEnrolled: '',
         },
       ],
     });
@@ -84,7 +87,7 @@ credentials: 'omit',
 return (
     <div className="App">
       <form onSubmit={onSubmitHandler} className="encounter-form">
-        <h2>Encounter Form / Home Visit Form</h2>
+        <h2>Delivery History Information Form</h2>
         <p>To Assess External Care Provider Encounters/Visits</p>
         
         <div className="table-responsive">
@@ -99,75 +102,78 @@ return (
   </tr>
 </thead>
             <tbody>
-              {formData.visits.map((visit, index) => (
-                <tr key={index}>
-                  <td>
-                    <input 
-                      type="date" 
-                      name="date" 
-                      value={visit.date} 
-                      onChange={(event) => handleInputChange(event, index)} 
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <input 
-                      type="date" 
-                      name="realDate" 
-                      value={visit.realDate} 
-                      onChange={(event) => handleInputChange(event, index)} 
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="deliverySuccessTrue" 
-                          checked={visit.deliverySuccessTrue} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> Yes
-                      </label>
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="deliverySuccessFalse" 
-                          checked={visit.deliverySuccessFalse} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> No
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="ifyes" 
-                          checked={visit.ifyes} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> Yes
-                      </label>
-                      <label className="checkbox-label">
-                        <input 
-                          type="checkbox" 
-                          className="checkbox-input" 
-                          name="ifno" 
-                          checked={visit.ifno} 
-                          onChange={(event) => handleInputChange(event, index)} 
-                        /> No
-                      </label>
-                    </div>
-                  </td>
-
-                 
-                
-                </tr>
-              ))}
+      {formData.visits.map((visit, index) => (
+  <tr key={`visit-${index}`}>
+    <td>
+      <input 
+        type="date" 
+        name={`date`}
+        value={visit.date} 
+        onChange={(event) => handleInputChange(event, index)} 
+        className="form-control"
+      />
+    </td>
+    <td>
+      <input 
+        type="date" 
+        name={`realDate`}
+        value={visit.realDate} 
+        onChange={(event) => handleInputChange(event, index)} 
+        className="form-control"
+      />
+    </td>
+    <td>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`deliverySuccess-${index}`}
+            value="true"
+            checked={visit.deliverySuccess === "true"}
+            onChange={(event) => handleInputChange(event, index)} 
+          /> Yes
+        </label>
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`deliverySuccess-${index}`}
+            value="false"
+            checked={visit.deliverySuccess === "false"}
+            onChange={(event) => handleInputChange(event, index)}
+          /> No
+        </label>
+      </div>
+    </td>
+    <td>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`childEnrolled-${index}`}
+            value="true"
+            checked={visit.childEnrolled === "true"}
+            onChange={(event) => handleInputChange(event, index)}
+            disabled={visit.deliverySuccess !== "true"}
+          /> Yes
+        </label>
+        <label className="radio-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`childEnrolled-${index}`}
+            value="false"
+            checked={visit.childEnrolled === "false"}
+            onChange={(event) => handleInputChange(event, index)}
+            disabled={visit.deliverySuccess !== "true"}
+          /> No
+        </label>
+      </div>
+    </td>
+  </tr>
+))}
             </tbody>
           </table>
         </div>

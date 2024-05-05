@@ -5,28 +5,33 @@ import Cookies from 'js-cookie';
 
 function TargetChild() {
   const { patientId } = useParams()
-  const [formData, setFormData] = useState({
-    participantName: '',
-    caseID: '',
-    staffName: '',
-    dateCompleted: '',
-    childName: '',
-    socialSecurityNumber: '',
-    timeframe: '',
-    wellChildVisitNewborn: false,
-    wellChildVisit3_7Days: false,
-    wellChildVisit2_4Weeks: false,
-    wellChildVisit2_3Months: false,
-    wellChildVisit4_5Months: false,
-    wellChildVisit6_7Months: false,
-    wellChildVisit9_10Months: false,
-    wellChildVisit12_13Months: false,
-    wellChildVisit15_16Months: false,
-    wellChildVisit18_19Months: false,
-    wellChildVisit2_2_5Years: false,
-    wellChildVisit3_3_5Years: false,
-    wellChildVisit4_4_5Years: false,
-  });
+    const [formData, setFormData] = useState({
+        participantName: '',
+        caseID: '',
+        staffName: '',
+        dateCompleted: '',
+        childName: '',
+        socialSecurityNumber: '',
+        timeframe: '',
+        birthDate: '',
+        gestation: '',
+        gender: '',
+        ethnicity: '',
+        childRace: '',
+        wellChildVisitNewborn: false,
+        wellChildVisit3_7Days: false,
+        wellChildVisit2_4Weeks: false,
+        wellChildVisit2_3Months: false,
+        wellChildVisit4_5Months: false,
+        wellChildVisit6_7Months: false,
+        wellChildVisit9_10Months: false,
+        wellChildVisit12_13Months: false,
+        wellChildVisit15_16Months: false,
+        wellChildVisit18_19Months: false,
+        wellChildVisit2_2_5Years: false,
+        wellChildVisit3_3_5Years: false,
+        wellChildVisit4_4_5Years: false,
+      });
 
 
 
@@ -172,129 +177,149 @@ function TargetChild() {
           />
         </label>
 
-        <div className="general-questions">
-          <label>
-            Child Gender:
+      <div className="general-questions">
+        <label>
+         Child Gender:
+          <input
+            type="radio"
+            name="gender"
+            value="Male"
+            checked={formData.gender === 'Male'}
+            onChange={handleChange}
+          /> Male
+          <input
+            type="radio"
+            name="gender"
+            value="Female"
+            checked={formData.gender === 'Female'}
+            onChange={handleChange}
+          /> Female
+        </label>
+        
+      </div>
+      <div className="general-questions">
+        <label>
+        Child Ethnicity
+          <input
+            type="radio"
+            name="ethnicity"
+            value="Hispanic"
+            checked={formData.ethnicity === 'Hispanic'}
+            onChange={handleChange}
+          /> Hispanic or Latino
+          <input
+            type="radio"
+            name="ethnicity"
+            value="nonHispanic"
+            checked={formData.ethnicity === 'nonHispanic'}
+            onChange={handleChange}
+          /> Not Hispanic or Latino
+        </label>
+        
+      </div>
+      <div className="general-questions">
+    <label>
+        Child race?
+        <div className="radio-option">
             <input
-              type="radio"
-              name="q1"
-              value="Male"
-              checked={formData.sleep === 'Male'}
-              onChange={handleChange}
-            /> Male
-            <input
-              type="radio"
-              name="q1"
-              value="Female"
-              checked={formData.sleep === 'Female'}
-              onChange={handleChange}
-            /> Female
-          </label>
-
-        </div>
-        <div className="general-questions">
-          <label>
-            Child Ethnicity
-            <input
-              type="radio"
-              name="q1"
-              value="Hispanic"
-              checked={formData.sleep === 'Hispanic'}
-              onChange={handleChange}
-            /> Hispanic or Latino/a
-            <input
-              type="radio"
-              name="q1"
-              value="nonHispanic"
-              checked={formData.sleep === 'nonHispanic'}
-              onChange={handleChange}
-            /> Not Hispanic or Latino/a
-          </label>
-
-        </div>
-        <div className="general-questions">
-          <label>
-            Child race? (select all that apply)
-            <input
-              type="checkbox"
-              name="q1"
-              value="African"
-              checked={formData.sleep === 'African'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="African"
+                checked={formData.childRace === 'African'}
+                onChange={handleChange}
             /> American Indian/Alaska Native
+        </div>
+        <div className="radio-option">
             <input
-              type="checkbox"
-              name="q1"
-              value="Asian"
-              checked={formData.sleep === 'Asian'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="Asian"
+                checked={formData.childRace === 'Asian'}
+                onChange={handleChange}
             /> Asian
+        </div>
+        <div className="radio-option">
             <input
-              type="checkbox"
-              name="q1"
-              value="Black"
-              checked={formData.sleep === 'Black'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="Black"
+                checked={formData.childRace === 'Black'}
+                onChange={handleChange}
             /> Black or African American
+        </div>
+        <div className="radio-option">
             <input
-              type="checkbox"
-              name="q1"
-              value="NativePacificIslander"
-              checked={formData.sleep === 'NativePacificIslander'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="NativePacificIslander"
+                checked={formData.childRace === 'NativePacificIslander'}
+                onChange={handleChange}
             /> Native Hawaiian or Pacific Islander
+        </div>
+        <div className="radio-option">
             <input
-              type="checkbox"
-              name="q1"
-              value="White"
-              checked={formData.sleep === 'White'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="White"
+                checked={formData.childRace === 'White'}
+                onChange={handleChange}
             /> White
+        </div>
+        <div className="radio-option">
             <input
-              type="checkbox"
-              name="q1"
-              value="MoreThanOne"
-              checked={formData.sleep === 'MoreThanOne'}
-              onChange={handleChange}
+                type="radio"
+                name="childRace"
+                value="MoreThanOne"
+                checked={formData.childRace === 'MoreThanOne'}
+                onChange={handleChange}
             /> More than one race - not specified
-          </label>
-
         </div>
-
-        <div className="biological-mother-question">
-          <label>
-            Is the Participant the biological mother of the child?
+        <div className="radio-option">
             <input
-              type="radio"
-              name="isBiologicalMother"
-              value="Yes"
-              onChange={handleChange}
-            /> Yes
-            <input
-              type="radio"
-              name="isBiologicalMother"
-              value="No"
-              onChange={handleChange}
-            /> No
-          </label>
+                type="radio"
+                name="childRace"
+                value="notTold"
+                checked={formData.childRace === 'notTold'}
+                onChange={handleChange}
+            /> Decline to Identify
         </div>
-        <div className="general-questions">
+    </label>
+</div>
 
 
-          <div className="question-item">
-            <p>Well-child visits completed to date (check all that apply):</p>
-            <div className="checkbox-group">
-              {/* Newborn checkbox is assumed to be above */}
+      <div className="general-questions">
+        <label>
+          Is the Participant the biological mother of the child?
+          <input
+            type="radio"
+            name="isBiologicalMother"
+            value="Yes"
+            onChange={handleChange}
+          /> Yes
+          <input
+            type="radio"
+            name="isBiologicalMother"
+            value="No"
+            onChange={handleChange}
+          /> No
+        </label>
+      </div>
 
-              <label>
-                3-7 days old
-                <input
-                  type="checkbox"
-                  name="wellChildVisit3_7Days"
-                  checked={formData.wellChildVisit3_7Days || false}
-                  onChange={handleChange}
-                />
-              </label>
+
+      <div className="general-questions">
+  <p>Well-child visits completed to date (check all that apply):</p>
+  <div className="checkbox-group">
+    {/* Newborn checkbox is assumed to be above */}
+    
+    <label>
+      3-7 days old
+      <input
+        type="checkbox"
+        name="wellChildVisit3_7Days"
+        checked={formData.wellChildVisit3_7Days || false}
+        onChange={handleChange}
+      />
+    </label>
 
               <label>
                 2-4 weeks old
@@ -404,68 +429,68 @@ function TargetChild() {
             </div>
           </div>
 
-        </div>
-        <div className="question-item">
-          <p>What kind of health insurance coverage does your child have? (check one)</p>
-          <label>
-            Medicaid or Texas KidCare
-            <input
-              type="radio"
-              name="childInsurance"
-              value="Medicaid or Texas KidCare"
-              checked={formData.childInsurance === 'Medicaid or Texas KidCare'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Private health insurance
-            <input
-              type="radio"
-              name="childInsurance"
-              value="Private health insurance"
-              checked={formData.childInsurance === 'Private health insurance'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Tri-Care
-            <input
-              type="radio"
-              name="childInsurance"
-              value="Tri-Care"
-              checked={formData.childInsurance === 'Tri-Care'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            No health insurance
-            <input
-              type="radio"
-              name="childInsurance"
-              value="No health insurance"
-              checked={formData.childInsurance === 'No health insurance'}
-              onChange={handleChange}
-            />
-          </label>
-          <label>
-            Other health insurance
-            <input
-              type="radio"
-              name="childInsurance"
-              value="Other health insurance"
-              checked={formData.childInsurance === 'Other health insurance'}
-              onChange={handleChange}
-            />
-            {formData.childInsurance === 'Other health insurance' && (
-              <input
-                type="text"
-                name="childInsuranceOther"
-                value={formData.childInsuranceOther || ''}
-                onChange={handleChange}
-              />
-            )}
-          </label>
-        </div>
+
+<div className="general-questions">
+  <p>What kind of health insurance coverage does your child have? (check one)</p>
+  <label>
+    Medicaid or Texas KidCare
+    <input
+      type="radio"
+      name="childInsurance"
+      value="Medicaid or Texas KidCare"
+      checked={formData.childInsurance === 'Medicaid or Texas KidCare'}
+      onChange={handleChange}
+    />
+  </label>
+  <label>
+    Private health insurance
+    <input
+      type="radio"
+      name="childInsurance"
+      value="Private health insurance"
+      checked={formData.childInsurance === 'Private health insurance'}
+      onChange={handleChange}
+    />
+  </label>
+  <label>
+    Tri-Care
+    <input
+      type="radio"
+      name="childInsurance"
+      value="Tri-Care"
+      checked={formData.childInsurance === 'Tri-Care'}
+      onChange={handleChange}
+    />
+  </label>
+  <label>
+    No health insurance
+    <input
+      type="radio"
+      name="childInsurance"
+      value="No health insurance"
+      checked={formData.childInsurance === 'No health insurance'}
+      onChange={handleChange}
+    />
+  </label>
+  <label>
+    Other health insurance
+    <input
+      type="radio"
+      name="childInsurance"
+      value="Other health insurance"
+      checked={formData.childInsurance === 'Other health insurance'}
+      onChange={handleChange}
+    />
+    {formData.childInsurance === 'Other health insurance' && (
+      <input
+        type="text"
+        name="childInsuranceOther"
+        value={formData.childInsuranceOther || ''}
+        onChange={handleChange}
+      />
+    )}
+  </label>
+</div>
 
 
 
