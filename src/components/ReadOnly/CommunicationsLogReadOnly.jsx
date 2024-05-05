@@ -59,7 +59,6 @@ const CommunicationsLogReadOnly = () => {
                     <table className={styles.communicationsLogTable}>
                         <thead>
                             <tr>
-                                <th>Date/Time</th>
                                 <th>Method</th>
                                 <th>Organization or Person</th>
                                 <th>Purpose</th>
