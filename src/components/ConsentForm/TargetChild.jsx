@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/TargetChild.css';
+import Cookies from 'js-cookie';
 
 function TargetChild() {
   const { patientId } = useParams()
@@ -60,19 +61,19 @@ function TargetChild() {
       [name]: newValue,
     }));
   };
-  
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/target_child/${patientId}`, {
         method: 'POST',
         headers: {
-	'Content-Type': 'application/json',
-	'Authorization': `Bearer ${accessToken}`
-},
-credentials: 'omit',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
@@ -88,93 +89,93 @@ credentials: 'omit',
     <div className="target-child-questionnaire">
       <h1>Target Child Questionnaire</h1>
       <form onSubmit={handleSubmit} className="target-child-questionnaire-form">
-  <h2>Target Child Questionnaire</h2>
-  
-  <label>
-    Participant Name:
-    <input
-      type="text"
-      name="participantName"
-      value={formData.participantName}
-      onChange={handleChange}
-    />
-  </label>
+        <h2>Target Child Questionnaire</h2>
 
-  <label>
-    Case ID:
-    <input
-      type="text"
-      name="caseID"
-      value={formData.caseID}
-      onChange={handleChange}
-    />
-  </label>
+        <label>
+          Participant Name:
+          <input
+            type="text"
+            name="participantName"
+            value={formData.participantName}
+            onChange={handleChange}
+          />
+        </label>
 
-  <label>
-    Staff Name:
-    <input
-      type="text"
-      name="staffName"
-      value={formData.staffName}
-      onChange={handleChange}
-    />
-  </label>
+        <label>
+          Case ID:
+          <input
+            type="text"
+            name="caseID"
+            value={formData.caseID}
+            onChange={handleChange}
+          />
+        </label>
 
-  <label>
-    Date Completed:
-    <input
-      type="date"
-      name="dateCompleted"
-      value={formData.dateCompleted}
-      onChange={handleChange}
-    />
-  </label>
+        <label>
+          Staff Name:
+          <input
+            type="text"
+            name="staffName"
+            value={formData.staffName}
+            onChange={handleChange}
+          />
+        </label>
 
-  <label>
-    Child Name:
-    <input
-      type="text"
-      name="childName"
-      value={formData.childName}
-      onChange={handleChange}
-    />
-  </label>
-  <label>
-    Child Enrollment Date:
-    <input
-      type="date"
-      name="childDate"
-      value={formData.childDate}
-      onChange={handleChange}
-    />
-  </label>
-  <label>
-    Child SSN:
-    <input
-      type="text"
-      name="ssn"
-      value={formData.ssn}
-      onChange={handleChange}
-    />
-  </label>
-  <label>
-   Child DOB:
-    <input
-      type="date"
-      name="birthDate"
-      value={formData.birthDate}
-      onChange={handleChange}
-    />
-  </label>
-  <label>
-    Gestation Age at Birth( # weeks):
-    <input
-      type="text"
-      name="gestation"
-      value={formData.gestation}
-      onChange={handleChange}
-    />
-  </label>
+        <label>
+          Date Completed:
+          <input
+            type="date"
+            name="dateCompleted"
+            value={formData.dateCompleted}
+            onChange={handleChange}
+          />
+        </label>
+
+        <label>
+          Child Name:
+          <input
+            type="text"
+            name="childName"
+            value={formData.childName}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Child Enrollment Date:
+          <input
+            type="date"
+            name="childDate"
+            value={formData.childDate}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Child SSN:
+          <input
+            type="text"
+            name="ssn"
+            value={formData.ssn}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Child DOB:
+          <input
+            type="date"
+            name="birthDate"
+            value={formData.birthDate}
+            onChange={handleChange}
+          />
+        </label>
+        <label>
+          Gestation Age at Birth( # weeks):
+          <input
+            type="text"
+            name="gestation"
+            value={formData.gestation}
+            onChange={handleChange}
+          />
+        </label>
 
       <div className="general-questions">
         <label>
@@ -320,113 +321,113 @@ credentials: 'omit',
       />
     </label>
 
-    <label>
-      2-4 weeks old
-      <input
-        type="checkbox"
-        name="wellChildVisit2_4Weeks"
-        checked={formData.wellChildVisit2_4Weeks || false}
-        onChange={handleChange}
-      />
-    </label>
+              <label>
+                2-4 weeks old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit2_4Weeks"
+                  checked={formData.wellChildVisit2_4Weeks || false}
+                  onChange={handleChange}
+                />
+              </label>
 
-    <label>
-      2-3 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit2_3Months"
-        checked={formData.wellChildVisit2_3Months || false}
-        onChange={handleChange}
-      />
-    </label>
+              <label>
+                2-3 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit2_3Months"
+                  checked={formData.wellChildVisit2_3Months || false}
+                  onChange={handleChange}
+                />
+              </label>
 
-    <label>
-      4-5 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit4_5Months"
-        checked={formData.wellChildVisit4_5Months || false}
-        onChange={handleChange}
-      />
-    </label>
+              <label>
+                4-5 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit4_5Months"
+                  checked={formData.wellChildVisit4_5Months || false}
+                  onChange={handleChange}
+                />
+              </label>
 
-    <label>
-      6-7 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit6_7Months"
-        checked={formData.wellChildVisit6_7Months || false}
-        onChange={handleChange}
-      />
-    </label>
+              <label>
+                6-7 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit6_7Months"
+                  checked={formData.wellChildVisit6_7Months || false}
+                  onChange={handleChange}
+                />
+              </label>
 
-    <label>
-      9-10 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit9_10Months"
-        checked={formData.wellChildVisit9_10Months || false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      12-13 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit12_13Months"
-        checked={formData.wellChildVisit12_13Months || false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      15-16 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit15_16Months"
-        checked={formData.wellChildVisit15_16Months || false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      18-19 months old
-      <input
-        type="checkbox"
-        name="wellChildVisit18_19Months"
-        checked={formData.wellChildVisit18_19Months || false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      2-2.5 years old
-      <input
-        type="checkbox"
-        name="wellChildVisit2_2_5Years"
-        checked={formData.wellChildVisit2_2_5Years|| false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      3-3.5 years old
-      <input
-        type="checkbox"
-        name="wellChildVisit3_3_5Years"
-        checked={formData.wellChildVisit3_3_5Years || false}
-        onChange={handleChange}
-      />
-    </label>
-    <label>
-      4-4.5 years old
-      <input
-        type="checkbox"
-        name="wellChildVisit4_4_5Years"
-        checked={formData.wellChildVisit4_4_5Years || false}
-        onChange={handleChange}
-      />
-    </label>
+              <label>
+                9-10 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit9_10Months"
+                  checked={formData.wellChildVisit9_10Months || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                12-13 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit12_13Months"
+                  checked={formData.wellChildVisit12_13Months || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                15-16 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit15_16Months"
+                  checked={formData.wellChildVisit15_16Months || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                18-19 months old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit18_19Months"
+                  checked={formData.wellChildVisit18_19Months || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                2-2.5 years old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit2_2_5Years"
+                  checked={formData.wellChildVisit2_2_5Years || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                3-3.5 years old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit3_3_5Years"
+                  checked={formData.wellChildVisit3_3_5Years || false}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                4-4.5 years old
+                <input
+                  type="checkbox"
+                  name="wellChildVisit4_4_5Years"
+                  checked={formData.wellChildVisit4_4_5Years || false}
+                  onChange={handleChange}
+                />
+              </label>
 
-    {/* Add additional checkboxes for each age group as necessary */}
-  </div>
-</div>
+              {/* Add additional checkboxes for each age group as necessary */}
+            </div>
+          </div>
 
 
 <div className="general-questions">
@@ -492,16 +493,16 @@ credentials: 'omit',
 </div>
 
 
-      
-      <button type="submit">Submit</button>
-      <button
-  type="button"
-  onClick={() => navigate('/dashboard')}>
-  Cancel
-</button>
 
-  
-</form>
+        <button type="submit">Submit</button>
+        <button
+          type="button"
+          onClick={() => navigate('/dashboard')}>
+          Cancel
+        </button>
+
+
+      </form>
     </div>
   );
 }

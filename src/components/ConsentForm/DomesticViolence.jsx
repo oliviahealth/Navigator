@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/DomesticViolenceStyle.css';
+import Cookies from 'js-cookie';
 
 const DomesticViolenceScreenForm = () => {
   const { patientId } = useParams();

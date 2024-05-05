@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/BreastFeeding.css';
+import Cookies from 'js-cookie';
 
 function BreastFeeding() {
   const { patientId } = useParams()
@@ -58,15 +59,15 @@ function BreastFeeding() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/breastfeeding/${patientId}`, {
         method: 'POST',
         headers: {
-	'Content-Type': 'application/json',
-	'Authorization': `Bearer ${accessToken}`
-},
-credentials: 'omit',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(assessment),
       });
       if (!response.ok) {
@@ -451,10 +452,10 @@ credentials: 'omit',
           <button className="btn" type="submit">Submit</button>
         </div>
         <button
-  type="button"
-  onClick={() => navigate('/dashboard')}>
-  Cancel
-</button>
+          type="button"
+          onClick={() => navigate('/dashboard')}>
+          Cancel
+        </button>
 
       </form>
 

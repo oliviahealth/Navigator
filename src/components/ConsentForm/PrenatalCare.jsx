@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/PrenatalCare.css';
+import Cookies from 'js-cookie';
 
 function PrenatalCare() {
   const { patientId } = useParams();
@@ -36,15 +37,15 @@ function PrenatalCare() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/prenatal_care/${patientId}`, {
         method: 'POST',
         headers: {
-	'Content-Type': 'application/json',
-	'Authorization': `Bearer ${accessToken}`
-},
-credentials: 'omit',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formValues),
       });
       if (!response.ok) {
@@ -88,7 +89,7 @@ credentials: 'omit',
         <input type="text" id="phoneNum" name="phoneNum" value={formValues.phoneNum} onChange={handleInputChange} />
         <label htmlFor="email">Email</label>
         <input type="text" id="email" name="email" value={formValues.email} onChange={handleInputChange} />
-        
+
         <button type="submit">Submit</button>
         <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
       </form>
