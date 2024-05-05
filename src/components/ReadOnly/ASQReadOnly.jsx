@@ -269,6 +269,7 @@ function ASQReadOnly() {
           disabled
           value={formValues.followUpNotes}
         ></textarea>
+        
       </form>
 
       <div className="guidance-section">

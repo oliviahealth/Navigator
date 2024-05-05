@@ -83,7 +83,7 @@ const AppointmentLog = () => {
                             type="text" 
                             name="date" 
                             value={entry.date} 
-                            onChange={handleChange} 
+                            disabled
                         />
                         
                         <label>WHO is the appointment with</label>

@@ -92,7 +92,6 @@ const CommunicationsLog = () => {
                         <tbody>
                             {/* Single row for entry */}
                             <tr>
-                                <td><input type="text" name="date" value={entry.date} onChange={handleChange} /></td>
                                 <td>
                                     {/* Radio buttons for method selection */}
                                     <div onChange={handleChange}>
