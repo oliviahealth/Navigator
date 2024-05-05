@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/Infancy.css';
+import Cookies from 'js-cookie';
 
 function Infancy() {
   const { patientId } = useParams()
