@@ -98,6 +98,22 @@ const AddictionBeliefScale = () => {
     }));
   };
 
+  const calculateScore = () => {
+    const diseaseModelScore = answersData.addictionBeliefs
+      .filter(item => item.model === 'disease')
+      .reduce((total, current) => total + Number(current.score), 0);
+  
+    const freeWillModelScore = answersData.addictionBeliefs
+      .filter(item => item.model === 'free-will')
+      .reduce((total, current) => total + Number(current.score), 0);
+  
+    const totalScore = diseaseModelScore + freeWillModelScore;
+  
+    alert(`Your Total Score: ${totalScore}`);
+  };
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const accessToken = Cookies.get('accessToken');
@@ -149,6 +165,7 @@ const AddictionBeliefScale = () => {
       ))}
       <div className={styles.buttonSection}>
         <button type="button" onClick={() => window.history.back()} className={styles.cancelButton}>Cancel</button>
+        <button type="button" onClick={calculateScore} style={{ backgroundColor: 'blue' }} className={styles.cancelButton}>Check</button>
         <button type="submit" className={styles.submitButton}>Submit</button>
       </div>
     </form>
