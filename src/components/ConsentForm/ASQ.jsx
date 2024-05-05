@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../../styles/ConsentFormStyles/ASQ-3.css';
+import Cookies from 'js-cookie';
 
 function ASQ() {
   const { patientId } = useParams()
@@ -31,19 +32,19 @@ function ASQ() {
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     let inputValue;
-  
+
     if (type === 'text' && /<|>|;|'|"/.test(value)) {
       return;
     }
-  
+
     if (type === 'number' && (isNaN(value) || parseFloat(value) < 0)) {
       return;
     }
-  
+
     if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
       return;
     }
-  
+
     switch (type) {
       case 'checkbox':
         inputValue = name === 'questionnaireUsed' ? value : checked;
@@ -55,7 +56,7 @@ function ASQ() {
         inputValue = value;
         break;
     }
-  
+
     setFormValues(prevValues => ({
       ...prevValues,
       [name]: inputValue,
@@ -64,15 +65,15 @@ function ASQ() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/asq_three/${patientId}`, {
         method: 'POST',
         headers: {
-	'Content-Type': 'application/json',
-	'Authorization': `Bearer ${accessToken}`
-},
-credentials: 'omit',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
+        },
+        credentials: 'omit',
         body: JSON.stringify(formValues),
       });
       if (!response.ok) {
@@ -277,10 +278,10 @@ credentials: 'omit',
 
         <button type="submit">Submit</button>
         <button
-  type="button"
-  onClick={() => navigate('/dashboard')}>
-  Cancel
-</button>
+          type="button"
+          onClick={() => navigate('/dashboard')}>
+          Cancel
+        </button>
       </form>
 
       <div className="guidance-section">

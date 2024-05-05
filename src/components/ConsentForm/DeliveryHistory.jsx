@@ -1,6 +1,7 @@
 import '../../styles/EncounterFormStyle.css';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function DeliveryHistory() {
   const { patientId } = useParams()

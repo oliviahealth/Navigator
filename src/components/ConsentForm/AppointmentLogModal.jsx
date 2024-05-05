@@ -11,7 +11,7 @@ const AppointmentLogModal = ({ isOpen, toggleModal }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     const formData = new FormData(event.target);
     const newAppointment = {
       date: formData.get('date'),
@@ -71,13 +71,13 @@ const accessToken = Cookies.get('accessToken');
               </td>
             </tr>
           </tbody>
-          </table>
+        </table>
         <div className={styles.buttons}>
-        <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Submit</button>
-        <button type="button" onClick={handleCancel} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
-      </div>
-    </form>
-  </Modal>
+          <button type="submit" className={`${styles.button} ${styles.submitButton}`}>Submit</button>
+          <button type="button" onClick={handleCancel} className={`${styles.button} ${styles.cancelButton}`}>Cancel</button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 
