@@ -25,11 +25,12 @@ const SubstanceUseRelapse = () => {
     }));
   };
 
-  const handleSafeCaregiverChange = (index, field, value) => {
+  const handleSafeCaregiverChange = (event, index, field) => {
+    const value = event.target.value;
     const updatedSafeCaregivers = [...formValues.safeCaregivers];
-    updatedSafeCaregivers[index] = { ...updatedSafeCaregivers[index], [field]: value };
+    updatedSafeCaregivers[index][field] = value;
     setFormValues({ ...formValues, safeCaregivers: updatedSafeCaregivers });
-  };
+  };  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -75,37 +76,37 @@ const accessToken = Cookies.get('accessToken');
               <td>List 3 things that you know trigger your desire to use</td>
             </tr>
             <tr>
-              <td><textarea name="triggers" rows="3" value={formValues.triggers} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="triggers" rows="3" value={formValues.triggers} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>2. <textarea rows="3"></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>3. <textarea rows="3"></textarea></td>
             </tr>
             <tr>
               <td>List 3 skills or things you enjoy doing that can help get your mind off using</td>
             </tr>
             <tr>
-              <td><textarea name="skills" rows="3" value={formValues.skills} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="skills" rows="3" value={formValues.skills} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>2. <textarea rows="3"></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>3. <textarea rows="3"></textarea></td>
             </tr>
             <tr>
               <td>List 3 people you can talk to if you are thinking about using</td>
             </tr>
             <tr>
-              <td><textarea name="support" rows="3" value={formValues.support} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="support" rows="3" value={formValues.support} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>2. <textarea rows="3"></textarea></td>
             </tr>
             <tr>
-              <td><textarea rows="3"></textarea></td>
+              <td>3. <textarea rows="3"></textarea></td>
             </tr>
           </tbody>
         </table>
@@ -133,7 +134,7 @@ const accessToken = Cookies.get('accessToken');
                       name="name"
                       placeholder="Enter Name"
                       value={caregiver.name}
-                      onChange={(e) => handleSafeCaregiverChange(e, index)}
+                      onChange={(e) => handleSafeCaregiverChange(e, index, 'name')}
                     />
                   </td>
                 </tr>
@@ -145,7 +146,7 @@ const accessToken = Cookies.get('accessToken');
                       name="contactNumber"
                       placeholder="Enter Contact Number"
                       value={caregiver.contactNumber}
-                      onChange={(e) => handleSafeCaregiverChange(e, index)}
+                      onChange={(e) => handleSafeCaregiverChange(e, index, 'contactNumber')}
                     />
                   </td>
                 </tr>
@@ -157,7 +158,7 @@ const accessToken = Cookies.get('accessToken');
                       name="relationship"
                       placeholder="Enter Relationship"
                       value={caregiver.relationship}
-                      onChange={(e) => handleSafeCaregiverChange(e, index)}
+                      onChange={(e) => handleSafeCaregiverChange(e, index, 'relationship')}
                     />
                   </td>
                 </tr>

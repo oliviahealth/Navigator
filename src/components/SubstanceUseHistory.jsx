@@ -4,17 +4,17 @@ import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 const initialSubstances = [
-  { name: 'Alcohol', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Amphetamines (ex. Adderall, “meth”)', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Benzodiazepines (ex. Xanax)', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Cannabis (“marijuana”)', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Cocaine', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Heroin', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Kush (synthetic marijuana)', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Prescription Drugs (ex. pain medications)', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: 'Tobacco', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' },
-  { name: '', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '', isOther: true },
-  { name: '', everUsed: false, usedDuringPregnancy: false, dateLastUsed: '', isOther: true },
+  { name: 'Alcohol', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Amphetamines (ex. Adderall, “meth”)', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Benzodiazepines (ex. Xanax)', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Cannabis (“marijuana”)', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Cocaine', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Heroin', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Kush (synthetic marijuana)', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Prescription Drugs (ex. pain medications)', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: 'Tobacco', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '' },
+  { name: '', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '', isOther: true },
+  { name: '', everUsed: '', usedDuringPregnancy: '', dateLastUsed: '', isOther: true },
 ];
 
 
