@@ -417,7 +417,7 @@ const SmokingTobaccoUse = () => {
     };
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
         switch (name) {
             case "typicalUsage":
                 setTypicalUsage(value);
@@ -428,10 +428,20 @@ const SmokingTobaccoUse = () => {
             case "brandsUsed":
                 setBrandsUsed(value);
                 break;
+            case "aroundChildren":
+            case "insideHouse":
+            case "insideCar":
+            case "workplace":
+            case "firstUseAfterWake":
+            case "wakeUpForTobacco":
+            case "quitAttempts":
+                setSmokingStatus(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+                break;
             default:
+                console.warn(`No handler for field: ${name}`);
                 break;
         }
-    };
+    };    
 
     const handleSubmit = async (event) => {
         event.preventDefault();

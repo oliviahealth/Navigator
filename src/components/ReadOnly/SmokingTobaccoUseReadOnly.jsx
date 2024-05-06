@@ -420,7 +420,7 @@ const SmokingTobaccoUseReadOnly = () => {
     };
 
     const handleInputChange = (event) => {
-        const { name, value } = event.target;
+        const { name, value, type, checked } = event.target;
         switch (name) {
             case "typicalUsage":
                 setTypicalUsage(value);
@@ -431,10 +431,20 @@ const SmokingTobaccoUseReadOnly = () => {
             case "brandsUsed":
                 setBrandsUsed(value);
                 break;
+            case "aroundChildren":
+            case "insideHouse":
+            case "insideCar":
+            case "workplace":
+            case "firstUseAfterWake":
+            case "wakeUpForTobacco":
+            case "quitAttempts":
+                setSmokingStatus(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+                break;
             default:
+                console.warn(`No handler for field: ${name}`);
                 break;
         }
-    };
+    };    
 
     useEffect(() => {
         const fetchLog = async () => {
@@ -454,12 +464,33 @@ const SmokingTobaccoUseReadOnly = () => {
                 if (response.status === 204) { // Handling no content
                     return;
                 }
+                // const data = await response.json();
+                // setBrandsUsed(data[2].brandsUsed);
+                // setMentholProductUse(data[2].mentholProductUse);
+                // setSmokingStatus(data[2].smokingStatus);
+                // setTypicalUsage(data[2].typicalUsage);
+                // setUsageFrequency(data[2].usageFrequency);
+
                 const data = await response.json();
-                setBrandsUsed(data[2].brandsUsed);
-                setMentholProductUse(data[2].mentholProductUse);
-                setSmokingStatus(data[2].smokingStatus);
-                setTypicalUsage(data[2].typicalUsage);
-                setUsageFrequency(data[2].usageFrequency);
+                if (data && data[2]) {
+                    const info = data[2];
+                    setBrandsUsed(info.brandsUsed || "");
+                    setMentholProductUse(info.mentholProductUse || "");
+                    setSmokingStatus(info.smokingStatus || {
+                        neverSmoked: false,
+                        stoppedBeforePregnancy: false,
+                        stoppedAfterPregnancy: false,
+                        stoppedDuringButSmokingNow: false,
+                        smokedDuringAndNow: false
+                    });
+                    setTypicalUsage(info.typicalUsage || "");
+                    setUsageFrequency(info.usageFrequency || products.map(() => ({
+                        past12Months: Array(5).fill(false),
+                        pastMonth: Array(5).fill(false)
+                    })));
+                } else {
+                    console.error('Unexpected data format or no data returned from the API');
+                }
 
             } catch (error) {
                 console.error('failed to fetch');
