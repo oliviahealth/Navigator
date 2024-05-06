@@ -70,26 +70,15 @@ function ReferralsServices() {
   });
 
   const handleServiceChange = (category, index, field, value) => {
-    const sanitized_category = category.replace(/[^a-zA-Z0-9_]/g, '');
-    const sanitized_field = field.replace(/[^a-zA-Z0-9_]/g, '');
-
     const updatedItems = { ...services.items };
 
     // Ensure category and index are valid to avoid errors
-    if (sanitized_category in updatedItems && index in updatedItems[sanitized_category]) {
-      if (sanitized_field in updatedItems[sanitized_category][index]) {
-        updatedItems[sanitized_category][index][sanitized_field] =
-          typeof value === 'boolean' ? value : value.target.value;
-      } else {
-        // Fallback to updating notes if field is not recognized
-        updatedItems[sanitized_category][index].notes = value.target.value;
-      }
+    if (category in updatedItems && index in updatedItems[category]) {
+      updatedItems[category][index][field] = typeof value === 'boolean' ? value : value;
+      setServices({ ...services, items: updatedItems });
     } else {
       console.error('Invalid category or index');
-      return; // Stop execution if category or index is invalid
     }
-
-    setServices({ ...services, items: updatedItems });
   };
 
 
@@ -143,7 +132,7 @@ const accessToken = Cookies.get('accessToken');
                 <label><input type="checkbox" checked={service.participating} onChange={e => handleServiceChange(category, index, 'participating', e.target.checked)} /> Participating</label>
                 <label><input type="checkbox" checked={service.completed} onChange={e => handleServiceChange(category, index, 'completed', e.target.checked)} /> Completed</label>
                 <label><input type="checkbox" checked={service.na} onChange={e => handleServiceChange(category, index, 'na', e.target.checked)} /> N/A</label>
-                <input type="text" placeholder="Notes" value={service.notes} onChange={(e) => handleServiceChange(category, index, 'notes', e)} style={{ marginTop: '5px' }} />
+                <input type="text" placeholder="Notes" value={service.notes} onChange={(e) => handleServiceChange(category, index, 'notes', e.target.value)} style={{ marginTop: '5px' }} />
               </div>
             </div>
           ))}

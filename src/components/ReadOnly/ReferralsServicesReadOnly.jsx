@@ -109,7 +109,7 @@ function ReferralsServicesReadOnly() {
               }))
             };
           }, {});
-          setServices({ ...services, items: transformedData });
+          setServices({ ...services, items: transformedData, notes: data[2].notes});
         } else {
         }
       } catch (error) {

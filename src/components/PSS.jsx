@@ -95,7 +95,7 @@ const accessToken = Cookies.get('accessToken');
                         <label key={j}>
                             <input type="radio" name={`q${i + 1}`} value={j}
                                 onChange={() => handleChange(`q${i + 1}`, `${j}`)} />
-                            {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]} ({j})
+                            {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]}
                         </label>
                     ))}
                 </div>
