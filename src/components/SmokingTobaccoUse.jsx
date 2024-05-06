@@ -169,7 +169,7 @@ const SmokingTobaccoUse = () => {
             workplace,
             firstUseAfterWake,
             wakeUpForTobacco,
-
+            nightsPerWeek,
             quitAttempts,
             recentQuitDetails,
             longestQuitDetails,
