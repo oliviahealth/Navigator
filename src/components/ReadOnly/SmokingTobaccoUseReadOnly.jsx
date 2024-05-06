@@ -122,7 +122,6 @@ const SmokingTobaccoUseReadOnly = () => {
                 setInsideCar(data[2].insideCar);
                 setWorkplace(data[2].workplace);
                 setFirstUseAfterWake(data[2].firstUseAfterWake);
-                // setWakeUpForTobacco(data[2].wakeUpForTobacco);
 
                 setWakeUpForTobacco(data[2].wakeUpForTobacco);
                 setNightsPerWeek(data[2].nightsPerWeek);
