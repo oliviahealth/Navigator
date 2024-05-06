@@ -82,7 +82,7 @@ function DeliveryHistoryReadOnly() {
   return (
     <div className="App">
       <form className="encounter-form">
-        <h2>Encounter Form / Home Visit Form</h2>
+        <h2>Delivery History</h2>
         <p>To Assess External Care Provider Encounters/Visits</p>
 
         <div className="table-responsive">
@@ -169,7 +169,7 @@ function DeliveryHistoryReadOnly() {
             </tbody>
           </table>
         </div>
-
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
 
     </div>

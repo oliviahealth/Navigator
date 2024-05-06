@@ -70,6 +70,7 @@ function PrenatalCareReadOnly() {
         <label htmlFor="email">Email</label>
         <input type="text" id="email" name="email" value={formValues.email} disabled />
       </form>
+      <button type="button" onClick={() => navigate(-1)}>Cancel</button>
     </div>
   );
 }

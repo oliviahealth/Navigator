@@ -447,6 +447,7 @@ function BreastFeedingReadOnly() {
             </tbody>
           </table>
         </div>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
 
 

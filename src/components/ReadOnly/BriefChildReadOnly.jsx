@@ -152,6 +152,7 @@ function BriefChildReadOnly() {
             </label>
           </div>
         </div>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
     </div>
   );
