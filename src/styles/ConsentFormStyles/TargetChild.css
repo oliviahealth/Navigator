@@ -121,33 +121,53 @@
   padding: 10px;
   background-color: #f9f9f9; /* Light grey background */
   border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Subtle shadow for some depth */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
 }
 
-/* Styling the label which contains the question and answers */
+
 .general-questions label {
   display: block;
   padding: 10px;
   font-size: 16px;
-  color: #333; /* Dark grey color for text */
+  color: #333;
 }
 
-/* Styling for each radio button and its text */
+
 .general-questions input[type="radio"] {
   margin-right: 10px;
   margin-top: 10px;
-  cursor: pointer; /* Pointer cursor on hover */
+  cursor: pointer;
 }
 
-/* Additional styling for radio button labels (optional, requires extra HTML or JS to implement) */
+
 .general-questions .radio-label {
   margin-right: 20px;
-  display: inline-block; /* Align items in a line */
+  display: inline-block;
   font-size: 14px;
 }
 
-/* Ensures that each option is on a new line for clarity */
+
 .general-questions .radio-option {
-  display: block; /* Each option is displayed on a new line */
-  margin-top: 5px; /* Spacing between options */
+  display: block;
+  margin-top: 5px;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.checkbox-item {
+  flex: 1 1 20%;
+  margin-bottom: 10px;
+}
+
+.checkbox-item label {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 5px;
 }

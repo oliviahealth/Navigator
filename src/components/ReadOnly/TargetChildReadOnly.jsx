@@ -475,7 +475,7 @@ function TargetChildReadOnly() {
             )}
           </label>
         </div>
-
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
     </div>
   );
