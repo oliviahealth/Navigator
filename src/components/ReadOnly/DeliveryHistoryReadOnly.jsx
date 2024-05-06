@@ -12,28 +12,17 @@ function DeliveryHistoryReadOnly() {
       {
         date: '',
         realDate: '',
-        deliverySucessTrue: false,
-        deliverySucessFalse: false,
-        ifyes: false,
-        ifno: false,
+        deliverySuccess: '',
+        childEnrolled: '',
       },
     ],
   });
   const navigate = useNavigate();
 
-  const handleInputChange = (event, index) => {
-    const { name, value, type, checked } = event.target;
-    const newVisits = formData.visits.map((visit, visitIndex) =>
-      index === visitIndex ? { ...visit, [name]: type === 'checkbox' ? checked : value } : visit
-    );
-
-    setFormData({ ...formData, visits: newVisits });
-  };
-
   useEffect(() => {
     const fetchLog = async () => {
-      const accessToken = Cookies.get('accessToken');
       try {
+        const accessToken = Cookies.get('accessToken');
         const response = await fetch(`${import.meta.env.VITE_API_URL}/api/get_read_only_data/delivery_history/${patientId}/${log_id}`, {
           method: 'GET',
           headers: {
@@ -59,6 +48,32 @@ function DeliveryHistoryReadOnly() {
     fetchLog();
   }, [patientId, log_id]);
 
+
+  const handleInputChange = (event, index) => {
+  const { name, value, type, checked } = event.target;
+
+  const newVisits = formData.visits.map((visit, visitIndex) => {
+    if (index === visitIndex) {
+      const updatedVisit = { ...visit };
+      if (type === 'radio') {
+        updatedVisit[name.split('-')[0]] = value;
+        if (name.includes("deliverySuccess") && value === "false") {
+          updatedVisit['childEnrolled'] = '';
+        }
+      } else {
+        updatedVisit[name] = type === 'checkbox' ? checked : value;
+      }
+      return updatedVisit;
+    }
+    return visit;
+  });
+
+  setFormData({ ...formData, visits: newVisits });
+};
+
+  
+  
+
   const addCareVisit = () => {
     setFormData({
       ...formData,
@@ -67,115 +82,123 @@ function DeliveryHistoryReadOnly() {
         {
           date: '',
           realDate: '',
-          deliverySucessTrue: false,
-          deliverySucessFalse: false,
-          ifyes: false,
-          ifno: false,
+          deliverySuccess: '',
+          childEnrolled: '',
         },
       ],
     });
   };
 
-
   // ...
 
-  return (
+return (
     <div className="App">
       <form className="encounter-form">
-        <h2>Delivery History</h2>
+        <h2>Delivery History Information Form</h2>
         <p>To Assess External Care Provider Encounters/Visits</p>
-
+        
         <div className="table-responsive">
           <table>
-            <thead>
-              <tr>
-                <th className="date-column">Estimated Date of Delivery</th>
-                <th className="staff-column">Actual Date of Delivery</th>
-                <th className="health-insurance-column">Did the delivery result in a live birth?</th>
-                <th className="parent-concerns-column">If yes, is the newborn enrolled as a PAGEONE-EHR target child in the program</th>
+          <thead>
+  <tr>
+    <th className="date-column">Estimated Date of Delivery</th>
+    <th className="staff-column">Actual Date of Delivery</th>
+    <th className="health-insurance-column">Did the delivery result in a live birth?</th>
+    <th className="parent-concerns-column">If yes, is the newborn enrolled as a PAGEONE-EHR target child in the program</th>
 
-              </tr>
-            </thead>
+  </tr>
+</thead>
             <tbody>
-              {formData.visits.map((visit, index) => (
-                <tr key={index}>
-                  <td>
-                    <input
-                      type="date"
-                      name="date"
-                      value={visit.date}
-                      disabled
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="date"
-                      name="realDate"
-                      value={visit.realDate}
-                      disabled
-                      className="form-control"
-                    />
-                  </td>
-                  <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          className="checkbox-input"
-                          name="deliverySuccessTrue"
-                          checked={visit.deliverySuccessTrue}
-                          disabled
-                        /> Yes
-                      </label>
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          className="checkbox-input"
-                          name="deliverySuccessFalse"
-                          checked={visit.deliverySuccessFalse}
-                          disabled
-                        /> No
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    <div className="checkbox-group">
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          className="checkbox-input"
-                          name="ifyes"
-                          checked={visit.ifyes}
-                          disabled
-                        /> Yes
-                      </label>
-                      <label className="checkbox-label">
-                        <input
-                          type="checkbox"
-                          className="checkbox-input"
-                          name="ifno"
-                          checked={visit.ifno}
-                          disabled
-                        /> No
-                      </label>
-                    </div>
-                  </td>
-
-
-
-                </tr>
-              ))}
+      {formData.visits.map((visit, index) => (
+  <tr key={`visit-${index}`}>
+    <td>
+      <input 
+        type="date" 
+        name={`date`}
+        value={visit.date} 
+        disabled 
+        className="form-control"
+      />
+    </td>
+    <td>
+      <input 
+        type="date" 
+        name={`realDate`}
+        value={visit.realDate} 
+        disabled 
+        className="form-control"
+      />
+    </td>
+    <td>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`deliverySuccess-${index}`}
+            value="true"
+            checked={visit.deliverySuccess === "true"}
+            disabled 
+          /> Yes
+        </label>
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`deliverySuccess-${index}`}
+            value="false"
+            checked={visit.deliverySuccess === "false"}
+            disabled
+          /> No
+        </label>
+      </div>
+    </td>
+    <td>
+      <div className="checkbox-group">
+        <label className="checkbox-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`childEnrolled-${index}`}
+            value="true"
+            checked={visit.childEnrolled === "true"}
+            disabled
+          /> Yes
+        </label>
+        <label className="radio-label">
+          <input 
+            type="radio" 
+            className="radio-input" 
+            name={`childEnrolled-${index}`}
+            value="false"
+            checked={visit.childEnrolled === "false"}
+            disabled
+          /> No
+        </label>
+      </div>
+    </td>
+  </tr>
+))}
             </tbody>
           </table>
         </div>
-        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
+  
+        <div className="form-group">
+          <button type="button" className="btn" onClick={addCareVisit}>Add Another Delivery</button>
+        </div>
+        <div className="form-group">
+        </div>
+        <button
+  type="button"
+  onClick={() => navigate(-1)}>
+  Cancel
+</button>
       </form>
 
-    </div>
+      </div>
   );
-
-
+  
+  
 }
 
 export default DeliveryHistoryReadOnly;

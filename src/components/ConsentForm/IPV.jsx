@@ -67,7 +67,7 @@ credentials: 'omit',
   };
 
   const handleCancel = () => {
-    navigate('/dashboard'); 
+    navigate(-1); 
   };
 
 

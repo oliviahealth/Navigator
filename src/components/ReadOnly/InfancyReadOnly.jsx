@@ -13,12 +13,27 @@ function InfancyReadOnly() {
     childName: '',
     socialSecurityNumber: '',
     timeframe: '',
-    sleepOnBack: null,
-    sleepAlone: null,
-    sleepWithoutSoftBedding: null,
-    readingFrequency: null,
+    sleepOnBack: '',
+    sleepAlone: '',
+    sleepWithoutSoftBedding: '',
+    readingFrequency: '',
+    isBiologicalMother: '',
+    postpartumCheckup: '',
+    datePostpartumVisit: '',
+    breastMilk: '',
+    breastMilk2Months: '',
+    breastMilk6Months: '',
 
   });
+
+  const [additionalQuestionsVisible, setAdditionalQuestionsVisible] = useState({
+    "Birth – 1 month old": false,
+    "2 – 3 months old": false,
+    "6 – 7 months old": false,
+    "10 – 11 months old": false,
+  });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLog = async () => {
@@ -49,15 +64,6 @@ function InfancyReadOnly() {
     fetchLog();
   }, [patientId, log_id]);
 
-  const [additionalQuestionsVisible, setAdditionalQuestionsVisible] = useState({
-    "Birth – 1 month old": false,
-    "2 – 3 months old": false,
-    "6 – 7 months old": false,
-    "10 – 11 months old": false,
-  });
-
-  const navigate = useNavigate();
-
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     if (checked) {
@@ -69,7 +75,6 @@ function InfancyReadOnly() {
         [name]: true,
       });
     }
-    // Update the selected timeframe
     setFormData(prevFormData => ({
       ...prevFormData,
       timeframe: checked ? name : '',
@@ -80,11 +85,16 @@ function InfancyReadOnly() {
 
   const handleMotherChange = (e) => {
     setIsBiologicalMother(e.target.value === 'Yes');
-    // Set additional questions to show or hide
+
   };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
+    if (type === 'text' && /<|>|&|"|'|\//.test(value)) {
+      return;
+    }
+
     if (type === 'checkbox') {
       setFormData(prevState => ({
         ...prevState,
@@ -102,7 +112,6 @@ function InfancyReadOnly() {
       }));
     }
   };
-
 
   return (
     <div className="infancy-questionnaire">
@@ -160,29 +169,8 @@ function InfancyReadOnly() {
           />
         </label>
 
-        <div className="questions">
-          <label>
-            Do you always place your baby to sleep on his or her back?
-            Yes
-            <input
-              type="radio"
-              name="sleepOnBack"
-              value="Yes"
-              checked={formData.sleepOnBack === 'Yes'}
-              disabled
-            />
-            No
-            <input
-              type="radio"
-              name="sleepOnBack"
-              value="No"
-              checked={formData.sleepOnBack === 'No'}
-              disabled
-            />
-          </label>
-
-        </div>
         <div className="timeframe-question">
+          <p>Please select the timeframe for which you're providing information and fill in the corresponding details:</p>
           <label>
             <input
               type="checkbox"
@@ -201,64 +189,71 @@ function InfancyReadOnly() {
             />
             2 – 3 months old
           </label>
+          <label>
+            <input
+              type="checkbox"
+              name="6 – 7 months old"
+              disabled
+              checked={additionalQuestionsVisible["6 – 7 months old"]}
+            />
+            6 - 7 months old
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              name="10 – 11 months old"
+              disabled
+              checked={additionalQuestionsVisible["10 – 11 months old"]}
+            />
+            10 - 11 months old
+          </label>
 
         </div>
 
         <div className="general-questions">
-          <label>
-            Do you always place your baby to sleep on his or her back?
-            <input
-              type="radio"
-              name="q1"
-              value="Yes"
-              checked={formData.sleep === 'Yes'}
-              disabled
-            /> Yes
-            <input
-              type="radio"
-              name="q1"
-              value="No"
-              checked={formData.sleep === 'No'}
-              disabled
-            /> No
-          </label>
-
-        </div>
+  <label style={{ marginRight: '30px' }}>
+    Do you always place your baby to sleep on his or her back?
+    <input  type="radio" name="sleepOnBack" value="Yes" checked={formData.sleepOnBack === 'Yes'} disabled />
+    Yes
+    <input type="radio" name="sleepOnBack" value="No" checked={formData.sleepOnBack === 'No'} disabled />
+    No
+  </label>
+</div>
         <div className="general-questions">
           <label>
             Do you always place your baby to sleep alone without bed sharing?
             <input
               type="radio"
-              name="q1"
+              name="sleepAlone"
               value="Yes"
-              checked={formData.sleep === 'Yes'}
+              checked={formData.sleepAlone === 'Yes'}
               disabled
             /> Yes
             <input
               type="radio"
-              name="q1"
+              name="sleepAlone"
               value="No"
-              checked={formData.sleep === 'No'}
+              checked={formData.sleepAlone === 'No'}
               disabled
             /> No
           </label>
 
         </div>
         <div className="general-questions">
-          <label>
+          <label style={{ marginRight: '30px' }}>
             Do you always place your baby to sleep without so bedding?
             <input
               type="radio"
-              name="q1"
+              name="sleepWithoutSoftBedding"
               value="Yes"
-              checked={formData.sleep === 'Yes'}
+              checked={formData.sleepWithoutSoftBedding === 'Yes'}
               disabled
             /> Yes
             <input
               type="radio"
-              name="q1"
+              name="sleepWithoutSoftBedding"
               value="No"
-              checked={formData.sleep === 'No'}
+              checked={formData.sleepWithoutSoftBedding === 'No'}
               disabled
             /> No
           </label>
@@ -269,23 +264,23 @@ function InfancyReadOnly() {
             In a typical week, how often do you or a family member read, tell stories, or sing songs to your child?
             <input
               type="radio"
-              name="q1"
+              name="readingFrequency"
               value="Yes"
-              checked={formData.sleep === 'Yes'}
+              checked={formData.readingFrequency === 'Yes'}
               disabled
             /> Yes
             <input
               type="radio"
-              name="q1"
+              name="readingFrequency"
               value="No"
-              checked={formData.sleep === 'No'}
+              checked={formData.readingFrequency === 'No'}
               disabled
             /> No
           </label>
 
         </div>
 
-        <div className="biological-mother-question">
+        <div className="general-questions">
           <label>
             Is the Participant the biological mother of the child?
             <input
@@ -303,23 +298,23 @@ function InfancyReadOnly() {
           </label>
         </div>
 
-        {isBiologicalMother && (
+        {isBiologicalMother && additionalQuestionsVisible["Birth – 1 month old"] && (
           <div className="additional-questions-for-mother">
             <div className="general-questions">
               <label>
                 Have you been to your medical provider for a postpartum check-up since the birth of your baby?
                 <input
                   type="radio"
-                  name="q1"
+                  name="postpartumCheckup"
                   value="Yes"
-                  checked={formData.sleep === 'Yes'}
+                  checked={formData.postpartumCheckup === 'Yes'}
                   disabled
                 /> Yes
                 <input
                   type="radio"
-                  name="q1"
+                  name="postpartumCheckup"
                   value="No"
-                  checked={formData.sleep === 'No'}
+                  checked={formData.postpartumCheckup === 'No'}
                   disabled
                 /> No
               </label>
@@ -339,56 +334,44 @@ function InfancyReadOnly() {
             </div>
             <div className="general-questions">
               <label>
-                7.  Has your baby ever had breast milk?
+                Has your baby ever had breast milk?
+                <p>(If mother could not initiate or continue breastfeeding due to medical conditions, mark Yes):</p>
                 <input
                   type="radio"
-                  name="q1"
+                  name="breastMilk"
                   value="Yes"
-                  checked={formData.sleep === 'Yes'}
+                  checked={formData.breastMilk === 'Yes'}
                   disabled
                 /> Yes
                 <input
                   type="radio"
-                  name="q1"
+                  name="breastMilk"
                   value="No"
-                  checked={formData.sleep === 'No'}
+                  checked={formData.breastMilk === 'No'}
                   disabled
                 /> No
-              </label>
-
-            </div>
-            <div className="general-questions">
-              <label>
-                (If mother could not initiate or continue breastfeeding due to medical conditions, mark Yes):
-                <input
-                  type="radio"
-                  name="q1"
-                  value="Yes"
-                  checked={formData.sleep === 'Yes'}
-                  disabled
-                /> Yes
               </label>
 
             </div>
           </div>
         )}
-        {isBiologicalMother && (
+        {isBiologicalMother && additionalQuestionsVisible["2 – 3 months old"] && (
           <div className="additional-questions-for-mother">
             <div className="general-questions">
               <label>
                 Have you been to your medical provider for a postpartum check-up since the birth of your baby?
                 <input
                   type="radio"
-                  name="q1"
+                  name="postpartumCheckup"
                   value="Yes"
-                  checked={formData.sleep === 'Yes'}
+                  checked={formData.postpartumCheckup === 'Yes'}
                   disabled
                 /> Yes
                 <input
                   type="radio"
-                  name="q1"
+                  name="postpartumCheckup"
                   value="No"
-                  checked={formData.sleep === 'No'}
+                  checked={formData.postpartumCheckup === 'No'}
                   disabled
                 /> No
               </label>
@@ -400,7 +383,7 @@ function InfancyReadOnly() {
                 <input
                   type="date"
                   name="datePartum"
-                  checked={formData.datePartum}
+                  checked={formData.datePostpartumVisit}
                   disabled
                 />
               </label>
@@ -408,77 +391,61 @@ function InfancyReadOnly() {
             </div>
             <div className="general-questions">
               <label>
-                7.  Has your baby ever had breast milk?
+                When your baby turned 2 months old, was he/she getting any breast milk?
+                <p> (If mother could not initiate or continue breastfeeding due to medical conditions, mark Yes):</p>
                 <input
                   type="radio"
-                  name="q1"
+                  name="breastMilk2Months"
                   value="Yes"
-                  checked={formData.sleep === 'Yes'}
+                  checked={formData.breastMilk2Months === 'Yes'}
                   disabled
                 /> Yes
                 <input
                   type="radio"
-                  name="q1"
+                  name="breastMilk2Months"
                   value="No"
-                  checked={formData.sleep === 'No'}
+                  checked={formData.breastMilk2Months === 'No'}
                   disabled
                 /> No
               </label>
 
             </div>
-            <div className="general-questions">
-              <label>
-                (If mother could not initiate or continue breastfeeding due to medical conditions, mark Yes):
-                <input
-                  type="radio"
-                  name="q1"
-                  value="Yes"
-                  checked={formData.sleep === 'Yes'}
-                  disabled
-                /> Yes
-              </label>
 
-            </div>
+          </div>
+        )}
+        {isBiologicalMother && additionalQuestionsVisible["6 – 7 months old"] && (
+          <div className="additional-questions-for-mother">
             <div className="general-questions">
               <label>
                 When your baby turned 6 months old, was he/she getting any breast milk?
-                <input
-                  type="radio"
-                  name="q1"
-                  value="Yes"
-                  checked={formData.sleep === 'Yes'}
-                  disabled
-                /> Yes
-                <input
-                  type="radio"
-                  name="q1"
-                  value="No"
-                  checked={formData.sleep === 'No'}
-                  disabled
-                /> No
-              </label>
-
-            </div>
-            <div className="general-questions">
-              <label>
                 (If mother could not initiate or continue breastfeeding due to medical conditions, mark Yes):
                 <input
                   type="radio"
-                  name="q1"
+                  name="breastMilk6Months"
                   value="Yes"
-                  checked={formData.sleep === 'Yes'}
+                  checked={formData.breastMilk6Months === 'Yes'}
                   disabled
                 /> Yes
+                <input
+                  type="radio"
+                  name="breastMilk6Months"
+                  value="No"
+                  checked={formData.breastMilk6Months === 'No'}
+                  disabled
+                /> No
               </label>
-
             </div>
-            
           </div>
-          
         )}
 
+        <button
+          type="button"
+          onClick={() => navigate(-1)}>
+          Cancel
+        </button>
+
+
       </form>
-      <button type="button" onClick={() => navigate(-1)}>Cancel</button>
     </div>
   );
 }

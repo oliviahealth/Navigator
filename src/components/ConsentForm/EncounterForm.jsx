@@ -317,7 +317,7 @@ credentials: 'omit',
   
         <button type="button" className="btn" onClick={addCareVisit}>Add Another Visit</button>
         <button className="btn" type="submit">Submit</button>
-        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
      
       <div className="list-container">

@@ -54,12 +54,12 @@ const DomesticViolenceScreenFormReadOnly = () => {
   }, [patientId, log_id]);
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   const handlePopupClose = () => {
     setShowPopup(false);
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   const questions = {

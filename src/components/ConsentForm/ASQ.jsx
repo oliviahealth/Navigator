@@ -279,7 +279,7 @@ function ASQ() {
         <button type="submit">Submit</button>
         <button
           type="button"
-          onClick={() => navigate('/dashboard')}>
+          onClick={() => navigate(-1)}>
           Cancel
         </button>
       </form>

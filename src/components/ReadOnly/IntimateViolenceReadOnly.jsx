@@ -82,7 +82,7 @@ const IPVDisclosureFormReadOnly = () => {
   };
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   return (

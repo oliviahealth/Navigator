@@ -30,7 +30,7 @@ const DomesticViolenceScreenForm = () => {
   };
 
   const handleCancel = () => {
-    navigate('/dashboard'); 
+    navigate(-1); 
   };
 
   const handleSubmit = async (event) => {
@@ -58,7 +58,7 @@ credentials: 'omit',
 
   const handlePopupClose = () => {
     setShowPopup(false);
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   const questions = {

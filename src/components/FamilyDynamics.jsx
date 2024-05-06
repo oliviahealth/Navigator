@@ -1,4 +1,3 @@
-// SocialSupportForm.jsx
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/SocialSupportForm.css';
@@ -19,53 +18,42 @@ const SocialSupportForm = () => {
   const initialFormData = {
     fullName: '',
     dateSubmitted: '',
-    supportData: questionTitles.map(() => ({ names: [], noOne: false, satisfaction: '1' })),
+    supportData: questionTitles.map(() => ({ names: '', noOne: false, satisfaction: '1' })),
     totalScore: '0'
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
-  const handleInputChange = (event, index, name) => {
-    const { value } = event.target;
-    if (/</.test(value)) {
-      return;
-    }
-    setFormData(prevFormData => {
-      const updatedSupportData = prevFormData.supportData.map((data, i) => {
-        if (i === index) {
+  const handleInputChange = (event, index, fieldName) => {
+    calculateTotalScore();
+    const { value, type, checked } = event.target;
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      supportData: prevFormData.supportData.map((item, idx) => {
+        if (idx === index) {
           return {
-            ...data,
-            [name]: name === 'names' ? value.split(',').map(s => s.trim()) : value,
-            noOne: name === 'noOne' ? !data.noOne : data.noOne,
+            ...item,
+            [fieldName]: type === 'checkbox' ? checked : value,
           };
         }
-        return data;
-      });
-
-      const newTotalScore = updatedSupportData.reduce((total, item) => {
-        return item.noOne ? total : total + Number(item.satisfaction);
-      }, 0);
-
-      return {
-        ...prevFormData,
-        supportData: updatedSupportData,
-        totalScore: newTotalScore.toString(),
-      };
-    });
+        return item;
+      }),
+    }));
   };
-  const handleCheckboxChange = (e, index) => {
-    const updatedSupportData = [...formData.supportData];
-    updatedSupportData[index].noOne = !updatedSupportData[index].noOne;
-    if (updatedSupportData[index].noOne) {
-      updatedSupportData[index].names = [];
-      updatedSupportData[index].satisfaction = '1';
-    }
-    setFormData({ ...formData, supportData: updatedSupportData });
+
+  const calculateTotalScore = () => {
+    const total = formData.supportData.reduce((acc, curr) => {
+      return curr.noOne ? acc : acc + Number(curr.satisfaction);
+    }, 0);
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      totalScore: total.toString()
+    }));
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('accessToken');
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/insert_forms/family_dynamics/${patientId}`, {
         method: 'POST',
@@ -73,20 +61,17 @@ const accessToken = Cookies.get('accessToken');
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
-        credentials: 'omit',
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
+      await response.json();
       navigate(-1);
     } catch (error) {
       console.error('Failed to submit');
     }
   };
-
-
 
   return (
     <div className="social-support-form">
@@ -101,7 +86,6 @@ const accessToken = Cookies.get('accessToken');
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
           />
         </label>
-
         <label>
           Date submitted:
           <input
@@ -111,23 +95,21 @@ const accessToken = Cookies.get('accessToken');
             onChange={(e) => setFormData({ ...formData, dateSubmitted: e.target.value })}
           />
         </label>
-
         {formData.supportData.map((item, index) => (
           <div key={index} className="support-question">
             <p style={{ fontWeight: 'bold' }}>{index + 1}. {questionTitles[index]}</p>
-
             <input
               type="text"
               name="names"
-              value={item.names.join(', ')}
+              value={item.names}
               placeholder="Enter names separated by comma"
-              onChange={(e) => handleInputChange(e, index)}
+              onChange={(e) => handleInputChange(e, index, 'names')}
               disabled={item.noOne}
             />
             <p>How satisfied are you with the social support given to you by these people overall?</p>
             <select
               value={item.satisfaction}
-              onChange={(e) => handleInputChange(index, 'satisfaction', e.target.value)}
+              onChange={(e) => handleInputChange(e, index, 'satisfaction')}
               disabled={item.noOne}
             >
               <option value="1">(1) Very dissatisfied</option>
@@ -137,19 +119,17 @@ const accessToken = Cookies.get('accessToken');
               <option value="5">(5) Fairly satisfied</option>
               <option value="6">(6) Very satisfied</option>
             </select>
-            <label style={{ fontSize: '12px' }}>or</label>
             <label>
               I view no one as dependable
               <input
                 type="checkbox"
                 name="noOne"
                 checked={item.noOne}
-                onChange={(e) => handleCheckboxChange(e, index)}
+                onChange={(e) => handleInputChange(e, index, 'noOne')}
               />
             </label>
           </div>
         ))}
-
         <div className="total-score">
           <label>Total Score:</label>
           <input
@@ -159,9 +139,8 @@ const accessToken = Cookies.get('accessToken');
             readOnly
           />
         </div>
-
         <button type="submit">Submit</button>
-        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
     </div>
   );

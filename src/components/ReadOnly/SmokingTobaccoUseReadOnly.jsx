@@ -457,7 +457,6 @@ const SmokingTobaccoUseReadOnly = () => {
                 const data = await response.json();
                 setBrandsUsed(data[2].brandsUsed);
                 setMentholProductUse(data[2].mentholProductUse);
-                console.log(data[2].mentholProductUse);
                 setSmokingStatus(data[2].smokingStatus);
                 setTypicalUsage(data[2].typicalUsage);
                 setUsageFrequency(data[2].usageFrequency);

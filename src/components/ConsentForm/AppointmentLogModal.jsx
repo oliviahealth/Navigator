@@ -21,12 +21,12 @@ const AppointmentLogModal = ({ isOpen, toggleModal }) => {
     };
     setAppointments([...appointments, newAppointment]);
     toggleModal();
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   const handleCancel = () => {
     toggleModal();
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   return (

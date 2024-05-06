@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+// import '../styles/SafetyProfileForm.css';
 import Cookies from 'js-cookie';
 
 const SafetyProfileFormReadOnly = () => {
@@ -11,7 +12,6 @@ const SafetyProfileFormReadOnly = () => {
     caseId: '',
     dateCompleted: '',
     staffName: '',
-    insuranceCoverage: '',
     highSchoolDiploma: '',
     highestEducationLevel: '',
     currentlyEnrolled: '',
@@ -23,7 +23,71 @@ const SafetyProfileFormReadOnly = () => {
     yearlyIncome: '',
     incomeDependents: '',
     housingSituation: '',
+    timeFrame:'',
+    insuranceType:'',
+    insuranceTypeName:'',
+
   });
+
+
+  function formatCurrency(value) {
+  
+    const numericValue = value.replace(/\D/g, '');
+    const formattedValue = (parseInt(numericValue, 10) / 100).toFixed(2);
+
+    return isNaN(formattedValue) ? '' : `$${formattedValue}`;
+}
+
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+
+    if (type === 'text' && /<|>|;|'|"/.test(value)) {
+      return;
+    }
+
+    if (type === 'number' && (isNaN(value) || parseInt(value, 10) < 0)) {
+      return;
+    }
+
+    if (type === 'date' && value && !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+      return;
+    }
+  
+     if (name === "yearlyIncome") {
+      const formattedValue = formatCurrency(value);
+      setFormData(prevState => ({
+          ...prevState,
+          [name]: formattedValue
+      }));
+  }
+
+    setFormData(prevFormData => {
+      let newFormData = { ...prevFormData };
+
+      if (type === 'radio') {
+        newFormData = {
+          ...newFormData,
+          [name]: value,
+          ...(name === 'tobaccoUse' && value === 'No' && { tobaccoCessation: '', tobaccoCessationProvider: '' }),
+          ...(name === 'currentPregnancy' && value === 'Yes' && { futurePregnancyPlan: '' }),
+          ...(name === 'incomeReason' && value !== 'Other' && { yearlyIncome: '' }),
+        };
+      } else if (type === 'checkbox') {
+        newFormData[name] = checked;
+      } else if (name === 'yearlyIncome') {
+        newFormData = {
+          ...newFormData,
+          yearlyIncome: value,
+          incomeReason: '',
+        };
+      } else {
+        newFormData[name] = value;
+      }
+
+      return newFormData;
+    });
+  };
 
   useEffect(() => {
     const fetchLog = async () => {
@@ -54,35 +118,8 @@ const SafetyProfileFormReadOnly = () => {
     fetchLog();
   }, [patientId, log_id]);
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
 
-    setFormData(prevFormData => {
-      let newFormData = { ...prevFormData };
 
-      if (type === 'radio') {
-        newFormData = {
-          ...newFormData,
-          [name]: value,
-          ...(name === 'tobaccoUse' && value === 'No' && { tobaccoCessation: '', tobaccoCessationProvider: '' }),
-          ...(name === 'currentPregnancy' && value === 'Yes' && { futurePregnancyPlan: '' }),
-          ...(name === 'incomeReason' && value !== 'Other' && { yearlyIncome: '' }),
-        };
-      } else if (type === 'checkbox') {
-        newFormData[name] = checked;
-      } else if (name === 'yearlyIncome') {
-        newFormData = {
-          ...newFormData,
-          yearlyIncome: value,
-          incomeReason: '',
-        };
-      } else {
-        newFormData[name] = value;
-      }
-
-      return newFormData;
-    });
-  };
 
 
 
@@ -103,9 +140,10 @@ const SafetyProfileFormReadOnly = () => {
 
   return (
     <div className="housing-safety-form">
-      <h2>Household Housing Safety Profile</h2>
+    
       <form>
-        {/* Participant Information Section */}
+      <h2>Household Housing Safety Profile</h2>
+
         <label>
           Participant Name:
           <input
@@ -143,25 +181,29 @@ const SafetyProfileFormReadOnly = () => {
           />
         </label>
 
-        {/* Timeframe */}
+
+        <h2>Timeframe</h2>
         <label>
-          Enrollment
-          <input
-            type="checkbox"
-            name="timeframeEnrollment"
-            checked={formData.timeframeEnrollment}
-            disabled
-          />
-        </label>
-        <label>
-          Update
-          <input
-            type="checkbox"
-            name="timeframeUpdate"
-            checked={formData.timeframeUpdate}
-            disabled
-          />
-        </label>
+  Enrollment
+  <input
+    type="radio"
+    name="timeFrame"
+    value="Enrollment"
+    checked={formData.timeFrame === 'Enrollment'}
+    disabled
+  />
+</label>
+<label>
+  Update
+  <input
+    type="radio"
+    name="timeFrame"
+    value="Update"
+    checked={formData.timeFrame === 'Update'}
+    disabled
+  />
+</label>
+
 
         {/* Health Insurance Coverage */}
         <div className="form-question">
@@ -209,15 +251,25 @@ const SafetyProfileFormReadOnly = () => {
           <label>
             Other insurance:
             <input
-              type="text"
-              name="otherInsurance"
-              value={formData.otherInsurance}
+              type="radio"
+              name="insuranceType"
+              value="insurance"
+              checked={formData.insuranceType === 'insurance'}
               disabled
             />
           </label>
+          {formData.insuranceType === 'insurance' && (
+              <input
+                type="text"
+                placeholder="Other Insurance Name"
+                name="otherInsuranceName"
+                value={formData.insuranceTypeName}
+                disabled
+              />
+            )}
         </div>
 
-        {/* High School Diploma or GED */}
+
         <div className="form-question">
           <h3>2. Do you have a high school diploma or GED?</h3>
           <label>
@@ -241,6 +293,7 @@ const SafetyProfileFormReadOnly = () => {
             />
           </label>
         </div>
+
 
 
         {/* Education Level (conditional based on having a diploma or GED) */}
@@ -299,8 +352,6 @@ const SafetyProfileFormReadOnly = () => {
             </label>
           </div>
         )}
-
-        {/* Current Enrollment in Education or Training */}
         <div className="form-question">
           <h3>4. Are you currently enrolled in any type of school or training program?</h3>
           <label>
@@ -326,7 +377,7 @@ const SafetyProfileFormReadOnly = () => {
         </div>
 
         <div className="form-question">
-          <p>5. What is your employment status?</p>
+          <h3>5. What is your employment status?</h3>
           <label>
             Employed full-time
             <input
@@ -385,7 +436,7 @@ const SafetyProfileFormReadOnly = () => {
           </label>
         </div>
 
-        {/* Question 7: Tobacco Cessation Services (conditional) */}
+     
         {formData.tobaccoUse === 'Yes' && (
           <div className="form-question">
             <h3>7. If Yes, are you currently receiving tobacco cessation services?</h3>
@@ -474,37 +525,39 @@ const SafetyProfileFormReadOnly = () => {
         )}
         {/* Question 10 */}
         <div className="form-question">
-          <h3>10. During the past 12 months, what was your yearly total household income before taxes?</h3>
-          <input
-            type="text"
-            name="yearlyIncome"
-            value={formData.yearlyIncome}
-            disabled
-          />
-          <h3>If income cannot be determined indicate the primary reason</h3>
-          <div>
-            {incomeReasons.map((reason, index) => (
-              <label key={index}>
-                <input
-                  type="radio"
-                  name="incomeReason"
-                  value={reason}
-                  checked={formData.incomeReason === reason}
-                  disabled
-                />
-                {reason}
-              </label>
-            ))}
-            {formData.incomeReason === 'Other' && (
-              <input
-                type="text"
-                name="otherIncomeReason"
-                value={formData.otherIncomeReason}
-                disabled
-              />
-            )}
-          </div>
-        </div>
+  <h3>10. During the past 12 months, what was your yearly total household income before taxes?</h3>
+  <input
+    type="text"
+    name="yearlyIncome"
+    value={formData.yearlyIncome}
+    disabled
+    placeholder="$0.00"
+  />
+  <h3>If income cannot be determined indicate the primary reason</h3>
+  <div>
+    {incomeReasons.map((reason, index) => (
+      <label key={index}>
+        <input
+          type="radio"
+          name="incomeReason"
+          value={reason}
+          checked={formData.incomeReason === reason}
+          disabled
+        />
+        {reason}
+      </label>
+    ))}
+    {formData.incomeReason === 'Other' && (
+      <input
+        type="text"
+        name="otherIncomeReason"
+        value={formData.otherIncomeReason}
+        disabled
+      />
+    )}
+  </div>
+</div>
+
 
         {/* Question 11 */}
         <div className="form-question">
@@ -553,6 +606,7 @@ const SafetyProfileFormReadOnly = () => {
             </div>
           </div>
         </div>
+
 
         <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
