@@ -29,7 +29,7 @@ const SmokingTobaccoUse = () => {
     const [usageFrequency, setUsageFrequency] = useState(products.map(() => ({
         past12Months: Array(5).fill(false),
         pastMonth: Array(5).fill(false)
-    })));
+    })));    
 
     const [typicalUsage, setTypicalUsage] = useState("");
     const [mentholProductUse, setMentholProductUse] = useState("");
@@ -43,7 +43,7 @@ const SmokingTobaccoUse = () => {
     const handleRadioChange = (productIndex, timeIndex, period, value) => {
         setUsageFrequency(prev => prev.map((product, idx) => {
             if (idx === productIndex) {
-                const updatedTimes = product[period].map((v, i) => i === timeIndex ? value : v);
+                const updatedTimes = product[period].map((v, i) => i === timeIndex ? value : false);
                 return {
                     ...product,
                     [period]: updatedTimes
@@ -51,14 +51,42 @@ const SmokingTobaccoUse = () => {
             }
             return product;
         }));
-    };
+    };      
 
     const [aroundChildren, setAroundChildren] = useState("");
     const [insideHouse, setInsideHouse] = useState("");
     const [insideCar, setInsideCar] = useState("");
     const [workplace, setWorkplace] = useState("");
     const [firstUseAfterWake, setFirstUseAfterWake] = useState("");
+    // const [wakeUpForTobacco, setWakeUpForTobacco] = useState("");
+
     const [wakeUpForTobacco, setWakeUpForTobacco] = useState("");
+    const [nightsPerWeek, setNightsPerWeek] = useState("");
+    const [quitAttempts, setQuitAttempts] = useState("");
+    const [recentQuitDetails, setRecentQuitDetails] = useState({
+        Age: '',
+        Year: '',
+        Help: '',
+        Duration: '',
+        ReturnReason: ''
+    });
+    const [longestQuitDetails, setLongestQuitDetails] = useState({
+        Age: '',
+        Year: '',
+        Help: '',
+        Duration: '',
+        ReturnReason: ''
+    });
+    const [medications, setMedications] = useState({
+        noMedications: false,
+        details: ['Nicotine Patch', 'Nicotine Gum', 'Nicotine Oral Inhaler (puffer)', 'Nicotine Nasal Spray', 'Nicotine Lozenge (Commit)', 'Zyban/Wellbutrin/Bupropion', 'Chantix/varenicline'].map(medication => ({
+            name: medication,
+            used: '',
+            result: '',
+            sideEffects: '',
+            mightUse: ''
+        }))
+    });    
 
     const handleInputChange = (event) => {
         const { name, value, type, checked } = event.target;
@@ -90,12 +118,40 @@ const SmokingTobaccoUse = () => {
             case "wakeUpForTobacco":
                 setWakeUpForTobacco(value);
                 break;
+            case "nightsPerWeek":
+                setNightsPerWeek(value);
+                break;
             case "quitAttempts":
                 setSmokingStatus(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+                break;
+            case "quitAttempts":
+                setQuitAttempts(value);
                 break;
             default:
                 console.warn(`No handler for field: ${name}`);
                 break;
+        }
+        if (name.startsWith("recentQuit")) {
+            const field = name.replace("recentQuit", "");
+            setRecentQuitDetails(prev => ({ ...prev, [field]: value }));
+        } else if (name.startsWith("longestQuit")) {
+            const field = name.replace("longestQuit", "");
+            setLongestQuitDetails(prev => ({ ...prev, [field]: value }));
+        }
+        if (name === "noMedications") {
+            setMedications(prev => ({ ...prev, noMedications: checked }));
+        } else if (name.startsWith("used-") || name.startsWith("result-") || name.startsWith("mightUse-")) {
+            const [key, index] = name.split('-');
+            setMedications(prev => ({
+                ...prev,
+                details: prev.details.map((item, idx) => idx.toString() === index ? { ...item, [key]: value } : item)
+            }));
+        } else if (name.startsWith("sideEffects-")) {
+            const index = name.split('-')[1];
+            setMedications(prev => ({
+                ...prev,
+                details: prev.details.map((item, idx) => idx.toString() === index ? { ...item, sideEffects: value } : item)
+            }));
         }
     };      
 
@@ -112,7 +168,12 @@ const SmokingTobaccoUse = () => {
             insideCar,
             workplace,
             firstUseAfterWake,
-            wakeUpForTobacco
+            wakeUpForTobacco,
+
+            quitAttempts,
+            recentQuitDetails,
+            longestQuitDetails,
+            medications
         };
         try {
             const accessToken = Cookies.get('accessToken');
@@ -228,6 +289,7 @@ const SmokingTobaccoUse = () => {
                                                     type="radio" 
                                                     name={`product${productIndex}-time${timeIndex}`} 
                                                     onChange={() => handleRadioChange(productIndex, timeIndex % 5, timeIndex < 5 ? 'past12Months' : 'pastMonth', true)} 
+                                                    checked={usageFrequency[productIndex][timeIndex < 5 ? 'past12Months' : 'pastMonth'][timeIndex % 5]}
                                                 />
                                             </td>
                                         ))}
@@ -297,6 +359,7 @@ const SmokingTobaccoUse = () => {
                                     name="aroundChildren" 
                                     value="smoke"
                                     onChange={handleInputChange} 
+                                    checked={aroundChildren === "smoke"}
                                 />
                                 Smoke
                             </label>
@@ -306,6 +369,7 @@ const SmokingTobaccoUse = () => {
                                     name="aroundChildren" 
                                     value="vape"
                                     onChange={handleInputChange} 
+                                    checked={aroundChildren === "vape"}
                                 />
                                 Vape
                             </label>
@@ -315,6 +379,7 @@ const SmokingTobaccoUse = () => {
                                     name="aroundChildren" 
                                     value="neither"
                                     onChange={handleInputChange} 
+                                    checked={aroundChildren === "neither"}
                                 />
                                 Neither
                             </label>
@@ -325,8 +390,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideHouse" 
-                                    value="smoke" 
-                                    onChange={handleInputChange} 
+                                    value="smoke"
+                                    onChange={handleInputChange}
+                                    checked={insideHouse === "smoke"}
                                 />
                                 Smoke
                             </label>
@@ -334,8 +400,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideHouse" 
-                                    value="vape" 
-                                    onChange={handleInputChange} 
+                                    value="vape"
+                                    onChange={handleInputChange}
+                                    checked={insideHouse === "vape"}
                                 />
                                 Vape
                             </label>
@@ -343,8 +410,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideHouse" 
-                                    value="neither" 
-                                    onChange={handleInputChange} 
+                                    value="neither"
+                                    onChange={handleInputChange}
+                                    checked={insideHouse === "neither"}
                                 />
                                 Neither
                             </label>
@@ -355,8 +423,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideCar" 
-                                    value="smoke" 
-                                    onChange={handleInputChange} 
+                                    value="smoke"
+                                    onChange={handleInputChange}
+                                    checked={insideCar === "smoke"}
                                 />
                                 Smoke
                             </label>
@@ -364,8 +433,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideCar" 
-                                    value="vape" 
-                                    onChange={handleInputChange} 
+                                    value="vape"
+                                    onChange={handleInputChange}
+                                    checked={insideCar === "vape"}
                                 />
                                 Vape
                             </label>
@@ -373,8 +443,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="insideCar" 
-                                    value="neither" 
-                                    onChange={handleInputChange} 
+                                    value="neither"
+                                    onChange={handleInputChange}
+                                    checked={insideCar === "neither"}
                                 />
                                 Neither
                             </label>
@@ -385,8 +456,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="workplace" 
-                                    value="smoke" 
-                                    onChange={handleInputChange} 
+                                    value="smoke"
+                                    onChange={handleInputChange}
+                                    checked={workplace === "smoke"}
                                 />
                                 Smoke
                             </label>
@@ -394,8 +466,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="workplace" 
-                                    value="vape" 
-                                    onChange={handleInputChange} 
+                                    value="vape"
+                                    onChange={handleInputChange}
+                                    checked={workplace === "vape"}
                                 />
                                 Vape
                             </label>
@@ -403,8 +476,9 @@ const SmokingTobaccoUse = () => {
                                 <input 
                                     type="radio" 
                                     name="workplace" 
-                                    value="neither" 
-                                    onChange={handleInputChange} 
+                                    value="neither"
+                                    onChange={handleInputChange}
+                                    checked={workplace === "neither"}
                                 />
                                 Neither
                             </label>
@@ -420,6 +494,7 @@ const SmokingTobaccoUse = () => {
                                     name="firstUseAfterWake" 
                                     value="immediately"
                                     onChange={handleInputChange} 
+                                    checked={firstUseAfterWake === "immediately"}
                                 />
                                 Immediately
                             </label>
@@ -429,6 +504,7 @@ const SmokingTobaccoUse = () => {
                                     name="firstUseAfterWake" 
                                     value="5-30 minutes"
                                     onChange={handleInputChange} 
+                                    checked={firstUseAfterWake === "5-30 minutes"}
                                 />
                                 5-30 minutes
                             </label>
@@ -438,6 +514,7 @@ const SmokingTobaccoUse = () => {
                                     name="firstUseAfterWake" 
                                     value="31-60 minutes"
                                     onChange={handleInputChange} 
+                                    checked={firstUseAfterWake === "31-60 minutes"}
                                 />
                                 31-60 minutes
                             </label>
@@ -447,6 +524,7 @@ const SmokingTobaccoUse = () => {
                                     name="firstUseAfterWake" 
                                     value="more than 60"
                                     onChange={handleInputChange} 
+                                    checked={firstUseAfterWake === "more than 60"}
                                 />
                                 More than 60 minutes
                             </label>
@@ -461,7 +539,8 @@ const SmokingTobaccoUse = () => {
                                     type="radio" 
                                     name="wakeUpForTobacco" 
                                     value="yes"
-                                    onChange={handleInputChange} 
+                                    onChange={handleInputChange}
+                                    checked={wakeUpForTobacco === "yes"} 
                                 />
                                 Yes
                             </label>
@@ -470,7 +549,8 @@ const SmokingTobaccoUse = () => {
                                     type="radio" 
                                     name="wakeUpForTobacco" 
                                     value="no"
-                                    onChange={handleInputChange} 
+                                    onChange={handleInputChange}
+                                    checked={wakeUpForTobacco === "no"}
                                 />
                                 No
                             </label>
@@ -482,6 +562,7 @@ const SmokingTobaccoUse = () => {
                                     className={styles.nightsPerWeekInput} 
                                     placeholder="____ nights per week"
                                     onChange={handleInputChange} 
+                                    value={nightsPerWeek}
                                 />
                             </label>
                         </div>
@@ -497,6 +578,7 @@ const SmokingTobaccoUse = () => {
                                         name="quitAttempts" 
                                         value={attempt}
                                         onChange={handleInputChange} 
+                                        checked={quitAttempts === attempt}
                                     />
                                     {attempt}
                                 </label>
@@ -521,14 +603,16 @@ const SmokingTobaccoUse = () => {
                                         <td>
                                             <input 
                                                 type="text" 
-                                                name={`recentQuit${field}`} 
+                                                name={`recentQuit${field}`}
+                                                value={recentQuitDetails[field] || ''} 
                                                 onChange={handleInputChange} 
                                             />
                                         </td>
                                         <td>
                                             <input 
                                                 type="text" 
-                                                name={`longestQuit${field}`} 
+                                                name={`longestQuit${field}`}
+                                                value={longestQuitDetails[field] || ''} 
                                                 onChange={handleInputChange} 
                                             />
                                         </td>
@@ -545,6 +629,7 @@ const SmokingTobaccoUse = () => {
                             type="checkbox" 
                             name="noMedications"
                             onChange={handleInputChange}
+                            checked={medications.noMedications}
                         />
                         I have never used any medications to help
                     </label>
@@ -568,6 +653,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="yes" 
+                                            checked={medication.used === "yes"}
                                             onChange={handleInputChange} 
                                         />
                                         Yes
@@ -577,6 +663,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="no" 
+                                            checked={medication.used === "no"}
                                             onChange={handleInputChange} 
                                         />
                                         No
@@ -588,6 +675,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="workedWell" 
+                                            checked={medication.result === "workedWell"}
                                             onChange={handleInputChange} 
                                         />
                                         Worked Well
@@ -597,6 +685,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="didNotWork" 
+                                            checked={medication.result === "didNotWork"}
                                             onChange={handleInputChange} 
                                         />
                                         Did Not Work
@@ -606,6 +695,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="sideEffects" 
+                                            checked={medication.result === "sideEffects"}
                                             onChange={handleInputChange} 
                                         />
                                         Too Many Side Effects
@@ -616,6 +706,7 @@ const SmokingTobaccoUse = () => {
                                         type="text" 
                                         name={`sideEffects-${index}`} 
                                         placeholder="Describe any side effects"
+                                        value={medication.sideEffects}
                                         onChange={handleInputChange} 
                                     />
                                 </td>
@@ -625,6 +716,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="yes" 
+                                            checked={medication.mightUse === "yes"}
                                             onChange={handleInputChange} 
                                         />
                                         Yes
@@ -634,6 +726,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="no" 
+                                            checked={medication.mightUse === "no"}
                                             onChange={handleInputChange} 
                                         />
                                         No
