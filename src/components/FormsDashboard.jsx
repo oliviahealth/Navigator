@@ -19,7 +19,7 @@ const FormsDashboard = () => {
     };
 
     const handleBack = () => {
-        navigate('/dashboard');
+        navigate(-1);
     }
 
     var formNames = {

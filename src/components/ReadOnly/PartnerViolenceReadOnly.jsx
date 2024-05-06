@@ -50,7 +50,7 @@ const IntimatePartnerViolenceFormReadOnly = () => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate(-1);
   };
 
 

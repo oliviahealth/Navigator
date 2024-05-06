@@ -453,7 +453,7 @@ function BreastFeeding() {
         </div>
         <button
           type="button"
-          onClick={() => navigate('/dashboard')}>
+          onClick={() => navigate(-1)}>
           Cancel
         </button>
 

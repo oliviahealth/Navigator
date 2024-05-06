@@ -601,7 +601,7 @@ const accessToken = Cookies.get('accessToken');
 
 
         <button type="submit">Submit</button>
-        <button type="button" onClick={() => navigate('/dashboard')}>Cancel</button>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
       </form>
     </div>
   );

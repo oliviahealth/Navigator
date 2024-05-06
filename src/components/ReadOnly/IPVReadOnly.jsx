@@ -38,7 +38,7 @@ const IPVScreeningAndAssessmentFormReadOnly = () => {
   };
 
   const handleCancel = () => {
-    navigate('/dashboard');
+    navigate(-1);
   };
 
   useEffect(() => {
