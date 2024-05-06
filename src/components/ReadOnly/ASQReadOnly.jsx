@@ -29,6 +29,10 @@ function ASQReadOnly() {
 
   const navigate = useNavigate();
 
+  const handleCancel = () => {
+    window.history.back();
+};
+
   useEffect(() => {
     const fetchLog = async () => {
       try {
@@ -269,6 +273,7 @@ function ASQReadOnly() {
           disabled
           value={formValues.followUpNotes}
         ></textarea>
+        <button type="button" onClick={() => navigate(-1)}>Cancel</button>
         
       </form>
 
