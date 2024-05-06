@@ -43,16 +43,14 @@ const TweakTest = () => {
     if (answers.kutDown === 'yes') {
       score += 1;
     }
-    return score;
+    if (score >= 2) {
+      alert("You scored " + score + ". You meet the criteria for likely harmful drinking and are recommended to submit to a further and more stringent medical evaluation.");
+    }
   };
   
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const score = calculateScore();
-    if (score >= 2) {
-      alert("You scored " + score + ". You meet the criteria for likely harmful drinking and are recommended to submit to a further and more stringent medical evaluation.");
-    }
   
     const accessToken = Cookies.get('accessToken');
     try {
@@ -62,7 +60,7 @@ const TweakTest = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${accessToken}`
         },
-        body: JSON.stringify({...answers, score: score}),
+        body: JSON.stringify(answers),
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -229,6 +227,7 @@ const TweakTest = () => {
         </div>
 
         <button type="submit" className={styles.submitButton}>Submit</button>
+        <button type="button" onClick={calculateScore} styles={{"backgroundColor": "blue"}} className={styles.cancelButton}>Check Score</button>
         <button type="button" onClick={handleCancel} className={styles.cancelButton}>Cancel</button>
       </form>
     </div>

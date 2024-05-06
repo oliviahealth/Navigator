@@ -6,9 +6,15 @@ import Cookies from 'js-cookie';
 const SubstanceUseRelapse = () => {
   const { patientId } = useParams();
   const [formValues, setFormValues] = useState({
-    triggers: '',
-    skills: '',
-    support: '',
+    triggers_one: '',
+    triggers_two: '',
+    triggers_three: '',
+    skills_one: '',
+    skills_two: '',
+    skills_three: '',
+    support_one: '',
+    support_two: '',
+    support_three: '',
     safeCaregivers: [
       { name: '', contactNumber: '', relationship: '' },
       { name: '', contactNumber: '', relationship: '' }
@@ -76,37 +82,37 @@ const accessToken = Cookies.get('accessToken');
               <td>List 3 things that you know trigger your desire to use</td>
             </tr>
             <tr>
-              <td>1. <textarea name="triggers" rows="3" value={formValues.triggers} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="triggers_one" rows="3" value={formValues.triggers_one} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>2. <textarea rows="3"></textarea></td>
+              <td>2. <textarea name="triggers_two" rows="3" value={formValues.triggers_two} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>3. <textarea rows="3"></textarea></td>
+              <td>3. <textarea name="triggers_three" rows="3" value={formValues.triggers_three} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
               <td>List 3 skills or things you enjoy doing that can help get your mind off using</td>
             </tr>
             <tr>
-              <td>1. <textarea name="skills" rows="3" value={formValues.skills} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="skills_one" rows="3" value={formValues.skills_one} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>2. <textarea rows="3"></textarea></td>
+              <td>2. <textarea name="skills_two" rows="3" value={formValues.skills_two} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>3. <textarea rows="3"></textarea></td>
+              <td>3. <textarea name="skills_three" rows="3" value={formValues.skills_three} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
               <td>List 3 people you can talk to if you are thinking about using</td>
             </tr>
             <tr>
-              <td>1. <textarea name="support" rows="3" value={formValues.support} onChange={handleChange}></textarea></td>
+              <td>1. <textarea name="support_one" rows="3" value={formValues.support_one} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>2. <textarea rows="3"></textarea></td>
+              <td>2. <textarea name="support_two" rows="3" value={formValues.support_two} onChange={handleChange}></textarea></td>
             </tr>
             <tr>
-              <td>3. <textarea rows="3"></textarea></td>
+              <td>3. <textarea name="support_three" rows="3" value={formValues.support_three} onChange={handleChange}></textarea></td>
             </tr>
           </tbody>
         </table>
