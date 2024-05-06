@@ -73,7 +73,7 @@ function PSSReadOnly() {
                         <label key={j}>
                             <input type="radio" name={`q${i + 1}`} value={j} checked={responses[`q${i + 1}`] === j}
                                 disabled />
-                            {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]} ({j})
+                            {['Never', 'Almost never', 'Sometimes', 'Fairly often', 'Very often'][j]}
                         </label>
                     ))}
                 </div>

@@ -92,9 +92,7 @@ function ReferralsServicesReadOnly() {
         const data = await response.json();
 
         if (data && data[2].items) {
-          // Assuming data.items should be an object with keys matching service categories
           const transformedData = Object.keys(initialServices).reduce((acc, category) => {
-            // Map over each category to ensure it has the correct structure
             return {
               ...acc,
               [category]: data[2].items[category].map(service => ({
@@ -122,23 +120,6 @@ function ReferralsServicesReadOnly() {
 
 
 
-  const handleServiceChange = (category, index, field, value) => {
-    const updatedItems = { ...services.items };
-    if (field in updatedItems[category][index]) {
-      updatedItems[category][index][field] = typeof value === 'boolean' ? value : value.target.value;
-    } else {
-      updatedItems[category][index].notes = value.target.value;
-    }
-    setServices({ ...services, items: updatedItems });
-  };
-
-  const addOtherService = (category) => {
-    const newService = { name: 'Other', discussed: false, needed: false, referred: false, participating: false, completed: false, na: false, notes: '' };
-    const updatedItems = { ...services.items };
-    updatedItems[category].push(newService);
-    setServices({ ...services, items: updatedItems });
-  };
-
   return (
     <form>
       <h2>Referrals & Services</h2>
@@ -149,8 +130,8 @@ function ReferralsServicesReadOnly() {
             <div key={`${category}-${index}`} style={{ marginBottom: '10px' }}>
               <div><b>{service.name}</b></div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                <label><input type="checkbox" checked={service.discussed} disabled /> Discussed</label>
-                <label><input type="checkbox" checked={service.needed} /> Needed</label>
+                <label><input type="checkbox" checked={service.discussed} disabled onChange={() => {}} /> Discussed</label>
+                <label><input type="checkbox" checked={service.needed} disabled /> Needed</label>
                 <label><input type="checkbox" checked={service.referred} disabled /> Referred</label>
                 <label><input type="checkbox" checked={service.participating} disabled /> Participating</label>
                 <label><input type="checkbox" checked={service.completed} disabled /> Completed</label>
