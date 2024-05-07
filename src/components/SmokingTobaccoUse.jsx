@@ -562,8 +562,8 @@ const SmokingTobaccoUse = () => {
                                     name="nightsPerWeek" 
                                     className={styles.nightsPerWeekInput} 
                                     placeholder="____ nights per week"
-                                    onChange={handleInputChange} 
                                     value={nightsPerWeek}
+                                    onChange={handleInputChange} 
                                 />
                             </label>
                         </div>
