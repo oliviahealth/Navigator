@@ -566,8 +566,8 @@ const SmokingTobaccoUseReadOnly = () => {
                                     name="nightsPerWeek" 
                                     className={styles.nightsPerWeekInput} 
                                     placeholder="____ nights per week"
-                                    disabled 
                                     value={nightsPerWeek}
+                                    disabled 
                                 />
                             </label>
                         </div>
