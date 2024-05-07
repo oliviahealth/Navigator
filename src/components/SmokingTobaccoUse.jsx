@@ -562,8 +562,8 @@ const SmokingTobaccoUse = () => {
                                     name="nightsPerWeek" 
                                     className={styles.nightsPerWeekInput} 
                                     placeholder="____ nights per week"
-                                    onChange={handleInputChange} 
                                     value={nightsPerWeek}
+                                    onChange={handleInputChange} 
                                 />
                             </label>
                         </div>
@@ -654,7 +654,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="yes" 
-                                            // checked={medication.used === "yes"}
+                                            checked={medications.details[index].used === "yes"}
                                             onChange={handleInputChange} 
                                         />
                                         Yes
@@ -664,7 +664,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="no" 
-                                            // checked={medication.used === "no"}
+                                            checked={medications.details[index].used === "no"}
                                             onChange={handleInputChange} 
                                         />
                                         No
@@ -676,7 +676,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="workedWell" 
-                                            // checked={medication.result === "workedWell"}
+                                            checked={medications.details[index].result === "workedWell"}
                                             onChange={handleInputChange} 
                                         />
                                         Worked Well
@@ -686,7 +686,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="didNotWork" 
-                                            // checked={medication.result === "didNotWork"}
+                                            checked={medications.details[index].result === "didNotWork"}
                                             onChange={handleInputChange} 
                                         />
                                         Did Not Work
@@ -696,7 +696,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="sideEffects" 
-                                            // checked={medication.result === "sideEffects"}
+                                            checked={medications.details[index].result === "sideEffects"}
                                             onChange={handleInputChange} 
                                         />
                                         Too Many Side Effects
@@ -707,7 +707,7 @@ const SmokingTobaccoUse = () => {
                                         type="text" 
                                         name={`sideEffects-${index}`} 
                                         placeholder="Describe any side effects"
-                                        // value={medication.sideEffects}
+                                        value={medications.details[index].sideEffects}
                                         onChange={handleInputChange} 
                                     />
                                 </td>
@@ -717,7 +717,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="yes" 
-                                            // checked={medication.mightUse === "yes"}
+                                            checked={medications.details[index].mightUse === "yes"}
                                             onChange={handleInputChange} 
                                         />
                                         Yes
@@ -727,7 +727,7 @@ const SmokingTobaccoUse = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="no" 
-                                            // checked={medication.mightUse === "no"}
+                                            checked={medications.details[index].mightUse === "no"}
                                             onChange={handleInputChange} 
                                         />
                                         No
