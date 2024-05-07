@@ -658,7 +658,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="yes" 
-                                            // checked={medication.used === "yes"}
+                                            checked={medications.details[index].used === "yes"}
                                             disabled 
                                         />
                                         Yes
@@ -668,7 +668,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`used-${index}`} 
                                             value="no" 
-                                            // checked={medication.used === "no"}
+                                            checked={medications.details[index].used === "no"}
                                             disabled 
                                         />
                                         No
@@ -680,7 +680,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="workedWell" 
-                                            // checked={medication.result === "workedWell"}
+                                            checked={medications.details[index].result === "workedWell"}
                                             disabled 
                                         />
                                         Worked Well
@@ -690,7 +690,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="didNotWork" 
-                                            // checked={medication.result === "didNotWork"}
+                                            checked={medications.details[index].result === "didNotWork"}
                                             disabled 
                                         />
                                         Did Not Work
@@ -700,7 +700,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`result-${index}`} 
                                             value="sideEffects" 
-                                            // checked={medication.result === "sideEffects"}
+                                            checked={medications.details[index].result === "sideEffects"}
                                             disabled 
                                         />
                                         Too Many Side Effects
@@ -711,7 +711,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                         type="text" 
                                         name={`sideEffects-${index}`} 
                                         placeholder="Describe any side effects"
-                                        // value={medication.sideEffects}
+                                        value={medications.details[index].sideEffects}
                                         disabled 
                                     />
                                 </td>
@@ -721,7 +721,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="yes" 
-                                            // checked={medication.mightUse === "yes"}
+                                            checked={medications.details[index].mightUse === "yes"}
                                             disabled 
                                         />
                                         Yes
@@ -731,7 +731,7 @@ const SmokingTobaccoUseReadOnly = () => {
                                             type="radio" 
                                             name={`mightUse-${index}`} 
                                             value="no" 
-                                            // checked={medication.mightUse === "no"}
+                                            checked={medications.details[index].mightUse === "no"}
                                             disabled 
                                         />
                                         No
