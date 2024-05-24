@@ -18,4 +18,86 @@ model User {
   name        String
   email       String   @unique
   dateCreated DateTime @default(now())
+
+  CommunicationLog CommunicationLog[]
+  AppointmentLog   AppointmentLog[]
+  EnrollmentForm   EnrollmentForm[]
+  MediaAppearance  MediaAppearance[]
+}
+
+model CommunicationLog {
+  User   User   @relation(fields: [userId], references: [id])
+  id     String @id @default(uuid())
+  userId String
+
+  dateTime           DateTime
+  method             String
+  organizationPerson String
+  purpose            String
+  notes              String
+  followUpNeeded     String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model AppointmentLog {
+  User   User   @relation(fields: [userId], references: [id])
+  id     String @id @default(uuid())
+  userId String
+
+  dateTime    DateTime
+  participant String
+  location    String
+  notes       String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model EnrollmentForm {
+  User   User   @relation(fields: [userId], references: [id])
+  id     String @id @default(uuid())
+  userId String
+
+  firstName         String
+  lastName          String
+  address           String
+  city              String
+  state             String
+  zip               String
+  homePhone         String
+  cellPhone         String
+  email             String
+  dateOfBirth       String
+  emergencyContacts Json
+  clientSignature   String
+  clientName        String
+  clientDate        DateTime
+  guardianSignature String
+  guardianName      String
+  guardianDate      String
+  gcMomsSignature   String
+  gcMomsName        String
+  gcMomsDate        String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model MediaAppearance {
+  User   User   @relation(fields: [userId], references: [id])
+  id     String @id @default(uuid())
+  userId String
+
+  participant          String
+  address              String
+  participantSignature String
+  participantDate      String
+  guardianSignature    String
+  guardianName         String
+  guardianDate         String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
 }

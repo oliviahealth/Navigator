@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 async function fetchUser(id: string) {
 
-    const res = await fetch(`/api/users/${id}`, {
+    const res = await fetch(`/api/users?id=${id}`, {
         cache: 'no-store',
     })
 
