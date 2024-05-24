@@ -2,32 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
+@layer base {
+  @font-face {
+    font-family: 'OpenSans';
+    src: url('/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+  @font-face {
+    font-family: 'Oswald';
+    src: url('/fonts/Oswald-VariableFont_wght.ttf') format('truetype');
+  }
+
+  body {
+    @apply font-OpenSans;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-[4px] bg-black/20;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-black/30;
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    @apply bg-black/40;
+  }
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-variation-settings: 'wght' 500;
+    background: transparent;
+    background-image: url("data:image/svg+xml;utf8,<svg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M4 6L8 10L12 6' stroke='black' strokeWidth='2' strokeLinecap='round' strokeLinejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position-x: 96%;
+    background-position-y: 50%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+@layer components {
+  .button {
+    @apply text-black md:px-6 md:py-2 px-1 py-1 transition-colors ease-in-out duration-300 hover:text-[#732F2F];
+  }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+  .button-colored {
+    @apply text-red-800 md:px-6 md:py-2 px-1 py-1 transition-all ease-in-out duration-300 border-b-2 border-transparent hover:border-red-800;
+  }
+
+  .button-filled {
+    @apply bg-[#5D1B2A] text-white hover:text-white py-0 px-3 md:px-6 md:py-2 transition-colors ease-in-out duration-300 hover:bg-[#703636];
+  }
+
+  .selectable {
+    @apply cursor-pointer p-2 rounded-xl hover:shadow hover:bg-black/5 transition-all ease-in-out duration-300;
+  }
+
+  .truncate {
+    @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
 }
