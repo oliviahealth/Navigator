@@ -174,7 +174,7 @@ const CommunicationLog: React.FC = () => {
                         onClick={addNewCommunicationEntry}
                         className="text-green-500 px-20 py-4 font-medium rounded-md whitespace-nowrap"
                     >
-                        + Add Diagnosis
+                        + Add Communication Entry
                     </button>
                 </div>
 
