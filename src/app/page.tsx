@@ -3,10 +3,9 @@ import React from "react";
 const LandingPage: React.FC = () => {
   return (
     <div
-      className="flex flex-grow w-full h-full overflow-hidden bg-cover justify-center items-center"
+      className="flex flex-grow w-full h-full overflow-hidden bg-[url('/images/background.png')] bg-cover justify-center items-center"
       role="img"
       aria-label="A background image of a mother and her baby"
-      style={{ backgroundImage: 'url("/images/background.png")' }}
     >
       <img
         className="w-[50rem]"
