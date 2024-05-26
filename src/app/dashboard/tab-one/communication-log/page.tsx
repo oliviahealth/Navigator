@@ -1,29 +1,14 @@
 "use client";
 
 import React from "react";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm, } from "react-hook-form";
 
-// Define the schema of each row in the communication log
-const CommunicationEntrySchema = z.object({
-    dateTime: z.string().min(1, "Date/Time is required"),
-    method: z.enum(['Phone', 'Email/Letter', 'In Person', 'Video Call', 'Other']).nullable().refine(val => val, { message: "Method is required" }),
-    organizationPerson: z.string().min(1, "Organization/Person is required"),
-    purpose: z.string().min(1, "Purpose is required"),
-    notes: z.string().nullable(),
-    followUpNeeded: z.string().min(1, "Required"),
-});
-export type ICommunicationEntry = z.infer<typeof CommunicationEntrySchema>;
-
-// Define the overall schema of the communcation log which is an array of objects from above
-const CommunicationLogInputsSchema = z.object({
-    communicationEntries: z.array(CommunicationEntrySchema),
-});
-export type ICommunicationLogInputs = z.infer<typeof CommunicationLogInputsSchema>;
+// Import necessary schemas and types
+import { ICommunicationLogInputs, CommunicationLogInputsSchema } from "./definitions";
+import { createCommunicationLog } from "./actions";
 
 const CommunicationLog: React.FC = () => {
-
     // Using React Hook Form for form controls and validations with Zod
     // See: https://react-hook-form.com/
     // See: https://zod.dev/
@@ -67,10 +52,10 @@ const CommunicationLog: React.FC = () => {
         });
 
     // Temporary submit function while we work to get db setup
-    const submit = (data: ICommunicationLogInputs) => {
-        alert("Communication Log submitted successfully");
+    const submit = (data: { communicationEntries: ICommunicationLogInputs }) => {
+        const { communicationEntries } = data;
 
-        console.log(data);
+        createCommunicationLog(communicationEntries, 'fe92b186-450c-4a63-943b-035c63660fcc')
     }
 
     return (

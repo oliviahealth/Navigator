@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+
+  CommunicationLog CommunicationLog[]
+  AppointmentLog   AppointmentLog[]
+  EnrollmentForm   EnrollmentForm[]
+  MediaAppearance  MediaAppearance[]
+}
+
+enum CommunicationMethod {
+  phone
+  email
+  in_person
+  video_call
+  other
+}
+enum FollowUpNeeded {
+  Yes
+  No
+}
+model CommunicationEntry {
+  id                String     @id @default(uuid())
+  
+  communicationLogId String
+
+  dateTime           DateTime
+  method             CommunicationMethod
+  organizationPerson String
+  purpose            String
+  notes              String
+  followUpNeeded     FollowUpNeeded
+
+  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id])
+}
+model CommunicationLog {
+  id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  communicationEntries CommunicationEntry[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model AppointmentEntry {
+  id                String     @id @default(uuid())
+  
+  appointmentLogId  String
+
+  dateTime          DateTime
+  who               String
+  location          String
+  notes             String
+
+  appointmentLog   AppointmentLog @relation(fields: [appointmentLogId], references: [id])
+}
+model AppointmentLog {
+  id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  appointmentEntries AppointmentEntry[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model EmergencyContact {
+  id                String @id @default(uuid())
+
+  enrollmentFormId  String
+
+  name              String
+  relationship      String
+  telephone         String
+  email             String
+
+  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
+}
+model EnrollmentForm {
+  id                String @id @default(uuid())
+
+  User   User       @relation(fields: [userId], references: [id])
+  userId            String
+
+  firstName         String
+  lastName          String
+  address           String
+  city              String
+  state             String
+  zip               String
+  homePhone         String
+  cellPhone         String
+  email             String
+  dateOfBirth       DateTime
+  emergencyContacts EmergencyContact[]
+  clientName        String
+  clientDate        DateTime
+  guardianName      String
+  guardianDate      String
+  gcMomsName        String
+  gcMomsDate        String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model MediaAppearance {
+  id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  participantName          String
+  address              String
+  participantDate      String
+  guardianName         String?
+  guardianDate         String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
