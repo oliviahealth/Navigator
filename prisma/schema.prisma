@@ -26,40 +26,84 @@ model User {
   MediaAppearance  MediaAppearance[]
 }
 
-model CommunicationLog {
-  User   User   @relation(fields: [userId], references: [id])
-  id     String @id @default(uuid())
-  userId String
+enum CommunicationMethod {
+  phone
+  email
+  in_person
+  video_call
+  other
+}
+enum FollowUpNeeded {
+  Yes
+  No
+}
+model CommunicationEntry {
+  id                String     @id @default(uuid())
+  
+  communicationLogId String
 
   dateTime           DateTime
-  method             String
+  method             CommunicationMethod
   organizationPerson String
   purpose            String
   notes              String
-  followUpNeeded     String
+  followUpNeeded     FollowUpNeeded
+
+  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id])
+}
+model CommunicationLog {
+  id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  communicationEntries CommunicationEntry[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
 }
 
+model AppointmentEntry {
+  id                String     @id @default(uuid())
+  
+  appointmentLogId  String
+
+  dateTime          DateTime
+  who               String
+  location          String
+  notes             String
+
+  appointmentLog   AppointmentLog @relation(fields: [appointmentLogId], references: [id])
+}
 model AppointmentLog {
-  User   User   @relation(fields: [userId], references: [id])
   id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
   userId String
 
-  dateTime    DateTime
-  participant String
-  location    String
-  notes       String
+  appointmentEntries AppointmentEntry[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
 }
 
+model EmergencyContact {
+  id                String @id @default(uuid())
+
+  enrollmentFormId  String
+
+  name              String
+  relationship      String
+  telephone         String
+  email             String
+
+  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
+}
 model EnrollmentForm {
-  User   User   @relation(fields: [userId], references: [id])
-  id     String @id @default(uuid())
-  userId String
+  id                String @id @default(uuid())
+
+  User   User       @relation(fields: [userId], references: [id])
+  userId            String
 
   firstName         String
   lastName          String
@@ -70,15 +114,12 @@ model EnrollmentForm {
   homePhone         String
   cellPhone         String
   email             String
-  dateOfBirth       String
-  emergencyContacts Json
-  clientSignature   String
+  dateOfBirth       DateTime
+  emergencyContacts EmergencyContact[]
   clientName        String
   clientDate        DateTime
-  guardianSignature String
   guardianName      String
   guardianDate      String
-  gcMomsSignature   String
   gcMomsName        String
   gcMomsDate        String
 
@@ -87,17 +128,16 @@ model EnrollmentForm {
 }
 
 model MediaAppearance {
-  User   User   @relation(fields: [userId], references: [id])
   id     String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
   userId String
 
-  participant          String
+  participantName          String
   address              String
-  participantSignature String
   participantDate      String
-  guardianSignature    String
-  guardianName         String
-  guardianDate         String
+  guardianName         String?
+  guardianDate         String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
