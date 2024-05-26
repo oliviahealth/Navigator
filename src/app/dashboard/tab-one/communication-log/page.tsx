@@ -3,12 +3,12 @@
 import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, } from "react-hook-form";
 
 // Define the schema of each row in the communication log
 const CommunicationEntrySchema = z.object({
     dateTime: z.string().min(1, "Date/Time is required"),
-    method: z.string().min(1, "Communication method is required"),
+    method: z.enum(['Phone', 'Email/Letter', 'In Person', 'Video Call', 'Other']).nullable().refine(val => val, { message: "Method is required" }),
     organizationPerson: z.string().min(1, "Organization/Person is required"),
     purpose: z.string().min(1, "Purpose is required"),
     notes: z.string().nullable(),
@@ -23,7 +23,7 @@ const CommunicationLogInputsSchema = z.object({
 export type ICommunicationLogInputs = z.infer<typeof CommunicationLogInputsSchema>;
 
 const CommunicationLog: React.FC = () => {
-    
+
     // Using React Hook Form for form controls and validations with Zod
     // See: https://react-hook-form.com/
     // See: https://zod.dev/
@@ -39,7 +39,7 @@ const CommunicationLog: React.FC = () => {
             communicationEntries: [
                 {
                     dateTime: "",
-                    method: "",
+                    method: null,
                     organizationPerson: "",
                     purpose: "",
                     notes: "",
@@ -59,7 +59,7 @@ const CommunicationLog: React.FC = () => {
     const addNewCommunicationEntry = () =>
         append({
             dateTime: "",
-            method: "",
+            method: null,
             organizationPerson: "",
             purpose: "",
             notes: "",
@@ -75,29 +75,29 @@ const CommunicationLog: React.FC = () => {
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
-            <form onSubmit={handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4">
-                <p className="font-medium text-xl">Communications Log</p>
+            <form onSubmit={handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4">
+                <p className="font-semibold text-2xl">Communications Log</p>
 
                 {fields.map((field, index) => (
-                    <div key={field.id} className="py-6">
+                    <div key={field.id} className="py-6 space-y-4">
                         <div className="flex justify-between">
-                            <p className="text-lg font-medium pt-8">Communication Entry {index + 1}</p>
+                            <p className="text-lg font-bold pt-8">Communication Entry {index + 1}</p>
 
                             {index > 0 && <button
                                 type="button"
                                 onClick={() => remove(index)}
-                                className="text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
+                                className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
                             >
-                                - Remove Diagnosis
+                                - Remove Entry
                             </button>}
                         </div>
 
                         <div className="flex flex-col justify-between ">
-                            <p className="font-medium pb-2 pt-4">Date/Time</p>
+                            <p className="font-semibold pb-2 pt-4">Date/Time</p>
                             <input
                                 {...register(`communicationEntries.${index}.dateTime`)}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                                type="date"
+                                type="datetime-local"
                             />
                             {errors.communicationEntries && errors.communicationEntries[index]?.dateTime && (
                                 <span className="label-text-alt text-red-500">
@@ -105,18 +105,27 @@ const CommunicationLog: React.FC = () => {
                                 </span>
                             )}
 
-                            <p className="font-medium pb-2 pt-8">Method</p>
-                            <input
-                                {...register(`communicationEntries.${index}.method`)}
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            />
+                            <p className="font-semibold pb-2 pt-8">Method</p>
+                            <div className="space-y-3">
+                                {['Phone', 'Email/Letter', 'In Person', 'Video Call', 'Other'].map((status) => (
+                                    <label key={status} className="flex items-center">
+                                        <input
+                                            {...register(`communicationEntries.${index}.method`)}
+                                            className="form-radio"
+                                            type="radio"
+                                            value={status}
+                                        />
+                                        <span className="ml-2">{status}</span>
+                                    </label>
+                                ))}
+                            </div>
                             {errors.communicationEntries && errors.communicationEntries[index]?.method && (
                                 <span className="label-text-alt text-red-500">
                                     {errors.communicationEntries[index]?.method?.message}
                                 </span>
                             )}
 
-                            <p className="font-medium pb-2 pt-8">Organization/Person</p>
+                            <p className="font-semibold pb-2 pt-8">Organization/Person</p>
                             <input
                                 {...register(`communicationEntries.${index}.organizationPerson`)}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
@@ -127,8 +136,8 @@ const CommunicationLog: React.FC = () => {
                                 </span>
                             )}
 
-                            <p className="font-medium pb-2 pt-8">Purpose</p>
-                            <input
+                            <p className="font-semibold pb-2 pt-8">Purpose</p>
+                            <textarea
                                 {...register(`communicationEntries.${index}.purpose`)}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             />
@@ -138,13 +147,15 @@ const CommunicationLog: React.FC = () => {
                                 </span>
                             )}
 
-                            <p className="font-medium pb-2 pt-8">Notes</p>
-                            <input
-                                {...register(`communicationEntries.${index}.notes`)}
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            />
+                            <div>
+                                <p className="font-semibold pb-2 pt-8">Notes</p>
+                                <textarea
+                                    {...register(`communicationEntries.${index}.notes`)}
+                                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                                />
+                            </div>
 
-                            <p className="font-medium pb-2 pt-8">Follow Up Needed?</p>
+                            <p className="font-semibold pb-2 pt-8">Follow Up Needed?</p>
                             <div className="flex gap-x-12 items-center">
                                 {['Yes', 'No'].map((status, idx) => (
                                     <label key={idx} className="inline-flex items-center">
@@ -168,11 +179,11 @@ const CommunicationLog: React.FC = () => {
                     </div>
                 ))}
 
-                <div className="flex justify-center">
+                <div className="flex justify-center py-4">
                     <button
                         type="button"
                         onClick={addNewCommunicationEntry}
-                        className="text-green-500 px-20 py-4 font-medium rounded-md whitespace-nowrap"
+                        className="text-green-500 px-20 py-4 font-semibold rounded-md whitespace-nowrap"
                     >
                         + Add Communication Entry
                     </button>
@@ -180,7 +191,7 @@ const CommunicationLog: React.FC = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto"
+                    className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
                     Save
                 </button>
