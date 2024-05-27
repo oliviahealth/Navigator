@@ -27,11 +27,11 @@ model User {
 }
 
 enum CommunicationMethod {
-  phone
-  email
-  in_person
-  video_call
-  other
+  Phone
+  Mail
+  In_Person
+  Video_Call
+  Other
 }
 enum FollowUpNeeded {
   Yes
@@ -46,7 +46,7 @@ model CommunicationEntry {
   method             CommunicationMethod
   organizationPerson String
   purpose            String
-  notes              String
+  notes              String?
   followUpNeeded     FollowUpNeeded
 
   communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id])
@@ -71,7 +71,7 @@ model AppointmentEntry {
   dateTime          DateTime
   who               String
   location          String
-  notes             String
+  notes             String?
 
   appointmentLog   AppointmentLog @relation(fields: [appointmentLogId], references: [id])
 }

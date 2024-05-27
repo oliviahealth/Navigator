@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 // Define the schema of each row in the communication log
-export const CommunicationEntrySchema = z.object({
+const CommunicationEntrySchema = z.object({
     dateTime: z.string().min(1, "Date/Time is required"),
-    method: z.string().min(1, "Communication method is required"),
+    method: z.enum(['Phone', 'Mail', 'In_Person', 'Video_Call', 'Other']).nullable().refine(val => val, { message: "Method is required" }),
     organizationPerson: z.string().min(1, "Organization/Person is required"),
     purpose: z.string().min(1, "Purpose is required"),
     notes: z.string().nullable(),
@@ -21,7 +21,7 @@ export type ICommunicationLogInputs = z.infer<typeof CommunicationLogInputsSchem
 export const CommunicationLogResponseSchema = CommunicationLogInputsSchema.extend({
     id: z.string(),
     userId: z.string(),
-    dateCreated: z.string(),
-    dateModified: z.string()
+    dateCreated: z.string().transform((val) => new Date(val)),
+    dateModified: z.string().transform((val) => new Date(val))
 });
 export type ICommunicationLogResponse = z.infer<typeof CommunicationLogResponseSchema>;

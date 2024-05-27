@@ -2,10 +2,14 @@
 
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm, } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 // Import necessary schemas and types
-import { ICommunicationLogInputs, CommunicationLogInputsSchema } from "./definitions";
+import {
+    ICommunicationLogInputs,
+    CommunicationLogInputsSchema,
+    ICommunicationEntry,
+} from "./definitions";
 import { createCommunicationLog } from "./actions";
 
 const CommunicationLog: React.FC = () => {
@@ -41,7 +45,7 @@ const CommunicationLog: React.FC = () => {
     });
 
     // Add a new blank communication object when the user clicks on the '+ Add Diagnosis button'
-    const addNewCommunicationEntry = () =>
+    const addNewCommunicationEntry = () => {
         append({
             dateTime: "",
             method: null,
@@ -50,87 +54,140 @@ const CommunicationLog: React.FC = () => {
             notes: "",
             followUpNeeded: "",
         });
+    };
 
-    // Temporary submit function while we work to get db setup
-    const submit = (data: { communicationEntries: ICommunicationLogInputs }) => {
+    const submit = (data: { communicationEntries: ICommunicationEntry[] }) => {
         const { communicationEntries } = data;
 
-        createCommunicationLog(communicationEntries, 'fe92b186-450c-4a63-943b-035c63660fcc')
-    }
+        CommunicationLogInputsSchema.parse(data);
+
+        createCommunicationLog(communicationEntries, "08bce088-d122-4b53-acf7-83c9182bc01e");
+    };
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
-            <form onSubmit={handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4">
+            <form
+                onSubmit={handleSubmit((data) => submit(data))}
+                className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+            >
                 <p className="font-semibold text-2xl">Communications Log</p>
 
-                {fields.map((field, index) => (
-                    <div key={field.id} className="py-6 space-y-4">
-                        <div className="flex justify-between">
-                            <p className="text-lg font-bold pt-8">Communication Entry {index + 1}</p>
+                {fields.map((field, index) => {
+                    return (
+                        <div key={field.id} className="py-6 space-y-4">
+                            <div className="flex justify-between">
+                                <p className="text-lg font-bold pt-8">
+                                    Communication Entry {index + 1}
+                                </p>
 
-                            {index > 0 && <button
-                                type="button"
-                                onClick={() => remove(index)}
-                                className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
-                            >
-                                - Remove Entry
-                            </button>}
-                        </div>
+                                {index > 0 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => remove(index)}
+                                        className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
+                                    >
+                                        - Remove Entry
+                                    </button>
+                                )}
+                            </div>
 
-                        <div className="flex flex-col justify-between ">
-                            <p className="font-semibold pb-2 pt-4">Date/Time</p>
-                            <input
-                                {...register(`communicationEntries.${index}.dateTime`)}
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                                type="datetime-local"
-                            />
-                            {errors.communicationEntries && errors.communicationEntries[index]?.dateTime && (
-                                <span className="label-text-alt text-red-500">
-                                    {errors.communicationEntries[index]?.dateTime?.message}
-                                </span>
-                            )}
+                            <div className="flex flex-col justify-between">
+                                <p className="font-semibold pb-2 pt-4">Date/Time</p>
 
-                            <p className="font-semibold pb-2 pt-8">Method</p>
-                            <div className="space-y-3">
-                                {['Phone', 'Email/Letter', 'In Person', 'Video Call', 'Other'].map((status) => (
-                                    <label key={status} className="flex items-center">
+                                <input
+                                    {...register(`communicationEntries.${index}.dateTime`)}
+                                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                                    type="datetime-local"
+                                />
+                                {errors.communicationEntries && errors.communicationEntries[index]?.dateTime && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.communicationEntries[index]?.dateTime?.message}
+                                    </span>
+                                )}
+                            </div>
+
+                            <div>
+                                <p className="font-semibold pb-2 pt-8">Method</p>
+
+                                <div className="space-y-3">
+                                    <label className="flex items-center">
                                         <input
                                             {...register(`communicationEntries.${index}.method`)}
                                             className="form-radio"
                                             type="radio"
-                                            value={status}
+                                            value={'Phone'}
                                         />
-                                        <span className="ml-2">{status}</span>
+                                        <span className="ml-2">Phone</span>
                                     </label>
-                                ))}
+                                    <label className="flex items-center">
+                                        <input
+                                            {...register(`communicationEntries.${index}.method`)}
+                                            className="form-radio"
+                                            type="radio"
+                                            value={'Mail'}
+                                        />
+                                        <span className="ml-2">Mail (Email or Letter)</span>
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            {...register(`communicationEntries.${index}.method`)}
+                                            className="form-radio"
+                                            type="radio"
+                                            value={'In_Person'}
+                                        />
+                                        <span className="ml-2">In Person</span>
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            {...register(`communicationEntries.${index}.method`)}
+                                            className="form-radio"
+                                            type="radio"
+                                            value={'Video_Call'}
+                                        />
+                                        <span className="ml-2">Video Call</span>
+                                    </label>
+                                    <label className="flex items-center">
+                                        <input
+                                            {...register(`communicationEntries.${index}.method`)}
+                                            className="form-radio"
+                                            type="radio"
+                                            value={'Other'}
+                                        />
+                                        <span className="ml-2">Other</span>
+                                    </label>
+                                    {errors.communicationEntries && errors.communicationEntries[index]?.method && (
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.communicationEntries[index]?.method?.message}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
-                            {errors.communicationEntries && errors.communicationEntries[index]?.method && (
-                                <span className="label-text-alt text-red-500">
-                                    {errors.communicationEntries[index]?.method?.message}
-                                </span>
-                            )}
 
-                            <p className="font-semibold pb-2 pt-8">Organization/Person</p>
-                            <input
-                                {...register(`communicationEntries.${index}.organizationPerson`)}
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            />
-                            {errors.communicationEntries && errors.communicationEntries[index]?.organizationPerson && (
-                                <span className="label-text-alt text-red-500">
-                                    {errors.communicationEntries[index]?.organizationPerson?.message}
-                                </span>
-                            )}
+                            <div>
+                                <p className="font-semibold pb-2 pt-8">Organization/Person</p>
+                                <input
+                                    {...register(`communicationEntries.${index}.organizationPerson`)}
+                                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                                />
+                                {errors.communicationEntries && errors.communicationEntries[index]?.organizationPerson && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.communicationEntries[index]?.organizationPerson?.message}
+                                    </span>
+                                )}
+                            </div>
 
-                            <p className="font-semibold pb-2 pt-8">Purpose</p>
-                            <textarea
-                                {...register(`communicationEntries.${index}.purpose`)}
-                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                            />
-                            {errors.communicationEntries && errors.communicationEntries[index]?.purpose && (
-                                <span className="label-text-alt text-red-500">
-                                    {errors.communicationEntries[index]?.purpose?.message}
-                                </span>
-                            )}
+                            <div>
+                                <p className="font-semibold pb-2 pt-8">Purpose</p>
+                                <textarea
+                                    {...register(`communicationEntries.${index}.purpose`)}
+                                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                                />
+                                {errors.communicationEntries && errors.communicationEntries[index]?.purpose && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.communicationEntries[index]?.purpose?.message}
+                                    </span>
+                                )}
+                            </div>
 
                             <div>
                                 <p className="font-semibold pb-2 pt-8">Notes</p>
@@ -140,29 +197,30 @@ const CommunicationLog: React.FC = () => {
                                 />
                             </div>
 
-                            <p className="font-semibold pb-2 pt-8">Follow Up Needed?</p>
-                            <div className="flex gap-x-12 items-center">
-                                {['Yes', 'No'].map((status, idx) => (
-                                    <label key={idx} className="inline-flex items-center">
-                                        <input
-                                            {...register(`communicationEntries.${index}.followUpNeeded`)}
-                                            type="radio"
-                                            value={status}
-                                            className="form-radio"
-                                        />
-                                        <span className="ml-2">{status}</span>
-                                    </label>
-                                ))}
+                            <div>
+                                <p className="font-semibold pb-2 pt-8">Follow Up Needed?</p>
+                                <div className="flex gap-x-12 items-center">
+                                    {['Yes', 'No'].map((status, idx) => (
+                                        <label key={idx} className="inline-flex items-center">
+                                            <input
+                                                {...register(`communicationEntries.${index}.followUpNeeded`)}
+                                                type="radio"
+                                                value={status}
+                                                className="form-radio"
+                                            />
+                                            <span className="ml-2">{status}</span>
+                                        </label>
+                                    ))}
+                                </div>
+                                {errors.communicationEntries && errors.communicationEntries[index]?.followUpNeeded && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.communicationEntries[index]?.followUpNeeded?.message}
+                                    </span>
+                                )}
                             </div>
-                            {errors.communicationEntries && errors.communicationEntries[index]?.followUpNeeded && (
-                                <span className="label-text-alt text-red-500">
-                                    {errors.communicationEntries[index]?.followUpNeeded?.message}
-                                </span>
-                            )}
-
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
 
                 <div className="flex justify-center py-4">
                     <button
@@ -176,8 +234,9 @@ const CommunicationLog: React.FC = () => {
 
                 <button
                     type="submit"
-                    className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
+                    className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
+                    { <span className="loading loading-spinner loading-sm"></span>}
                     Save
                 </button>
             </form>

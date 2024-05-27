@@ -2,27 +2,27 @@
 
 import { prisma } from "@/lib/prisma";
 import { ICommunicationEntry } from "./definitions";
+import { CommunicationMethod, FollowUpNeeded } from "@prisma/client";
 
-export const createCommunicationLog = async (communicationLogInput: ICommunicationEntry[], userId: string) => {    
-    try {
-        const response = await prisma.communicationLog.create({
-            data: {
-                userId,
-                communicationEntries: {
-                    create: [...communicationLogInput]
-                },
+export const createCommunicationLog = async (communicationLogInput: ICommunicationEntry[], userId: string) => {
+    const formattedCommunicationEntries = communicationLogInput.map(communicationEntry => ({
+        ...communicationEntry,
+        dateTime: new Date(communicationEntry.dateTime).toISOString(),
+        method: communicationEntry.method as CommunicationMethod,
+        followUpNeeded: communicationEntry.followUpNeeded as FollowUpNeeded
+    }));
+
+    const response = await prisma.communicationLog.create({
+        data: {
+            userId,
+            communicationEntries: {
+                create: formattedCommunicationEntries
             },
-            include: {
-                communicationEntries: true
-            }
-        });
-        
-        console.log(response);
-        return response;
-    } catch (error) {
-        console.error('Error creating communication log:', error);
-        throw error; // Rethrow the error for the caller to handle
-    } finally {
-        await prisma.$disconnect();
-    }
+        },
+        include: {
+            communicationEntries: true
+        }
+    });
+
+    return response;
 }
