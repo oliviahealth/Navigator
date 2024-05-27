@@ -11,7 +11,10 @@ import {
     raceEnum,
     maritalStatusEnum,
     insuranceEnum,
-    pregnancyStatusAtEnrollmentEnum
+    pregnancyStatusAtEnrollmentEnum,
+    ethnicityEnum,
+    lgbtqiPlusEnum,
+    labelMapping
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -193,7 +196,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Ethnicity</p>
                         <div className="space-y-3">
-                            {["Hispanic or Latino/a", "Not Hispanic or Latino/a"].map(option => (
+                            {ethnicityEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("ethnicity")}
@@ -201,7 +204,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.ethnicity[option]}</span>
                                 </label>
                             ))}
                             {errors.ethnicity && (
@@ -223,7 +226,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.race[option]}</span>
                                 </label>
                             ))}
                             {errors.race && (
@@ -259,7 +262,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.pregnancyStatusAtEnrollment[option]}</span>
                                 </label>
                             ))}
                             {errors.pregnancyStatusAtEnrollment && (
@@ -281,7 +284,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.maritalStatus[option]}</span>
                                 </label>
                             ))}
                             {errors.maritalStatus && (
@@ -295,7 +298,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">LGBTQI+</p>
                         <div className="space-y-3">
-                            {["LGBTQI+", "Non-LGBTQI+"].map(option => (
+                            {lgbtqiPlusEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("lgbtqiPlus")}
@@ -303,7 +306,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.lgbtqiPlus[option]}</span>
                                 </label>
                             ))}
                             {errors.lgbtqiPlus && (
@@ -325,7 +328,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         type="radio"
                                         value={option}
                                     />
-                                    <span className="ml-2">{option}</span>
+                                    <span className="ml-2">{labelMapping.insurance[option]}</span>
                                 </label>
                             ))}
                             {errors.insurance && (
