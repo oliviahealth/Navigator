@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -9,10 +10,18 @@ import {
     ICommunicationLogInputs,
     CommunicationLogInputsSchema,
     ICommunicationEntry,
+    CommunicationLogResponseSchema,
 } from "./definitions";
 import { createCommunicationLog } from "./actions";
 
+import useAppStore from "@/lib/useAppStore";
+
 const CommunicationLog: React.FC = () => {
+    const router = useRouter()
+
+    const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
+    const setErrorMessage = useAppStore(state => state.setErrorMessage);
+    
     // Using React Hook Form for form controls and validations with Zod
     // See: https://react-hook-form.com/
     // See: https://zod.dev/
@@ -21,13 +30,13 @@ const CommunicationLog: React.FC = () => {
         register,
         control,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<ICommunicationLogInputs>({
         resolver: zodResolver(CommunicationLogInputsSchema),
         defaultValues: {
             communicationEntries: [
                 {
-                    dateTime: "",
+                    dateTime: undefined,
                     method: null,
                     organizationPerson: "",
                     purpose: "",
@@ -47,7 +56,7 @@ const CommunicationLog: React.FC = () => {
     // Add a new blank communication object when the user clicks on the '+ Add Diagnosis button'
     const addNewCommunicationEntry = () => {
         append({
-            dateTime: "",
+            dateTime: '',
             method: null,
             organizationPerson: "",
             purpose: "",
@@ -56,14 +65,24 @@ const CommunicationLog: React.FC = () => {
         });
     };
 
-    const submit = (data: { communicationEntries: ICommunicationEntry[] }) => {
-        const { communicationEntries } = data;
+    const submit = async (data: { communicationEntries: ICommunicationEntry[] }) => {
+        try {
+            const { communicationEntries } = data;
 
-        CommunicationLogInputsSchema.parse(data);
+            const response = await createCommunicationLog(communicationEntries, "08bce088-d122-4b53-acf7-83c9182bc01e");
 
-        createCommunicationLog(communicationEntries, "08bce088-d122-4b53-acf7-83c9182bc01e");
+            CommunicationLogResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            return;
+        }
+
+        setSuccessMessage('Maternal Medical History submitted successfully!')
+        router.push('/dashboard');
     };
-
+    
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
             <form
@@ -236,7 +255,7 @@ const CommunicationLog: React.FC = () => {
                     type="submit"
                     className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
-                    { <span className="loading loading-spinner loading-sm"></span>}
+                    { isSubmitting && <span className="loading loading-spinner loading-sm"></span> }
                     Save
                 </button>
             </form>
