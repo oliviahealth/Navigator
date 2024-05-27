@@ -4,6 +4,8 @@ import "./globals.css";
 
 import Navbar from '@/components/Navbar';
 import Footer from "@/components/Footer";
+import ErrorPopup from "@/components/ErrorPopup";
+import SuccessPopup from "@/components/SuccessPopup";
 
 const myFont = localFont({
   src: '../../fonts/OpenSans-VariableFont_wdth,wght.ttf',
@@ -24,6 +26,10 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={`w-full h-full flex flex-col ${myFont.className}`}>
         <Navbar />
+  
+        <SuccessPopup />
+        <ErrorPopup />
+
         <main className="flex-grow">
           {children}
         </main>
