@@ -12,13 +12,16 @@ import {
     ICommunicationEntry,
     CommunicationLogResponseSchema,
 } from "../definitions";
-import { createCommunicationLog, readCommunicationLog } from "../actions";
+import { createCommunicationLog, readCommunicationLog, updateCommunicationLog } from "../actions";
 
 import useAppStore from "@/lib/useAppStore";
 
 const CommunicationLog: React.FC = () => {
     const router = useRouter()
     const { action } = useParams();
+
+    const verb = action[0];
+    const submissionId = action[1];
 
     const userId = useAppStore(state => state.userId);
 
@@ -73,7 +76,13 @@ const CommunicationLog: React.FC = () => {
         try {
             const { communicationEntries } = data;
 
-            const response = await createCommunicationLog(communicationEntries, userId);
+            let response;
+
+            if(verb === 'new') {
+                response = await createCommunicationLog(communicationEntries, userId);
+            } else {
+                response = await updateCommunicationLog(communicationEntries, submissionId);
+            }
 
             CommunicationLogResponseSchema.parse(response);
         } catch (error) {
@@ -94,9 +103,6 @@ const CommunicationLog: React.FC = () => {
             let response;
 
             try {
-                const verb = action[0];
-                const submissionId = action[1];
-
                 if (verb !== 'edit') {
                     return;
                 }

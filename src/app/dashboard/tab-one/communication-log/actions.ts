@@ -40,3 +40,29 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
 
     return response;
 }
+
+export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string) => {    
+    const formattedCommunicationEntries = communicationLogInput.map(communicationEntry => ({
+        ...communicationEntry,
+        dateTime: new Date(communicationEntry.dateTime).toISOString(),
+        method: communicationEntry.method as CommunicationMethod,
+        followUpNeeded: communicationEntry.followUpNeeded as FollowUpNeeded,
+    }));
+
+    const response = await prisma.communicationLog.update({
+        where: {
+            id: communicationLogId,
+        },
+        data: {
+            communicationEntries: {
+                deleteMany: {},
+                create: formattedCommunicationEntries
+            },
+        },
+        include: {
+            communicationEntries: true
+        }
+    });
+
+    return response;
+}
