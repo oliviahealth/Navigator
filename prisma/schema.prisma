@@ -20,10 +20,11 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
 
-  CommunicationLog CommunicationLog[]
-  AppointmentLog   AppointmentLog[]
-  EnrollmentForm   EnrollmentForm[]
-  MediaAppearance  MediaAppearance[]
+  CommunicationLog              CommunicationLog[]
+  AppointmentLog                AppointmentLog[]
+  EnrollmentForm                EnrollmentForm[]
+  MediaAppearance               MediaAppearance[]
+  ParticipantDemographicsRecord ParticipantDemographicsRecord[]
 }
 
 enum CommunicationMethod {
@@ -33,13 +34,15 @@ enum CommunicationMethod {
   Video_Call
   Other
 }
+
 enum FollowUpNeeded {
   Yes
   No
 }
+
 model CommunicationEntry {
-  id                String     @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   communicationLogId String
 
   dateTime           DateTime
@@ -49,10 +52,11 @@ model CommunicationEntry {
   notes              String?
   followUpNeeded     FollowUpNeeded
 
-  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id])
+  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id])
 }
+
 model CommunicationLog {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id])
   userId String
@@ -64,19 +68,20 @@ model CommunicationLog {
 }
 
 model AppointmentEntry {
-  id                String     @id @default(uuid())
-  
-  appointmentLogId  String
+  id String @id @default(uuid())
 
-  dateTime          DateTime
-  who               String
-  location          String
-  notes             String?
+  appointmentLogId String
 
-  appointmentLog   AppointmentLog @relation(fields: [appointmentLogId], references: [id])
+  dateTime DateTime
+  who      String
+  location String
+  notes    String?
+
+  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id])
 }
+
 model AppointmentLog {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id])
   userId String
@@ -88,22 +93,23 @@ model AppointmentLog {
 }
 
 model EmergencyContact {
-  id                String @id @default(uuid())
+  id String @id @default(uuid())
 
-  enrollmentFormId  String
+  enrollmentFormId String
 
-  name              String
-  relationship      String
-  telephone         String
-  email             String
+  name         String
+  relationship String
+  telephone    String
+  email        String
 
-  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
+  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
 }
-model EnrollmentForm {
-  id                String @id @default(uuid())
 
-  User   User       @relation(fields: [userId], references: [id])
-  userId            String
+model EnrollmentForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
 
   firstName         String
   lastName          String
@@ -128,16 +134,107 @@ model EnrollmentForm {
 }
 
 model MediaAppearance {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id])
   userId String
 
-  participantName          String
-  address              String
-  participantDate      String
-  guardianName         String?
-  guardianDate         String?
+  participantName String
+  address         String
+  participantDate String
+  guardianName    String?
+  guardianDate    String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+enum Gender {
+  Female
+  Male
+}
+
+enum Ethnicity {
+  Hispanic_Or_Latinx
+  Not_Hispanic_Or_Latinx
+}
+
+enum Race {
+  American_Indian_Alaska_Native
+  Asian
+  Black_or_African_American
+  Native_Hawaiian_or_Pacific_Islander
+  White
+  More_than_one_race_not_specified
+  Declined_to_identify
+}
+
+enum PregnancyStatusAtEnrollment {
+  Pregnant
+  Not_Pregnant
+  NA_Male_Participiant
+}
+
+enum MaritalStatus {
+  Married
+  Not_Married_But_Living_Together
+  Never_Married_And_Not_Living_With_Partner
+  Separated_or_Divorced
+  Widowed
+}
+
+enum LgbtqiPlus {
+  lgbtqi
+  nonlgbtqi
+}
+
+enum Insurance {
+  Employer_Insurance
+  Self_Pay
+  Dual_Eligibile_Medicaid_Medicare
+  Medicaid_CHIP_only
+  Medicare_only
+  Medicare_plus_supplemental
+  TriCARE
+  Other_third_party_privately_insured
+  Uninsured
+}
+
+enum PriorityPopulationCharacteristics {
+  Yes
+  No
+}
+
+model ParticipantDemographicsRecord {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  programStartDate            String
+  caseId                      String
+  homeVisitorAssignment       String
+  name                        String
+  dateOfBirth                 String
+  address                     String
+  zipCode                     String
+  phoneNumber                 String
+  gender                      Gender
+  ethnicity                   Ethnicity
+  race                        Race
+  primaryLanguage             String
+  pregnancyStatusAtEnrollment PregnancyStatusAtEnrollment
+  maritalStatus               MaritalStatus
+  lgbtqiPlus                  LgbtqiPlus
+  insurance                   Insurance
+  childAbuse                  PriorityPopulationCharacteristics
+  substanceAbuse              PriorityPopulationCharacteristics
+  tobaccoUse                  PriorityPopulationCharacteristics
+  lowStudentAchievement       PriorityPopulationCharacteristics
+  developmentalDelay          PriorityPopulationCharacteristics
+  USArmedForces               PriorityPopulationCharacteristics
+  reenrollmentWithGap         PriorityPopulationCharacteristics
+  transferFromAnotherSite     PriorityPopulationCharacteristics
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
