@@ -18,10 +18,10 @@ import useAppStore from "@/lib/useAppStore";
 
 const CommunicationLog: React.FC = () => {
     const router = useRouter()
-    const { action } = useParams();
+    const { action } = useParams(); // Capture weather this is a new submission or edit submission and the submission id using the url
 
-    const verb = action[0];
-    const submissionId = action[1];
+    const verb = action[0]; // Either 'new' or 'edit'
+    const submissionId = action[1]; // SubmissionId is a uuid that corresponds to a specific CommunicationLog record in the db
 
     const userId = useAppStore(state => state.userId);
 
@@ -72,6 +72,9 @@ const CommunicationLog: React.FC = () => {
         });
     };
 
+    // Send the data to the db depending on weather this is a new submission or updating a submission
+    // Parse the response to ensure it is compliant with what we expect
+    // Redirect to dashboard
     const submit = async (data: { communicationEntries: ICommunicationEntry[] }) => {
         try {
             const { communicationEntries } = data;
@@ -98,6 +101,10 @@ const CommunicationLog: React.FC = () => {
         router.push('/dashboard');
     };
 
+    // If this is an update submission, fetch the past submission data using the submissionId from the url
+    // Parse the respond data to ensure it is compliant with what we expect
+    // Iterate through the response data and fill in the inputs
+    // Call reset() to keep React-Hook-Form in line with our data
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             let response;
@@ -140,7 +147,7 @@ const CommunicationLog: React.FC = () => {
                 onSubmit={handleSubmit((data) => submit(data))}
                 className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
             >
-                <p className="font-semibold text-2xl">Communications Log</p>
+                <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Communications Log</p>
 
                 {fields.map((field, index) => {
                     return (

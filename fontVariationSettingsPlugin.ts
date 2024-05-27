@@ -3,7 +3,7 @@ import plugin from 'tailwindcss/plugin';
 const fontVariationSettings = plugin(function ({
   addUtilities,
 }: {
-  addUtilities;
+  addUtilities: any;
 }) {
   // predefined font stretch amounts
   const stretch: { [key: string]: number } = {
@@ -44,13 +44,16 @@ const fontVariationSettings = plugin(function ({
       const sSelect = `&.font-${sKey}`;
       const sSelectItalic = `&.italic.font-${sKey}`;
 
+      // @ts-expect-error: Override ts checks
       baseData[select][sSelectItalic] = {
         fontVariationSettings: `'slnt' 1, 'wdth' ${sValue}, 'wght' ${value}`,
       };
+      // @ts-expect-error: Override ts checks
       baseData[select][sSelect] = {
         fontVariationSettings: `'wdth' ${sValue}, 'wght' ${value}`,
       };
     });
+    // @ts-expect-error: Override ts checks
     baseData[select]['&.italic'] = {
       fontVariationSettings: `'slnt' 1, 'wght' ${value}`,
     };
