@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { useRouter } from 'next/navigation'
+import React, { useEffect } from "react";
+import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -11,17 +11,20 @@ import {
     CommunicationLogInputsSchema,
     ICommunicationEntry,
     CommunicationLogResponseSchema,
-} from "./definitions";
-import { createCommunicationLog } from "./actions";
+} from "../definitions";
+import { createCommunicationLog, readCommunicationLog } from "../actions";
 
 import useAppStore from "@/lib/useAppStore";
 
 const CommunicationLog: React.FC = () => {
     const router = useRouter()
+    const { action } = useParams();
+
+    const userId = useAppStore(state => state.userId);
 
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
-    
+
     // Using React Hook Form for form controls and validations with Zod
     // See: https://react-hook-form.com/
     // See: https://zod.dev/
@@ -31,6 +34,7 @@ const CommunicationLog: React.FC = () => {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
+        reset
     } = useForm<ICommunicationLogInputs>({
         resolver: zodResolver(CommunicationLogInputsSchema),
         defaultValues: {
@@ -69,12 +73,14 @@ const CommunicationLog: React.FC = () => {
         try {
             const { communicationEntries } = data;
 
-            const response = await createCommunicationLog(communicationEntries, "08bce088-d122-4b53-acf7-83c9182bc01e");
+            const response = await createCommunicationLog(communicationEntries, userId);
 
             CommunicationLogResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
 
             return;
         }
@@ -82,7 +88,46 @@ const CommunicationLog: React.FC = () => {
         setSuccessMessage('Maternal Medical History submitted successfully!')
         router.push('/dashboard');
     };
-    
+
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            let response;
+
+            try {
+                const verb = action[0];
+                const submissionId = action[1];
+
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                response = await readCommunicationLog(submissionId, userId);
+
+                CommunicationLogResponseSchema.parse(response);
+
+                const formattedEntries = response.communicationEntries.map(entry => ({
+                    ...entry,
+                    dateTime: new Date(entry.dateTime).toISOString().slice(0, 16),
+                }));
+
+                reset({ communicationEntries: formattedEntries });
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/');
+                
+                return;
+            }
+        }
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
             <form
@@ -255,7 +300,7 @@ const CommunicationLog: React.FC = () => {
                     type="submit"
                     className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
-                    { isSubmitting && <span className="loading loading-spinner loading-sm"></span> }
+                    {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
                     Save
                 </button>
             </form>

@@ -26,3 +26,17 @@ export const createCommunicationLog = async (communicationLogInput: ICommunicati
 
     return response;
 }
+
+export const readCommunicationLog = async (communicationLogId: string, userId: string) => {
+    const response = await prisma.communicationLog.findUniqueOrThrow({
+        where: {
+            userId,
+            id: communicationLogId
+        },
+        include: {
+            communicationEntries: true,
+        },
+    });
+
+    return response;
+}
