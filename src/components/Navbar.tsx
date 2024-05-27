@@ -9,6 +9,7 @@ const Navbar: React.FC = () => {
     const menuToggle = () => {
         setOpen(!isOpen);
     };
+
     return (
         <div className="flex min-h-[4.5rem] w-full items-center text-black border-b z-10 shadow-sm">
             <div className="xl:container xl:px-2 flex w-full px-5 mx-auto items-center justify-between">
@@ -17,7 +18,7 @@ const Navbar: React.FC = () => {
                         <img
                             className="h-[3rem]"
                             alt="Olivia Health Plan of Safecare logo"
-                            src="../../public/navigator.png"
+                            src="/images/logo.svg"
                         />
                     </Link>
                 </div>
