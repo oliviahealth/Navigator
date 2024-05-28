@@ -97,7 +97,7 @@ const CommunicationLog: React.FC = () => {
             return;
         }
 
-        setSuccessMessage('Maternal Medical History submitted successfully!')
+        setSuccessMessage('Communication Log submitted successfully!')
         router.push('/dashboard');
     };
 

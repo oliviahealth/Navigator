@@ -14,10 +14,12 @@ import {
     pregnancyStatusAtEnrollmentEnum,
     ethnicityEnum,
     lgbtqiPlusEnum,
-    labelMapping
+    labelMapping,
+    ParticipantDemographicsRecordResponseSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
+import { createParticipantDemographicsRecord, readParticipantDemographicsRecord, updateParticipantDemographicsRecord } from "../actions";
 
 const ParticipantDemographicsRecord: React.FC = () => {
     const router = useRouter();
@@ -34,14 +36,76 @@ const ParticipantDemographicsRecord: React.FC = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors, isSubmitting },
     } = useForm<IParticipantDemographicsRecordInputs>({
         resolver: zodResolver(ParticipantDemographicsRecordInputsSchema),
     });
 
-    // temporary
-    const submit = async (data: IParticipantDemographicsRecordInputs) => {
-        console.log(data)
+    const fetchAndPopulatePastSubmissionData = async () => {
+
+        try {
+            if (verb !== 'edit') {
+                return;
+            }
+
+            if (!submissionId) {
+                throw new Error('Missing submissionId when fetching past submission');
+            }
+
+            const response = await readParticipantDemographicsRecord(submissionId, userId);
+
+            const validResponse = ParticipantDemographicsRecordResponseSchema.parse(response);
+
+            const formattedData = {
+                ...validResponse,
+                dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
+            };
+
+            reset(formattedData);
+
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+            router.push('/');
+        }
+    }
+
+    useEffect(() => {
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
+    const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsRecordInputs) => {
+        console.log(ParticipantDemographicsRecordData)
+
+        try {
+
+            let response;
+
+            if (verb === 'new') {
+                response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, userId);
+            } else {
+                
+                if(!submissionId) {
+                    return;
+                }
+
+                response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, userId)
+            }
+
+            ParticipantDemographicsRecordResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
+
+            return;
+        }
+
+        setSuccessMessage('Participant Demographics Record submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (
@@ -523,7 +587,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     type="submit"
                     className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
-                    {/* {isSubmitting && <span className="loading loading-spinner loading-sm"></span>} */}
+                    {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
                     Save
                 </button>
             </form>

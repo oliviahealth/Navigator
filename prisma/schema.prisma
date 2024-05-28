@@ -211,11 +211,11 @@ model ParticipantDemographicsRecord {
   User   User   @relation(fields: [userId], references: [id])
   userId String
 
-  programStartDate            String
+  programStartDate            DateTime
   caseId                      String
-  homeVisitorAssignment       String
+  homeVisitorAssigned         String
   name                        String
-  dateOfBirth                 String
+  dateOfBirth                 DateTime
   address                     String
   zipCode                     String
   phoneNumber                 String

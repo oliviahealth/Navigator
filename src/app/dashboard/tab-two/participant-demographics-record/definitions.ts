@@ -66,7 +66,7 @@ export const labelMapping = {
     },
     lgbtqiPlus: {
         lgbtqi: "LGBTQI+",
-        nonlgbtqi: "Non-LGBTIQI+"
+        nonlgbtqi: "Non-LGBTQI+"
     },
     insurance: {
         Employer_Insurance: "Employer Insurance",
@@ -82,7 +82,7 @@ export const labelMapping = {
 };
 
 export const ParticipantDemographicsRecordInputsSchema = z.object({
-    programStartDate: z.string().min(1, "Program Start Date is required"),
+    programStartDate: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
     caseId: z.string().min(1, "CaseID is required"),
     homeVisitorAssigned: z.string().min(1, "Home Visitor Assigned is required"),
     name: z.string().min(1, "Participant name is required"),
@@ -90,22 +90,22 @@ export const ParticipantDemographicsRecordInputsSchema = z.object({
     address: z.string().min(1, "Address is required"),
     zipCode: z.string().min(1, "Zip Code is required"),
     phoneNumber: z.string().min(1, "Phone Number is required"),
-    gender: z.enum(["Female", "Male"]).nullable().refine(val => val, { message: "Gender is required" }),
-    ethnicity: ethnicityEnum.nullable().refine(val => val, { message: "Ethnicity is required" }),
-    race: raceEnum.nullable().refine(val => val, { message: "Race is required" }),
+    gender: z.enum(["Female", "Male"]).refine(val => val, { message: "Gender is required" }),
+    ethnicity: ethnicityEnum.refine(val => val, { message: "Ethnicity is required" }),
+    race: raceEnum.refine(val => val, { message: "Race is required" }),
     primaryLanguage: z.string().min(1, "Primary Language is required"),
-    pregnancyStatusAtEnrollment: pregnancyStatusAtEnrollmentEnum.nullable().refine(val => val, { message: "Pregnancy Status is required" }),
-    maritalStatus: maritalStatusEnum.nullable().refine(val => val, { message: "Marital Status is required" }),
-    lgbtqiPlus: lgbtqiPlusEnum.nullable().refine(val => val, { message: "LGBTQI+ is required" }),
-    insurance: insuranceEnum.nullable().refine(val => val, { message: "Insurance is required" }),
-    childAbuse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Child abuse information is required" }),
-    substanceAbuse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Substance abuse information is required" }),
-    tobaccoUse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Tobacco use information is required" }),
-    lowStudentAchievement: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Low student achievement information is required" }),
-    developmentalDelay: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Developmental delay information is required" }),
-    USArmedForces: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "US Armed Forces information is required" }),
-    reenrollmentWithGap: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Reenrollment with gap in service information is required" }),
-    transferFromAnotherSite: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Transfer from another site information is required" }),
+    pregnancyStatusAtEnrollment: pregnancyStatusAtEnrollmentEnum.refine(val => val, { message: "Pregnancy Status is required" }),
+    maritalStatus: maritalStatusEnum.refine(val => val, { message: "Marital Status is required" }),
+    lgbtqiPlus: lgbtqiPlusEnum.refine(val => val, { message: "LGBTQI+ is required" }),
+    insurance: insuranceEnum.refine(val => val, { message: "Insurance is required" }),
+    childAbuse: z.enum(["Yes", "No"]).refine(val => val, { message: "Child abuse information is required" }),
+    substanceAbuse: z.enum(["Yes", "No"]).refine(val => val, { message: "Substance abuse information is required" }),
+    tobaccoUse: z.enum(["Yes", "No"]).refine(val => val, { message: "Tobacco use information is required" }),
+    lowStudentAchievement: z.enum(["Yes", "No"]).refine(val => val, { message: "Low student achievement information is required" }),
+    developmentalDelay: z.enum(["Yes", "No"]).refine(val => val, { message: "Developmental delay information is required" }),
+    USArmedForces: z.enum(["Yes", "No"]).refine(val => val, { message: "US Armed Forces information is required" }),
+    reenrollmentWithGap: z.enum(["Yes", "No"]).refine(val => val, { message: "Reenrollment with gap in service information is required" }),
+    transferFromAnotherSite: z.enum(["Yes", "No"]).refine(val => val, { message: "Transfer from another site information is required" }),
 })
 export type IParticipantDemographicsRecordInputs = z.infer<typeof ParticipantDemographicsRecordInputsSchema>
 
