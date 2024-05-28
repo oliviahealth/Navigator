@@ -17,7 +17,16 @@ const EnrollmentEntrySchema = z.object({
   phone: z.string().min(1, "Phone is required"),
   email: z.string().min(1, "Email is required"),
   datebirth: z.string().min(1, "Date of Birth is required"),
+
+  // emergencyname: z.string().min(1, "Emergency Contact Name is required"),
+  // emergencyphone: z.string().min(1, "Emergency Contact Phone is required"),
+  // emergencyrelationship: z.string().min(
+  //   1,
+  //   "Emergency Contact Relationship is required"
+  // ),
+  // emergencyemail: z.string().min(1, "Emergency Contact Email is required"),
 });
+
 export type IEnrollmentEntry = z.infer<typeof EnrollmentEntrySchema>;
 
 // Define the overall schema of the enrollment form log which is an array of objects from above
@@ -50,6 +59,7 @@ const EnrollmentLog: React.FC = () => {
       ],
     },
   });
+  
 
   // Extract some functions that will allow us to interface with the array
   const { fields, append, remove } = useFieldArray({
@@ -57,9 +67,10 @@ const EnrollmentLog: React.FC = () => {
     name: "enrollmentEntries",
   });
 
+
   // Temporary submit function while we work to get db setup
   const submit = (data: IEnrollmentLogInputs) => {
-    alert("Communication Log submitted successfully");
+    alert("Enrollment Log submitted successfully");
 
     console.log(data);
   };
@@ -102,7 +113,147 @@ const EnrollmentLog: React.FC = () => {
         <p className="text-lg pt-8 text-center">Your Contact Information</p>
       </div>
 
-      
+      <div className="flex flex-col items-center"></div>
+      <form
+        onSubmit={handleSubmit((data) => submit(data))}
+        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+      >
+        {fields.map((item, index) => (
+          <div key={item.id}>
+            <p className="font-medium pb-2 pt-8">First Name</p>
+            <input
+              {...register(`enrollmentEntries.${index}.firstname`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.firstname && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.firstname?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Last Name</p>
+            <input
+              {...register(`enrollmentEntries.${index}.lastname`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.lastname && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.lastname?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Address</p>
+            <input
+              {...register(`enrollmentEntries.${index}.address`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.address && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.address?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">City</p>
+            <input
+              {...register(`enrollmentEntries.${index}.city`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.city && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.city?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">State</p>
+            <input
+              {...register(`enrollmentEntries.${index}.state`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.state && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.state?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Zip Code</p>
+            <input
+              {...register(`enrollmentEntries.${index}.zip`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.zip && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.zip?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Phone Number</p>
+            <input
+              {...register(`enrollmentEntries.${index}.phone`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.phone && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.phone?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Email</p>
+            <input
+              {...register(`enrollmentEntries.${index}.email`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.email && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.email?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Date of Birth</p>
+            <input
+              {...register(`enrollmentEntries.${index}.datebirth`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="date"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.datebirth && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.datebirth?.message}
+                </span>
+              )}
+
+            <p className="text-lg pt-8 text-center">
+              Emergency Contact Information
+            </p>
+
+            {/* <p className="font-medium pb-2 pt-8">Emergency Contact</p>
+            <input
+              {...register(`enrollmentEntries.${index}.emergencyname`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.emergencyname && (
+                <span className="label-text-alt text-red-500">
+                  {errors.enrollmentEntries[index]?.emergencyname?.message}
+                </span>
+              )} */}
+          </div>
+        ))}
+
+        <button
+          type="submit"
+          className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-10"
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
