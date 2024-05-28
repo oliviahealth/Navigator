@@ -1,9 +1,14 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Link from 'next/link'
 
+import useAppStore from "@/lib/useAppStore";
+
 const Navbar: React.FC = () => {
+    const user = useAppStore((state) => state.user);
+    const accessToken = useAppStore(state => state.accessToken);
+
     const [isOpen, setOpen] = useState(false);
 
     const menuToggle = () => {
@@ -46,15 +51,24 @@ const Navbar: React.FC = () => {
                         className={`${isOpen ? 'block bg-white border shadow mt-4 mr-1' : 'hidden'} absolute rounded-xl md:shadow-none md:bg-none md:border-0 md:relative right-0 md:mt-0 p-4 md:p-0 md:flex space-y-6 md:space-y-0 md:space-x-4 text-sm md:text-base`}
                     >
                         <Link href={'/dashboard'} className="block md:flex button">
-                            Client Dashboard
+                            Dashboard
                         </Link>
 
-                        <Link
-                            href={'/sign-in'}
-                            className="block md:flex button md:button-filled md:rounded-full"
-                        >
-                            Sign In
-                        </Link>
+                        {(user && accessToken) ? (
+                            <button
+                                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                            >
+                                {/* <span className="loading loading-spinner loading-sm"></span> */}
+                                Sign Out
+                            </button>
+                        ) : (
+                            <Link
+                                href={'/sign-in'}
+                                className="block md:flex button md:button-filled md:rounded-full"
+                            >
+                                Sign In
+                            </Link>
+                        )}
                     </div>
                 </div>
             </div>
