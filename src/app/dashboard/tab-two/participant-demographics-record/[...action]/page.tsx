@@ -414,8 +414,8 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div className="space-y-5">
                         <div className="flex flex-col space-y-2">
                             <p className="text-lg font-bold pt-8"> Priority Population Characteristics </p>
-                            <small>This section can be completed using information from other recent assesments below. Home visitors may reword the questions as long as the data recorded meets the definition in the guidance.</small>
-                            <small>These fields should be updated periodically (review at least two times per year.)</small>
+                            <small className="text-gray-500">This section can be completed using information from other recent assesments below. Home visitors may reword the questions as long as the data recorded meets the definition in the guidance.</small>
+                            <small className="text-gray-500">These fields should be updated periodically (review at least two times per year.)</small>
                         </div>
 
                         <div className="space-y-8">
