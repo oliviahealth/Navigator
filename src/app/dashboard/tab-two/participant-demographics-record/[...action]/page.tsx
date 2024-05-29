@@ -3,19 +3,19 @@
 import React, { useEffect } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import {
-    ParticipantDemographicsRecordInputsSchema,
-    IParticipantDemographicsRecordInputs,
-    raceEnum,
-    maritalStatusEnum,
-    insuranceEnum,
-    pregnancyStatusAtEnrollmentEnum,
-    ethnicityEnum,
-    lgbtqiPlusEnum,
+    ParticipantDemographicsFormInputsSchema,
+    IParticipantDemographicsFormInputs,
+    RaceEnum,
+    MaritalStatusEnum,
+    InsuranceEnum,
+    PregnancyStatusAtEnrollmentEnum,
+    EthnicityEnum,
+    LgbtqiPlusEnum,
     labelMapping,
-    ParticipantDemographicsRecordResponseSchema
+    ParticipantDemographicsFormResponseSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -38,63 +38,59 @@ const ParticipantDemographicsRecord: React.FC = () => {
         handleSubmit,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm<IParticipantDemographicsRecordInputs>({
-        resolver: zodResolver(ParticipantDemographicsRecordInputsSchema),
+    } = useForm<IParticipantDemographicsFormInputs>({
+        resolver: zodResolver(ParticipantDemographicsFormInputsSchema),
     });
 
-    const fetchAndPopulatePastSubmissionData = async () => {
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
 
-        try {
-            if (verb !== 'edit') {
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readParticipantDemographicsRecord(submissionId, userId);
+
+                const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
+
+                const formattedData = {
+                    ...validResponse,
+                    participantDateOfBirth: new Date(validResponse.participantDateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                };
+
+                reset(formattedData);
+
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/');
+
                 return;
             }
-
-            if (!submissionId) {
-                throw new Error('Missing submissionId when fetching past submission');
-            }
-
-            const response = await readParticipantDemographicsRecord(submissionId, userId);
-
-            const validResponse = ParticipantDemographicsRecordResponseSchema.parse(response);
-
-            const formattedData = {
-                ...validResponse,
-                dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
-                programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
-            };
-
-            reset(formattedData);
-
-        } catch (error) {
-            console.error(error);
-            setErrorMessage('Something went wrong! Please try again later');
-            router.push('/');
         }
-    }
 
-    useEffect(() => {
         fetchAndPopulatePastSubmissionData()
     }, [])
 
-    const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsRecordInputs) => {
+    const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsFormInputs) => {
         console.log(ParticipantDemographicsRecordData)
 
         try {
-
             let response;
 
             if (verb === 'new') {
                 response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, userId);
             } else {
-                
-                if(!submissionId) {
-                    return;
-                }
-
                 response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, userId)
             }
 
-            ParticipantDemographicsRecordResponseSchema.parse(response);
+            ParticipantDemographicsFormResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
@@ -166,13 +162,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-4">Name</p>
                         <input
-                            {...register("name")}
+                            {...register("participantName")}
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             type="text"
                         />
-                        {errors.name && (
+                        {errors.participantName && (
                             <span className="label-text-alt text-red-500">
-                                {errors.name.message}
+                                {errors.participantName.message}
                             </span>
                         )}
                     </div>
@@ -180,13 +176,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-4">Date of Birth</p>
                         <input
-                            {...register("dateOfBirth")}
+                            {...register("participantDateOfBirth")}
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             type="date"
                         />
-                        {errors.dateOfBirth && (
+                        {errors.participantDateOfBirth && (
                             <span className="label-text-alt text-red-500">
-                                {errors.dateOfBirth.message}
+                                {errors.participantDateOfBirth.message}
                             </span>
                         )}
                     </div>
@@ -194,13 +190,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-4">Address</p>
                         <input
-                            {...register("address")}
+                            {...register("participantAddress")}
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             type="text"
                         />
-                        {errors.address && (
+                        {errors.participantAddress && (
                             <span className="label-text-alt text-red-500">
-                                {errors.address.message}
+                                {errors.participantAddress.message}
                             </span>
                         )}
                     </div>
@@ -208,13 +204,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-4">ZIP Code</p>
                         <input
-                            {...register("zipCode")}
+                            {...register("participantZipCode")}
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             type="text"
                         />
-                        {errors.zipCode && (
+                        {errors.participantZipCode && (
                             <span className="label-text-alt text-red-500">
-                                {errors.zipCode.message}
+                                {errors.participantZipCode.message}
                             </span>
                         )}
                     </div>
@@ -222,13 +218,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-4">Phone</p>
                         <input
-                            {...register("phoneNumber")}
+                            {...register("participantPhoneNumber")}
                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                             type="text"
                         />
-                        {errors.phoneNumber && (
+                        {errors.participantPhoneNumber && (
                             <span className="label-text-alt text-red-500">
-                                {errors.phoneNumber.message}
+                                {errors.participantPhoneNumber.message}
                             </span>
                         )}
                     </div>
@@ -260,7 +256,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Ethnicity</p>
                         <div className="space-y-3">
-                            {ethnicityEnum.options.map(option => (
+                            {EthnicityEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("ethnicity")}
@@ -282,7 +278,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Race</p>
                         <div className="space-y-3">
-                            {raceEnum.options.map(option => (
+                            {RaceEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("race")}
@@ -318,7 +314,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Pregnancy Status At Enrollment</p>
                         <div className="space-y-3">
-                            {pregnancyStatusAtEnrollmentEnum.options.map(option => (
+                            {PregnancyStatusAtEnrollmentEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("pregnancyStatusAtEnrollment")}
@@ -340,7 +336,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Marital Status</p>
                         <div className="space-y-3">
-                            {maritalStatusEnum.options.map(option => (
+                            {MaritalStatusEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("maritalStatus")}
@@ -362,7 +358,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">LGBTQI+</p>
                         <div className="space-y-3">
-                            {lgbtqiPlusEnum.options.map(option => (
+                            {LgbtqiPlusEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("lgbtqiPlus")}
@@ -384,7 +380,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     <div>
                         <p className="font-semibold pb-2 pt-8">Insurance</p>
                         <div className="space-y-3">
-                            {insuranceEnum.options.map(option => (
+                            {InsuranceEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
                                         {...register("insurance")}

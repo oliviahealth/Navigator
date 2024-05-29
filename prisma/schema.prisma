@@ -23,8 +23,8 @@ model User {
   CommunicationLog              CommunicationLog[]
   AppointmentLog                AppointmentLog[]
   EnrollmentForm                EnrollmentForm[]
-  MediaAppearance               MediaAppearance[]
-  ParticipantDemographicsRecord ParticipantDemographicsRecord[]
+  MediaAppearanceForm           MediaAppearanceForm[]
+  ParticipantDemographicsForm ParticipantDemographicsForm[]
 }
 
 enum CommunicationMethod {
@@ -133,7 +133,7 @@ model EnrollmentForm {
   dateModified DateTime @default(now())
 }
 
-model MediaAppearance {
+model MediaAppearanceForm {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id])
@@ -155,8 +155,8 @@ enum Gender {
 }
 
 enum Ethnicity {
-  Hispanic_Or_Latinx
-  Not_Hispanic_Or_Latinx
+  Hispanic_or_Latinx
+  Not_Hispanic_or_Latinx
 }
 
 enum Race {
@@ -177,20 +177,20 @@ enum PregnancyStatusAtEnrollment {
 
 enum MaritalStatus {
   Married
-  Not_Married_But_Living_Together
-  Never_Married_And_Not_Living_With_Partner
+  Not_married_but_living_together
+  Never_married_and_not_living_with_partner
   Separated_or_Divorced
   Widowed
 }
 
 enum LgbtqiPlus {
-  lgbtqi
-  nonlgbtqi
+  LGBTQI
+  Non_LGBTQI
 }
 
 enum Insurance {
-  Employer_Insurance
-  Self_Pay
+  Employer_insurance
+  Self_pay
   Dual_Eligibile_Medicaid_Medicare
   Medicaid_CHIP_only
   Medicare_only
@@ -205,7 +205,7 @@ enum PriorityPopulationCharacteristics {
   No
 }
 
-model ParticipantDemographicsRecord {
+model ParticipantDemographicsForm {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id])
@@ -214,11 +214,11 @@ model ParticipantDemographicsRecord {
   programStartDate            DateTime
   caseId                      String
   homeVisitorAssigned         String
-  name                        String
-  dateOfBirth                 DateTime
-  address                     String
-  zipCode                     String
-  phoneNumber                 String
+  participantName             String
+  participantDateOfBirth      DateTime
+  participantAddress          String
+  participantZipCode                     String
+  participantPhoneNumber                 String
   gender                      Gender
   ethnicity                   Ethnicity
   race                        Race

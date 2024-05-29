@@ -1,33 +1,31 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantDemographicsRecordInputs, IParticipantDemographicsRecordResponse } from "./definitions";
-// import { ICommunicationEntry } from "./definitions";
-// import { CommunicationMethod,  } from "@prisma/client";
+import { IParticipantDemographicsFormInputs, IParticipantDemographicsFormResponse } from "./definitions";
 
 /**
  * Creates a new Participant Demographics Record in the db.
- * @param {IParticipantDemographicsRecordInputs} participantDemographicsRecordInput - The Participant Demographics Record Data to be created.
+ * @param {IParticipantDemographicsFormInputs} participantDemographicsRecordInput - The Participant Demographics Record Data to be created.
  * @param {string} userId - The ID of the user creating the Participant Demographics Record
- * @returns {Promise<IParticipantDemographicsRecordResponse>} A promise resolving to the created participant demographics record.
+ * @returns {Promise<IParticipantDemographicsFormResponse>} A promise resolving to the created participant demographics record.
  * @throws {Error} If there's an issue creating the participant demographics record.
  * @remarks This function takes participant demographics record data and saves them to the database using Prisma.
  */
-export const createParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsRecordInputs, userId: string) => {
+export const createParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsFormInputs, userId: string) => {
     const {
-        dateOfBirth,
+        participantDateOfBirth,
         programStartDate,
         ...rest
     } = participantDemographicsRecordInput;
 
     // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(dateOfBirth);
+    const dateOfBirthAsDate = new Date(participantDateOfBirth);
     const programStartDateAsDate = new Date(programStartDate);
 
-    const response = await prisma.participantDemographicsRecord.create({
+    const response = await prisma.participantDemographicsForm.create({
         data: {
             userId,
-            dateOfBirth: dateOfBirthAsDate,
+            participantDateOfBirth: dateOfBirthAsDate,
             programStartDate: programStartDateAsDate,
             ...rest,
         },
@@ -40,14 +38,13 @@ export const createParticipantDemographicsRecord = async (participantDemographic
  * Retrieves a participant demographics record from the database based on its ID and the user ID.
  * @param {string} participantDemographicsRecordId - The ID of the Participant Demographics Record to retrieve
  * @param {string} userId - The ID of the user request the Participant Demographics Record.
- * @returns {Promise<IParticipantDemographicsRecordResponse | null>} A promise resolving to the retrieved Partricipant Demographics Record,
+ * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved Partricipant Demographics Record,
  * or null if no entry is found
  * @throws {Error} If there's an issue retrieving the Participant Demographics Record.
  * @remarks This function retrieves a Participant Demographics Record from the database using Prisma based on the provided ID and the user ID.
  */
 export const readParticipantDemographicsRecord = async (participantDemographicsRecordId: string, userId: string) => {
-
-    const response = await prisma.participantDemographicsRecord.findUniqueOrThrow({
+    const response = await prisma.participantDemographicsForm.findUniqueOrThrow({
         where: {
             userId,
             id: participantDemographicsRecordId
@@ -59,33 +56,33 @@ export const readParticipantDemographicsRecord = async (participantDemographicsR
 
 /**
  * Updates a Participant Demographics Record in the database with new Participant Demographics Record.
- * @param {IParticipantDemographicsRecordInputs} participantDemographicsRecordInput - An array of updated Participant Demographics Recordies.
+ * @param {IParticipantDemographicsFormInputs} participantDemographicsRecordInput - An array of updated Participant Demographics Recordies.
  * @param {string} id - The ID of the Participant Demographics Record to update.
  * @param {string} userId - The ID of the user requesting to update the record.
- * @returns {Promise<IParticipantDemographicsRecordResponse>} A promise resolving to the updated Participant Demographics Record.
+ * @returns {Promise<IParticipantDemographicsFormResponse>} A promise resolving to the updated Participant Demographics Record.
  * @throws {Error} If there's an issue updating the Participant Demographics Record.
  * @remarks This function updates a Participant Demographics Record in the database using Prisma. It replaces the existing
  * record with the record provided in the input.
  */
-export const updateParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsRecordInputs, id: string, userId: string) => {
+export const updateParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsFormInputs, id: string, userId: string) => {
 
     const {
-        dateOfBirth,
+        participantDateOfBirth,
         programStartDate,
         ...rest
     } = participantDemographicsRecordInput;
 
     // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(dateOfBirth);
+    const dateOfBirthAsDate = new Date(participantDateOfBirth);
     const programStartDateAsDate = new Date(programStartDate);
 
-    const response = await prisma.participantDemographicsRecord.update({
+    const response = await prisma.participantDemographicsForm.update({
         where: {
             id,
             userId
         },
         data: {
-            dateOfBirth: dateOfBirthAsDate,
+            participantDateOfBirth: dateOfBirthAsDate,
             programStartDate: programStartDateAsDate,
             ...rest,
         }
@@ -102,8 +99,7 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
  * @remarks To be used by the dashboard
  */
 export const deleteParticipantDemographicsRecord = async (submissionId: string, userId: string) => {
-
-    const response = await prisma.participantDemographicsRecord.deleteMany({
+    const response = await prisma.participantDemographicsForm.deleteMany({
         where: {
             id: submissionId,
             userId: userId

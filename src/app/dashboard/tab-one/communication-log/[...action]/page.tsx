@@ -107,8 +107,6 @@ const CommunicationLog: React.FC = () => {
     // Call reset() to keep React-Hook-Form in line with our data
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
-            let response;
-
             try {
                 if (verb !== 'edit') {
                     return;
@@ -118,7 +116,7 @@ const CommunicationLog: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                response = await readCommunicationLog(submissionId, userId);
+                const response = await readCommunicationLog(submissionId, userId);
 
                 CommunicationLogResponseSchema.parse(response);
 
