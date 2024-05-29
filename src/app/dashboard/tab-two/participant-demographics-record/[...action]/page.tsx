@@ -1,23 +1,25 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import {
-    ParticipantDemographicsRecordInputsSchema,
-    IParticipantDemographicsRecordInputs,
-    raceEnum,
-    maritalStatusEnum,
-    insuranceEnum,
-    pregnancyStatusAtEnrollmentEnum,
-    ethnicityEnum,
-    lgbtqiPlusEnum,
-    labelMapping
+    ParticipantDemographicsFormInputsSchema,
+    IParticipantDemographicsFormInputs,
+    RaceEnum,
+    MaritalStatusEnum,
+    InsuranceEnum,
+    PregnancyStatusAtEnrollmentEnum,
+    EthnicityEnum,
+    LgbtqiPlusEnum,
+    labelMapping,
+    ParticipantDemographicsFormResponseSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
+import { createParticipantDemographicsRecord, readParticipantDemographicsRecord, updateParticipantDemographicsRecord } from "../actions";
 
 const ParticipantDemographicsRecord: React.FC = () => {
     const router = useRouter();
@@ -34,14 +36,72 @@ const ParticipantDemographicsRecord: React.FC = () => {
     const {
         register,
         handleSubmit,
+        reset,
         formState: { errors, isSubmitting },
-    } = useForm<IParticipantDemographicsRecordInputs>({
-        resolver: zodResolver(ParticipantDemographicsRecordInputsSchema),
+    } = useForm<IParticipantDemographicsFormInputs>({
+        resolver: zodResolver(ParticipantDemographicsFormInputsSchema),
     });
 
-    // temporary
-    const submit = async (data: IParticipantDemographicsRecordInputs) => {
-        console.log(data)
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readParticipantDemographicsRecord(submissionId, userId);
+
+                const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
+
+                const formattedData = {
+                    ...validResponse,
+                    participantDateOfBirth: new Date(validResponse.participantDateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                };
+
+                reset(formattedData);
+
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/');
+
+                return;
+            }
+        }
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
+    const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsFormInputs) => {
+        console.log(ParticipantDemographicsRecordData)
+
+        try {
+            let response;
+
+            if (verb === 'new') {
+                response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, userId);
+            } else {
+                response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, userId)
+            }
+
+            ParticipantDemographicsFormResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
+
+            return;
+        }
+
+        setSuccessMessage('Participant Demographics Record submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (
@@ -108,13 +168,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Name</p>
                                 <input
-                                    {...register("name")}
+                                    {...register("participantName")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="text"
                                 />
-                                {errors.name && (
+                                {errors.participantName && (
                                     <span className="label-text-alt text-red-500">
-                                        {errors.name.message}
+                                        {errors.participantName.message}
                                     </span>
                                 )}
                             </div>
@@ -122,13 +182,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Date of Birth</p>
                                 <input
-                                    {...register("dateOfBirth")}
+                                    {...register("participantDateOfBirth")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="date"
                                 />
-                                {errors.dateOfBirth && (
+                                {errors.participantDateOfBirth && (
                                     <span className="label-text-alt text-red-500">
-                                        {errors.dateOfBirth.message}
+                                        {errors.participantDateOfBirth.message}
                                     </span>
                                 )}
                             </div>
@@ -136,13 +196,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Address</p>
                                 <input
-                                    {...register("address")}
+                                    {...register("participantAddress")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="text"
                                 />
-                                {errors.address && (
+                                {errors.participantAddress && (
                                     <span className="label-text-alt text-red-500">
-                                        {errors.address.message}
+                                        {errors.participantAddress.message}
                                     </span>
                                 )}
                             </div>
@@ -150,13 +210,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">ZIP Code</p>
                                 <input
-                                    {...register("zipCode")}
+                                    {...register("participantZipCode")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="text"
                                 />
-                                {errors.zipCode && (
+                                {errors.participantZipCode && (
                                     <span className="label-text-alt text-red-500">
-                                        {errors.zipCode.message}
+                                        {errors.participantZipCode.message}
                                     </span>
                                 )}
                             </div>
@@ -164,13 +224,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Phone</p>
                                 <input
-                                    {...register("phoneNumber")}
+                                    {...register("participantPhoneNumber")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="text"
                                 />
-                                {errors.phoneNumber && (
+                                {errors.participantPhoneNumber && (
                                     <span className="label-text-alt text-red-500">
-                                        {errors.phoneNumber.message}
+                                        {errors.participantPhoneNumber.message}
                                     </span>
                                 )}
                             </div>
@@ -206,7 +266,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Ethnicity</p>
                                 <div className="space-y-2">
-                                    {ethnicityEnum.options.map(option => (
+                                    {EthnicityEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("ethnicity")}
@@ -228,7 +288,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Race</p>
                                 <div className="space-y-2">
-                                    {raceEnum.options.map(option => (
+                                    {RaceEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("race")}
@@ -264,7 +324,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Pregnancy Status At Enrollment</p>
                                 <div className="space-y-3">
-                                    {pregnancyStatusAtEnrollmentEnum.options.map(option => (
+                                    {PregnancyStatusAtEnrollmentEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("pregnancyStatusAtEnrollment")}
@@ -286,7 +346,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Marital Status</p>
                                 <div className="space-y-2">
-                                    {maritalStatusEnum.options.map(option => (
+                                    {MaritalStatusEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("maritalStatus")}
@@ -308,7 +368,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">LGBTQI+</p>
                                 <div className="space-y-2">
-                                    {lgbtqiPlusEnum.options.map(option => (
+                                    {LgbtqiPlusEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("lgbtqiPlus")}
@@ -330,7 +390,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Insurance</p>
                                 <div className="space-y-2">
-                                    {insuranceEnum.options.map(option => (
+                                    {InsuranceEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
                                                 {...register("insurance")}
@@ -360,7 +420,12 @@ const ParticipantDemographicsRecord: React.FC = () => {
 
                         <div className="space-y-8">
                             <div className="space-y-3">
-                                <p className="font-semibold">Child Abuse</p>
+                                <div className="flex flex-col ">
+                                    <p className="font-semibold">Child Abuse / Child Welfare System</p>
+                                    <small className="text-gray-500">Does participant have a history of child abuse or neglect?</small>
+                                    <small className="text-gray-500">Has the participant been involved with the child welfare system?</small>
+                                </div>
+
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">
@@ -383,6 +448,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Substance Abuse</p>
+                                <small className="text-gray-500">Does the participant have current or previous substance abuse problems?</small>
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">
@@ -405,6 +471,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Tobacco Use In Home</p>
+                                <small className="text-gray-500">Are tobacco products used in the home?</small>
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">
@@ -426,7 +493,11 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             </div>
 
                             <div className="space-y-3">
-                                <p className="font-semibold">Low Student Achievement</p>
+                                <div className="flex flex-col">
+                                    <p className="font-semibold">Low Student Achievement</p>
+                                    <small className="text-gray-500">Are you satisfied/dissatisfied with your level of achievement in school?</small>
+                                    <small className="text-gray-500">Are you satisfied/dissatisfied with your child’s level of achievement in school?</small>
+                                </div>
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">
@@ -449,6 +520,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Developmental Delay</p>
+                                <small className="text-gray-500">Does participant have a child with a developmental delay or disability</small>
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">
@@ -470,7 +542,11 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             </div>
 
                             <div className="space-y-3">
-                                <p className="font-semibold">US Armed Forces</p>
+                                <div className="flex flex-col">
+                                    <p className="font-semibold">US Armed Forces</p>
+                                    <small className="text-gray-500">Is Participant an active/former member of the U.S. military?</small>
+                                    <small className="text-gray-500">Is Participant or child a dependent of an active/former member of the U.S. military?</small>
+                                </div>
                                 <div className="space-y-2">
                                     {["Yes", "No"].map(option => (
                                         <label key={option} className="flex items-center">

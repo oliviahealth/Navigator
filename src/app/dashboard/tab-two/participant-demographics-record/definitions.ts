@@ -1,10 +1,14 @@
 import { z } from "zod";
 
-export const ethnicityEnum = z.enum([
-    "Hispanic_Or_Latinx",
-    "Not_Hispanic_Or_Latinx"
+export const GenderEnum = z.enum([
+    "Male",
+    "Female"
 ]);
-export const raceEnum = z.enum([
+export const EthnicityEnum = z.enum([
+    "Hispanic_or_Latinx",
+    "Not_Hispanic_or_Latinx"
+]);
+export const RaceEnum = z.enum([
     "American_Indian_Alaska_Native",
     "Asian",
     "Black_or_African_American",
@@ -13,22 +17,22 @@ export const raceEnum = z.enum([
     "More_than_one_race_not_specified",
     "Declined_to_identify"
 ]);
-export const pregnancyStatusAtEnrollmentEnum = z.enum([
+export const PregnancyStatusAtEnrollmentEnum = z.enum([
     "Pregnant",
     "Not_Pregnant",
     "NA_Male_Participiant"
 ]);
-export const maritalStatusEnum = z.enum([
+export const MaritalStatusEnum = z.enum([
     "Married",
-    "Not_Married_But_Living_Together",
-    "Never_Married_And_Not_Living_With_Partner",
+    "Not_married_but_living_together",
+    "Never_married_and_not_living_with_partner",
     "Separated_or_Divorced",
     "Widowed"
 ]);
-export const lgbtqiPlusEnum = z.enum(["lgbtqi", "nonlgbtqi"]);
-export const insuranceEnum = z.enum([
-    "Employer_Insurance",
-    "Self_Pay",
+export const LgbtqiPlusEnum = z.enum(["LGBTQI", "Non_LGBTQI"]);
+export const InsuranceEnum = z.enum([
+    "Employer_insurance",
+    "Self_pay",
     "Dual_Eligibile_Medicaid_Medicare",
     "Medicaid_CHIP_only",
     "Medicare_only",
@@ -37,6 +41,7 @@ export const insuranceEnum = z.enum([
     "Other_third_party_privately_insured",
     "Uninsured"
 ]);
+export const PriorityPopulationCharacteristicsEnum = z.enum(["Yes", "No"]);
 
 export const labelMapping = {
     race: {
@@ -49,8 +54,8 @@ export const labelMapping = {
         Declined_to_identify: "Declined to identify"
     },
     ethnicity: {
-        Hispanic_Or_Latinx: "Hispanic or Latino/a",
-        Not_Hispanic_Or_Latinx: "Not Hispanic or Latino/a"
+        Hispanic_or_Latinx: "Hispanic or Latino/a",
+        Not_Hispanic_or_Latinx: "Not Hispanic or Latino/a"
     },
     pregnancyStatusAtEnrollment: {
         Pregnant: "Pregnant",
@@ -59,18 +64,18 @@ export const labelMapping = {
     },
     maritalStatus: {
         Married: "Married",
-        Not_Married_But_Living_Together: "Not Married But Living Together",
-        Never_Married_And_Not_Living_With_Partner: "Never Married And Not Living With Partner",
-        Separated_or_Divorced: "Separated Or Divorced",
+        Not_married_but_living_together: "Not married but living together",
+        Never_married_and_not_living_with_partner: "Never married and not living with partner",
+        Separated_or_Divorced: "Separated or Divorced",
         Widowed: "Widowed"
     },
     lgbtqiPlus: {
-        lgbtqi: "LGBTQI+",
-        nonlgbtqi: "Non-LGBTIQI+"
+        LGBTQI: "LGBTQI+",
+        Non_LGBTQI: "Non-LGBTQI+"
     },
     insurance: {
-        Employer_Insurance: "Employer Insurance",
-        Self_Pay: "Self Pay",
+        Employer_insurance: "Employer insurance",
+        Self_pay: "Self pay",
         Dual_Eligibile_Medicaid_Medicare: "Dual Eligible Medicaid Medicare",
         Medicaid_CHIP_only: "Medicaid CHIP Only",
         Medicare_only: "Medicare only",
@@ -81,38 +86,38 @@ export const labelMapping = {
     }
 };
 
-export const ParticipantDemographicsRecordInputsSchema = z.object({
-    programStartDate: z.string().min(1, "Program Start Date is required"),
+export const ParticipantDemographicsFormInputsSchema = z.object({
+    programStartDate: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
     caseId: z.string().min(1, "CaseID is required"),
     homeVisitorAssigned: z.string().min(1, "Home Visitor Assigned is required"),
-    name: z.string().min(1, "Participant name is required"),
-    dateOfBirth: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
-    address: z.string().min(1, "Address is required"),
-    zipCode: z.string().min(1, "Zip Code is required"),
-    phoneNumber: z.string().min(1, "Phone Number is required"),
-    gender: z.enum(["Female", "Male"]).nullable().refine(val => val, { message: "Gender is required" }),
-    ethnicity: ethnicityEnum.nullable().refine(val => val, { message: "Ethnicity is required" }),
-    race: raceEnum.nullable().refine(val => val, { message: "Race is required" }),
+    participantName: z.string().min(1, "Participant name is required"),
+    participantDateOfBirth: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
+    participantAddress: z.string().min(1, "Address is required"),
+    participantZipCode: z.string().min(1, "Zip Code is required"),
+    participantPhoneNumber: z.string().min(1, "Phone Number is required"),
+    gender: GenderEnum.refine(val => val, { message: "Gender is required" }),
+    ethnicity: EthnicityEnum.refine(val => val, { message: "Ethnicity is required" }),
+    race: RaceEnum.refine(val => val, { message: "Race is required" }),
     primaryLanguage: z.string().min(1, "Primary Language is required"),
-    pregnancyStatusAtEnrollment: pregnancyStatusAtEnrollmentEnum.nullable().refine(val => val, { message: "Pregnancy Status is required" }),
-    maritalStatus: maritalStatusEnum.nullable().refine(val => val, { message: "Marital Status is required" }),
-    lgbtqiPlus: lgbtqiPlusEnum.nullable().refine(val => val, { message: "LGBTQI+ is required" }),
-    insurance: insuranceEnum.nullable().refine(val => val, { message: "Insurance is required" }),
-    childAbuse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Child abuse information is required" }),
-    substanceAbuse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Substance abuse information is required" }),
-    tobaccoUse: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Tobacco use information is required" }),
-    lowStudentAchievement: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Low student achievement information is required" }),
-    developmentalDelay: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Developmental delay information is required" }),
-    USArmedForces: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "US Armed Forces information is required" }),
-    reenrollmentWithGap: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Reenrollment with gap in service information is required" }),
-    transferFromAnotherSite: z.enum(["Yes", "No"]).nullable().refine(val => val, { message: "Transfer from another site information is required" }),
+    pregnancyStatusAtEnrollment: PregnancyStatusAtEnrollmentEnum.refine(val => val, { message: "Pregnancy Status is required" }),
+    maritalStatus: MaritalStatusEnum.refine(val => val, { message: "Marital Status is required" }),
+    lgbtqiPlus: LgbtqiPlusEnum.refine(val => val, { message: "LGBTQI+ is required" }),
+    insurance: InsuranceEnum.refine(val => val, { message: "Insurance is required" }),
+    childAbuse: z.enum(["Yes", "No"]).refine(val => val, { message: "Child abuse information is required" }),
+    substanceAbuse: z.enum(["Yes", "No"]).refine(val => val, { message: "Substance abuse information is required" }),
+    tobaccoUse: z.enum(["Yes", "No"]).refine(val => val, { message: "Tobacco use information is required" }),
+    lowStudentAchievement: z.enum(["Yes", "No"]).refine(val => val, { message: "Low student achievement information is required" }),
+    developmentalDelay: z.enum(["Yes", "No"]).refine(val => val, { message: "Developmental delay information is required" }),
+    USArmedForces: z.enum(["Yes", "No"]).refine(val => val, { message: "US Armed Forces information is required" }),
+    reenrollmentWithGap: z.enum(["Yes", "No"]).refine(val => val, { message: "Reenrollment with gap in service information is required" }),
+    transferFromAnotherSite: z.enum(["Yes", "No"]).refine(val => val, { message: "Transfer from another site information is required" }),
 })
-export type IParticipantDemographicsRecordInputs = z.infer<typeof ParticipantDemographicsRecordInputsSchema>
+export type IParticipantDemographicsFormInputs = z.infer<typeof ParticipantDemographicsFormInputsSchema>
 
-export const ParticipantDemographicsRecordResponseSchema = ParticipantDemographicsRecordInputsSchema.extend({
+export const ParticipantDemographicsFormResponseSchema = ParticipantDemographicsFormInputsSchema.extend({
     id: z.string(),
     userId: z.string(),
     dateCreated: z.date(),
     dateModified: z.date()
 });
-export type IParticipantDemographicsRecordResponse = z.infer<typeof ParticipantDemographicsRecordResponseSchema>;
+export type IParticipantDemographicsFormResponse = z.infer<typeof ParticipantDemographicsFormResponseSchema>;
