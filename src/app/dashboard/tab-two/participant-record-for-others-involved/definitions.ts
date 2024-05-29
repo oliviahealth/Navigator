@@ -20,6 +20,8 @@ export const maritalStatusEnum = z.enum([
     'Separated',
 ]);
 
+export const deliveryModeEnum = z.enum(['Vaginal', 'Cesarean'])
+
 export const labelMapping = {
     Rent_Own_a_Home: "Rent/Own a Home",
     Living_with_Relatives_or_Friends: "Living with Relatives or Friends",
@@ -51,8 +53,8 @@ export const ParticipantRecordForOthersInvolvedSchema = z.object({
     groupId: z.string().min(1, 'Insurance plan group ID is required'),
     gestationalAge: z.string().min(1, 'Gestational age is required'),
     anticipatedDeliveryDate: z.string().min(1, 'Anticipated delivery date is required'),
-    plannedModeDelivery: z.string().min(1, 'Planned mode of delivery is required'),
-    actualModeDelivery: z.string().min(1, 'Actual mode of delivery is required'),
+    plannedModeDelivery: deliveryModeEnum,
+    actualModeDelivery: deliveryModeEnum,
     attendedPostpartumVisit: z.string().min(1, 'Postpartum visit attendance is required'),
     postpartumVisitLocation: z.string().nullable(),
     postpartumVisitDate: z.string().nullable(),

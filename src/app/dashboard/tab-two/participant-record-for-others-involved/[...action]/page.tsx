@@ -14,12 +14,13 @@ import {
     ParticipantRecordForOthersInvolvedSchema,
     IParticipantRecordForOthersInvolvedInputs,
     ParticipantRecordForOthersInvolvedResponseSchema,
-    IParticipantRecordForOthersInvolvedResponse
+    IParticipantRecordForOthersInvolvedResponse,
+    deliveryModeEnum
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
 
-const CommunicationLog: React.FC = () => {
+const ParticipantRecordForOthersInvolved: React.FC = () => {
     const router = useRouter()
     const { action } = useParams();
 
@@ -409,7 +410,7 @@ const CommunicationLog: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Planned Mode of Delivery</p>
                                 <div className="flex flex-col space-y-2">
-                                    {['Vaginal', 'Cesarean'].map((status) => (
+                                    {deliveryModeEnum.options.map((status) => (
                                         <label key={status} className="inline-flex items-center">
                                             <input
                                                 {...register('plannedModeDelivery')}
@@ -431,7 +432,7 @@ const CommunicationLog: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Actual Mode of Delivery</p>
                                 <div className="flex flex-col space-y-2">
-                                    {['Vaginal', 'Cesarean'].map((status) => (
+                                    {deliveryModeEnum.options.map((status) => (
                                         <label key={status} className="inline-flex items-center">
                                             <input
                                                 {...register('actualModeDelivery')}
@@ -613,4 +614,4 @@ const CommunicationLog: React.FC = () => {
     );
 };
 
-export default CommunicationLog;
+export default ParticipantRecordForOthersInvolved;
