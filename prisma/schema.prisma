@@ -20,11 +20,12 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
 
-  CommunicationLog              CommunicationLog[]
-  AppointmentLog                AppointmentLog[]
-  EnrollmentForm                EnrollmentForm[]
-  MediaAppearanceForm           MediaAppearanceForm[]
+  CommunicationLog            CommunicationLog[]
+  AppointmentLog              AppointmentLog[]
+  EnrollmentForm              EnrollmentForm[]
+  MediaAppearanceForm         MediaAppearanceForm[]
   ParticipantDemographicsForm ParticipantDemographicsForm[]
+  ChildDemographicsRecord     ChildDemographicsRecord[]
 }
 
 enum CommunicationMethod {
@@ -217,8 +218,8 @@ model ParticipantDemographicsForm {
   participantName             String
   participantDateOfBirth      DateTime
   participantAddress          String
-  participantZipCode                     String
-  participantPhoneNumber                 String
+  participantZipCode          String
+  participantPhoneNumber      String
   gender                      Gender
   ethnicity                   Ethnicity
   race                        Race
@@ -235,6 +236,74 @@ model ParticipantDemographicsForm {
   USArmedForces               PriorityPopulationCharacteristics
   reenrollmentWithGap         PriorityPopulationCharacteristics
   transferFromAnotherSite     PriorityPopulationCharacteristics
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+enum Sex {
+  Female
+  Male
+}
+
+enum ChildLivingWith {
+  Mother
+  Father
+  Grandparents
+  Siblings
+  Foster_Family
+  Other
+}
+
+enum YesNo {
+  Yes
+  No
+}
+
+enum childProtectiveService {
+  Currently
+  Previously
+  Never
+}
+
+model ChildDemographicsRecord {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  childName                    String
+  dateOfBirth                  DateTime
+  sex                          Sex
+  childLivingWith              ChildLivingWith[]
+  childLivingWithOther         String?
+  parentOneName                String
+  parentOneInvolvedInLife      YesNo
+  parentTwoName                String
+  parentTwoInvolvedInLife      YesNo
+  insurancePlan                String
+  effectiveDate                DateTime
+  subscriberId                 String
+  groupId                      String
+  primaryCareProvider          String
+  primaryCareProviderPhone     String
+  birthWeight                  String
+  gestationalAgeAtBirth        String
+  nicuStay                     YesNo
+  nicuStayLength               String?
+  prenatalDrugExposure         YesNo
+  prenatalDrug                 String?
+  medicalComplicationsAtBirth  String
+  ongoingMedicalIssues         String
+  ongoingMedications           String
+  healthConcerns               String
+  difficultiesServicesReceived String
+  lactationConsultant          YesNo
+  legalSystemInvolvement       YesNo
+  childProtectiveService       childProtectiveService
+  caseworker                   String
+  caseworkerPhoneNumber        String
+  importantInformation         String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())

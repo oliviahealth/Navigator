@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 
 import {
     ChildDemographicsRecordInputsSchema,
+    ChildDemographicsRecordResponseSchema,
     IChildDemographicsRecordInputs,
     YesNoEnum,
     childLivingWithEnum,
@@ -16,7 +17,7 @@ import {
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
-// import { createParticipantDemographicsRecord, readParticipantDemographicsRecord, updateParticipantDemographicsRecord } from "../actions";
+import { createChildDemographicsRecord, readChildDemographicsRecord, updateChildDemographicsRecord } from "../actions";
 
 const ChildDemographicsRecord: React.FC = () => {
     const router = useRouter();
@@ -74,9 +75,66 @@ const ChildDemographicsRecord: React.FC = () => {
         }
     };
 
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readChildDemographicsRecord(submissionId, userId);
+
+                const validResponse = ChildDemographicsRecordResponseSchema.parse(response);
+
+                const formattedData = {
+                    ...validResponse,
+                    dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    effectiveDate: new Date(validResponse.effectiveDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                };
+
+                reset(formattedData);
+
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/');
+
+                return;
+            }
+        }
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
     const submit = async (ChildDemographicsRecordData: IChildDemographicsRecordInputs) => {
-        console.log(ChildDemographicsRecordData)
-    }
+        console.log("input: ", ChildDemographicsRecordData)
+
+        try {
+            let response;
+
+            if (verb === 'new') {
+                response = await createChildDemographicsRecord(ChildDemographicsRecordData, userId);
+                console.log("response: ", response);
+            } else {
+                response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, userId)
+            }
+
+            ChildDemographicsRecordResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            return;
+        }
+
+        setSuccessMessage('Child Demographics Record submitted successfully!')
+        router.push('/dashboard');
+    };
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
