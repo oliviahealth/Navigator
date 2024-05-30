@@ -1,12 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
-import { lstat } from "fs";
 
-// Define the schema of each row in the enrollment form log
+
 const EnrollmentEntrySchema = z.object({
   firstname: z.string().min(1, "First Name is required"),
   lastname: z.string().min(1, "Last Name is required"),
@@ -18,13 +17,17 @@ const EnrollmentEntrySchema = z.object({
   email: z.string().min(1, "Email is required"),
   datebirth: z.string().min(1, "Date of Birth is required"),
 
-  // emergencyname: z.string().min(1, "Emergency Contact Name is required"),
-  // emergencyphone: z.string().min(1, "Emergency Contact Phone is required"),
-  // emergencyrelationship: z.string().min(
-  //   1,
-  //   "Emergency Contact Relationship is required"
-  // ),
-  // emergencyemail: z.string().min(1, "Emergency Contact Email is required"),
+  // store as an array of objects
+  emergencyContacts: z.array(
+    z.object({
+      emergencyname: z.string().min(1, "Emergency Name is required"), 
+      emergencyphone: z.string().min(1, "Emergency Phone is required"),
+      emergencyrelationship: z
+        .string()
+        .min(1, "Relationship to patient is required"),
+      emergencyemail: z.string().min(1, "Emergency Email is required"),
+    })
+  ),
 });
 
 export type IEnrollmentEntry = z.infer<typeof EnrollmentEntrySchema>;
@@ -40,6 +43,7 @@ const EnrollmentLog: React.FC = () => {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<IEnrollmentLogInputs>({
     resolver: zodResolver(EnrollmentLogInputsSchema),
@@ -55,17 +59,65 @@ const EnrollmentLog: React.FC = () => {
           phone: "",
           email: "",
           datebirth: "",
+          emergencyContacts: [
+            {
+              emergencyname: "",
+              emergencyphone: "",
+              emergencyrelationship: "",
+              emergencyemail: "",
+            },
+          ],
         },
       ],
     },
   });
-  
 
   // Extract some functions that will allow us to interface with the array
   const { fields, append, remove } = useFieldArray({
     control,
     name: "enrollmentEntries",
   });
+
+  // append adds new item to end of entire enrollmentEntries array; cant use in this situation
+  // const addNewEmergencyContact = () => {
+  //   const newEmergencyContact = {
+  //     emergencyname: "",
+  //     emergencyphone: "",
+  //     emergencyrelationship: "",
+  //     emergencyemail: "",
+  //   };
+  
+  //   const newEnrollmentEntries = [...fields];
+  //   const lastIndex = newEnrollmentEntries.length - 1;
+  
+  //   newEnrollmentEntries[lastIndex].emergencyContacts = [
+  //     ...newEnrollmentEntries[lastIndex].emergencyContacts,
+  //     newEmergencyContact,
+  //   ];
+  
+  //   setValue("enrollmentEntries", newEnrollmentEntries);
+  // };
+
+  const addNewCommunicationEntry = () =>
+    append({
+        firstname: "",
+        lastname: "",
+        address: "",
+        city: "",
+        state: "",
+        zip: "",
+        phone: "",
+        email: "",
+        datebirth: "",
+        emergencyContacts: [
+            {
+                emergencyname: "",
+                emergencyphone: "",
+                emergencyrelationship: "",
+                emergencyemail: "",
+            },
+        ],
+    });
 
 
   // Temporary submit function while we work to get db setup
@@ -233,17 +285,93 @@ const EnrollmentLog: React.FC = () => {
               Emergency Contact Information
             </p>
 
-            {/* <p className="font-medium pb-2 pt-8">Emergency Contact</p>
+            <p className="font-medium pb-2 pt-8">Emergency Contact Name</p>
             <input
-              {...register(`enrollmentEntries.${index}.emergencyname`)}
+              {...register(
+                `enrollmentEntries.${index}.emergencyContacts.0.emergencyname`
+              )}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
             />
             {errors.enrollmentEntries &&
-              errors.enrollmentEntries[index]?.emergencyname && (
+              errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                ?.emergencyname && (
                 <span className="label-text-alt text-red-500">
-                  {errors.enrollmentEntries[index]?.emergencyname?.message}
+                  {
+                    errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                      ?.emergencyname?.message
+                  }
                 </span>
-              )} */}
+              )}
+
+            <p className="font-medium pb-2 pt-8">
+              Emergency Contact Phone Number
+            </p>
+            <input
+              {...register(
+                `enrollmentEntries.${index}.emergencyContacts.0.emergencyphone`
+              )}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                ?.emergencyphone && (
+                <span className="label-text-alt text-red-500">
+                  {
+                    errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                      ?.emergencyphone?.message
+                  }
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Relationship to Patient</p>
+            <input
+              {...register(
+                `enrollmentEntries.${index}.emergencyContacts.0.emergencyrelationship`
+              )}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                ?.emergencyrelationship && (
+                <span className="label-text-alt text-red-500">
+                  {
+                    errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                      ?.emergencyrelationship?.message
+                  }
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Emergency Contact Email</p>
+            <input
+              {...register(
+                `enrollmentEntries.${index}.emergencyContacts.0.emergencyemail`
+              )}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.enrollmentEntries &&
+              errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                ?.emergencyemail && (
+                <span className="label-text-alt text-red-500">
+                  {
+                    errors.enrollmentEntries[index]?.emergencyContacts?.[0]
+                      ?.emergencyemail?.message
+                  }
+                </span>
+              )}
+
+            <div className="flex justify-center">
+              <button
+                type="button"
+                onClick={addNewCommunicationEntry}
+                className="text-green-500 px-20 py-4 font-medium rounded-md whitespace-nowrap"
+              >
+                + Add New Contact
+              </button>
+            </div>
           </div>
         ))}
 
