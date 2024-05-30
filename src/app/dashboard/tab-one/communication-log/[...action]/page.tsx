@@ -101,7 +101,7 @@ const CommunicationLog: React.FC = () => {
             return;
         }
 
-        setSuccessMessage('Maternal Medical History submitted successfully!')
+        setSuccessMessage('Communication Log submitted successfully!')
         router.push('/dashboard');
     };
 
@@ -111,8 +111,6 @@ const CommunicationLog: React.FC = () => {
     // Call reset() to keep React-Hook-Form in line with our data
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
-            let response;
-
             try {
                 if (!user) {
                     throw new Error('User not found');
@@ -126,7 +124,7 @@ const CommunicationLog: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                response = await readCommunicationLog(submissionId, user.id);
+                const response = await readCommunicationLog(submissionId, user.id);
 
                 CommunicationLogResponseSchema.parse(response);
 

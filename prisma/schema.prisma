@@ -21,10 +21,11 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog CommunicationLog[]
-  AppointmentLog   AppointmentLog[]
-  EnrollmentForm   EnrollmentForm[]
-  MediaAppearance  MediaAppearance[]
+  CommunicationLog              CommunicationLog[]
+  AppointmentLog                AppointmentLog[]
+  EnrollmentForm                EnrollmentForm[]
+  MediaAppearanceForm           MediaAppearanceForm[]
+  ParticipantDemographicsForm   ParticipantDemographicsForm[]
 }
 
 enum CommunicationMethod {
@@ -34,13 +35,15 @@ enum CommunicationMethod {
   Video_Call
   Other
 }
+
 enum FollowUpNeeded {
   Yes
   No
 }
+
 model CommunicationEntry {
-  id                String     @id @default(uuid())
-  
+  id String @id @default(uuid())
+
   communicationLogId String
 
   dateTime           DateTime
@@ -52,6 +55,7 @@ model CommunicationEntry {
 
   communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
 }
+
 model CommunicationLog {
   id                    String @id @default(uuid())
 
@@ -65,19 +69,20 @@ model CommunicationLog {
 }
 
 model AppointmentEntry {
-  id                String     @id @default(uuid())
-  
-  appointmentLogId  String
+  id String @id @default(uuid())
 
-  dateTime          DateTime
-  who               String
-  location          String
-  notes             String?
+  appointmentLogId String
 
-  appointmentLog   AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
+  dateTime DateTime
+  who      String
+  location String
+  notes    String?
+
+  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
 }
+
 model AppointmentLog {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -89,22 +94,23 @@ model AppointmentLog {
 }
 
 model EmergencyContact {
-  id                String @id @default(uuid())
+  id String @id @default(uuid())
 
-  enrollmentFormId  String
+  enrollmentFormId String
 
-  name              String
-  relationship      String
-  telephone         String
-  email             String
+  name         String
+  relationship String
+  telephone    String
+  email        String
 
   enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
 }
-model EnrollmentForm {
-  id                String @id @default(uuid())
 
-  User   User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId            String
+model EnrollmentForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   firstName         String
   lastName          String
@@ -128,7 +134,7 @@ model EnrollmentForm {
   dateModified DateTime @updatedAt
 }
 
-model MediaAppearance {
+model MediaAppearanceForm {
   id                   String @id @default(uuid())
 
   User                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -142,4 +148,95 @@ model MediaAppearance {
 
   dateCreated          DateTime @default(now())
   dateModified          DateTime @updatedAt
+}
+
+enum Gender {
+  Female
+  Male
+}
+
+enum Ethnicity {
+  Hispanic_or_Latinx
+  Not_Hispanic_or_Latinx
+}
+
+enum Race {
+  American_Indian_Alaska_Native
+  Asian
+  Black_or_African_American
+  Native_Hawaiian_or_Pacific_Islander
+  White
+  More_than_one_race_not_specified
+  Declined_to_identify
+}
+
+enum PregnancyStatusAtEnrollment {
+  Pregnant
+  Not_Pregnant
+  NA_Male_Participiant
+}
+
+enum MaritalStatus {
+  Married
+  Not_married_but_living_together
+  Never_married_and_not_living_with_partner
+  Separated_or_Divorced
+  Widowed
+}
+
+enum LgbtqiPlus {
+  LGBTQI
+  Non_LGBTQI
+}
+
+enum Insurance {
+  Employer_insurance
+  Self_pay
+  Dual_Eligibile_Medicaid_Medicare
+  Medicaid_CHIP_only
+  Medicare_only
+  Medicare_plus_supplemental
+  TriCARE
+  Other_third_party_privately_insured
+  Uninsured
+}
+
+enum PriorityPopulationCharacteristics {
+  Yes
+  No
+}
+
+model ParticipantDemographicsForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  programStartDate            DateTime
+  caseId                      String
+  homeVisitorAssigned         String
+  participantName             String
+  participantDateOfBirth      DateTime
+  participantAddress          String
+  participantZipCode                     String
+  participantPhoneNumber                 String
+  gender                      Gender
+  ethnicity                   Ethnicity
+  race                        Race
+  primaryLanguage             String
+  pregnancyStatusAtEnrollment PregnancyStatusAtEnrollment
+  maritalStatus               MaritalStatus
+  lgbtqiPlus                  LgbtqiPlus
+  insurance                   Insurance
+  childAbuse                  PriorityPopulationCharacteristics
+  substanceAbuse              PriorityPopulationCharacteristics
+  tobaccoUse                  PriorityPopulationCharacteristics
+  lowStudentAchievement       PriorityPopulationCharacteristics
+  developmentalDelay          PriorityPopulationCharacteristics
+  USArmedForces               PriorityPopulationCharacteristics
+  reenrollmentWithGap         PriorityPopulationCharacteristics
+  transferFromAnotherSite     PriorityPopulationCharacteristics
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
 }
