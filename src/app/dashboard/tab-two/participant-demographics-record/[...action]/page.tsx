@@ -28,7 +28,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
     const verb = action[0]
     const submissionId = action[1]
 
-    const userId = useAppStore(state => state.userId);
+    const user = useAppStore(state => state.user);
 
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
@@ -53,7 +53,11 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readParticipantDemographicsRecord(submissionId, userId);
+                if(!user) {
+                    throw new Error('Missing user');
+                }
+
+                const response = await readParticipantDemographicsRecord(submissionId, user.id);
 
                 const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
 
@@ -79,15 +83,17 @@ const ParticipantDemographicsRecord: React.FC = () => {
     }, [])
 
     const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsFormInputs) => {
-        console.log(ParticipantDemographicsRecordData)
-
         try {
             let response;
 
+            if(!user) {
+                throw new Error("User missing");
+            }
+
             if (verb === 'new') {
-                response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, userId);
+                response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, user.id);
             } else {
-                response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, userId)
+                response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, user.id)
             }
 
             ParticipantDemographicsFormResponseSchema.parse(response);

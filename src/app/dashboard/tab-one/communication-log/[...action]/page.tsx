@@ -86,7 +86,7 @@ const CommunicationLog: React.FC = () => {
             let response;
 
             if (verb === 'new') {
-                response = await createCommunicationLog(communicationEntries, user?.id);
+                response = await createCommunicationLog(communicationEntries, user.id);
             } else {
                 response = await updateCommunicationLog(communicationEntries, submissionId);
             }
