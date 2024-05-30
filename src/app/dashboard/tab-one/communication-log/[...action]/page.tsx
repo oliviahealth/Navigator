@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -23,7 +23,7 @@ const CommunicationLog: React.FC = () => {
     const verb = action[0]; // Either 'new' or 'edit'
     const submissionId = action[1]; // SubmissionId is a uuid that corresponds to a specific CommunicationLog record in the db
 
-    const userId = useAppStore(state => state.userId);
+    const user = useAppStore(state => state.user);
 
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
@@ -77,12 +77,16 @@ const CommunicationLog: React.FC = () => {
     // Redirect to dashboard
     const submit = async (data: { communicationEntries: ICommunicationEntry[] }) => {
         try {
+            if (!user) {
+                throw new Error('User not found');
+            }
+
             const { communicationEntries } = data;
 
             let response;
 
-            if(verb === 'new') {
-                response = await createCommunicationLog(communicationEntries, userId);
+            if (verb === 'new') {
+                response = await createCommunicationLog(communicationEntries, user.id);
             } else {
                 response = await updateCommunicationLog(communicationEntries, submissionId);
             }
@@ -108,6 +112,10 @@ const CommunicationLog: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
                 if (verb !== 'edit') {
                     return;
                 }
@@ -116,7 +124,7 @@ const CommunicationLog: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readCommunicationLog(submissionId, userId);
+                const response = await readCommunicationLog(submissionId, user.id);
 
                 CommunicationLogResponseSchema.parse(response);
 
@@ -131,13 +139,17 @@ const CommunicationLog: React.FC = () => {
                 setErrorMessage('Something went wrong! Please try again later');
 
                 router.push('/');
-                
+
                 return;
             }
         }
 
         fetchAndPopulatePastSubmissionData()
     }, [])
+
+    if (!user) {
+        return <h1>Unauthorized</h1>
+    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

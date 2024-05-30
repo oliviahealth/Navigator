@@ -17,14 +17,15 @@ model User {
   id           String   @id @default(uuid())
   name         String
   email        String   @unique
+  password     String
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 
   CommunicationLog              CommunicationLog[]
   AppointmentLog                AppointmentLog[]
   EnrollmentForm                EnrollmentForm[]
   MediaAppearanceForm           MediaAppearanceForm[]
-  ParticipantDemographicsForm ParticipantDemographicsForm[]
+  ParticipantDemographicsForm   ParticipantDemographicsForm[]
 }
 
 enum CommunicationMethod {
@@ -52,19 +53,19 @@ model CommunicationEntry {
   notes              String?
   followUpNeeded     FollowUpNeeded
 
-  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id])
+  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
 }
 
 model CommunicationLog {
-  id String @id @default(uuid())
+  id                    String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
-  userId String
+  User                  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String
 
   communicationEntries CommunicationEntry[]
 
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateCreated           DateTime @default(now())
+  dateModified          DateTime @updatedAt
 }
 
 model AppointmentEntry {
@@ -77,19 +78,19 @@ model AppointmentEntry {
   location String
   notes    String?
 
-  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id])
+  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
 }
 
 model AppointmentLog {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   appointmentEntries AppointmentEntry[]
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model EmergencyContact {
@@ -102,13 +103,13 @@ model EmergencyContact {
   telephone    String
   email        String
 
-  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
+  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
 }
 
 model EnrollmentForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   firstName         String
@@ -130,23 +131,23 @@ model EnrollmentForm {
   gcMomsDate        String
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model MediaAppearanceForm {
-  id String @id @default(uuid())
+  id                   String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
-  userId String
+  User                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
 
-  participantName String
-  address         String
-  participantDate String
-  guardianName    String?
-  guardianDate    String?
+  participantName      String
+  address              String
+  participantDate      DateTime
+  guardianName         String?
+  guardianDate         DateTime?
 
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateCreated          DateTime @default(now())
+  dateModified          DateTime @updatedAt
 }
 
 enum Gender {
@@ -208,7 +209,7 @@ enum PriorityPopulationCharacteristics {
 model ParticipantDemographicsForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   programStartDate            DateTime
