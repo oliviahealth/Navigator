@@ -39,7 +39,7 @@ export const ChildDemographicsRecordInputsSchema = z.object({
     childName: z.string().min(1, "Child's name required."),
     dateOfBirth: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
     sex: sexEnum,
-    childLivingWith: childLivingWithEnum,
+    childLivingWith: z.array(childLivingWithEnum),
     childLivingWithOther: z.string().nullable(),
     parentOneName: z.string().min(1, "Parent 1's name required."),
     parentOneInvolvedInLife: YesNoEnum,
