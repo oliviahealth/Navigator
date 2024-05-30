@@ -1,19 +1,45 @@
 "use client";
 
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import Link from 'next/link'
+import { useRouter } from "next/navigation";
 
 import useAppStore from "@/lib/useAppStore";
 
 const Navbar: React.FC = () => {
+    const router = useRouter();
+
     const user = useAppStore((state) => state.user);
+    const setUser = useAppStore(state => state.setUser);
+
     const accessToken = useAppStore(state => state.accessToken);
+    const setAccessToken = useAppStore(state => state.setAccessToken);
+
+    const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
     const [isOpen, setOpen] = useState(false);
 
     const menuToggle = () => {
         setOpen(!isOpen);
     };
+
+    const signoutUser = () => {
+        try {
+            if (!accessToken) {
+                throw new Error("User not found");
+            }
+
+            sessionStorage.removeItem('access_token');
+            setUser(null);
+            setAccessToken(null);
+            
+        } catch (error) {
+            console.error(error);
+            setErrorMessage("Something went wrong! Please try again later");
+        }
+
+        router.push('/');
+    }
 
     return (
         <div className="flex min-h-[4.5rem] w-full items-center text-black border-b z-10 shadow-sm">
@@ -57,8 +83,8 @@ const Navbar: React.FC = () => {
                         {(user && accessToken) ? (
                             <button
                                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                                onClick={signoutUser}
                             >
-                                {/* <span className="loading loading-spinner loading-sm"></span> */}
                                 Sign Out
                             </button>
                         ) : (
