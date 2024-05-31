@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import Chevron from "./Chevron";
+import Chevron from "../Chevron";
 import AccordionContext, { useAccordion } from "./AccordionContext";
 import LoadingSpinner from "../LoadingSpinner";
 

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import localFont from 'next/font/local'
 import "./globals.css";
 
-import Navbar from '@/components/Navbar';
-import Footer from "@/components/Footer";
+import Navbar from '@/components/layout/Navbar';
+import Footer from "@/components/layout/Footer";
 import ErrorPopup from "@/components/ErrorPopup";
 import SuccessPopup from "@/components/SuccessPopup";
 
