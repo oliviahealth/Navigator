@@ -1,0 +1,242 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  password     String
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+
+  CommunicationLog              CommunicationLog[]
+  AppointmentLog                AppointmentLog[]
+  EnrollmentForm                EnrollmentForm[]
+  MediaAppearanceForm           MediaAppearanceForm[]
+  ParticipantDemographicsForm   ParticipantDemographicsForm[]
+}
+
+enum CommunicationMethod {
+  Phone
+  Mail
+  In_Person
+  Video_Call
+  Other
+}
+
+enum FollowUpNeeded {
+  Yes
+  No
+}
+
+model CommunicationEntry {
+  id String @id @default(uuid())
+
+  communicationLogId String
+
+  dateTime           DateTime
+  method             CommunicationMethod
+  organizationPerson String
+  purpose            String
+  notes              String?
+  followUpNeeded     FollowUpNeeded
+
+  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
+}
+
+model CommunicationLog {
+  id                    String @id @default(uuid())
+
+  User                  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String
+
+  communicationEntries CommunicationEntry[]
+
+  dateCreated           DateTime @default(now())
+  dateModified          DateTime @updatedAt
+}
+
+model AppointmentEntry {
+  id String @id @default(uuid())
+
+  appointmentLogId String
+
+  dateTime DateTime
+  who      String
+  location String
+  notes    String?
+
+  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
+}
+
+model AppointmentLog {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  appointmentEntries AppointmentEntry[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model EmergencyContact {
+  id String @id @default(uuid())
+
+  enrollmentFormId String
+
+  name         String
+  relationship String
+  telephone    String
+  email        String
+
+  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
+}
+
+model EnrollmentForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  firstName         String
+  lastName          String
+  address           String
+  city              String
+  state             String
+  zip               String
+  homePhone         String
+  cellPhone         String
+  email             String
+  dateOfBirth       DateTime
+  emergencyContacts EmergencyContact[]
+  clientName        String
+  clientDate        DateTime
+  guardianName      String
+  guardianDate      String
+  gcMomsName        String
+  gcMomsDate        String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model MediaAppearanceForm {
+  id                   String @id @default(uuid())
+
+  User                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
+
+  participantName      String
+  address              String
+  participantDate      DateTime
+  guardianName         String?
+  guardianDate         DateTime?
+
+  dateCreated          DateTime @default(now())
+  dateModified          DateTime @updatedAt
+}
+
+enum Gender {
+  Female
+  Male
+}
+
+enum Ethnicity {
+  Hispanic_or_Latinx
+  Not_Hispanic_or_Latinx
+}
+
+enum Race {
+  American_Indian_Alaska_Native
+  Asian
+  Black_or_African_American
+  Native_Hawaiian_or_Pacific_Islander
+  White
+  More_than_one_race_not_specified
+  Declined_to_identify
+}
+
+enum PregnancyStatusAtEnrollment {
+  Pregnant
+  Not_Pregnant
+  NA_Male_Participiant
+}
+
+enum MaritalStatus {
+  Married
+  Not_married_but_living_together
+  Never_married_and_not_living_with_partner
+  Separated_or_Divorced
+  Widowed
+}
+
+enum LgbtqiPlus {
+  LGBTQI
+  Non_LGBTQI
+}
+
+enum Insurance {
+  Employer_insurance
+  Self_pay
+  Dual_Eligibile_Medicaid_Medicare
+  Medicaid_CHIP_only
+  Medicare_only
+  Medicare_plus_supplemental
+  TriCARE
+  Other_third_party_privately_insured
+  Uninsured
+}
+
+enum PriorityPopulationCharacteristics {
+  Yes
+  No
+}
+
+model ParticipantDemographicsForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  programStartDate            DateTime
+  caseId                      String
+  homeVisitorAssigned         String
+  participantName             String
+  participantDateOfBirth      DateTime
+  participantAddress          String
+  participantZipCode                     String
+  participantPhoneNumber                 String
+  gender                      Gender
+  ethnicity                   Ethnicity
+  race                        Race
+  primaryLanguage             String
+  pregnancyStatusAtEnrollment PregnancyStatusAtEnrollment
+  maritalStatus               MaritalStatus
+  lgbtqiPlus                  LgbtqiPlus
+  insurance                   Insurance
+  childAbuse                  PriorityPopulationCharacteristics
+  substanceAbuse              PriorityPopulationCharacteristics
+  tobaccoUse                  PriorityPopulationCharacteristics
+  lowStudentAchievement       PriorityPopulationCharacteristics
+  developmentalDelay          PriorityPopulationCharacteristics
+  USArmedForces               PriorityPopulationCharacteristics
+  reenrollmentWithGap         PriorityPopulationCharacteristics
+  transferFromAnotherSite     PriorityPopulationCharacteristics
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
