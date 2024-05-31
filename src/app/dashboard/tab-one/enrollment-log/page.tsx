@@ -5,9 +5,41 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 
-import { EnrollmentLogInputsSchema } from "./definitions";
 
+export const EmergencyContactsSchema = z.object({
+    emergencyname: z.string().min(1, "Emergency Name is required"),
+    emergencyphone: z.string().min(1, "Emergency Phone is required"),
+    emergencyrelationship: z
+        .string()
+        .min(1, "Relationship to patient is required"),
+    emergencyemail: z.string().min(1, "Emergency Email is required"),
+})
+export type IEmergencyContact = z.infer<typeof EmergencyContactsSchema>
+
+export const EnrollmentLogInputsSchema = z.object({
+    firstname: z.string().min(1, "First Name is required"),
+    lastname: z.string().min(1, "Last Name is required"),
+    address: z.string().min(1, "Address is required"),
+    city: z.string().min(1, "City is required"),
+    state: z.string().min(1, "State is required"),
+    zip: z.string().min(1, "Zip is required"),
+    homephone: z.string().min(1, "Home phone is required"),
+    cellphone: z.string().min(1, "Cell phone is required"),
+    email: z.string().min(1, "Email is required"),
+    datebirth: z.string().min(1, "Date of Birth is required"),
+    emergencyContacts: z.array(EmergencyContactsSchema)
+});
 export type IEnrollmentLogInputs = z.infer<typeof EnrollmentLogInputsSchema>;
+
+export const EnrollmentLogResponseSchema = EnrollmentLogInputsSchema.extend({
+    id: z.string(),
+    userId: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
+});
+export type EnrollmentLogResponse = z.infer<typeof EnrollmentLogResponseSchema>
+
+
 
 const EnrollmentLog: React.FC = () => {
   const {
@@ -147,14 +179,24 @@ const EnrollmentLog: React.FC = () => {
             {errors.zip.message}
           </span>
         )}
-        <p className="font-medium pb-2 pt-8">Phone Number</p>
+        <p className="font-medium pb-2 pt-8">Home Phone Number</p>
         <input
-          {...register("phone")}
+          {...register("homephone")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.phone && (
+        {errors.homephone && (
           <span className="label-text-alt text-red-500">
-            {errors.phone.message}
+            {errors.homephone.message}
+          </span>
+        )}
+        <p className="font-medium pb-2 pt-8">Cell Phone Number</p>
+        <input
+          {...register("cellphone")}
+          className="border border-gray-300 px-4 py-2 rounded-md w-full"
+        />
+        {errors.cellphone && (
+          <span className="label-text-alt text-red-500">
+            {errors.cellphone.message}
           </span>
         )}
         <p className="font-medium pb-2 pt-8">Email</p>
@@ -253,64 +295,7 @@ const EnrollmentLog: React.FC = () => {
               )}
           </div>
         ))}
-        {/* <p className="font-medium pb-2 pt-8">
-          Emergency Contact Phone Number
-        </p>
-        <input
-          {...register(
-            `enrollmentEntries.${index}.emergencyContacts.0.emergencyphone`
-          )}
-          className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          type="text"
-        />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-            ?.emergencyphone && (
-            <span className="label-text-alt text-red-500">
-              {
-                errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-                  ?.emergencyphone?.message
-              }
-            </span>
-          )}
-
-        <p className="font-medium pb-2 pt-8">Relationship to Patient</p>
-        <input
-          {...register(
-            `enrollmentEntries.${index}.emergencyContacts.0.emergencyrelationship`
-          )}
-          className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          type="text"
-        />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-            ?.emergencyrelationship && (
-            <span className="label-text-alt text-red-500">
-              {
-                errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-                  ?.emergencyrelationship?.message
-              }
-            </span>
-          )}
-
-        <p className="font-medium pb-2 pt-8">Emergency Contact Email</p>
-        <input
-          {...register(
-            `enrollmentEntries.${index}.emergencyContacts.0.emergencyemail`
-          )}
-          className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          type="text"
-        />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-            ?.emergencyemail && (
-            <span className="label-text-alt text-red-500">
-              {
-                errors.enrollmentEntries[index]?.emergencyContacts?.[0]
-                  ?.emergencyemail?.message
-              }
-            </span>
-          )} */}
+        
         <div className="flex justify-center">
           <button
             type="button"
