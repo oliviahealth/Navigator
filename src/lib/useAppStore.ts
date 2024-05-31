@@ -1,9 +1,14 @@
 'use client';
 
 import { create } from 'zustand'
+import { IUser } from './definitions';
 
 interface AppState {
-    userId: string
+    user: IUser | null;
+    setUser: (user: IUser | null) => void;
+
+    accessToken: string | null;
+    setAccessToken: (accessToken: string | null) => void
     
     errorMessage: string | null,
     setErrorMessage: (errorMessage: string | null) => void
@@ -13,8 +18,18 @@ interface AppState {
 }
 
 const useAppStore = create<AppState>()((set) => ({
-    userId: '9fb69495-280d-400a-8344-6e2e0682599b',
-    
+    user: null,
+    setUser: (user) => set(() => ({ user })),
+
+    accessToken: null,
+    setAccessToken: (accessToken) => set(() => {
+        if(accessToken) {
+            sessionStorage.setItem('access_token', accessToken);
+        }
+
+        return { accessToken }
+    }),
+
     errorMessage: null,
     setErrorMessage: (errorMessage) => set(() => ({ errorMessage })),
 
