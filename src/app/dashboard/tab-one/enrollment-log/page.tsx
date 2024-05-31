@@ -79,27 +79,28 @@ const EnrollmentLog: React.FC = () => {
   return (
     <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base">
       <div className="flex flex-col items-center">
-        <h1 className="text-xl text-center font-bold">
+        <h1 className="text-center font-semibold text-2xl">
+            
           ENROLLMENT FORM, STANDARD CONSENT, ELIGIBILITY, EMERGENCY CONTACT &
           RELEASE OF INFORMATION
         </h1>
 
-        <p className="text-lg pt-8 text-center">
+        <p className="text-lg pt-8 text-center font-semibold max-w-screen-md mx-auto">
           GC-MOMS is a free community health care program. The Program provides
           pregnancy and parenting support to first-time mothers from nurses who
           visit their homes beginning in early pregnancy through the child’s
           second birthday.
         </p>
 
-        <p className="text-lg pt-8 text-center font-bold">
+        <p className="text-lg pt-8 text-center font-semibold">
           Please complete this form to enroll in the Program.
         </p>
 
-        <p className="text-lg pt-8 text-center font-bold">
+        <p className="text-xl pt-8 text-center font-semibold">
           Program Eligibility:
         </p>
 
-        <p className="text-lg pt-1 text-center">
+        <p className="text-lg pt-5 text-center max-w-screen-md mx-auto">
           To participate in the Program, I understand that I must be a resident
           of the counties served by the program. The following rural counties in
           Texas are to be served: Lavaca, DeWitt, Jackson, and Calhoun. I must
@@ -111,10 +112,10 @@ const EnrollmentLog: React.FC = () => {
           documents necessary to prove my eligibility if that is necessary.
         </p>
 
-        <p className="text-lg pt-8 text-center">Your Contact Information</p>
+        <p className="text-xl pt-8 text-center font-semibold ">Your Contact Information</p>
       </div>
 
-      {/* <div className="flex flex-col items-center"></div> */}
+      
       <form
         onSubmit={handleSubmit((data) => submit(data))}
         className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
@@ -219,13 +220,13 @@ const EnrollmentLog: React.FC = () => {
             {errors.datebirth.message}
           </span>
         )}
-        <p className="text-lg pt-8 text-center">
+        <p className="text-xl pt-8 text-center font-semibold ">
           Emergency Contact Information
         </p>{" "}
         {fields.map((field, index) => (
           <div key={field.id}>
             <div className="flex justify-between items-center">
-              <p className="font-medium pb-2 pt-8">
+              <p className="text-lg font-semibold pb-2 pt-8">
                 Emergency Contact {index + 1}
               </p>
               <button
@@ -237,7 +238,7 @@ const EnrollmentLog: React.FC = () => {
               </button>
             </div>
 
-            <p className="font-medium pb-2 pt-8">Emergency Contact Name</p>
+            <p className="pb-2 pt-8 font-semibold">Emergency Contact Name</p>
             <input
               {...register(`emergencyContacts.${index}.emergencyname`)}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
