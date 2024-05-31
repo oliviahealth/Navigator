@@ -66,7 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({
           onClick && onClick();
           if (!isOpen) updateParent();
         }}
-        className={`w-full h-fit py-3 px-6 rounded-2xl bg-neutral-100 flex justify-between items-center text-lg border-2 transition duration-100 ease-in ${
+        className={`w-full h-fit py-3 px-6 mb-2 rounded-2xl bg-neutral-100 flex justify-between items-center text-lg border-2 transition duration-100 ease-in ${
           isOpen ? "border-[#5D1B2A]" : "border-transparent "
         }`}
       >
@@ -79,7 +79,7 @@ const Accordion: React.FC<AccordionProps> = ({
       <div
         ref={contentRef}
         style={{ maxHeight: maxHeight }}
-        className="px-6 transition-max-height duration-300 ease-in-out overflow-hidden"
+        className="px-6 transition-max-height duration-300 ease-in-out overflow-hidden mb-2"
       >
         {isLoading ? <LoadingSpinner /> : children}
       </div>
