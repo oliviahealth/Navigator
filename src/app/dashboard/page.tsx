@@ -19,6 +19,10 @@ const Dashboard: React.FC = () => {
                     <Link href={'/dashboard/tab-two/participant-demographics-record/new'}>
                         Participant Demographics Record
                     </Link>
+
+                    <Link href={'/dashboard/tab-two/support-systems/edit/33c6f13f-2774-4d2c-a8a5-17486acfc440'}>
+                        Support Systems
+                    </Link>
                 </div>
             </div>
         </div>
