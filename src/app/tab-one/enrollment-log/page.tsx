@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ const EnrollmentLog: React.FC = () => {
     resolver: zodResolver(EnrollmentLogInputsSchema),
     defaultValues: {
       // emergencyContacts: []
-    }
+    },
   });
 
   // Extract some functions that will allow us to interface with the array
@@ -29,26 +29,6 @@ const EnrollmentLog: React.FC = () => {
     name: "emergencyContacts",
   });
 
-  // append adds new item to end of entire enrollmentEntries array; cant use in this situation
-  // const addNewEmergencyContact = () => {
-  //   const newEmergencyContact = {
-  //     emergencyname: "",
-  //     emergencyphone: "",
-  //     emergencyrelationship: "",
-  //     emergencyemail: "",
-  //   };
-
-  //   const newEnrollmentEntries = [...fields];
-  //   const lastIndex = newEnrollmentEntries.length - 1;
-
-  //   newEnrollmentEntries[lastIndex].emergencyContacts = [
-  //     ...newEnrollmentEntries[lastIndex].emergencyContacts,
-  //     newEmergencyContact,
-  //   ];
-
-  //   setValue("enrollmentEntries", newEnrollmentEntries);
-  // };
-
   const addNewCommunicationEntry = () =>
     append({
       emergencyname: "",
@@ -56,7 +36,6 @@ const EnrollmentLog: React.FC = () => {
       emergencyrelationship: "",
       emergencyemail: "",
     });
-
 
   // Temporary submit function while we work to get db setup
   const submit = (data: IEnrollmentLogInputs) => {
@@ -108,7 +87,6 @@ const EnrollmentLog: React.FC = () => {
         onSubmit={handleSubmit((data) => submit(data))}
         className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
       >
-
         <p className="font-medium pb-2 pt-8">First Name</p>
         <input
           {...register("firstname")}
@@ -119,8 +97,7 @@ const EnrollmentLog: React.FC = () => {
             {errors.firstname.message}
           </span>
         )}
-
-        /* <p className="font-medium pb-2 pt-8">Last Name</p>
+        <p className="font-medium pb-2 pt-8">Last Name</p>
         <input
           {...register("lastname")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
@@ -130,102 +107,85 @@ const EnrollmentLog: React.FC = () => {
             {errors.lastname.message}
           </span>
         )}
-
-        {/*<p className="font-medium pb-2 pt-8">Address</p>
+        <p className="font-medium pb-2 pt-8">Address</p>
         <input
-          {...register(`enrollmentEntries.${index}.address`)}
+          {...register("address")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.address && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.address?.message}
-            </span>
-          )}
-
+        {errors.address && (
+          <span className="label-text-alt text-red-500">
+            {errors.address.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">City</p>
         <input
-          {...register(`enrollmentEntries.${index}.city`)}
+          {...register("address")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.city && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.city?.message}
-            </span>
-          )}
-
+        {errors.city && (
+          <span className="label-text-alt text-red-500">
+            {errors.city.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">State</p>
         <input
-          {...register(`enrollmentEntries.${index}.state`)}
+          {...register("state")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.state && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.state?.message}
-            </span>
-          )}
-
+        {errors.state && (
+          <span className="label-text-alt text-red-500">
+            {errors.state.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">Zip Code</p>
         <input
-          {...register(`enrollmentEntries.${index}.zip`)}
+          {...register("zip")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.zip && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.zip?.message}
-            </span>
-          )}
-
+        {errors.zip && (
+          <span className="label-text-alt text-red-500">
+            {errors.zip.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">Phone Number</p>
         <input
-          {...register(`enrollmentEntries.${index}.phone`)}
+          {...register("phone")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.phone && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.phone?.message}
-            </span>
-          )}
-
+        {errors.phone && (
+          <span className="label-text-alt text-red-500">
+            {errors.phone.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">Email</p>
         <input
-          {...register(`enrollmentEntries.${index}.email`)}
+          {...register("email")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.email && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.email?.message}
-            </span>
-          )}
-
+        {errors.email && (
+          <span className="label-text-alt text-red-500">
+            {errors.email.message}
+          </span>
+        )}
         <p className="font-medium pb-2 pt-8">Date of Birth</p>
         <input
-          {...register(`enrollmentEntries.${index}.datebirth`)}
+          {...register("address")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          type="date"
         />
-        {errors.enrollmentEntries &&
-          errors.enrollmentEntries[index]?.datebirth && (
-            <span className="label-text-alt text-red-500">
-              {errors.enrollmentEntries[index]?.datebirth?.message}
-            </span>
-          )}
-
+        {errors.datebirth && (
+          <span className="label-text-alt text-red-500">
+            {errors.datebirth.message}
+          </span>
+        )}
         <p className="text-lg pt-8 text-center">
           Emergency Contact Information
-        </p> */}
-
-        <p> Emergency Contacts</p>
-
+        </p>{" "}
         {fields.map((field, index) => (
           <div key={field.id}>
             <div className="flex justify-between items-center">
-              <p className="font-medium pb-2 pt-8">Emergency Contact {index + 1}</p>
+              <p className="font-medium pb-2 pt-8">
+                Emergency Contact {index + 1}
+              </p>
               <button
                 type="button"
                 onClick={() => remove(index)}
@@ -248,11 +208,51 @@ const EnrollmentLog: React.FC = () => {
                 </span>
               )}
 
+            <p className="font-medium pb-2 pt-8">
+              Emergency Contact Phone Number
+            </p>
+            <input
+              {...register(`emergencyContacts.${index}.emergencyphone`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.emergencyContacts &&
+              errors.emergencyContacts[index]?.emergencyphone && (
+                <span className="label-text-alt text-red-500">
+                  {errors.emergencyContacts[index]?.emergencyphone?.message}
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Relationship to Patient</p>
+            <input
+              {...register(`emergencyContacts.${index}.emergencyrelationship`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.emergencyContacts &&
+              errors.emergencyContacts[index]?.emergencyrelationship && (
+                <span className="label-text-alt text-red-500">
+                  {
+                    errors.emergencyContacts[index]?.emergencyrelationship
+                      ?.message
+                  }
+                </span>
+              )}
+
+            <p className="font-medium pb-2 pt-8">Emergency Contact Email</p>
+            <input
+              {...register(`emergencyContacts.${index}.emergencyemail`)}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="text"
+            />
+            {errors.emergencyContacts &&
+              errors.emergencyContacts[index]?.emergencyemail && (
+                <span className="label-text-alt text-red-500">
+                  {errors.emergencyContacts[index]?.emergencyemail?.message}
+                </span>
+              )}
           </div>
         ))}
-
-
-
         {/* <p className="font-medium pb-2 pt-8">
           Emergency Contact Phone Number
         </p>
@@ -311,7 +311,6 @@ const EnrollmentLog: React.FC = () => {
               }
             </span>
           )} */}
-
         <div className="flex justify-center">
           <button
             type="button"
@@ -322,7 +321,6 @@ const EnrollmentLog: React.FC = () => {
           </button>
         </div>
         {/* </div> */}
-
         <button
           type="submit"
           className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-10"
