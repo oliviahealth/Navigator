@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
                         Appointment log
                     </Link>
 
-                    <Link href={'/dashboard/tab-one/enrollment-form/edit/d3b5337f-99e9-4e8b-8c51-9bb950388184'}>
+                    <Link href={'/dashboard/tab-one/enrollment-form/new'}>
                         Enrollment log
                     </Link>
 
