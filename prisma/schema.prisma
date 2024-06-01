@@ -308,11 +308,19 @@ model ParticipantRecordForOthersInvolvedEntry {
 model ParticipantRecordForOthersInvolvedForm {
   id String @id @default(uuid())
 
+<<<<<<< HEAD
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+=======
+  User   User   @relation(fields: [userId], references: [id])
+>>>>>>> 32b95d1 (Minor schema updates)
   userId String
 
   participantRecordForOthersInvolvedEntries ParticipantRecordForOthersInvolvedEntry[]
 
   dateCreated  DateTime @default(now())
+<<<<<<< HEAD
   dateModified DateTime @updatedAt
+=======
+  dateModified DateTime @default(now())
+>>>>>>> 32b95d1 (Minor schema updates)
 }
