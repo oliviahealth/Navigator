@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantDemographicsFormInputs, IParticipantDemographicsFormResponse } from "./definitions";
+import { IParticipantDemographicsFormInputs } from "./definitions";
 
 /**
  * Creates a new Participant Demographics Record in the db.
