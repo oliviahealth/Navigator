@@ -11,13 +11,14 @@ import {
     maritalStatusEnum,
     labelMapping,
     ParticipantRecordForOthersInvolvedInputsSchema,
-    IParticipantRecordForOtherInvolvedInputs,
+    IParticipantRecordForOthersInvolvedInputs,
     ParticipantRecordForOthersInvolvedResponseSchema,
     IParticipantRecordForOthersInvolvedResponse,
     deliveryModeEnum
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
+import { createParticipantRecordForOthersInvolved, readParticipantRecordForOthersInvolved, updateParticipantRecordForOthersInvolved } from "../actions";
 
 const ParticipantRecordForOthersInvolved: React.FC = () => {
     const router = useRouter()
@@ -35,7 +36,6 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
     const handlePostpartumAttendance = (value: string, fieldIndex: number) => {
         if (value === 'Yes') {
             setShowPostpartumLocationDate(true);
-
             return;
         }
 
@@ -51,7 +51,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
         formState: { errors, isSubmitting },
         reset,
         setValue
-    } = useForm<IParticipantRecordForOtherInvolvedInputs>({
+    } = useForm<IParticipantRecordForOthersInvolvedInputs>({
         resolver: zodResolver(ParticipantRecordForOthersInvolvedInputsSchema),
         defaultValues: {
             participantRecordForOthersEntries: [
@@ -102,7 +102,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
         })
     }
 
-    const submit = async (data: IParticipantRecordForOtherInvolvedInputs) => {
+    const submit = async (data: IParticipantRecordForOthersInvolvedInputs) => {
         console.log(data)
     };
 
@@ -116,6 +116,11 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     <p className="font-semibold text-xl">{verb === 'new' ? 'New' : 'Edit'} Participant Record for Others Involved</p>
                     <small className="text-gray-500">For other people who may participate in the program, complete at initial intake and update as indicated.</small>
                     <small className="text-gray-500">Include anyone the client/participant states is directly or importantly involved in the care of the family (to include, as indicated, father of the child, parents of the mother, grandparents, adult siblings, etc.)</small>
+                </div>
+
+                <div className="pt-6">
+                    <small className="text-gray-500">
+                        Note: You do not have to complete all sections. If a question does not apply to you or you do not want to answer, feel free to write “N/A” for non-applicable.</small>
                 </div>
 
                 <div className="space-y-16 pt-12">

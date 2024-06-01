@@ -28,7 +28,7 @@ export const labelMapping = {
     Emergency_Shelter: "Emergency Shelter",
     Homeless: "Homeless",
     Other: "Other"
-}
+};
 
 export const ParticipantRecordForOthersEntrySchema = z.object({
     name: z.string().min(1, 'Name is required'),
@@ -67,7 +67,7 @@ export type IParticipantRecordForOthersEntry = z.infer<typeof ParticipantRecordF
 export const ParticipantRecordForOthersInvolvedInputsSchema = z.object({
     participantRecordForOthersEntries: z.array(ParticipantRecordForOthersEntrySchema)
 });
-export type IParticipantRecordForOtherInvolvedInputs = z.infer<typeof ParticipantRecordForOthersInvolvedInputsSchema>
+export type IParticipantRecordForOthersInvolvedInputs = z.infer<typeof ParticipantRecordForOthersInvolvedInputsSchema>
 
 export const ParticipantRecordForOthersInvolvedResponseSchema = ParticipantRecordForOthersInvolvedInputsSchema.extend({
     id: z.string(),

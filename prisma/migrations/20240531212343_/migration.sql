@@ -28,6 +28,15 @@ CREATE TYPE "Insurance" AS ENUM ('Employer_insurance', 'Self_pay', 'Dual_Eligibi
 -- CreateEnum
 CREATE TYPE "PriorityPopulationCharacteristics" AS ENUM ('Yes', 'No');
 
+-- CreateEnum
+CREATE TYPE "LivingArrangements" AS ENUM ('Rent_Own_a_Home', 'Living_with_Relatives_or_Friends', 'Residential_Treatment_Center', 'Correctional_Facility', 'Emergency_Shelter', 'Homeless', 'Other');
+
+-- CreateEnum
+CREATE TYPE "ParticipantRecordForOthersInvolvedMaritalStatus" AS ENUM ('Single', 'Married', 'Divorced', 'Widowed', 'Separated');
+
+-- CreateEnum
+CREATE TYPE "DeliveryMode" AS ENUM ('Vaginal', 'Cesarean');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -173,6 +182,54 @@ CREATE TABLE "ParticipantDemographicsForm" (
     CONSTRAINT "ParticipantDemographicsForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ParticipantRecordForOthersInvolvedEntry" (
+    "id" TEXT NOT NULL,
+    "participantRecordForOthersInvolvedFormId" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "currentLivingArrangement" "LivingArrangements" NOT NULL,
+    "streetAddress" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+    "state" TEXT NOT NULL,
+    "zipCode" TEXT NOT NULL,
+    "county" TEXT NOT NULL,
+    "primaryPhoneNumber" TEXT NOT NULL,
+    "emergencyContact" TEXT NOT NULL,
+    "emergencyContactPhone" TEXT NOT NULL,
+    "emergencyContactRelationship" TEXT NOT NULL,
+    "maritalStatus" "ParticipantRecordForOthersInvolvedMaritalStatus" NOT NULL,
+    "insurancePlan" TEXT NOT NULL,
+    "effectiveDate" TIMESTAMP(3) NOT NULL,
+    "subscriberId" TEXT NOT NULL,
+    "groupId" TEXT NOT NULL,
+    "gestationalAge" TEXT NOT NULL,
+    "dueDate" TIMESTAMP(3) NOT NULL,
+    "deliveryDate" TIMESTAMP(3) NOT NULL,
+    "plannedModeDelivery" "DeliveryMode" NOT NULL,
+    "actualModeDelivery" "DeliveryMode" NOT NULL,
+    "attendedPostpartumVisit" TEXT NOT NULL,
+    "postpartumVisitLocation" TEXT,
+    "postpartumVisitDate" TIMESTAMP(3),
+    "totalNumPregnancies" TEXT NOT NULL,
+    "numLiveBirths" TEXT NOT NULL,
+    "numChildrenWithMother" TEXT NOT NULL,
+    "priorComplications" TEXT NOT NULL,
+    "ongoingMedicalProblems" TEXT NOT NULL,
+
+    CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ParticipantRecordForOthersInvolvedForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "ParticipantRecordForOthersInvolvedForm_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -199,3 +256,9 @@ ALTER TABLE "MediaAppearanceForm" ADD CONSTRAINT "MediaAppearanceForm_userId_fke
 
 -- AddForeignKey
 ALTER TABLE "ParticipantDemographicsForm" ADD CONSTRAINT "ParticipantDemographicsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ParticipantRecordForOthersInvolvedEntry" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_participantRecordF_fkey" FOREIGN KEY ("participantRecordForOthersInvolvedFormId") REFERENCES "ParticipantRecordForOthersInvolvedForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ParticipantRecordForOthersInvolvedForm" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
