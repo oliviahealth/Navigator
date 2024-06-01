@@ -65,8 +65,8 @@ export const ChildDemographicsRecordInputsSchema = z.object({
     lactationConsultant: YesNoEnum,
     legalSystemInvolvement: YesNoEnum,
     childProtectiveService: childProtectiveServiceEnum,
-    caseworker: z.string().min(1, "Caseworker required."),
-    caseworkerPhoneNumber: z.string().min(1, "Caseworker phone number required."),
+    caseworker: z.string().nullable(),
+    caseworkerPhoneNumber: z.string().nullable(),
     importantInformation: z.string().min(1, "Important information required.")
 });
 export type IChildDemographicsRecordInputs = z.infer<typeof ChildDemographicsRecordInputsSchema>
