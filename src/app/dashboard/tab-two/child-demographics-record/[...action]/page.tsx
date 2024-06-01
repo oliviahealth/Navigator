@@ -25,7 +25,7 @@ const ChildDemographicsRecord: React.FC = () => {
     const verb = action[0]
     const submissionId = action[1]
 
-    const userId = useAppStore(state => state.userId);
+    const user = useAppStore(state => state.user);
 
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
