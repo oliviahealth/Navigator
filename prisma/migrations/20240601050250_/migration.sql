@@ -214,7 +214,7 @@ CREATE TABLE "ParticipantRecordForOthersInvolvedEntry" (
     "totalNumPregnancies" TEXT NOT NULL,
     "numLiveBirths" TEXT NOT NULL,
     "numChildrenWithMother" TEXT NOT NULL,
-    "priorComplications" TEXT NOT NULL,
+    "priorComplications" TEXT,
     "ongoingMedicalProblems" TEXT NOT NULL,
 
     CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_pkey" PRIMARY KEY ("id")
@@ -225,7 +225,7 @@ CREATE TABLE "ParticipantRecordForOthersInvolvedForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ParticipantRecordForOthersInvolvedForm_pkey" PRIMARY KEY ("id")
 );
@@ -261,4 +261,4 @@ ALTER TABLE "ParticipantDemographicsForm" ADD CONSTRAINT "ParticipantDemographic
 ALTER TABLE "ParticipantRecordForOthersInvolvedEntry" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_participantRecordF_fkey" FOREIGN KEY ("participantRecordForOthersInvolvedFormId") REFERENCES "ParticipantRecordForOthersInvolvedForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ParticipantRecordForOthersInvolvedForm" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ParticipantRecordForOthersInvolvedForm" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

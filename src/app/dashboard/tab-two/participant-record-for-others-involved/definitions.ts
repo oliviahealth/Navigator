@@ -65,7 +65,7 @@ export const ParticipantRecordForOthersEntrySchema = z.object({
 export type IParticipantRecordForOthersEntry = z.infer<typeof ParticipantRecordForOthersEntrySchema>
 
 export const ParticipantRecordForOthersInvolvedInputsSchema = z.object({
-    participantRecordForOthersEntries: z.array(ParticipantRecordForOthersEntrySchema)
+    participantRecordForOthersInvolvedEntries: z.array(ParticipantRecordForOthersEntrySchema)
 });
 export type IParticipantRecordForOthersInvolvedInputs = z.infer<typeof ParticipantRecordForOthersInvolvedInputsSchema>
 

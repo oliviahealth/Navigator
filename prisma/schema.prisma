@@ -299,7 +299,7 @@ model ParticipantRecordForOthersInvolvedEntry {
   totalNumPregnancies          String
   numLiveBirths                String
   numChildrenWithMother        String
-  priorComplications           String
+  priorComplications           String?
   ongoingMedicalProblems       String
 
   participantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm @relation(fields: [participantRecordForOthersInvolvedFormId], references: [id], onDelete: Cascade)
@@ -308,11 +308,11 @@ model ParticipantRecordForOthersInvolvedEntry {
 model ParticipantRecordForOthersInvolvedForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   participantRecordForOthersInvolvedEntries ParticipantRecordForOthersInvolvedEntry[]
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }

@@ -96,10 +96,14 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
  * @param submissionId - The ID of the Participant Demographics Record to delete.
  * @param userId - The ID of the user requesting to delete the record.
 <<<<<<< HEAD
+<<<<<<< HEAD
  * @returns {Promise<ICommunicationLogResponse>}
 =======
  * @returns {Promise<IParticipantDemographicsFormResponse>}
 >>>>>>> fb4b680 (implemented backend functionality)
+=======
+ * @returns {Promise<ICommunicationLogResponse>}
+>>>>>>> 05e5dc3 (adjusted schema to be an array of entries)
  * @remarks To be used by the dashboard
  */
 export const deleteParticipantDemographicsRecord = async (submissionId: string, userId: string) => {

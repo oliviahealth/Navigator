@@ -11,10 +11,10 @@ import {
     maritalStatusEnum,
     labelMapping,
     ParticipantRecordForOthersInvolvedInputsSchema,
-    IParticipantRecordForOthersInvolvedInputs,
     ParticipantRecordForOthersInvolvedResponseSchema,
-    IParticipantRecordForOthersInvolvedResponse,
-    deliveryModeEnum
+    deliveryModeEnum,
+    IParticipantRecordForOthersInvolvedInputs,
+    IParticipantRecordForOthersEntry
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -32,16 +32,20 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
-    const [showPostpartumLocationDate, setShowPostpartumLocationDate] = useState<boolean>(false);
-    const handlePostpartumAttendance = (value: string, fieldIndex: number) => {
-        if (value === 'Yes') {
-            setShowPostpartumLocationDate(true);
-            return;
-        }
+    const [showPostpartumLocationDate, setShowPostpartumLocationDate] = useState<boolean[]>([]);
 
-        setShowPostpartumLocationDate(false);
-        setValue(`participantRecordForOthersEntries.${fieldIndex}.postpartumVisitLocation`, null);
-        setValue(`participantRecordForOthersEntries.${fieldIndex}.postpartumVisitDate`, null);
+    const handlePostpartumAttendance = (value: string, fieldIndex: number) => {
+        setShowPostpartumLocationDate(prev => {
+            const newState = [...prev];
+            if (value === 'Yes') {
+                newState[fieldIndex] = true;
+            } else {
+                newState[fieldIndex] = false;
+                setValue(`participantRecordForOthersInvolvedEntries.${fieldIndex}.postpartumVisitLocation`, '');
+                setValue(`participantRecordForOthersInvolvedEntries.${fieldIndex}.postpartumVisitDate`, '');
+            }
+            return newState;
+        });
     };
 
     const {
@@ -54,9 +58,38 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
     } = useForm<IParticipantRecordForOthersInvolvedInputs>({
         resolver: zodResolver(ParticipantRecordForOthersInvolvedInputsSchema),
         defaultValues: {
-            participantRecordForOthersEntries: [
+            participantRecordForOthersInvolvedEntries: [
                 {
-
+                    name: '',
+                    dateOfBirth: undefined,
+                    currentLivingArrangement: null,
+                    streetAddress: '',
+                    city: '',
+                    state: '',
+                    zipCode: '',
+                    county: '',
+                    primaryPhoneNumber: '',
+                    emergencyContact: '',
+                    emergencyContactPhone: '',
+                    emergencyContactRelationship: '',
+                    maritalStatus: null,
+                    insurancePlan: '',
+                    effectiveDate: '',
+                    subscriberId: '',
+                    groupId: '',
+                    gestationalAge: '',
+                    dueDate: '',
+                    deliveryDate: '',
+                    plannedModeDelivery: null,
+                    actualModeDelivery: null,
+                    attendedPostpartumVisit: '',
+                    postpartumVisitLocation: '',
+                    postpartumVisitDate: '',
+                    totalNumPregnancies: '',
+                    numLiveBirths: '',
+                    numChildrenWithMother: '',
+                    priorComplications: null,
+                    ongoingMedicalProblems: ''
                 }
             ]
         },
@@ -64,7 +97,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
 
     const { fields, append, remove } = useFieldArray({
         control,
-        name: "participantRecordForOthersEntries"
+        name: "participantRecordForOthersInvolvedEntries"
     });
 
     const addNewParticipantRecordForOthersInvolvedEntry = () => {
@@ -102,9 +135,115 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
         })
     }
 
-    const submit = async (data: IParticipantRecordForOthersInvolvedInputs) => {
-        console.log(data)
+    const submit = async (data: { participantRecordForOthersInvolvedEntries: IParticipantRecordForOthersEntry[] }) => {
+        try {
+            if (!user) {
+                throw new Error('User not found');
+            }
+
+            const { participantRecordForOthersInvolvedEntries } = data;
+
+            let response;
+
+            if (verb === 'new') {
+                response = await createParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, user.id);
+            } else {
+                response = await updateParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, submissionId);
+            }
+
+            ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
+
+            return;
+        }
+
+        setSuccessMessage('Participant Record For Others Involved submitted successfully!')
+        router.push('/dashboard');
     };
+
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                const addNewParticipantRecordForOthersInvolvedEntry = () => {
+                    append({
+                        name: '',
+                        dateOfBirth: '',
+                        currentLivingArrangement: null,
+                        streetAddress: '',
+                        city: '',
+                        state: '',
+                        zipCode: '',
+                        county: '',
+                        primaryPhoneNumber: '',
+                        emergencyContact: '',
+                        emergencyContactPhone: '',
+                        emergencyContactRelationship: '',
+                        maritalStatus: null,
+                        insurancePlan: '',
+                        effectiveDate: '',
+                        subscriberId: '',
+                        groupId: '',
+                        gestationalAge: '',
+                        dueDate: '',
+                        deliveryDate: '',
+                        plannedModeDelivery: null,
+                        actualModeDelivery: null,
+                        attendedPostpartumVisit: '',
+                        postpartumVisitLocation: '',
+                        postpartumVisitDate: '',
+                        totalNumPregnancies: '',
+                        numLiveBirths: '',
+                        numChildrenWithMother: '',
+                        priorComplications: null,
+                        ongoingMedicalProblems: ''
+                    })
+                }
+
+                const response = await readParticipantRecordForOthersInvolved(submissionId, user.id);
+
+                ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
+
+                const formattedEntries = response.participantRecordForOthersInvolvedEntries.map(entry => ({
+                    ...entry,
+                    dateOfBirth: new Date(entry.dateOfBirth).toISOString().slice(0, 10),
+                    effectiveDate: new Date(entry.effectiveDate).toISOString().slice(0, 10),
+                    dueDate: new Date(entry.dueDate).toISOString().slice(0, 10),
+                    deliveryDate: new Date(entry.deliveryDate).toISOString().slice(0, 10),
+                    postpartumVisitDate: entry.postpartumVisitDate ? new Date(entry.postpartumVisitDate).toISOString().slice(0, 10) : null,
+                }));
+
+                reset({ participantRecordForOthersInvolvedEntries: formattedEntries });
+
+                const initialShowPostpartumLocationDate = response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes');
+                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/');
+
+                return;
+            }
+        }
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
+    if (!user) {
+        return <h1>Unauthorized</h1>
+    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
@@ -118,11 +257,6 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     <small className="text-gray-500">Include anyone the client/participant states is directly or importantly involved in the care of the family (to include, as indicated, father of the child, parents of the mother, grandparents, adult siblings, etc.)</small>
                 </div>
 
-                <div className="pt-6">
-                    <small className="text-gray-500">
-                        Note: You do not have to complete all sections. If a question does not apply to you or you do not want to answer, feel free to write “N/A” for non-applicable.</small>
-                </div>
-
                 <div className="space-y-16 pt-12">
                     {fields.map((field, index) => {
                         return (
@@ -132,7 +266,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         Parent/Child Caregiver/Involved Relative Demographics {index + 1}
                                     </p>
 
-                                    {index > 0 && (
+                                    {fields.length > 1 && (
                                         <button
                                             type="button"
                                             onClick={() => remove(index)}
@@ -146,12 +280,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-3">
                                         <p className="font-semibold">Name</p>
                                         <input
-                                            {...register(`participantRecordForOthersEntries.${index}.name`)}
+                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.name`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                         />
-                                        {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.name && (
+                                        {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.name && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.participantRecordForOthersEntries[index]?.name?.message}
+                                                {errors.participantRecordForOthersInvolvedEntries[index]?.name?.message}
                                             </span>
                                         )}
                                     </div>
@@ -159,13 +293,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-3">
                                         <p className="font-semibold">Date of Birth</p>
                                         <input
-                                            {...register(`participantRecordForOthersEntries.${index}.dateOfBirth`)}
+                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.dateOfBirth`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             type="date"
                                         />
-                                        {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.dateOfBirth && (
+                                        {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.dateOfBirth && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.participantRecordForOthersEntries[index]?.dateOfBirth?.message}
+                                                {errors.participantRecordForOthersInvolvedEntries[index]?.dateOfBirth?.message}
                                             </span>
                                         )}
                                     </div>
@@ -178,7 +312,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             {livingArrangementsEnum.options.map((status) => (
                                                 <label key={status} className="inline-flex items-center">
                                                     <input
-                                                        {...register(`participantRecordForOthersEntries.${index}.currentLivingArrangement`)}
+                                                        {...register(`participantRecordForOthersInvolvedEntries.${index}.currentLivingArrangement`)}
                                                         type="radio"
                                                         value={status}
                                                         className="form-radio"
@@ -186,9 +320,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     <span className="ml-2">{labelMapping[status]}</span>
                                                 </label>
                                             ))}
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.currentLivingArrangement && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.currentLivingArrangement && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.currentLivingArrangement?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.currentLivingArrangement?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -198,12 +332,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="flex flex-col flex-grow lg:w-full md:w-full sm:w-auto space-y-3">
                                             <p className="font-semibold  whitespace-nowrap">Street Address</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.streetAddress`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.streetAddress`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.streetAddress && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.streetAddress && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.streetAddress?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.streetAddress?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -211,12 +345,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="flex flex-col flex-grow lg:w-3/4 md:w-3/4 sm:w-3/4 space-y-3">
                                             <p className="font-semibold">City</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.city`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.city`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.city && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.city && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.city?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.city?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -224,7 +358,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="flex flex-col flex-grow lg:w-1/3 md:w-full sm:w-3/4 space-y-3">
                                             <p className="font-semibold">State</p>
                                             <select
-                                                {...register(`participantRecordForOthersEntries.${index}.state`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.state`)}
                                                 className="dropdown border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 defaultValue={'--'}
                                             >
@@ -235,9 +369,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     <option key={state}>{state}</option>
                                                 ))}
                                             </select>
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.state && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.state && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.state?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.state?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -247,12 +381,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="flex flex-col flex-grow space-y-3">
                                             <p className="font-semibold">Zip Code</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.zipCode`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.zipCode`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.zipCode && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.zipCode && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.zipCode?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.zipCode?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -260,12 +394,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="flex flex-col flex-grow space-y-3">
                                             <p className="font-semibold">County</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.county`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.county`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.county && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.county && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.county?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.county?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -276,12 +410,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-3">
                                         <p className="text-lg font-bold">Primary Phone Number</p>
                                         <input
-                                            {...register(`participantRecordForOthersEntries.${index}.primaryPhoneNumber`)}
+                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.primaryPhoneNumber`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                         />
-                                        {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.primaryPhoneNumber && (
+                                        {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.primaryPhoneNumber && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.participantRecordForOthersEntries[index]?.primaryPhoneNumber?.message}
+                                                {errors.participantRecordForOthersInvolvedEntries[index]?.primaryPhoneNumber?.message}
                                             </span>
                                         )}
                                     </div>
@@ -294,12 +428,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Name</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersEntries.${index}.emergencyContact`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.emergencyContact`)}
                                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 />
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.emergencyContact && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContact && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.emergencyContact?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContact?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -307,12 +441,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Phone Number</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersEntries.${index}.emergencyContactPhone`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.emergencyContactPhone`)}
                                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 />
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.emergencyContactPhone && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContactPhone && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.emergencyContactPhone?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContactPhone?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -321,12 +455,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Emergency Contact Relationship</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.emergencyContactRelationship`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.emergencyContactRelationship`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.emergencyContactRelationship && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContactRelationship && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.emergencyContactRelationship?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.emergencyContactRelationship?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -343,7 +477,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 {maritalStatusEnum.options.map((status) => (
                                                     <label key={status} className="inline-flex items-center">
                                                         <input
-                                                            {...register(`participantRecordForOthersEntries.${index}.maritalStatus`)}
+                                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.maritalStatus`)}
                                                             type="radio"
                                                             value={status}
                                                             className="form-radio"
@@ -352,9 +486,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     </label>
                                                 ))}
                                             </div>
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.maritalStatus && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.maritalStatus && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.maritalStatus?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.maritalStatus?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -362,12 +496,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Insurance Plan</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.insurancePlan`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.insurancePlan`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.insurancePlan && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.insurancePlan && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.insurancePlan?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.insurancePlan?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -376,13 +510,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Effective Date</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersEntries.${index}.effectiveDate`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.effectiveDate`)}
                                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                     type="date"
                                                 />
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.effectiveDate && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.effectiveDate && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.effectiveDate?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.effectiveDate?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -390,12 +524,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Subscriber ID</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersEntries.${index}.subscriberId`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.subscriberId`)}
                                                     className="border border-gray-300 px-4 py-2.5 rounded-md w-full"
                                                 />
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.subscriberId && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.subscriberId && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.subscriberId?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.subscriberId?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -403,12 +537,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Group ID</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersEntries.${index}.groupId`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.groupId`)}
                                                     className="border border-gray-300 px-4 py-2.5 rounded-md w-full"
                                                 />
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.groupId && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.groupId && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.groupId?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.groupId?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -423,12 +557,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Gestational Age at Entry of Care</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.gestationalAge`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.gestationalAge`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.gestationalAge && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.gestationalAge && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.gestationalAge?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.gestationalAge?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -436,13 +570,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Due Date</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.dueDate`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.dueDate`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 type="date"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.dueDate && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.dueDate && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.dueDate?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.dueDate?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -450,13 +584,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Delivery Date</p>
                                             <input
-                                                {...register(`participantRecordForOthersEntries.${index}.deliveryDate`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.deliveryDate`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 type="date"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.deliveryDate && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.deliveryDate && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.deliveryDate?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.deliveryDate?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -468,7 +602,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     {deliveryModeEnum.options.map((status) => (
                                                         <label key={status} className="inline-flex items-center">
                                                             <input
-                                                                {...register(`participantRecordForOthersEntries.${index}.plannedModeDelivery`)}
+                                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.plannedModeDelivery`)}
                                                                 type="radio"
                                                                 value={status}
                                                                 className="form-radio"
@@ -477,9 +611,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                         </label>
                                                     ))}
                                                 </div>
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.plannedModeDelivery && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.plannedModeDelivery && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.plannedModeDelivery?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.plannedModeDelivery?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -492,7 +626,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     {deliveryModeEnum.options.map((status) => (
                                                         <label key={status} className="inline-flex items-center">
                                                             <input
-                                                                {...register(`participantRecordForOthersEntries.${index}.actualModeDelivery`)}
+                                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.actualModeDelivery`)}
                                                                 type="radio"
                                                                 value={status}
                                                                 className="form-radio"
@@ -501,9 +635,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                         </label>
                                                     ))}
                                                 </div>
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.actualModeDelivery && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.actualModeDelivery && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.actualModeDelivery?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.actualModeDelivery?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -516,7 +650,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                     {['Yes', 'No'].map((status, idx) => (
                                                         <label key={idx} className="inline-flex items-center">
                                                             <input
-                                                                {...register(`participantRecordForOthersEntries.${index}.attendedPostpartumVisit`)}
+                                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.attendedPostpartumVisit`)}
                                                                 type="radio"
                                                                 value={status}
                                                                 className="form-radio"
@@ -526,9 +660,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                         </label>
                                                     ))}
                                                 </div>
-                                                {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.attendedPostpartumVisit && (
+                                                {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.attendedPostpartumVisit && (
                                                     <span className="label-text-alt text-red-500">
-                                                        {errors.participantRecordForOthersEntries[index]?.attendedPostpartumVisit?.message}
+                                                        {errors.participantRecordForOthersInvolvedEntries[index]?.attendedPostpartumVisit?.message}
                                                     </span>
                                                 )}
                                             </div>
@@ -539,12 +673,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 <div className="space-y-3">
                                                     <p className="font-semibold">Postpartum Visit Location</p>
                                                     <input
-                                                        {...register(`participantRecordForOthersEntries.${index}.postpartumVisitLocation`)}
+                                                        {...register(`participantRecordForOthersInvolvedEntries.${index}.postpartumVisitLocation`)}
                                                         className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                     />
-                                                    {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.postpartumVisitLocation && (
+                                                    {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.postpartumVisitLocation && (
                                                         <span className="label-text-alt text-red-500">
-                                                            {errors.participantRecordForOthersEntries[index]?.postpartumVisitLocation?.message}
+                                                            {errors.participantRecordForOthersInvolvedEntries[index]?.postpartumVisitLocation?.message}
                                                         </span>
                                                     )}
                                                 </div>
@@ -552,13 +686,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 <div className="space-y-3">
                                                     <p className="font-medium">Date Completed</p>
                                                     <input
-                                                        {...register(`participantRecordForOthersEntries.${index}.postpartumVisitDate`)}
+                                                        {...register(`participantRecordForOthersInvolvedEntries.${index}.postpartumVisitDate`)}
                                                         className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                         type="date"
                                                     />
-                                                    {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.postpartumVisitDate && (
+                                                    {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.postpartumVisitDate && (
                                                         <span className="label-text-alt text-red-500">
-                                                            {errors.participantRecordForOthersEntries[index]?.postpartumVisitDate?.message}
+                                                            {errors.participantRecordForOthersInvolvedEntries[index]?.postpartumVisitDate?.message}
                                                         </span>
                                                     )}
                                                 </div>
@@ -573,33 +707,33 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-4">
                                         <div className="space-y-3">
                                             <p className="font-semibold">Total Number of Pregnancies</p>
-                                            <input type="text" {...register(`participantRecordForOthersEntries.${index}.totalNumPregnancies`)}
+                                            <input type="text" {...register(`participantRecordForOthersInvolvedEntries.${index}.totalNumPregnancies`)}
                                                 className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.totalNumPregnancies && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.totalNumPregnancies && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.totalNumPregnancies?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.totalNumPregnancies?.message}
                                                 </span>
                                             )}
                                         </div>
 
                                         <div className="space-y-3">
                                             <p className="font-semibold">Number of Live Births</p>
-                                            <input type="text" {...register(`participantRecordForOthersEntries.${index}.numLiveBirths`)}
+                                            <input type="text" {...register(`participantRecordForOthersInvolvedEntries.${index}.numLiveBirths`)}
                                                 className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.numLiveBirths && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.numLiveBirths && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.numLiveBirths?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.numLiveBirths?.message}
                                                 </span>
                                             )}
                                         </div>
 
                                         <div className="space-y-3">
                                             <p className="font-semibold">Number of Children Living with Mother</p>
-                                            <input type="text" {...register(`participantRecordForOthersEntries.${index}.numChildrenWithMother`)}
+                                            <input type="text" {...register(`participantRecordForOthersInvolvedEntries.${index}.numChildrenWithMother`)}
                                                 className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.numChildrenWithMother && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.numChildrenWithMother && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.numChildrenWithMother?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.numChildrenWithMother?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -609,12 +743,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 Please Explain Complications During Prior Pregnancies
                                             </p>
                                             <textarea
-                                                {...register(`participantRecordForOthersEntries.${index}.priorComplications`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.priorComplications`)}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             />
-                                            {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.priorComplications && (
+                                            {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.priorComplications && (
                                                 <span className="label-text-alt text-red-500">
-                                                    {errors.participantRecordForOthersEntries[index]?.priorComplications?.message}
+                                                    {errors.participantRecordForOthersInvolvedEntries[index]?.priorComplications?.message}
                                                 </span>
                                             )}
                                         </div>
@@ -626,12 +760,12 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-3">
                                         <p className="font-semibold">Diagnoses/Conditions</p>
                                         <textarea
-                                            {...register(`participantRecordForOthersEntries.${index}.ongoingMedicalProblems`)}
+                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.ongoingMedicalProblems`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                         />
-                                        {errors.participantRecordForOthersEntries && errors.participantRecordForOthersEntries[index]?.ongoingMedicalProblems && (
+                                        {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.ongoingMedicalProblems && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.participantRecordForOthersEntries[index]?.ongoingMedicalProblems?.message}
+                                                {errors.participantRecordForOthersInvolvedEntries[index]?.ongoingMedicalProblems?.message}
                                             </span>
                                         )}
                                     </div>
