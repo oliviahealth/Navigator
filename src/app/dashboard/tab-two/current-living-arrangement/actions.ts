@@ -14,17 +14,6 @@ import { ICurrentLivingArrangementInputs, ICurrentLivingArrangementResponse } fr
 export const createCurrentLivingArrangements = async (currentLivingArrangementInputs: ICurrentLivingArrangementInputs, userId: string) => {
     const { ...data } = currentLivingArrangementInputs;
 
-    const transformedData = {
-        listPeopleLivingWithPatient: currentLivingArrangementInputs.listPeopleLivingWithPatient.map(person => ({
-            ...person,
-            dateOfBirth: new Date(person.dateOfBirth),
-        })),
-        listChildrenNotLivingWithPatient: currentLivingArrangementInputs.listChildrenNotLivingWithPatient.map(child => ({
-            ...child,
-            dateOfBirth: new Date(child.dateOfBirth),
-        })),
-    };
-
     const response = await prisma.currentLivingArrangement.create({
         data: {
             userId,
