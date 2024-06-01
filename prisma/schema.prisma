@@ -250,6 +250,7 @@ model CurrentLivingArrangement {
 
   listPeopleLivingWithPatient Json
   listChildrenNotLivingWithPatient Json
+  notes String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

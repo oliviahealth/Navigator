@@ -16,7 +16,8 @@ const childrenNotLivingWithPatient = z.object({
 
 export const CurrentLivingArrangementInputsSchema = z.object({
     listPeopleLivingWithPatient: z.array(peopleLivingWithPatient),
-    listChildrenNotLivingWithPatient: z.array(childrenNotLivingWithPatient)
+    listChildrenNotLivingWithPatient: z.array(childrenNotLivingWithPatient),
+    notes: z.string().nullable()
 });
 export type ICurrentLivingArrangementInputs = z.infer<typeof CurrentLivingArrangementInputsSchema>
 

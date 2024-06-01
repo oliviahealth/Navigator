@@ -99,7 +99,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if(!user) {
+                if (!user) {
                     throw new Error('Missing user');
                 }
 
@@ -126,7 +126,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
         try {
             let response;
 
-            if(!user) {
+            if (!user) {
                 throw new Error("User missing");
             }
 
@@ -336,6 +336,21 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                 + Add New Person
                             </button>
                         </div>
+                    </div>
+
+
+                    <div className="flex flex-col justify-between space-y-3">
+                        <p className="font-semibold">Notes</p>
+
+                        <textarea
+                            {...register("notes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.notes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.notes.message}
+                            </span>
+                        )}
                     </div>
                 </div>
 
