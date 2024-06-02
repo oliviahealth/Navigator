@@ -74,6 +74,19 @@ const ChildDemographicsRecord: React.FC = () => {
         }
     };
 
+    const [caseworker, setCaseworker] = useState(false);
+    const handleCaseworker = (value: string) => {
+        if(value === "Currently" || value === "Previously") {
+            setCaseworker(true);
+
+            return
+        }
+
+        setValue('caseworker', null);
+        setValue('caseworkerPhoneNumber', null);
+        setCaseworker(false);
+    }
+
     const submit = async (ChildDemographicsRecordData: IChildDemographicsRecordInputs) => {
         console.log(ChildDemographicsRecordData)
     }
@@ -137,12 +150,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.sex && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.sex.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.sex && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.sex.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -211,12 +224,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.parentOneInvolvedInLife && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.parentOneInvolvedInLife.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.parentOneInvolvedInLife && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.parentOneInvolvedInLife.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -247,12 +260,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.parentTwoInvolvedInLife && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.parentTwoInvolvedInLife.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.parentTwoInvolvedInLife && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.parentTwoInvolvedInLife.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -387,12 +400,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 <span className="ml-2">{option}</span>
                                             </label>
                                         ))}
-                                        {errors.nicuStay && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.nicuStay.message}
-                                            </span>
-                                        )}
                                     </div>
+                                    {errors.nicuStay && (
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.nicuStay.message}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {nicuStay && (
@@ -428,12 +441,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 <span className="ml-2">{option}</span>
                                             </label>
                                         ))}
-                                        {errors.prenatalDrugExposure && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.prenatalDrugExposure.message}
-                                            </span>
-                                        )}
                                     </div>
+                                    {errors.prenatalDrugExposure && (
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.prenatalDrugExposure.message}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {prenatalDrugExposure && (
@@ -543,12 +556,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.lactationConsultant && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.lactationConsultant.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.lactationConsultant && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.lactationConsultant.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -565,12 +578,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.legalSystemInvolvement && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.legalSystemInvolvement.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.legalSystemInvolvement && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.legalSystemInvolvement.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -583,6 +596,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 className="form-radio"
                                                 type="radio"
                                                 value={option}
+                                                onChange={(e) => handleCaseworker(e.target.value)}
                                             />
                                             <span className="ml-2">{labelMapping.childProtectiveService[option]}</span>
                                         </label>
@@ -595,7 +609,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="space-y-3">
+                            {caseworker && (<div className="space-y-3">
                                 <p className="font-semibold">Caseworker</p>
                                 <input
                                     {...register("caseworker")}
@@ -607,9 +621,9 @@ const ChildDemographicsRecord: React.FC = () => {
                                         {errors.caseworker.message}
                                     </span>
                                 )}
-                            </div>
+                            </div>)}
 
-                            <div className="space-y-3">
+                            {caseworker && (<div className="space-y-3">
                                 <p className="font-semibold">Caseworker Phone Number</p>
                                 <input
                                     {...register("caseworkerPhoneNumber")}
@@ -621,7 +635,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                         {errors.caseworkerPhoneNumber.message}
                                     </span>
                                 )}
-                            </div>
+                            </div>)}
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Other Important Information</p>
