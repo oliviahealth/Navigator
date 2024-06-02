@@ -167,7 +167,7 @@ const CommunicationLog: React.FC = () => {
                                     Communication Entry {index + 1}
                                 </p>
 
-                                {index > 0 && (
+                                {fields.length > 1 && (
                                     <button
                                         type="button"
                                         onClick={() => remove(index)}
