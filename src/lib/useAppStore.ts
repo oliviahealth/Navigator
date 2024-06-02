@@ -13,7 +13,7 @@ interface AppState {
 }
 
 const useAppStore = create<AppState>()((set) => ({
-    userId: '4ea00536-ac53-4dbd-a9dc-2445da766149',
+    userId: 'f9dac19a-5908-415a-8d80-14f0356fe737',
     
     errorMessage: null,
     setErrorMessage: (errorMessage) => set(() => ({ errorMessage })),

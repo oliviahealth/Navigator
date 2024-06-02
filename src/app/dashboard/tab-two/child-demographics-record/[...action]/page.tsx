@@ -98,6 +98,14 @@ const ChildDemographicsRecord: React.FC = () => {
 
                 reset(formattedData);
 
+                if(formattedData.prenatalDrugExposure) {
+                    setPrenatalDrugExposure(true);
+                }
+
+                if(formattedData.nicuStay) {
+                    setNicuStay(true)
+                }
+
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -112,14 +120,11 @@ const ChildDemographicsRecord: React.FC = () => {
     }, [])
 
     const submit = async (ChildDemographicsRecordData: IChildDemographicsRecordInputs) => {
-        console.log("input: ", ChildDemographicsRecordData)
-
         try {
             let response;
 
             if (verb === 'new') {
                 response = await createChildDemographicsRecord(ChildDemographicsRecordData, userId);
-                console.log("response: ", response);
             } else {
                 response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, userId)
             }
@@ -690,7 +695,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                     {...register("importantInformation")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="text"
-                                />
+                            />
                                 {errors.importantInformation && (
                                     <span className="label-text-alt text-red-500">
                                         {errors.importantInformation.message}

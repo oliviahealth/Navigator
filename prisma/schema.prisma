@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum YesNo {
+  Yes
+  No
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -36,11 +41,6 @@ enum CommunicationMethod {
   Other
 }
 
-enum FollowUpNeeded {
-  Yes
-  No
-}
-
 model CommunicationEntry {
   id String @id @default(uuid())
 
@@ -51,15 +51,15 @@ model CommunicationEntry {
   organizationPerson String
   purpose            String
   notes              String?
-  followUpNeeded     FollowUpNeeded
+  followUpNeeded     YesNo
 
-  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id])
+  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
 }
 
 model CommunicationLog {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   communicationEntries CommunicationEntry[]
@@ -78,13 +78,13 @@ model AppointmentEntry {
   location String
   notes    String?
 
-  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id])
+  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
 }
 
 model AppointmentLog {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   appointmentEntries AppointmentEntry[]
@@ -103,13 +103,13 @@ model EmergencyContact {
   telephone    String
   email        String
 
-  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id])
+  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
 }
 
 model EnrollmentForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   firstName         String
@@ -137,7 +137,7 @@ model EnrollmentForm {
 model MediaAppearanceForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   participantName String
@@ -201,15 +201,10 @@ enum Insurance {
   Uninsured
 }
 
-enum PriorityPopulationCharacteristics {
-  Yes
-  No
-}
-
 model ParticipantDemographicsForm {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   programStartDate            DateTime
@@ -228,14 +223,14 @@ model ParticipantDemographicsForm {
   maritalStatus               MaritalStatus
   lgbtqiPlus                  LgbtqiPlus
   insurance                   Insurance
-  childAbuse                  PriorityPopulationCharacteristics
-  substanceAbuse              PriorityPopulationCharacteristics
-  tobaccoUse                  PriorityPopulationCharacteristics
-  lowStudentAchievement       PriorityPopulationCharacteristics
-  developmentalDelay          PriorityPopulationCharacteristics
-  USArmedForces               PriorityPopulationCharacteristics
-  reenrollmentWithGap         PriorityPopulationCharacteristics
-  transferFromAnotherSite     PriorityPopulationCharacteristics
+  childAbuse                  YesNo
+  substanceAbuse              YesNo
+  tobaccoUse                  YesNo
+  lowStudentAchievement       YesNo
+  developmentalDelay          YesNo
+  USArmedForces               YesNo
+  reenrollmentWithGap         YesNo
+  transferFromAnotherSite     YesNo
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
@@ -255,11 +250,6 @@ enum ChildLivingWith {
   Other
 }
 
-enum YesNo {
-  Yes
-  No
-}
-
 enum childProtectiveService {
   Currently
   Previously
@@ -269,7 +259,7 @@ enum childProtectiveService {
 model ChildDemographicsRecord {
   id String @id @default(uuid())
 
-  User   User   @relation(fields: [userId], references: [id])
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   childName                    String
@@ -301,9 +291,9 @@ model ChildDemographicsRecord {
   lactationConsultant          YesNo
   legalSystemInvolvement       YesNo
   childProtectiveService       childProtectiveService
-  caseworker                   String
-  caseworkerPhoneNumber        String
-  importantInformation         String
+  caseworker                   String?
+  caseworkerPhoneNumber        String?
+  importantInformation         String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
