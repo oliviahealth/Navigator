@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum YesNo {
+  Yes
+  No
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -21,11 +26,14 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog            CommunicationLog[]
-  AppointmentLog              AppointmentLog[]
-  EnrollmentForm              EnrollmentForm[]
-  MediaAppearanceForm         MediaAppearanceForm[]
-  ParticipantDemographicsForm ParticipantDemographicsForm[]
+  CommunicationLog                     CommunicationLog[]
+  AppointmentLog                       AppointmentLog[]
+  EnrollmentForm                       EnrollmentForm[]
+  MediaAppearanceForm                  MediaAppearanceForm[]
+  ParticipantDemographicsForm          ParticipantDemographicsForm[]
+  ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
+  ChildDemographicsRecord                ChildDemographicsRecord[]
+  SupportSystemsForm                     SupportSystemsForm[]
   CurrentLivingArrangement    CurrentLivingArrangement[]
   ChildrenNeedsForm           ChildrenNeedsForm[]
 }
@@ -38,11 +46,6 @@ enum CommunicationMethod {
   Other
 }
 
-enum FollowUpNeeded {
-  Yes
-  No
-}
-
 model CommunicationEntry {
   id String @id @default(uuid())
 
@@ -53,21 +56,21 @@ model CommunicationEntry {
   organizationPerson String
   purpose            String
   notes              String?
-  followUpNeeded     FollowUpNeeded
+  followUpNeeded     YesNo
 
-  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
+  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
 }
 
 model CommunicationLog {
-  id                    String @id @default(uuid())
+  id String @id @default(uuid())
 
-  User                  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   communicationEntries CommunicationEntry[]
 
-  dateCreated           DateTime @default(now())
-  dateModified          DateTime @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model AppointmentEntry {
@@ -105,7 +108,7 @@ model EmergencyContact {
   telephone    String
   email        String
 
-  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
+  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
 }
 
 model EnrollmentForm {
@@ -137,19 +140,19 @@ model EnrollmentForm {
 }
 
 model MediaAppearanceForm {
-  id                   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  User                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
-  participantName      String
-  address              String
-  participantDate      DateTime
-  guardianName         String?
-  guardianDate         DateTime?
+  participantName String
+  address         String
+  participantDate DateTime
+  guardianName    String?
+  guardianDate    DateTime?
 
-  dateCreated          DateTime @default(now())
-  dateModified          DateTime @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum Gender {
@@ -203,11 +206,6 @@ enum Insurance {
   Uninsured
 }
 
-enum PriorityPopulationCharacteristics {
-  Yes
-  No
-}
-
 model ParticipantDemographicsForm {
   id String @id @default(uuid())
 
@@ -220,8 +218,8 @@ model ParticipantDemographicsForm {
   participantName             String
   participantDateOfBirth      DateTime
   participantAddress          String
-  participantZipCode                     String
-  participantPhoneNumber                 String
+  participantZipCode          String
+  participantPhoneNumber      String
   gender                      Gender
   ethnicity                   Ethnicity
   race                        Race
@@ -230,14 +228,167 @@ model ParticipantDemographicsForm {
   maritalStatus               MaritalStatus
   lgbtqiPlus                  LgbtqiPlus
   insurance                   Insurance
-  childAbuse                  PriorityPopulationCharacteristics
-  substanceAbuse              PriorityPopulationCharacteristics
-  tobaccoUse                  PriorityPopulationCharacteristics
-  lowStudentAchievement       PriorityPopulationCharacteristics
-  developmentalDelay          PriorityPopulationCharacteristics
-  USArmedForces               PriorityPopulationCharacteristics
-  reenrollmentWithGap         PriorityPopulationCharacteristics
-  transferFromAnotherSite     PriorityPopulationCharacteristics
+  childAbuse                  YesNo
+  substanceAbuse              YesNo
+  tobaccoUse                  YesNo
+  lowStudentAchievement       YesNo
+  developmentalDelay          YesNo
+  USArmedForces               YesNo
+  reenrollmentWithGap         YesNo
+  transferFromAnotherSite     YesNo
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+// Tab 2: ParticipantRecordForOthersInvolved
+enum LivingArrangements {
+  Rent_Own_a_Home
+  Living_with_Relatives_or_Friends
+  Residential_Treatment_Center
+  Correctional_Facility
+  Emergency_Shelter
+  Homeless
+  Other
+}
+
+enum ParticipantRecordForOthersInvolvedMaritalStatus {
+  Single
+  Married
+  Divorced
+  Widowed
+  Separated
+}
+
+enum DeliveryMode {
+  Vaginal
+  Cesarean
+}
+
+model ParticipantRecordForOthersInvolvedEntry {
+  id String @id @default(uuid())
+
+  participantRecordForOthersInvolvedFormId String
+
+  name                         String
+  dateOfBirth                  DateTime
+  currentLivingArrangement     LivingArrangements
+  streetAddress                String
+  city                         String
+  state                        String
+  zipCode                      String
+  county                       String
+  primaryPhoneNumber           String
+  emergencyContact             String
+  emergencyContactPhone        String
+  emergencyContactRelationship String
+  maritalStatus                ParticipantRecordForOthersInvolvedMaritalStatus
+  insurancePlan                String
+  effectiveDate                DateTime
+  subscriberId                 String
+  groupId                      String
+  gestationalAge               String
+  dueDate                      DateTime
+  deliveryDate                 DateTime
+  plannedModeDelivery          DeliveryMode
+  actualModeDelivery           DeliveryMode
+  attendedPostpartumVisit      String
+  postpartumVisitLocation      String?
+  postpartumVisitDate          DateTime?
+  totalNumPregnancies          String
+  numLiveBirths                String
+  numChildrenWithMother        String
+  priorComplications           String?
+  ongoingMedicalProblems       String
+
+  participantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm @relation(fields: [participantRecordForOthersInvolvedFormId], references: [id], onDelete: Cascade)
+}
+
+model ParticipantRecordForOthersInvolvedForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantRecordForOthersInvolvedEntries ParticipantRecordForOthersInvolvedEntry[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum Sex {
+  Female
+  Male
+}
+
+enum ChildLivingWith {
+  Mother
+  Father
+  Grandparents
+  Siblings
+  Foster_Family
+  Other
+}
+
+enum childProtectiveService {
+  Currently
+  Previously
+  Never
+}
+
+model ChildDemographicsRecord {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  childName                    String
+  dateOfBirth                  DateTime
+  sex                          Sex
+  childLivingWith              ChildLivingWith[]
+  childLivingWithOther         String?
+  parentOneName                String
+  parentOneInvolvedInLife      YesNo
+  parentTwoName                String
+  parentTwoInvolvedInLife      YesNo
+  insurancePlan                String
+  effectiveDate                DateTime
+  subscriberId                 String
+  groupId                      String
+  primaryCareProvider          String
+  primaryCareProviderPhone     String
+  birthWeight                  String
+  gestationalAgeAtBirth        String
+  nicuStay                     YesNo
+  nicuStayLength               String?
+  prenatalDrugExposure         YesNo
+  prenatalDrug                 String?
+  medicalComplicationsAtBirth  String
+  ongoingMedicalIssues         String
+  ongoingMedications           String
+  healthConcerns               String
+  difficultiesServicesReceived String
+  lactationConsultant          YesNo
+  legalSystemInvolvement       YesNo
+  childProtectiveService       childProtectiveService
+  caseworker                   String?
+  caseworkerPhoneNumber        String?
+  importantInformation         String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model SupportSystemsForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentSupportSystem String
+  strengths            String
+  areasForImprovement  String
+  goals                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
