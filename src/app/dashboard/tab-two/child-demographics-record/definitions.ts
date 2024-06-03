@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { nullable, z } from "zod";
 
 export const sexEnum = z.enum(["Female", "Male"]);
 
@@ -67,7 +67,7 @@ export const ChildDemographicsRecordInputsSchema = z.object({
     childProtectiveService: childProtectiveServiceEnum,
     caseworker: z.string().nullable(),
     caseworkerPhoneNumber: z.string().nullable(),
-    importantInformation: z.string().min(1, "Important information required.")
+    importantInformation: z.string().nullable()
 });
 export type IChildDemographicsRecordInputs = z.infer<typeof ChildDemographicsRecordInputsSchema>
 

@@ -23,6 +23,10 @@ const Dashboard: React.FC = () => {
                     <Link href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
                         Participant Record For Others Involved
                     </Link>
+
+                    <Link href={'/dashboard/tab-two/child-demographics-record/new'}>
+                        Child Demographics Record
+                    </Link>
                 </div>
             </div>
         </div>
