@@ -26,7 +26,7 @@ const ChildDemographicsRecord: React.FC = () => {
     const verb = action[0]
     const submissionId = action[1]
 
-    const userId = useAppStore(state => state.userId);
+    const user = useAppStore(state => state.user);
 
     const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
@@ -75,6 +75,19 @@ const ChildDemographicsRecord: React.FC = () => {
         }
     };
 
+    const [caseworker, setCaseworker] = useState(false);
+    const handleCaseworker = (value: string) => {
+        if(value === "Currently" || value === "Previously") {
+            setCaseworker(true);
+
+            return
+        }
+
+        setValue('caseworker', null);
+        setValue('caseworkerPhoneNumber', null);
+        setCaseworker(false);
+    }
+
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
@@ -86,7 +99,11 @@ const ChildDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readChildDemographicsRecord(submissionId, userId);
+                if(!user) {
+                    throw new Error("User not found");
+                }
+
+                const response = await readChildDemographicsRecord(submissionId, user?.id);
 
                 const validResponse = ChildDemographicsRecordResponseSchema.parse(response);
 
@@ -123,10 +140,14 @@ const ChildDemographicsRecord: React.FC = () => {
         try {
             let response;
 
+            if(!user) {
+                throw new Error("User not found");
+            }
+
             if (verb === 'new') {
-                response = await createChildDemographicsRecord(ChildDemographicsRecordData, userId);
+                response = await createChildDemographicsRecord(ChildDemographicsRecordData, user?.id);
             } else {
-                response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, userId)
+                response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, user?.id)
             }
 
             ChildDemographicsRecordResponseSchema.parse(response);
@@ -152,13 +173,12 @@ const ChildDemographicsRecord: React.FC = () => {
                 </div>
 
                 <div className="space-y-16 pt-12">
-                    <div className="space-y-8">
-                        <div>
-                            <p className="text-lg font-bold"> Child Demographics </p>
-                            <p className="font-medium">  (Child enrolled in program, not siblings) </p>
-                        </div>
+                    <div className="space-y-12">
                         <div className="space-y-4">
-
+                            <div>
+                                <p className="text-lg font-bold"> Child Demographics </p>
+                                <small className="text-gray-500">  (Child enrolled in program, not siblings) </small>
+                            </div>
                             <div className="space-y-3">
                                 <p className="font-semibold">Name</p>
                                 <input
@@ -189,7 +209,7 @@ const ChildDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Sex</p>
-                                <div className="space-y-2">
+                                <div className="flex items-center gap-x-12">
                                     {sexEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
@@ -201,12 +221,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.sex && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.sex.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.sex && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.sex.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -263,7 +283,7 @@ const ChildDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Involved in the child's life? </p>
-                                <div className="space-y-2">
+                                <div className="flex items-center gap-x-12">
                                     {YesNoEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
@@ -275,12 +295,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.parentOneInvolvedInLife && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.parentOneInvolvedInLife.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.parentOneInvolvedInLife && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.parentOneInvolvedInLife.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -299,7 +319,7 @@ const ChildDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Involved in the child's life? </p>
-                                <div className="space-y-2">
+                                <div className="flex items-center gap-x-12">
                                     {YesNoEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
@@ -311,12 +331,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.parentTwoInvolvedInLife && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.parentTwoInvolvedInLife.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.parentTwoInvolvedInLife && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.parentTwoInvolvedInLife.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -376,10 +396,9 @@ const ChildDemographicsRecord: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-8">
-                        <p className="text-lg font-bold"> Medical History </p>
+                    <div className="space-y-12">
                         <div className="space-y-4">
-
+                            <p className="text-lg font-bold"> Medical History </p>
                             <div className="space-y-3">
                                 <p className="font-semibold">Primary Care Provider</p>
                                 <input
@@ -439,7 +458,7 @@ const ChildDemographicsRecord: React.FC = () => {
                             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                                 <div className="flex flex-col flex-grow space-y-3 md:w-1/2">
                                     <p className="font-semibold">NICU Stay</p>
-                                    <div className="space-y-2">
+                                    <div className="flex items-center gap-x-12">
                                         {YesNoEnum.options.map(option => (
                                             <label key={option} className="flex items-center">
                                                 <input
@@ -452,12 +471,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 <span className="ml-2">{option}</span>
                                             </label>
                                         ))}
-                                        {errors.nicuStay && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.nicuStay.message}
-                                            </span>
-                                        )}
                                     </div>
+                                    {errors.nicuStay && (
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.nicuStay.message}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {nicuStay && (
@@ -480,7 +499,7 @@ const ChildDemographicsRecord: React.FC = () => {
                             <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                                 <div className="flex flex-col flex-grow space-y-3 md:w-1/2">
                                     <p className="font-semibold">Prenatal Drug Exposure</p>
-                                    <div className="space-y-2">
+                                    <div className="flex items-center gap-x-12">
                                         {YesNoEnum.options.map(option => (
                                             <label key={option} className="flex items-center">
                                                 <input
@@ -493,12 +512,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 <span className="ml-2">{option}</span>
                                             </label>
                                         ))}
-                                        {errors.prenatalDrugExposure && (
-                                            <span className="label-text-alt text-red-500">
-                                                {errors.prenatalDrugExposure.message}
-                                            </span>
-                                        )}
                                     </div>
+                                    {errors.prenatalDrugExposure && (
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.prenatalDrugExposure.message}
+                                        </span>
+                                    )}
                                 </div>
 
                                 {prenatalDrugExposure && (
@@ -576,13 +595,12 @@ const ChildDemographicsRecord: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-8">
-                        <p className="text-lg font-bold">Related History and Community Linkage</p>
-
+                    <div className="space-y-12">
                         <div className="space-y-4">
-
+                            <p className="text-lg font-bold">Related History and Community Linkage</p>
                             <div className="space-y-3">
-                                <p className="font-semibold">List any difficulties or services this child has received (difficulties breastfeeding, failure to thrive, etc.)</p>
+                                <p className="font-semibold">List any difficulties or services this child has received</p>
+                                <small className="text-gray-500">(difficulties breastfeeding, failure to thrive, etc.)</small>
                                 <input
                                     {...register("difficultiesServicesReceived")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
@@ -597,7 +615,7 @@ const ChildDemographicsRecord: React.FC = () => {
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Does your child have a relationship with a lactation consultant or other provider? </p>
-                                <div className="space-y-2">
+                                <div className="flex items-center gap-x-12">
                                     {YesNoEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
@@ -609,17 +627,17 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.lactationConsultant && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.lactationConsultant.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.lactationConsultant && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.lactationConsultant.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Is your child involved with the court/legal system?</p>
-                                <div className="space-y-2">
+                                <div className="flex items-center gap-x-12">
                                     {YesNoEnum.options.map(option => (
                                         <label key={option} className="flex items-center">
                                             <input
@@ -631,12 +649,12 @@ const ChildDemographicsRecord: React.FC = () => {
                                             <span className="ml-2">{option}</span>
                                         </label>
                                     ))}
-                                    {errors.legalSystemInvolvement && (
-                                        <span className="label-text-alt text-red-500">
-                                            {errors.legalSystemInvolvement.message}
-                                        </span>
-                                    )}
                                 </div>
+                                {errors.legalSystemInvolvement && (
+                                    <span className="label-text-alt text-red-500">
+                                        {errors.legalSystemInvolvement.message}
+                                    </span>
+                                )}
                             </div>
 
                             <div className="space-y-3">
@@ -649,6 +667,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                                 className="form-radio"
                                                 type="radio"
                                                 value={option}
+                                                onChange={(e) => handleCaseworker(e.target.value)}
                                             />
                                             <span className="ml-2">{labelMapping.childProtectiveService[option]}</span>
                                         </label>
@@ -661,7 +680,7 @@ const ChildDemographicsRecord: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="space-y-3">
+                            {caseworker && (<div className="space-y-3">
                                 <p className="font-semibold">Caseworker</p>
                                 <input
                                     {...register("caseworker")}
@@ -673,9 +692,9 @@ const ChildDemographicsRecord: React.FC = () => {
                                         {errors.caseworker.message}
                                     </span>
                                 )}
-                            </div>
+                            </div>)}
 
-                            <div className="space-y-3">
+                            {caseworker && (<div className="space-y-3">
                                 <p className="font-semibold">Caseworker Phone Number</p>
                                 <input
                                     {...register("caseworkerPhoneNumber")}
@@ -687,15 +706,14 @@ const ChildDemographicsRecord: React.FC = () => {
                                         {errors.caseworkerPhoneNumber.message}
                                     </span>
                                 )}
-                            </div>
+                            </div>)}
 
                             <div className="space-y-3">
                                 <p className="font-semibold">Other Important Information</p>
-                                <input
+                                <textarea
                                     {...register("importantInformation")}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                                    type="text"
-                            />
+                                />
                                 {errors.importantInformation && (
                                     <span className="label-text-alt text-red-500">
                                         {errors.importantInformation.message}
