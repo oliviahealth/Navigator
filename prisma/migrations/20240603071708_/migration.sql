@@ -43,6 +43,9 @@ CREATE TYPE "ChildLivingWith" AS ENUM ('Mother', 'Father', 'Grandparents', 'Sibl
 -- CreateEnum
 CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never');
 
+-- CreateEnum
+CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -189,18 +192,6 @@ CREATE TABLE "ParticipantDemographicsForm" (
 );
 
 -- CreateTable
-<<<<<<<< HEAD:prisma/migrations/20240603054709_/migration.sql
-CREATE TABLE "CurrentLivingArrangement" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "listPeopleLivingWithPatient" JSONB NOT NULL,
-    "listChildrenNotLivingWithPatient" JSONB NOT NULL,
-    "notes" TEXT,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "CurrentLivingArrangement_pkey" PRIMARY KEY ("id")
-========
 CREATE TABLE "ParticipantRecordForOthersInvolvedEntry" (
     "id" TEXT NOT NULL,
     "participantRecordForOthersInvolvedFormId" TEXT NOT NULL,
@@ -288,7 +279,67 @@ CREATE TABLE "ChildDemographicsRecord" (
     "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "ChildDemographicsRecord_pkey" PRIMARY KEY ("id")
->>>>>>>> main:prisma/migrations/20240602235630_/migration.sql
+);
+
+-- CreateTable
+CREATE TABLE "SupportSystemsForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentSupportSystem" TEXT NOT NULL,
+    "strengths" TEXT NOT NULL,
+    "areasForImprovement" TEXT NOT NULL,
+    "goals" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "SupportSystemsForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentLivingArrangement" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "listPeopleLivingWithPatient" JSONB NOT NULL,
+    "listChildrenNotLivingWithPatient" JSONB NOT NULL,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentLivingArrangement_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ChildrenNeedsForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "breastPump" "ChildrenNeedsStatus" NOT NULL,
+    "breastPumpNotes" TEXT,
+    "breastfeedingSupport" "ChildrenNeedsStatus" NOT NULL,
+    "breastfeedingSupportNotes" TEXT,
+    "carSeat" "ChildrenNeedsStatus" NOT NULL,
+    "carSeatNotes" TEXT,
+    "childcare" "ChildrenNeedsStatus" NOT NULL,
+    "childcareNotes" TEXT,
+    "clothing" "ChildrenNeedsStatus" NOT NULL,
+    "clothingNotes" TEXT,
+    "bed" "ChildrenNeedsStatus" NOT NULL,
+    "bedNotes" TEXT,
+    "diapers" "ChildrenNeedsStatus" NOT NULL,
+    "diapersNotes" TEXT,
+    "infantFormula" "ChildrenNeedsStatus" NOT NULL,
+    "infantFormulaNotes" TEXT,
+    "infantStroller" "ChildrenNeedsStatus" NOT NULL,
+    "infantStrollerNotes" TEXT,
+    "schoolSupplies" "ChildrenNeedsStatus" NOT NULL,
+    "schoolSuppliesNotes" TEXT,
+    "specializedMedEquipment" "ChildrenNeedsStatus" NOT NULL,
+    "specializedMedEquipmentNotes" TEXT,
+    "other" JSONB NOT NULL,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ChildrenNeedsForm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -319,9 +370,6 @@ ALTER TABLE "MediaAppearanceForm" ADD CONSTRAINT "MediaAppearanceForm_userId_fke
 ALTER TABLE "ParticipantDemographicsForm" ADD CONSTRAINT "ParticipantDemographicsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:prisma/migrations/20240603054709_/migration.sql
-ALTER TABLE "CurrentLivingArrangement" ADD CONSTRAINT "CurrentLivingArrangement_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-========
 ALTER TABLE "ParticipantRecordForOthersInvolvedEntry" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_participantRecordF_fkey" FOREIGN KEY ("participantRecordForOthersInvolvedFormId") REFERENCES "ParticipantRecordForOthersInvolvedForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -329,4 +377,12 @@ ALTER TABLE "ParticipantRecordForOthersInvolvedForm" ADD CONSTRAINT "Participant
 
 -- AddForeignKey
 ALTER TABLE "ChildDemographicsRecord" ADD CONSTRAINT "ChildDemographicsRecord_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
->>>>>>>> main:prisma/migrations/20240602235630_/migration.sql
+
+-- AddForeignKey
+ALTER TABLE "SupportSystemsForm" ADD CONSTRAINT "SupportSystemsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CurrentLivingArrangement" ADD CONSTRAINT "CurrentLivingArrangement_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ChildrenNeedsForm" ADD CONSTRAINT "ChildrenNeedsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
