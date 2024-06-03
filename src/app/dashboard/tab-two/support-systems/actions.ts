@@ -12,7 +12,6 @@ import { ISupportSystemInputs, ISupportSystemsResponse } from "./definitions";
  * @remarks This function takes Support Systems record data and saves them to the database using Prisma.
  */
 export const createSupportSystems = async (SupportSystemsInput: ISupportSystemInputs, userId: string) => {
-
     const { ...data } = SupportSystemsInput;
 
     const response = await prisma.supportSystemsForm.create({
@@ -56,7 +55,6 @@ export const readSupportSystems = async (SupportSystemsId: string, userId: strin
  * record with the record provided in the input.
  */
 export const updateSupportSystems = async (SupportSystemsInput: ISupportSystemInputs, id: string, userId: string) => {
-
     const { ...data } = SupportSystemsInput;
 
     const response = await prisma.supportSystemsForm.update({

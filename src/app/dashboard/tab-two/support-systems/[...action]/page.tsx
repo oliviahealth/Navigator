@@ -110,7 +110,7 @@ const SupportSystems: React.FC = () => {
                 </div>
 
                 <div className="space-y-16 pt-12">
-                    <div className="space-y-8">
+                    <div className="space-y-12">
                         <div className="space-y-4">
                             <div className="space-y-3">
                                 <p className="font-semibold">Current Support System (partner, family, friends, faith community, recovery, community, etc.)</p>
