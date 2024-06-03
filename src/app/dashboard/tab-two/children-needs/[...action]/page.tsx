@@ -37,7 +37,7 @@ const ChildrenNeedsForm: React.FC = () => {
         resolver: zodResolver(ChildrenNeedsFormInputsSchema),
         defaultValues: {
             other: [{
-                name: '',
+                need: '',
                 status: null,
                 notes: null
             }]
@@ -51,7 +51,7 @@ const ChildrenNeedsForm: React.FC = () => {
 
     const addNewChildrenNeed = () =>
         append({
-            name: '',
+            need: '',
             status: null,
             notes: null,
         });
@@ -89,8 +89,6 @@ const ChildrenNeedsForm: React.FC = () => {
     }, [])
 
     const submit = async (data: IChildrenNeedsFormInputs) => {
-
-        console.log(data);
         try {
             let response;
 
@@ -145,11 +143,9 @@ const ChildrenNeedsForm: React.FC = () => {
                 <div className="space-y-16 pt-12">
                     {Object.entries(sections).map(([key, [displayName, notesKey]], index) => (
                         <div key={index} className="space-y-8">
-                            <p className="font-bold text-xl">{displayName}</p>
-                            <div className="space-y-4">
-                                <div className="space-y-3">
-                                    <p className="font-semibold pt-2">Status</p>
-                                    <div className="flex flex-row space-x-4">
+                            <div>
+                                    <p className="font-bold text-xl">{displayName}</p>
+                                    <div className="flex flex-row space-x-12">
                                         {StatusEnum.options.map((status) => (
                                             <label key={status} className="inline-flex items-center pt-2">
                                                 <input
@@ -163,15 +159,13 @@ const ChildrenNeedsForm: React.FC = () => {
                                         ))}
                                     </div>
                                     {/* @ts-expect-error: Overriding ts checks */}
-                                    {errors[key]?.status && (
+                                    {errors[key]?.message && (
                                         <span className="label-text-alt text-red-500">
                                             {/* @ts-expect-error: Overriding ts checks */}
-                                            {errors[key]?.status.message}
+                                            {errors[key]?.message}
                                         </span>
                                     )}
-                                </div>
 
-                                <div className="space-y-3">
                                     <p className="font-medium pt-6">Notes</p>
                                     <textarea
                                         {...register(notesKey as keyof IChildrenNeedsFormInputs)}
@@ -184,7 +178,6 @@ const ChildrenNeedsForm: React.FC = () => {
                                             {errors[key]?.notes.message}
                                         </span>
                                     )}
-                                </div>
                             </div>
                         </div>
                     ))}
@@ -214,13 +207,13 @@ const ChildrenNeedsForm: React.FC = () => {
                                         <p className="font-semibold">Name</p>
 
                                         <input
-                                            {...register(`other.${index}.name`)}
+                                            {...register(`other.${index}.need`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             type="text"
                                         />
-                                        {errors.other && errors.other[index]?.name && (
+                                        {errors.other && errors.other[index]?.need && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.other[index]?.name?.message}
+                                                {errors.other[index]?.need?.message}
                                             </span>
                                         )}
                                     </div>

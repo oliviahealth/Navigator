@@ -7,33 +7,33 @@ export const StatusEnum = z.enum([
 ]);
 
 export const OtherChildrenNeeds = z.object({
-    name: z.string().min(1, "Name is required."),
+    need: z.string().min(1, "Name is required."),
     status: StatusEnum.nullable().refine(val => val, { message: "Status is required" }),
     notes: z.string().nullable()
 });
 
 export const ChildrenNeedsFormInputsSchema = z.object({
-    breastPump: StatusEnum,
+    breastPump: StatusEnum.refine(val => val, { message: "Required" }),
     breastPumpNotes: z.string().nullable(),
-    breastfeedingSupport: StatusEnum,
+    breastfeedingSupport: StatusEnum.refine(val => val, { message: "Required" }),
     breastfeedingSupportNotes: z.string().nullable(),
-    carSeat: StatusEnum,
+    carSeat: StatusEnum.refine(val => val, { message: "Required" }),
     carSeatNotes: z.string().nullable(),
-    childcare: StatusEnum,
+    childcare: StatusEnum.refine(val => val, { message: "Required" }),
     childcareNotes: z.string().nullable(),
-    clothing: StatusEnum,
+    clothing: StatusEnum.refine(val => val, { message: "Required" }),
     clothingNotes: z.string().nullable(),
-    bed: StatusEnum,
+    bed: StatusEnum.refine(val => val, { message: "Required" }),
     bedNotes: z.string().nullable(),
-    diapers: StatusEnum,
+    diapers: StatusEnum.refine(val => val, { message: "Required" }),
     diapersNotes: z.string().nullable(),
-    infantFormula: StatusEnum,
+    infantFormula: StatusEnum.refine(val => val, { message: "Required" }),
     infantFormulaNotes: z.string().nullable(),
-    infantStroller: StatusEnum,
+    infantStroller: StatusEnum.refine(val => val, { message: "Required" }),
     infantStrollerNotes: z.string().nullable(),
-    schoolSupplies: StatusEnum,
+    schoolSupplies: StatusEnum.refine(val => val, { message: "Required" }),
     schoolSuppliesNotes: z.string().nullable(),
-    specializedMedEquipment: StatusEnum,
+    specializedMedEquipment: StatusEnum.refine(val => val, { message: "Required" }),
     specializedMedEquipmentNotes: z.string().nullable(),
     other: z.array(OtherChildrenNeeds),
     notes: z.string().nullable()

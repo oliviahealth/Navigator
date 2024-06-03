@@ -55,7 +55,6 @@ export const readChildrenNeedsForm = async (childrenNeedsFormId: string, userId:
  * record with the record provided in the input.
  */
 export const updateChildrenNeedsForm = async (childrenNeedsFormInput: IChildrenNeedsFormInputs, id: string, userId: string) => {
-
     const { ...data } = childrenNeedsFormInput;
 
     const response = await prisma.childrenNeedsForm.update({
