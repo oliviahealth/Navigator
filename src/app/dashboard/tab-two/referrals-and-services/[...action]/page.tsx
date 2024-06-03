@@ -13,9 +13,9 @@ import {
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
-// import { createParticipantDemographicsRecord, readParticipantDemographicsRecord, updateParticipantDemographicsRecord } from "../actions";
+import { createReferralsAndServices, readReferralsAndServices, updateReferralsAndServices } from "../actions";
 
-const ParticipantDemographicsRecord: React.FC = () => {
+const ReferralsAndServices: React.FC = () => {
     const router = useRouter();
     const { action } = useParams();
 
@@ -32,7 +32,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
         control,
         handleSubmit,
         formState: { errors },
-        setValue,
+        reset
     } = useForm<IReferralsAndServicesInputs>({
         resolver: zodResolver(ReferralsAndServicesInputsSchema),
     });
@@ -139,74 +139,65 @@ const ParticipantDemographicsRecord: React.FC = () => {
             name: '',
         });
 
-    // useEffect(() => {
-    //     const fetchAndPopulatePastSubmissionData = async () => {
-    //         try {
-    //             if (verb !== 'edit') {
-    //                 return;
-    //             }
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
 
-    //             if (!submissionId) {
-    //                 throw new Error('Missing submissionId when fetching past submission');
-    //             }
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
 
-    //             if(!user) {
-    //                 throw new Error('Missing user');
-    //             }
+                if (!user) {
+                    throw new Error('Missing user');
+                }
 
-    //             const response = await readParticipantDemographicsRecord(submissionId, user.id);
+                const response = await readReferralsAndServices(submissionId, user.id);
 
-    //             const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
+                const validResponse = ReferralsAndServicesResponseSchema.parse(response);
 
-    //             const formattedData = {
-    //                 ...validResponse,
-    //                 participantDateOfBirth: new Date(validResponse.participantDateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
-    //                 programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
-    //             };
+                reset(validResponse);
 
-    //             reset(formattedData);
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
 
-    //         } catch (error) {
-    //             console.error(error);
-    //             setErrorMessage('Something went wrong! Please try again later');
+                router.push('/');
 
-    //             router.push('/');
+                return;
+            }
+        }
 
-    //             return;
-    //         }
-    //     }
-
-    //     fetchAndPopulatePastSubmissionData()
-    // }, [])
+        fetchAndPopulatePastSubmissionData()
+    }, [])
 
     const submit = async (data: IReferralsAndServicesInputs) => {
 
-        console.log(data);
-        // try {
-        //     let response;
+        try {
+            let response;
 
-        //     if(!user) {
-        //         throw new Error("User missing");
-        //     }
+            if (!user) {
+                throw new Error("User missing");
+            }
 
-        //     if (verb === 'new') {
-        //         response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, user.id);
-        //     } else {
-        //         response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, user.id)
-        //     }
+            if (verb === 'new') {
+                response = await createReferralsAndServices(data, user.id);
+            } else {
+                response = await updateReferralsAndServices(data, submissionId, user.id)
+            }
 
-        //     ParticipantDemographicsFormResponseSchema.parse(response);
-        // } catch (error) {
-        //     console.error(error);
-        //     setErrorMessage('Something went wrong! Please try again later');
+            ReferralsAndServicesResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
 
-        //     router.push('/dashboard');
+            return;
+        }
 
-        //     return;
-        // }
-
-        // setSuccessMessage('Participant Demographics Record submitted successfully!')
-        // router.push('/dashboard');
+        setSuccessMessage('Referrals & Services submitted successfully!')
+        router.push('/dashboard');
     };
 
     const generateFormFields = (
@@ -948,4 +939,4 @@ const ParticipantDemographicsRecord: React.FC = () => {
 
 }
 
-export default ParticipantDemographicsRecord;
+export default ReferralsAndServices;
