@@ -26,15 +26,16 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog                       CommunicationLog[]
-  AppointmentLog                         AppointmentLog[]
-  EnrollmentForm                         EnrollmentForm[]
-  MediaAppearanceForm                    MediaAppearanceForm[]
-  ParticipantDemographicsForm            ParticipantDemographicsForm[]
+  CommunicationLog                     CommunicationLog[]
+  AppointmentLog                       AppointmentLog[]
+  EnrollmentForm                       EnrollmentForm[]
+  MediaAppearanceForm                  MediaAppearanceForm[]
+  ParticipantDemographicsForm          ParticipantDemographicsForm[]
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
   ChildDemographicsRecord                ChildDemographicsRecord[]
   SupportSystemsForm                     SupportSystemsForm[]
   CurrentLivingArrangement    CurrentLivingArrangement[]
+  ChildrenNeedsForm           ChildrenNeedsForm[]
 }
 
 enum CommunicationMethod {
@@ -399,9 +400,50 @@ model CurrentLivingArrangement {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  listPeopleLivingWithPatient Json
+  listPeopleLivingWithPatient      Json
   listChildrenNotLivingWithPatient Json
-  notes String?
+  notes                            String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum ChildrenNeedsStatus {
+  Yes
+  No
+  Pending
+}
+
+model ChildrenNeedsForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  breastPump                   ChildrenNeedsStatus
+  breastPumpNotes              String?
+  breastfeedingSupport         ChildrenNeedsStatus
+  breastfeedingSupportNotes    String?
+  carSeat                      ChildrenNeedsStatus
+  carSeatNotes                 String?
+  childcare                    ChildrenNeedsStatus
+  childcareNotes               String?
+  clothing                     ChildrenNeedsStatus
+  clothingNotes                String?
+  bed                          ChildrenNeedsStatus
+  bedNotes                     String?
+  diapers                      ChildrenNeedsStatus
+  diapersNotes                 String?
+  infantFormula                ChildrenNeedsStatus
+  infantFormulaNotes           String?
+  infantStroller               ChildrenNeedsStatus
+  infantStrollerNotes          String?
+  schoolSupplies               ChildrenNeedsStatus
+  schoolSuppliesNotes          String?
+  specializedMedEquipment      ChildrenNeedsStatus
+  specializedMedEquipmentNotes String?
+  other                        Json
+  notes                        String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
