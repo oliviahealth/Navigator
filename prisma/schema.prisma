@@ -34,6 +34,7 @@ model User {
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
   ChildDemographicsRecord                ChildDemographicsRecord[]
   SupportSystemsForm                     SupportSystemsForm[]
+  CurrentLivingArrangement    CurrentLivingArrangement[]
 }
 
 enum CommunicationMethod {
@@ -390,4 +391,18 @@ model SupportSystemsForm {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
+}
+
+model CurrentLivingArrangement {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  listPeopleLivingWithPatient Json
+  listChildrenNotLivingWithPatient Json
+  notes String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
