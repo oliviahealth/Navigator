@@ -61,7 +61,7 @@ const AppointmentLog: React.FC = () => {
                         <div className="flex justify-between">
                             <p className="text-lg font-semibold pt-8">Appointment Entry {index + 1}</p>
 
-                            {index > 0 && <button
+                            {fields.length > 1 && <button
                                 type="button"
                                 onClick={() => remove(index)}
                                 className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
