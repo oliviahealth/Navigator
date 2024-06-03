@@ -32,7 +32,8 @@ model User {
   MediaAppearanceForm                    MediaAppearanceForm[]
   ParticipantDemographicsForm            ParticipantDemographicsForm[]
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
-  ChildDemographicsRecord     ChildDemographicsRecord[]
+  ChildDemographicsRecord                ChildDemographicsRecord[]
+  SupportSystemsForm                     SupportSystemsForm[]
 }
 
 enum CommunicationMethod {
@@ -55,19 +56,19 @@ model CommunicationEntry {
   notes              String?
   followUpNeeded     YesNo
 
-  communicationLog   CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
+  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
 }
 
 model CommunicationLog {
-  id                    String @id @default(uuid())
+  id String @id @default(uuid())
 
-  User                  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId                String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
   communicationEntries CommunicationEntry[]
 
-  dateCreated           DateTime @default(now())
-  dateModified          DateTime @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model AppointmentEntry {
@@ -105,7 +106,7 @@ model EmergencyContact {
   telephone    String
   email        String
 
-  enrollmentForm   EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
+  enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
 }
 
 model EnrollmentForm {
@@ -137,19 +138,19 @@ model EnrollmentForm {
 }
 
 model MediaAppearanceForm {
-  id                   String @id @default(uuid())
+  id String @id @default(uuid())
 
-  User                 User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId               String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
 
-  participantName      String
-  address              String
-  participantDate      DateTime
-  guardianName         String?
-  guardianDate         DateTime?
+  participantName String
+  address         String
+  participantDate DateTime
+  guardianName    String?
+  guardianDate    DateTime?
 
-  dateCreated          DateTime @default(now())
-  dateModified          DateTime @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum Gender {
@@ -215,8 +216,8 @@ model ParticipantDemographicsForm {
   participantName             String
   participantDateOfBirth      DateTime
   participantAddress          String
-  participantZipCode                     String
-  participantPhoneNumber                 String
+  participantZipCode          String
+  participantPhoneNumber      String
   gender                      Gender
   ethnicity                   Ethnicity
   race                        Race
@@ -371,6 +372,21 @@ model ChildDemographicsRecord {
   caseworker                   String?
   caseworkerPhoneNumber        String?
   importantInformation         String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @default(now())
+}
+
+model SupportSystemsForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentSupportSystem String
+  strengths            String
+  areasForImprovement  String
+  goals                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @default(now())
