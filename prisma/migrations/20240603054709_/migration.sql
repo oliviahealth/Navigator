@@ -173,6 +173,19 @@ CREATE TABLE "ParticipantDemographicsForm" (
     CONSTRAINT "ParticipantDemographicsForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "CurrentLivingArrangement" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "listPeopleLivingWithPatient" JSONB NOT NULL,
+    "listChildrenNotLivingWithPatient" JSONB NOT NULL,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentLivingArrangement_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -199,3 +212,6 @@ ALTER TABLE "MediaAppearanceForm" ADD CONSTRAINT "MediaAppearanceForm_userId_fke
 
 -- AddForeignKey
 ALTER TABLE "ParticipantDemographicsForm" ADD CONSTRAINT "ParticipantDemographicsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CurrentLivingArrangement" ADD CONSTRAINT "CurrentLivingArrangement_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -55,7 +55,6 @@ export const readCurrentLivingArrangement = async (currentLivingArrangementId: s
  * form with the form provided in the input.
  */
 export const updateCurrentLivingArrangements = async (currentLivingArrangementInputs: ICurrentLivingArrangementInputs, id: string, userId: string) => {
-
     const { ...data } = currentLivingArrangementInputs;
 
     const response = await prisma.currentLivingArrangement.update({

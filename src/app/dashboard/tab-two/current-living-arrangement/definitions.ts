@@ -8,10 +8,10 @@ const peopleLivingWithPatient = z.object({
 });
 
 const childrenNotLivingWithPatient = z.object({
-    name: z.string(),
-    dateOfBirth: z.string(),
-    caregiver: z.string(),
-    caregiverNumber: z.string()
+    name: z.string().min(1, "Name is required"),
+    dateOfBirth: z.union([z.date(), z.string().min(1, "Date of birth is required")]),
+    caregiver: z.string().min(1, "Caregiver is required"),
+    caregiverContact: z.string().min(1, "Caregiver contact is required"),
 });
 
 export const CurrentLivingArrangementInputsSchema = z.object({

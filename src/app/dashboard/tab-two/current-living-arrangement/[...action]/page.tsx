@@ -47,7 +47,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     name: '',
                     dateOfBirth: '',
                     caregiver: '',
-                    caregiverNumber: ''
+                    caregiverContact: ''
                 }
             ]
         }
@@ -84,7 +84,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
             name: '',
             dateOfBirth: '',
             caregiver: '',
-            caregiverNumber: ''
+            caregiverContact: ''
         });
     };
 
@@ -171,15 +171,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                             Person Living With You #{index + 1}
                                         </p>
 
-                                        {!(peopleLivingWithFields.length == 1 && index == 0) && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removePeopleLivingWithField(index)}
-                                                className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
-                                            >
-                                                - Remove Entry
-                                            </button>
-                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() => removePeopleLivingWithField(index)}
+                                            className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
+                                        >
+                                            - Remove Entry
+                                        </button>
                                     </div>
 
                                     <div className="flex flex-col justify-between space-y-3">
@@ -252,15 +250,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                             Child NOT Living With You #{index + 1}
                                         </p>
 
-                                        {!(childrenNotLivingWithFields.length == 1 && index == 0) && (
-                                            <button
-                                                type="button"
-                                                onClick={() => removeChildrenNotLivingWithField(index)}
-                                                className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
-                                            >
-                                                - Remove Entry
-                                            </button>
-                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeChildrenNotLivingWithField(index)}
+                                            className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
+                                        >
+                                            - Remove Entry
+                                        </button>
                                     </div>
 
                                     <div className="flex flex-col justify-between space-y-3">
@@ -312,13 +308,13 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                         <p className="font-semibold">Caregiver Contact Number</p>
 
                                         <input
-                                            {...register(`listChildrenNotLivingWithPatient.${index}.caregiverNumber`)}
+                                            {...register(`listChildrenNotLivingWithPatient.${index}.caregiverContact`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             type="text"
                                         />
-                                        {errors.listChildrenNotLivingWithPatient && errors.listChildrenNotLivingWithPatient[index]?.caregiverNumber && (
+                                        {errors.listChildrenNotLivingWithPatient && errors.listChildrenNotLivingWithPatient[index]?.caregiverContact && (
                                             <span className="label-text-alt text-red-500">
-                                                {errors.listChildrenNotLivingWithPatient[index]?.caregiverNumber?.message}
+                                                {errors.listChildrenNotLivingWithPatient[index]?.caregiverContact?.message}
                                             </span>
                                         )}
                                     </div>
