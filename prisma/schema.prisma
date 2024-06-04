@@ -26,16 +26,17 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog                     CommunicationLog[]
-  AppointmentLog                       AppointmentLog[]
-  EnrollmentForm                       EnrollmentForm[]
-  MediaAppearanceForm                  MediaAppearanceForm[]
-  ParticipantDemographicsForm          ParticipantDemographicsForm[]
+  CommunicationLog                       CommunicationLog[]
+  AppointmentLog                         AppointmentLog[]
+  EnrollmentForm                         EnrollmentForm[]
+  MediaAppearanceForm                    MediaAppearanceForm[]
+  ParticipantDemographicsForm            ParticipantDemographicsForm[]
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
   ChildDemographicsRecord                ChildDemographicsRecord[]
   SupportSystemsForm                     SupportSystemsForm[]
-  CurrentLivingArrangement    CurrentLivingArrangement[]
-  ChildrenNeedsForm           ChildrenNeedsForm[]
+  CurrentLivingArrangement               CurrentLivingArrangement[]
+  ChildrenNeedsForm                      ChildrenNeedsForm[]
+  ParentalMedicalHistory                 ParentalMedicalHistory[]
 }
 
 enum CommunicationMethod {
@@ -444,6 +445,36 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model ParentalMedicalHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  gestationalAge          String
+  dueDate                 DateTime
+  deliveryDate            DateTime
+  plannedModeDelivery     DeliveryMode
+  actualModeDelivery      DeliveryMode
+  attendedPostpartumVisit YesNo
+  postpartumVisitLocation String?
+  postpartumVisitDate     DateTime?
+  totalNumPregnancies     String
+  numChildrenWithMother   String
+  priorPregnancyDates     String
+  priorPregnancyOutcomes  String
+  gravida                 String
+  term                    String
+  preterm                 String
+  abortions               String
+  living                  String
+  priorComplications      String?
+  ongoingMedicalProblems  String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
