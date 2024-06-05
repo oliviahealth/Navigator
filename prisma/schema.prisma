@@ -26,16 +26,17 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog                     CommunicationLog[]
-  AppointmentLog                       AppointmentLog[]
-  EnrollmentForm                       EnrollmentForm[]
-  MediaAppearanceForm                  MediaAppearanceForm[]
-  ParticipantDemographicsForm          ParticipantDemographicsForm[]
+  CommunicationLog                       CommunicationLog[]
+  AppointmentLog                         AppointmentLog[]
+  EnrollmentForm                         EnrollmentForm[]
+  MediaAppearanceForm                    MediaAppearanceForm[]
+  ParticipantDemographicsForm            ParticipantDemographicsForm[]
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
   ChildDemographicsRecord                ChildDemographicsRecord[]
   SupportSystemsForm                     SupportSystemsForm[]
-  CurrentLivingArrangement    CurrentLivingArrangement[]
-  ChildrenNeedsForm           ChildrenNeedsForm[]
+  CurrentLivingArrangement               CurrentLivingArrangement[]
+  ChildrenNeedsForm                      ChildrenNeedsForm[]
+  CurrentMedicationList                  CurrentMedicationList[]
 }
 
 enum CommunicationMethod {
@@ -444,6 +445,19 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json
+  notes                 String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
