@@ -98,14 +98,14 @@ model AppointmentLog {
   dateModified DateTime @updatedAt
 }
 
-model EmergencyContact {
+model EnrollmentFormEmergencyContact {
   id String @id @default(uuid())
 
   enrollmentFormId String
 
   name         String
   relationship String
-  telephone    String
+  phone    String
   email        String
 
   enrollmentForm EnrollmentForm @relation(fields: [enrollmentFormId], references: [id], onDelete: Cascade)
@@ -127,7 +127,7 @@ model EnrollmentForm {
   cellPhone         String
   email             String
   dateOfBirth       DateTime
-  emergencyContacts EmergencyContact[]
+  emergencyContacts EnrollmentFormEmergencyContact[]
   clientName        String
   clientDate        DateTime
   guardianName      String
