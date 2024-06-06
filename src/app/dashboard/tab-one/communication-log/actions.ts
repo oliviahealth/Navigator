@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { ICommunicationEntry } from "./definitions";
-import { CommunicationMethod, FollowUpNeeded } from "@prisma/client";
+import { CommunicationMethod, YesNo } from "@prisma/client";
 
 /**
  * Creates a new communication log entry in the database.
@@ -19,7 +19,7 @@ export const createCommunicationLog = async (communicationLogInput: ICommunicati
         ...communicationEntry,
         dateTime: new Date(communicationEntry.dateTime).toISOString(),
         method: communicationEntry.method as CommunicationMethod,
-        followUpNeeded: communicationEntry.followUpNeeded as FollowUpNeeded
+        followUpNeeded: communicationEntry.followUpNeeded as YesNo
     }));
 
     // Create communication log entry in the database
@@ -78,7 +78,7 @@ export const updateCommunicationLog = async (communicationLogInput: ICommunicati
         ...communicationEntry,
         dateTime: new Date(communicationEntry.dateTime).toISOString(),
         method: communicationEntry.method as CommunicationMethod,
-        followUpNeeded: communicationEntry.followUpNeeded as FollowUpNeeded,
+        followUpNeeded: communicationEntry.followUpNeeded as YesNo,
     }));
 
     // Update communication log entry in the database
