@@ -165,7 +165,11 @@ const EnrollmentLog: React.FC = () => {
 
   return (
     // Wizard to display text with back/continue buttons
-    <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base pt-20">
+    <div
+      className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${
+        currentStep < steps.length - 1 ? "pt-20" : "pt-4"
+      } px-32`}
+    >
       <div className="flex flex-col items-center">
         <div>
           <div className="mb-2 pl-24 pr-24">
@@ -202,6 +206,19 @@ const EnrollmentLog: React.FC = () => {
           )}
         </div>
       </div>
+      {currentStep < steps.length - 1 && (
+        <div className="flex justify-center space-x-4 mt-4">
+          {steps.map((_, index) => (
+            <button
+              key={index}
+              className="focus:outline-none button"
+              onClick={() => setCurrentStep(index)}
+            >
+              {index + 1}
+            </button>
+          ))}
+        </div>
+      )}
 
       
       {currentStep === steps.length - 1 && ( // Form
@@ -244,7 +261,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">City</p>
           <input
-            {...register("address")}
+            {...register("city")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
           />
           {errors.city && (
@@ -304,7 +321,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date of Birth</p>
           <input
-            {...register("address")}
+            {...register("datebirth")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
           />
           {errors.datebirth && (
