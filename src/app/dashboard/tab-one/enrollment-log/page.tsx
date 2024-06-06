@@ -165,7 +165,7 @@ const EnrollmentLog: React.FC = () => {
 
   return (
     // Wizard to display text with back/continue buttons
-    <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base pt-20">
+    <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base pt-20 px-32">
       <div className="flex flex-col items-center">
         <div>
           <div className="mb-2 pl-24 pr-24">
@@ -202,6 +202,7 @@ const EnrollmentLog: React.FC = () => {
           )}
         </div>
       </div>
+      
 
       
       {currentStep === steps.length - 1 && ( // Form
