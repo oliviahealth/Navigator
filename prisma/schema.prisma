@@ -464,37 +464,40 @@ model ReferralsAndServices {
   homeVisitationProgram               Json
   housingAssistance                   Json
   healthyStartProgram                 Json
-  supportServicesOther                Json
+  employmentServices                  Json
+  supportServicesOther                Json[]
   breastfeedingSupport                Json
   localFoodPantries                   Json
   snap                                Json
   womenInfantsAndChildren             Json
-  foodNutritionOther                  Json
+  foodNutritionOther                  Json[]
   healthInsuranceEnrollment           Json
   prenatalHealthcare                  Json
   familyPlanning                      Json
   primaryCare                         Json
   mentalHealthCounseling              Json
   smokingCessation                    Json
-  healthcareOther                     Json
+  healthcareOther                     Json[]
   residential                         Json
   outpatient                          Json
   caringForTwoProgram                 Json
   theCradlesProgram                   Json
   recoverySupportServices             Json
+  naloxone                            Json
   medicationAssistedTreatment         Json
-  substanceUseTreatmentOther          Json
+  transportationToTreatment           Json
+  substanceUseTreatmentOther          Json[]
   earlyChildhoodIntervention          Json
   earlyHeadStart                      Json
   nciChildcareSubsidy                 Json
   pediatricianPrimaryCare             Json
   safeSleepEducation                  Json
-  childRelatedOther                   Json
+  childRelatedOther                   Json[]
   childProtectiveService              Json
   legalAid                            Json
   specialtyCourt                      Json
-  legalAssistanceOther                Json
-  additionalNotes                     Json
+  legalAssistanceOther                Json[]
+  additionalNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
