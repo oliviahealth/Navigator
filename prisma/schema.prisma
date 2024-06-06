@@ -26,16 +26,17 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog                     CommunicationLog[]
-  AppointmentLog                       AppointmentLog[]
-  EnrollmentForm                       EnrollmentForm[]
-  MediaAppearanceForm                  MediaAppearanceForm[]
-  ParticipantDemographicsForm          ParticipantDemographicsForm[]
+  CommunicationLog                       CommunicationLog[]
+  AppointmentLog                         AppointmentLog[]
+  EnrollmentForm                         EnrollmentForm[]
+  MediaAppearanceForm                    MediaAppearanceForm[]
+  ParticipantDemographicsForm            ParticipantDemographicsForm[]
   ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
   ChildDemographicsRecord                ChildDemographicsRecord[]
   SupportSystemsForm                     SupportSystemsForm[]
-  CurrentLivingArrangement    CurrentLivingArrangement[]
-  ChildrenNeedsForm           ChildrenNeedsForm[]
+  CurrentLivingArrangement               CurrentLivingArrangement[]
+  ChildrenNeedsForm                      ChildrenNeedsForm[]
+  EncounterForm                          EncounterForm[]
 }
 
 enum CommunicationMethod {
@@ -444,6 +445,45 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum ParentConcerns {
+  Yes
+  No
+  Did_not_ask
+}
+
+model EncounterEntry {
+  id String @id @default(uuid())
+
+  encounterFormId String
+
+  dateOfVisit         DateTime
+  staff               String
+  healthInsurance     YesNo
+  parentConcerns      ParentConcerns
+  careVisits          YesNo
+  careVisitsList      Json?
+  wellchildVisits     YesNo
+  wellChildVisitsList String?
+
+  encounterForm EncounterForm @relation(fields: [encounterFormId], references: [id], onDelete: Cascade)
+}
+
+model EncounterForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName String
+  caseId          String
+  monthYear       String
+
+  encounterEntries EncounterEntry[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
