@@ -18,7 +18,8 @@ const MediaReleaseFormSchema = z.object({
       path: ["participantAge"],
     }),
   date: z.string().min(1, "Date is required"),
-  legalGuardianName: z.string().min(1, "Legal Guardian Name is required"),
+  // make optional in case user is over the age of 18
+  legalGuardianName: z.string().min(1, "Legal Guardian Name is required").optional(),
 });
 
 export type IMediaReleaseForm = z.infer<typeof MediaReleaseFormSchema>;
@@ -84,21 +85,36 @@ const MediaReleaseForm: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
+    unregister,
     formState: { errors },
   } = useForm<IMediaReleaseForm>({
     resolver: zodResolver(MediaReleaseFormSchema),
     defaultValues: {},
   });
 
+  useEffect(() => {
+    if(watch("participantAge") >= 18) {
+      unregister("legalGuardianName");
+    }
+  }, [watch("participantAge"), unregister]);
+
+
   const submit = (data: IMediaReleaseForm) => {
+    if (data.participantAge >= 18) {
+      delete data.legalGuardianName;
+    }
+  
     alert("Media Release form submitted successfully");
     console.log(data);
   };
-
   return (
     // Wizard to display text with back/continue buttons
     // change padding based on whether text is displayed or form
-    <div className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${currentStep < steps.length - 1 ? 'pt-20' : 'pt-4'} px-32`}>
+    <div
+      className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${
+        currentStep < steps.length - 1 ? "pt-20" : "pt-4"
+      } px-32`}
+    >
       <div className="flex flex-col items-center">
         <div>
           <div className="mb-2 pl-24 pr-24">
@@ -203,7 +219,9 @@ const MediaReleaseForm: React.FC = () => {
                 </p>
               </div>
               <input
-                {...register("legalGuardianName")}
+                {...register("legalGuardianName", {
+                  required: watch("participantAge") < 18,
+                })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
               />
               {errors.legalGuardianName && (
