@@ -261,24 +261,21 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     {fields.map((field, index) => {
                         return (
                             <div className="space-y-12">
-                                <div className="flex justify-between">
-                                    <p className="text-lg font-bold pt-8">
-                                        Parent/Child Caregiver/Involved Relative Demographics {index + 1}
-                                    </p>
-
-                                    {fields.length > 1 && (
-                                        <button
-                                            type="button"
-                                            onClick={() => remove(index)}
-                                            className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
-                                        >
-                                            - Remove Entry
-                                        </button>
-                                    )}
-                                </div>
                                 <div className="space-y-4">
                                     <div className="space-y-3">
-                                        <p className="font-semibold">Name</p>
+                                        <div className="flex justify-between items-center">
+                                            <p className="font-semibold pb-2 pt-8">Name</p>
+
+                                            {fields.length > 1 && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => remove(index)}
+                                                    className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
+                                                >
+                                                    - Remove Entry
+                                                </button>
+                                            )}
+                                        </div>
                                         <input
                                             {...register(`participantRecordForOthersInvolvedEntries.${index}.name`)}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"

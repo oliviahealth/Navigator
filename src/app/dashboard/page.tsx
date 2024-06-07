@@ -20,18 +20,16 @@ const Dashboard: React.FC = () => {
                         Participant Demographics Record
                     </Link>
 
-                    <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
-                        Current Living Arrangement
-                    </Link>
-                    <Link href={'/dashboard/tab-two/support-systems/new'}>
-                        Support Systems
-                    </Link>
                     <Link href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
                         Participant Record For Others Involved
                     </Link>
 
                     <Link href={'/dashboard/tab-two/child-demographics-record/new'}>
                         Child Demographics Record
+                    </Link>
+
+                    <Link href={'/dashboard/tab-two/support-systems/new'}>
+                        Support Systems
                     </Link>
 
                     <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
@@ -44,6 +42,10 @@ const Dashboard: React.FC = () => {
 
                     <Link href={'dashboard/tab-three/parental-medical-history/new'}>
                         Parental Medical History
+                    </Link>
+                    
+                    <Link href={'dashboard/tab-two/referrals-and-services/new'}>
+                        Referrals & Services
                     </Link>
                 </div>
             </div>
