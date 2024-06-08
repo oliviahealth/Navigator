@@ -36,6 +36,8 @@ model User {
   SupportSystemsForm                     SupportSystemsForm[]
   CurrentLivingArrangement               CurrentLivingArrangement[]
   ChildrenNeedsForm                      ChildrenNeedsForm[]
+  ReferralsAndServices                   ReferralsAndServices[]
+  ParentalMedicalHistory                 ParentalMedicalHistory[]
   EncounterForm                          EncounterForm[]
 }
 
@@ -445,6 +447,89 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model ReferralsAndServices {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  parentingClasses                    Json
+  transportationServices              Json
+  ssiDisability                       Json
+  temporaryAssistanceForNeedyFamilies Json
+  personalSafety                      Json
+  homeVisitationProgram               Json
+  housingAssistance                   Json
+  healthyStartProgram                 Json
+  employmentServices                  Json
+  supportServicesOther                Json[]
+  breastfeedingSupport                Json
+  localFoodPantries                   Json
+  snap                                Json
+  womenInfantsAndChildren             Json
+  foodNutritionOther                  Json[]
+  healthInsuranceEnrollment           Json
+  prenatalHealthcare                  Json
+  familyPlanning                      Json
+  primaryCare                         Json
+  mentalHealthCounseling              Json
+  smokingCessation                    Json
+  healthcareOther                     Json[]
+  residential                         Json
+  outpatient                          Json
+  caringForTwoProgram                 Json
+  theCradlesProgram                   Json
+  recoverySupportServices             Json
+  naloxone                            Json
+  medicationAssistedTreatment         Json
+  transportationToTreatment           Json
+  substanceUseTreatmentOther          Json[]
+  earlyChildhoodIntervention          Json
+  earlyHeadStart                      Json
+  nciChildcareSubsidy                 Json
+  pediatricianPrimaryCare             Json
+  safeSleepEducation                  Json
+  childRelatedOther                   Json[]
+  childProtectiveService              Json
+  legalAid                            Json
+  specialtyCourt                      Json
+  legalAssistanceOther                Json[]
+  additionalNotes                     String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model ParentalMedicalHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  gestationalAge          String
+  dueDate                 DateTime
+  deliveryDate            DateTime
+  plannedModeDelivery     DeliveryMode
+  actualModeDelivery      DeliveryMode
+  attendedPostpartumVisit YesNo
+  postpartumVisitLocation String?
+  postpartumVisitDate     DateTime?
+  totalNumPregnancies     String
+  numChildrenWithMother   String
+  priorPregnancyDates     String
+  priorPregnancyOutcomes  String
+  gravida                 String
+  term                    String
+  preterm                 String
+  abortions               String
+  living                  String
+  priorComplications      String?
+  ongoingMedicalProblems  String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

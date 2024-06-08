@@ -36,6 +36,10 @@ const Dashboard: React.FC = () => {
                         Child Demographics Record
                     </Link>
 
+                    <Link href={'/dashboard/tab-two/support-systems/new'}>
+                        Support Systems
+                    </Link>
+
                     <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
                         Current Living Arrangement
                     </Link>
@@ -46,6 +50,14 @@ const Dashboard: React.FC = () => {
 
                     <Link href={'dashboard/tab-three/encounter-form/new'}>
                         Encounter Form
+                    </Link>
+
+                    <Link href={'dashboard/tab-three/parental-medical-history/new'}>
+                        Parental Medical History
+                    </Link>
+                    
+                    <Link href={'dashboard/tab-two/referrals-and-services/new'}>
+                        Referrals & Services
                     </Link>
                 </div>
             </div>
