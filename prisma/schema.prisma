@@ -535,29 +535,6 @@ model ParentalMedicalHistory {
   dateModified DateTime @updatedAt
 }
 
-enum ParentConcerns {
-  Yes
-  No
-  Did_not_ask
-}
-
-model EncounterEntry {
-  id String @id @default(uuid())
-
-  encounterFormId String
-
-  dateOfVisit         DateTime
-  staff               String
-  healthInsurance     YesNo
-  parentConcerns      ParentConcerns
-  careVisits          YesNo
-  careVisitsList      Json?
-  wellchildVisits     YesNo
-  wellChildVisitsList String?
-
-  encounterForm EncounterForm @relation(fields: [encounterFormId], references: [id], onDelete: Cascade)
-}
-
 model EncounterForm {
   id String @id @default(uuid())
 
@@ -568,7 +545,7 @@ model EncounterForm {
   caseId          String
   monthYear       String
 
-  encounterEntries EncounterEntry[]
+  encounterEntries Json[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

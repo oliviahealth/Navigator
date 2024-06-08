@@ -47,17 +47,17 @@ const Dashboard: React.FC = () => {
                     <Link href={'dashboard/tab-two/children-needs/new'}>
                         Children Needs
                     </Link>
-
-                    <Link href={'dashboard/tab-three/encounter-form/new'}>
-                        Encounter Form
+                    
+                    <Link href={'dashboard/tab-two/referrals-and-services/new'}>
+                        Referrals & Services
                     </Link>
 
                     <Link href={'dashboard/tab-three/parental-medical-history/new'}>
                         Parental Medical History
                     </Link>
-                    
-                    <Link href={'dashboard/tab-two/referrals-and-services/new'}>
-                        Referrals & Services
+
+                    <Link href={'dashboard/tab-three/encounter-form/new'}>
+                        Encounter Form
                     </Link>
                 </div>
             </div>
