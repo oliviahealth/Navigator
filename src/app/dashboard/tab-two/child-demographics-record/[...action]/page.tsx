@@ -148,13 +148,15 @@ const ChildDemographicsRecord: React.FC = () => {
             }
 
             ChildDemographicsRecordResponseSchema.parse(response);
-            setSuccessMessage('Child Demographics Record submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-        } finally {
-            router.push('/dashboard');
+            
+            return;
         }
+
+        setSuccessMessage('Child Demographics Record submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (

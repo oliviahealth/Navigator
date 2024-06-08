@@ -95,13 +95,15 @@ const ParticipantDemographicsRecord: React.FC = () => {
             }
 
             ParticipantDemographicsFormResponseSchema.parse(response);
-            setSuccessMessage('Participant Demographics Record submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-        } finally {
-            router.push('/dashboard');
+
+            return;
         }
+
+        setSuccessMessage('Participant Demographics Record submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (

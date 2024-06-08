@@ -102,13 +102,15 @@ const ChildrenNeedsForm: React.FC = () => {
             }
 
             ChildrenNeedsFormResponseSchema.parse(response);
-            setSuccessMessage('Children Needs Form submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-        } finally {
-            router.push('/dashboard');
+
+            return
         }
+
+        setSuccessMessage('Children Needs Form submitted successfully!')
+        router.push('/dashboard');
     };
 
     const sections: Record<string, [string, string]> = {

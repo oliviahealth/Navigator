@@ -95,7 +95,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                 if (!user) {
                     throw new Error('Missing user');
                 }
-                
+
                 if (verb !== 'edit') {
                     return;
                 }
@@ -134,13 +134,15 @@ const ParticipantDemographicsRecord: React.FC = () => {
             }
 
             CurrentLivingArrangementResponseSchema.parse(response);
-            setSuccessMessage('Current Living Arrangement submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-        } finally {
-            router.push('/dashboard');
+
+            return
         }
+
+        setSuccessMessage('Current Living Arrangement submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (

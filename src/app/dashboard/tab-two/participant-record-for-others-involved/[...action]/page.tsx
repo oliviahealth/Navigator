@@ -193,13 +193,15 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             }
 
             ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
-            setSuccessMessage('Participant Record For Others Involved submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-        } finally {
-            router.push('/dashboard');
+
+            return
         }
+
+        setSuccessMessage('Participant Record For Others Involved submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (
