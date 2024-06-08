@@ -240,7 +240,7 @@ model ParticipantDemographicsForm {
   transferFromAnotherSite     YesNo
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 // Tab 2: ParticipantRecordForOthersInvolved
@@ -378,7 +378,7 @@ model ChildDemographicsRecord {
   importantInformation         String?
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model SupportSystemsForm {
@@ -393,7 +393,7 @@ model SupportSystemsForm {
   goals                String
 
   dateCreated  DateTime @default(now())
-  dateModified DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model CurrentLivingArrangement {
