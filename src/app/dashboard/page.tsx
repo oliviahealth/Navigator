@@ -47,6 +47,10 @@ const Dashboard: React.FC = () => {
                     <Link href={'dashboard/tab-two/referrals-and-services/new'}>
                         Referrals & Services
                     </Link>
+
+                    <Link href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
+                        Smoking and Tobacco Use During Pregnancy
+                    </Link>
                 </div>
             </div>
         </div>

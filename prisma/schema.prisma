@@ -38,6 +38,7 @@ model User {
   ChildrenNeedsForm                      ChildrenNeedsForm[]
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
+  SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
 }
 
 enum CommunicationMethod {
@@ -532,4 +533,31 @@ model ParentalMedicalHistory {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
+}
+
+enum TobaccoUseScreeningAndDocumentation {
+  NEVER_SMOKED                             @map("I have NEVER smoker or have smoked less than 100 cigarettes in my lifetime.")
+  STOPPED_BEFORE_PREGNANCY                 @map("I stopped smoking BEFORE I found out I was pregnant and am not smoking now.")
+  STOPPED_AFTER_PREGNANCY                  @map("I stopped smoking AFTER I found out I was pregnant and am not smoking now.")
+  STOPPED_DURING_PREGNANCY_BUT_SMOKING_NOW @map("I stopped smoking during pregnancy but I am smoking now.")
+  SMOKED_DURING_PREGNANCY_AND_SMOKING_NOW  @map("I smoked during pregnancy and I am smoking now.")
+}
+
+model SmokingTobaccoPregnancy {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  drugsOtherThanMedicines             YesNo
+  abuseMoreThanOneDrug                YesNo
+  ableToStopUsingDrugs                YesNo
+  haveBlackoutsFlashbacksFromDrugs    YesNo
+  guiltFromDrugUse                    YesNo
+  spouseParentsComplainAboutUsage     YesNo
+  neglectedFamily                     YesNo
+  illegalActivitiesToObtainDrugs      YesNo
+  withdrawalsWhenStoppedDrugs         YesNo
+  medicalProblemsFromUsage            YesNo
+  tobaccoUseScreeningAndDocumentation TobaccoUseScreeningAndDocumentation
 }
