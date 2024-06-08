@@ -59,6 +59,11 @@ const ChildrenNeedsForm: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+
+                if (!user) {
+                    throw new Error('Missing user');
+                }
+
                 if (verb !== 'edit') {
                     return;
                 }
@@ -67,20 +72,14 @@ const ChildrenNeedsForm: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-
                 const response = await readChildrenNeedsForm(submissionId, user.id);
-
                 const validResponse = ChildrenNeedsFormResponseSchema.parse(response);
-
                 reset(validResponse);
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
+                router.push('/dashboard');
                 return;
             }
         }
@@ -103,17 +102,13 @@ const ChildrenNeedsForm: React.FC = () => {
             }
 
             ChildrenNeedsFormResponseSchema.parse(response);
+            setSuccessMessage('Children Needs Form submitted successfully!')
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-
+        } finally {
             router.push('/dashboard');
-
-            return;
         }
-
-        setSuccessMessage('Children Needs Form submitted successfully!')
-        router.push('/dashboard');
     };
 
     const sections: Record<string, [string, string]> = {
