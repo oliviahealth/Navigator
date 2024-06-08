@@ -1,15 +1,14 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantRecordForOthersEntry, IParticipantRecordForOthersInvolvedInputs } from "./definitions";
-import { IParticipantDemographicsFormResponse } from "../participant-demographics-record/definitions";
+import { IParticipantRecordForOthersEntry, IParticipantRecordForOthersInvolvedResponse } from "./definitions";
 import { DeliveryMode, LivingArrangements, ParticipantRecordForOthersInvolvedMaritalStatus } from "@prisma/client";
 
 /**
  * Creates a new Participant Record Entry in the database.
  * @param {IParticipantRecordForOthersInvolvedEntry[]} participantRecordFormInput - An array of participant record entries to be created.
  * @param {string} userId - The ID of the user creating the participant record entries.
- * @returns {Promise<IParticipantDemographicsFormResponse>} A promise resolving to the created participant record entry.
+ * @returns {Promise<IParticipantRecordForOthersInvolvedResponse>} A promise resolving to the created participant record entry.
  * @throws {Error} If there's an issue creating the participant record entry.
  * @remarks This function takes an array of participant record entries and a user ID, creates formatted entries,
  * and saves them to the database using Prisma.
@@ -50,7 +49,7 @@ export const createParticipantRecordForOthersInvolved = async (participantRecord
  * Retrieves a participant record entry from the database based on its ID and the user ID.
  * @param {string} participantRecordId - The ID of the participant record entry to retrieve.
  * @param {string} userId - The ID of the user requesting the participant record entry.
- * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved participant record entry,
+ * @returns {Promise<IParticipantRecordForOthersInvolvedResponse | null>} A promise resolving to the retrieved participant record entry,
  * or null if no entry is found.
  * @throws {Error} If there's an issue retrieving the participant record entry.
  * @remarks This function retrieves a participant record entry from the database using Prisma based on the provided ID
@@ -75,7 +74,7 @@ export const readParticipantRecordForOthersInvolved = async (participantRecordId
  * Updates a participant record entry in the database with new participant record entries.
  * @param {IParticipantRecordForOthersInvolvedEntry[]} participantRecordFormInput - An array of updated participant record entries.
  * @param {string} participantRecordId - The ID of the participant record entry to update.
- * @returns {Promise<IParticipantDemographicsFormResponse>} A promise resolving to the updated participant record entry.
+ * @returns {Promise<IParticipantRecordForOthersInvolvedResponse>} A promise resolving to the updated participant record entry.
  * @throws {Error} If there's an issue updating the participant record entry.
  * @remarks This function updates a participant record entry in the database using Prisma. It replaces the existing
  * participation record entries associated with the record entry with the updated entries provided in the input array.
@@ -113,3 +112,31 @@ export const updateParticipantRecordForOthersInvolved = async (participantRecord
 
     return response;
 }
+
+/**
+ * Deletes a Participant Record For Others Involved Form from the database.
+ * @param submissionId - The ID of the Participant Record to delete.
+ * @param userId - The ID of the user requesting to delete the record.
+ * @returns {Promise<IParticipantRecordForOthersInvolvedResponse>}
+ * @remarks To be used by the dashboard
+ */
+export const deleteParticipantRecordForOthersInvolved = async (submissionId: string, userId: string) => {
+
+    const response = await prisma.$transaction([
+        // Delete related participant record entries first
+        prisma.participantRecordForOthersInvolvedEntry.deleteMany({
+            where: {
+                participantRecordForOthersInvolvedFormId: submissionId,
+            },
+        }),
+        // Delete the participant record form
+        prisma.participantRecordForOthersInvolvedForm.deleteMany({
+            where: {
+                id: submissionId,
+                userId: userId
+            }
+        }),
+    ]);
+    
+    return response;
+};

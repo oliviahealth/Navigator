@@ -142,16 +142,17 @@ const ReferralsAndServices: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+
+                if (!user) {
+                    throw new Error('Missing user');
+                }
+
                 if (verb !== 'edit') {
                     return;
                 }
 
                 if (!submissionId) {
                     throw new Error('Missing submissionId when fetching past submission');
-                }
-
-                if (!user) {
-                    throw new Error('Missing user');
                 }
 
                 const response = await readReferralsAndServices(submissionId, user.id);
@@ -162,17 +163,13 @@ const ReferralsAndServices: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-
+                router.push('/dashboard');
                 return;
             }
         }
 
         fetchAndPopulatePastSubmissionData()
     }, [])
-
-    console.log(errors);
 
     const submit = async (data: IReferralsAndServicesInputs) => {
         try {
