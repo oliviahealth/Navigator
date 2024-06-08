@@ -1,99 +1,111 @@
-"use client"
+'use client';
 
-import React, { useEffect } from "react";
-import { useRouter, useParams } from 'next/navigation'
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import React, { useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, useFieldArray } from 'react-hook-form';
 
+import { ICurrentMedicationListInputs, CurrentMedicationListResponseSchema } from '../definitions';
+import useAppStore from '@/lib/useAppStore';
 import {
+    createCurrentMedicationListRecord,
+    readCurrentMedicationListRecord,
+    updateCurrentMedicationListRecord,
+} from '../actions';
 
-} from "../definitions";
-
-import useAppStore from "@/lib/useAppStore";
-import { createParticipantDemographicsRecord, readParticipantDemographicsRecord, updateParticipantDemographicsRecord } from "../actions";
-
-const ParticipantDemographicsRecord: React.FC = () => {
+const CurrentMedicationListRecord: React.FC = () => {
     const router = useRouter();
     const { action } = useParams();
 
-    const verb = action[0]
-    const submissionId = action[1]
+    const verb = action[0];
+    const submissionId = action[1];
 
-    const user = useAppStore(state => state.user);
+    const user = useAppStore((state) => state.user);
 
-    const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
-    const setErrorMessage = useAppStore(state => state.setErrorMessage);
+    const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
+    const setErrorMessage = useAppStore((state) => state.setErrorMessage);
 
     const {
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors, isSubmitting },
-    } = useForm<IParticipantDemographicsFormInputs>({
-        resolver: zodResolver(ParticipantDemographicsFormInputsSchema),
+    } = useForm<ICurrentMedicationListInputs>({
+        resolver: zodResolver(CurrentMedicationListResponseSchema),
+        defaultValues: {
+            currentMedicationList: [{ name: '', dose: '', prescriber: '', notes: '' }],
+        },
     });
 
-    // useEffect(() => {
-    //     const fetchAndPopulatePastSubmissionData = async () => {
-    //         try {
-    //             if (verb !== 'edit') {
-    //                 return;
-    //             }
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'currentMedicationList',
+    });
 
-    //             if (!submissionId) {
-    //                 throw new Error('Missing submissionId when fetching past submission');
-    //             }
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
 
-    //             if (!user) {
-    //                 throw new Error('Missing user');
-    //             }
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
 
-    //             const response = await readParticipantDemographicsRecord(submissionId, user.id);
+                if (!user) {
+                    throw new Error('Missing user');
+                }
 
-    //             const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
+                const response = await readCurrentMedicationListRecord(submissionId, user.id);
 
-    //             reset(validResponse);
+                const validResponse = CurrentMedicationListResponseSchema.parse(response);
 
-    //         } catch (error) {
-    //             console.error(error);
-    //             setErrorMessage('Something went wrong! Please try again later');
+                reset(validResponse);
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
 
-    //             router.push('/');
+                router.push('/');
 
-    //             return;
-    //         }
-    //     }
+                return;
+            }
+        };
 
-    //     fetchAndPopulatePastSubmissionData()
-    // }, [])
+        fetchAndPopulatePastSubmissionData();
+    }, []);
 
-    const submit = async (data: IParticipantDemographicsFormInputs) => {
-        console.log(data)
-        // try {
-        //     let response;
+    const submit = async (data: ICurrentMedicationListInputs) => {
+        try {
+            let response;
 
-        //     if (!user) {
-        //         throw new Error("User missing");
-        //     }
+            if (!user) {
+                throw new Error('User missing');
+            }
 
-        //     if (verb === 'new') {
-        //         response = await createParticipantDemographicsRecord(ParticipantDemographicsRecordData, user.id);
-        //     } else {
-        //         response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, user.id)
-        //     }
+            if (verb === 'new') {
+                response = await createCurrentMedicationListRecord(data, user.id);
+            } else {
+                response = await updateCurrentMedicationListRecord(data, submissionId, user.id);
+            }
 
-        //     ParticipantDemographicsFormResponseSchema.parse(response);
-        // } catch (error) {
-        //     console.error(error);
-        //     setErrorMessage('Something went wrong! Please try again later');
+            CurrentMedicationListResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
 
-        //     router.push('/dashboard');
+            router.push('/dashboard');
 
-        //     return;
-        // }
+            return;
+        }
 
-        // setSuccessMessage('Participant Demographics Record submitted successfully!')
-        // router.push('/dashboard');
+        setSuccessMessage('Current Medication List submitted successfully!');
+        router.push('/dashboard');
+    };
+
+    const addNewMedication = () => {
+        append({ name: '', dose: '', prescriber: '', notes: '' });
     };
 
     return (
@@ -102,27 +114,95 @@ const ParticipantDemographicsRecord: React.FC = () => {
                 onSubmit={handleSubmit((data) => submit(data))}
                 className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
             >
-                <div className="pt-6">
-                    <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Current Medication List</p>
-                    <small className="text-gray-500"></small>
+                <p className="font-medium text-xl">Current Medication List</p>
+                {fields.map((field, index) => (
+                    <div key={field.id} className="py-6">
+                        <div className="flex justify-between items-center">
+                            <p className="font-medium pb-2 pt-8">Medication {index + 1}</p>
+                            <button
+                                type="button"
+                                onClick={() => remove(index)}
+                                className="text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
+                            >
+                                - Remove Medicine
+                            </button>
+                        </div>
+                        <input
+                            {...register(`currentMedicationList.${index}.name`)}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.currentMedicationList &&
+                            errors.currentMedicationList[index]?.name && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.currentMedicationList[index]?.name?.message}
+                                </span>
+                            )}
+
+                        <p className="font-medium pt-6">Dose</p>
+                        <input
+                            {...register(`currentMedicationList.${index}.dose`)}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.currentMedicationList &&
+                            errors.currentMedicationList[index]?.dose && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.currentMedicationList[index]?.dose?.message}
+                                </span>
+                            )}
+                        <p className="font-medium pt-6">Prescriber</p>
+                        <input
+                            {...register(`currentMedicationList.${index}.prescriber`)}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.currentMedicationList &&
+                            errors.currentMedicationList[index]?.prescriber && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.currentMedicationList[index]?.prescriber?.message}
+                                </span>
+                            )}
+
+                        <p className="font-medium pt-6">Medication Notes</p>
+                        <input
+                            {...register(`currentMedicationList.${index}.notes`)}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.currentMedicationList &&
+                            errors.currentMedicationList[index]?.notes && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.currentMedicationList[index]?.notes?.message}
+                                </span>
+                            )}
+                    </div>
+                ))}
+
+                <div className="flex justify-center">
+                    <button
+                        type="button"
+                        onClick={addNewMedication}
+                        className="text-black px-20 py-2 mt-6 rounded-md whitespace-nowrap"
+                    >
+                        + Add Medication
+                    </button>
                 </div>
 
-                <div className="space-y-16 pt-12">
-                </div>
+                <p className="font-medium pt-6">Notes</p>
+                <input
+                    {...register('notes')}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                />
 
-                <div className="flex justify-center py-4">
+                <div className="flex justify-center">
                     <button
                         type="submit"
-                        className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
+                        disabled={isSubmitting}
+                        className="text-white bg-blue-500 px-20 py-2 mt-6 rounded-md whitespace-nowrap"
                     >
-                        {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
-                        Save
+                        Submit
                     </button>
                 </div>
             </form>
         </div>
-    )
+    );
+};
 
-}
-
-export default ParticipantDemographicsRecord;
+export default CurrentMedicationListRecord;
