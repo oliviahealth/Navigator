@@ -38,6 +38,7 @@ model User {
   ChildrenNeedsForm                      ChildrenNeedsForm[]
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
+  CurrentMedicationList                  CurrentMedicationList[]
 }
 
 enum CommunicationMethod {
@@ -529,6 +530,19 @@ model ParentalMedicalHistory {
   living                  String
   priorComplications      String?
   ongoingMedicalProblems  String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

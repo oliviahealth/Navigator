@@ -25,6 +25,13 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Two</p>
 
+                    <Link href={'dashboard/tab-two/children-needs/new'}>
+                        Children Needs
+                    </Link>
+
+                    <Link href={'dashboard/tab-four/current-medication-list/new'}>
+                        Current Medication List
+                    </Link>
                         <Link href={'/dashboard/tab-two/participant-demographics-record/new'}>
                             Participant Demographics Record
                         </Link>
