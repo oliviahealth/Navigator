@@ -19,7 +19,10 @@ const MediaReleaseFormSchema = z.object({
     }),
   date: z.string().min(1, "Date is required"),
   // make optional in case user is over the age of 18
-  legalGuardianName: z.string().min(1, "Legal Guardian Name is required").optional(),
+  legalGuardianName: z
+    .string()
+    .min(1, "Legal Guardian Name is required")
+    .optional(),
 });
 
 export type IMediaReleaseForm = z.infer<typeof MediaReleaseFormSchema>;
@@ -61,10 +64,6 @@ const MediaReleaseForm: React.FC = () => {
         `,
       ],
     },
-    {
-      title: ``,
-      content: [``],
-    },
   ];
 
   const goBack = () => {
@@ -93,28 +92,23 @@ const MediaReleaseForm: React.FC = () => {
   });
 
   useEffect(() => {
-    if(watch("participantAge") >= 18) {
+    if (watch("participantAge") >= 18) {
       unregister("legalGuardianName");
     }
   }, [watch("participantAge"), unregister]);
-
 
   const submit = (data: IMediaReleaseForm) => {
     if (data.participantAge >= 18) {
       delete data.legalGuardianName;
     }
-  
+
     alert("Media Release form submitted successfully");
     console.log(data);
   };
   return (
     // Wizard to display text with back/continue buttons
     // change padding based on whether text is displayed or form
-    <div
-      className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${
-        currentStep < steps.length - 1 ? "pt-20" : "pt-4"
-      } px-32`}
-    >
+    <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base pt-20 px-32">
       <div className="flex flex-col items-center">
         <div>
           <div className="mb-2 pl-24 pr-24">
@@ -131,24 +125,23 @@ const MediaReleaseForm: React.FC = () => {
                 ))}
             </div>
           </div>
-          {currentStep < steps.length - 1 && (
-            <div className="flex justify-end space-x-4 mr-12">
-              <button
-                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-                onClick={goBack}
-                disabled={currentStep === 0}
-              >
-                Back
-              </button>
-              <button
-                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-                onClick={goForward}
-                disabled={currentStep === steps.length - 1}
-              >
-                Continue
-              </button>
-            </div>
-          )}
+
+          <div className="flex justify-end space-x-4 mr-12">
+            <button
+              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+              onClick={goBack}
+              disabled={currentStep === 0}
+            >
+              Back
+            </button>
+            <button
+              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+              onClick={goForward}
+              disabled={currentStep === steps.length - 1}
+            >
+              Continue
+            </button>
+          </div>
         </div>
       </div>
       {currentStep < steps.length - 1 && (
@@ -168,9 +161,9 @@ const MediaReleaseForm: React.FC = () => {
       {currentStep === steps.length - 1 && ( // Form
         <form
           onSubmit={handleSubmit((data) => submit(data))}
-          className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4 mt-[-96] mt-[-20]"
+          className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4 pb-4"
         >
-          <p className="text-xl pt-8 text-center font-semibold ">
+          <p className="text-2xl pt-8 text-left font-semibold ">
             Media Release Form
           </p>
           <p className="font-medium pb-2 pt-8">Participant Name</p>
@@ -231,12 +224,14 @@ const MediaReleaseForm: React.FC = () => {
               )}
             </div>
           )}
-          <button
-            type="submit"
-            className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-10"
-          >
-            Submit
-          </button>
+          <div className="mb-4">
+            <button
+              type="submit"
+              className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-10"
+            >
+              Submit
+            </button>
+          </div>
         </form>
       )}
     </div>
