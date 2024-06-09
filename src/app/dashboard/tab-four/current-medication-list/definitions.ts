@@ -1,17 +1,16 @@
 import { z } from 'zod';
 
-const CurrentMedicationListInputsSchema = z.object({
+export const CurrentMedicationListInputsSchema = z.object({
     currentMedicationList: z.array(
         z.object({
             name: z.string().min(1, 'Name is required'),
             dose: z.string().min(1, 'Dose is required'),
             prescriber: z.string().min(1, 'Prescriber is required'),
-            notes: z.string().optional(),
+            notes: z.string().nullish(),
         })
     ),
-    notes: z.string().optional(),
+    notes: z.string().nullish(),
 });
-
 export type ICurrentMedicationListInputs = z.infer<typeof CurrentMedicationListInputsSchema>;
 
 export const CurrentMedicationListResponseSchema = CurrentMedicationListInputsSchema.extend({

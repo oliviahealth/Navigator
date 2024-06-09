@@ -456,7 +456,7 @@ model CurrentMedicationList {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  currentMedicationList Json
+  currentMedicationList Json[]
   notes                 String?
 
   dateCreated  DateTime @default(now())
