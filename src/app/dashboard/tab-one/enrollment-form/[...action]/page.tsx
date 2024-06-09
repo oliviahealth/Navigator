@@ -233,7 +233,7 @@ const EnrollmentLog: React.FC = () => {
               {steps[currentStep].content[0]
                 .split("\n")
                 .map((line: string, lineIndex: number) => (
-                  <p key={lineIndex} className="mt-4 mb-4 text-xl">
+                  <p key={lineIndex} className="mt-4 mb-4">
                     {line.trim()}
                   </p>
                 ))}
@@ -314,7 +314,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">City</p>
           <input
-            {...register("address")}
+            {...register("city")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
           />
           {errors.city && (
@@ -366,6 +366,7 @@ const EnrollmentLog: React.FC = () => {
           <input
             {...register("email")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="email"
           />
           {errors.email && (
             <span className="label-text-alt text-red-500">
@@ -374,7 +375,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date of Birth</p>
           <input
-            {...register("address")}
+            {...register("dateOfBirth")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
           />
           {errors.dateOfBirth && (
@@ -460,7 +461,7 @@ const EnrollmentLog: React.FC = () => {
               </div>
               
             ))}
-           <div className="flex justify-start ml-[-0px]"> 
+           <div className="flex justify-center ml-[-0px]"> 
               <button
                 type="button"
                 onClick={addNewEmergencyContact}
