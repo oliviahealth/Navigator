@@ -20,10 +20,12 @@ import {
     ParentConcernsEnum,
     YesNoEnum,
     ReasonsEnum,
+    EncounterFormResponseSchema,
 } from "../definitions";
 // import { createEncounterForm, readEncounterForm, updateEncounterForm } from "../actions";
 
 import useAppStore from "@/lib/useAppStore";
+import { createEncounterForm, readEncounterForm, updateEncounterForm } from "../actions";
 
 interface EncounterEntryProps {
     control: Control<IEncounterFormInputs>;
@@ -105,14 +107,14 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
             while (newState[fieldIndex].length <= visitIndex) {
                 newState[fieldIndex].push(false);
             }
-    
+
             newState[fieldIndex][visitIndex] = value === 'Other';
-    
+
             // Clear the value if "Other" is not selected
             if (value !== 'Other') {
                 setValue(`encounterEntries.${fieldIndex}.careVisitsDatesAndReasonsList.${visitIndex}.otherReason`, '');
             }
-    
+
             return newState;
         });
     }
@@ -279,10 +281,10 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
                                         </label>
                                     ))}
                                     {errors.encounterEntries && errors.encounterEntries[index]?.careVisitsDatesAndReasonsList?.[visitIndex]?.reason && (
-                                    <span className="label-text-alt text-red-500">
-                                        {errors.encounterEntries[index]?.careVisitsDatesAndReasonsList?.[visitIndex]?.reason?.message}
-                                    </span>
-                                )}
+                                        <span className="label-text-alt text-red-500">
+                                            {errors.encounterEntries[index]?.careVisitsDatesAndReasonsList?.[visitIndex]?.reason?.message}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
@@ -459,8 +461,63 @@ const EncounterForm: React.FC = () => {
         });
     };
 
-    const submit = async (data: IEncounterFormInputs) => {
-        console.log(data);
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+
+                if (!user) {
+                    throw new Error('Missing user');
+                }
+
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readEncounterForm(submissionId, user.id);
+                const validResponse = EncounterFormResponseSchema.parse(response);
+                reset(validResponse);
+
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+                router.push('/dashboard');
+                return;
+            }
+        }
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
+    const submit = async (encounterFormData: IEncounterFormInputs) => {
+        try {
+            let response;
+
+            if (!user) {
+                throw new Error("User missing");
+            }
+
+            EncounterFormInputsSchema.parse(encounterFormData);
+            
+            if (verb === 'new') {
+                response = await createEncounterForm(encounterFormData, user.id);
+            } else {
+                response = await updateEncounterForm(encounterFormData, submissionId, user.id)
+            }
+
+            EncounterFormResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            return;
+        }
+
+        setSuccessMessage('Encounter Form submitted successfully!')
+        router.push('/dashboard');
     };
 
     return (
