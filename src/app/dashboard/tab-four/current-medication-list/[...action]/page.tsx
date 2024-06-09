@@ -116,10 +116,11 @@ const CurrentMedicationListRecord: React.FC = () => {
                 onSubmit={handleSubmit((data) => submit(data))}
                 className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
             >
-                <div className="pb-4 pt-4">
+                <div className="pb-4 pt-4 flex flex-col">
                     <p className="font-semibold text-2xl">Current Medication List</p>
-                    <small className="text-gray-500">Include prescription and over the counter and supplements</small>
-                    <small className="text-gray-500">Complete with participants</small>
+                    <small className="text-gray-500">Include prescription and over the counter and supplements.</small>
+                    <small className="text-gray-500">Complete with participants.</small>
+                    <small className="text-gray-500">Follow up as indicated with provider, social worker, case manager, recovery coach etc..</small>
                 </div>
                 {fields.map((field, index) => (
                     <div key={field.id} className="py-6">

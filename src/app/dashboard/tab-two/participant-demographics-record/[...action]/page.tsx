@@ -45,6 +45,11 @@ const ParticipantDemographicsRecord: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+
+                if (!user) {
+                    throw new Error('Missing user');
+                }
+
                 if (verb !== 'edit') {
                     return;
                 }
@@ -53,12 +58,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if(!user) {
-                    throw new Error('Missing user');
-                }
-
                 const response = await readParticipantDemographicsRecord(submissionId, user.id);
-
                 const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
 
                 const formattedData = {
@@ -72,9 +72,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-
+                router.push('/dashboard');
                 return;
             }
         }
@@ -86,7 +84,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
         try {
             let response;
 
-            if(!user) {
+            if (!user) {
                 throw new Error("User missing");
             }
 
@@ -100,8 +98,6 @@ const ParticipantDemographicsRecord: React.FC = () => {
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-
-            router.push('/dashboard');
 
             return;
         }

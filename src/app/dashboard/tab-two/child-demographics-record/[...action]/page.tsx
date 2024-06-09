@@ -77,7 +77,7 @@ const ChildDemographicsRecord: React.FC = () => {
 
     const [caseworker, setCaseworker] = useState(false);
     const handleCaseworker = (value: string) => {
-        if(value === "Currently" || value === "Previously") {
+        if (value === "Currently" || value === "Previously") {
             setCaseworker(true);
 
             return
@@ -91,6 +91,11 @@ const ChildDemographicsRecord: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+
+                if (!user) {
+                    throw new Error("User not found");
+                }
+
                 if (verb !== 'edit') {
                     return;
                 }
@@ -99,12 +104,7 @@ const ChildDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if(!user) {
-                    throw new Error("User not found");
-                }
-
-                const response = await readChildDemographicsRecord(submissionId, user?.id);
-
+                const response = await readChildDemographicsRecord(submissionId, user.id);
                 const validResponse = ChildDemographicsRecordResponseSchema.parse(response);
 
                 const formattedData = {
@@ -112,23 +112,20 @@ const ChildDemographicsRecord: React.FC = () => {
                     dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
                     effectiveDate: new Date(validResponse.effectiveDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
                 };
-
                 reset(formattedData);
 
-                if(formattedData.prenatalDrugExposure) {
+                if (formattedData.prenatalDrugExposure) {
                     setPrenatalDrugExposure(true);
                 }
 
-                if(formattedData.nicuStay) {
+                if (formattedData.nicuStay) {
                     setNicuStay(true)
                 }
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-
+                router.push('/dashboard');
                 return;
             }
         }
@@ -140,21 +137,21 @@ const ChildDemographicsRecord: React.FC = () => {
         try {
             let response;
 
-            if(!user) {
+            if (!user) {
                 throw new Error("User not found");
             }
 
             if (verb === 'new') {
-                response = await createChildDemographicsRecord(ChildDemographicsRecordData, user?.id);
+                response = await createChildDemographicsRecord(ChildDemographicsRecordData, user.id);
             } else {
-                response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, user?.id)
+                response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, user.id)
             }
 
             ChildDemographicsRecordResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
-
+            
             return;
         }
 
@@ -736,7 +733,6 @@ const ChildDemographicsRecord: React.FC = () => {
             </form >
         </div >
     )
-
 }
 
 export default ChildDemographicsRecord;
