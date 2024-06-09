@@ -39,6 +39,7 @@ model User {
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
   EncounterForm                          EncounterForm[]
+  CurrentMedicationList                  CurrentMedicationList[]
 }
 
 enum CommunicationMethod {
@@ -546,6 +547,20 @@ model EncounterForm {
   monthYear       String
 
   encounterEntries Json[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
