@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const Dashboard: React.FC = () => {
     return (
@@ -13,61 +12,61 @@ const Dashboard: React.FC = () => {
 
                         <p className="font-bold text-lg">Tab One</p>
 
-                        <Link href={'/dashboard/tab-one/communication-log/new'}>
+                        <a href={'/dashboard/tab-one/communication-log/new'}>
                             Communication Log
-                        </Link>
+                        </a>
 
-                        <Link href={'/dashboard/tab-one/appointment-log'}>
+                        <a href={'/dashboard/tab-one/appointment-log'}>
                             Appointment Log
-                        </Link>
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Two</p>
 
-                    <Link href={'dashboard/tab-two/children-needs/new'}>
+                    <a href={'dashboard/tab-two/children-needs/new'}>
                         Children Needs
-                    </Link>
+                    </a>
 
-                    <Link href={'dashboard/tab-four/current-medication-list/new'}>
+                    <a href={'dashboard/tab-four/current-medication-list/new'}>
                         Current Medication List
-                    </Link>
-                        <Link href={'/dashboard/tab-two/participant-demographics-record/new'}>
+                    </a>
+                        <a href={'/dashboard/tab-two/participant-demographics-record/new'}>
                             Participant Demographics Record
-                        </Link>
+                        </a>
 
-                        <Link href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
+                        <a href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
                             Participant Record For Others Involved
-                        </Link>
+                        </a>
 
-                        <Link href={'/dashboard/tab-two/child-demographics-record/new'}>
+                        <a href={'/dashboard/tab-two/child-demographics-record/new'}>
                             Child Demographics Record
-                        </Link>
+                        </a>
 
-                        <Link href={'/dashboard/tab-two/support-systems/new'}>
+                        <a href={'/dashboard/tab-two/support-systems/new'}>
                             Support Systems
-                        </Link>
+                        </a>
 
-                        <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
+                        <a href={'dashboard/tab-two/current-living-arrangement/new'}>
                             Current Living Arrangement
-                        </Link>
+                        </a>
 
-                        <Link href={'dashboard/tab-two/children-needs/new'}>
+                        <a href={'dashboard/tab-two/children-needs/new'}>
                             Children Needs
-                        </Link>
+                        </a>
 
-                        <Link href={'dashboard/tab-two/referrals-and-services/new'}>
+                        <a href={'dashboard/tab-two/referrals-and-services/new'}>
                             Referrals & Services
-                        </Link>
+                        </a>
 
                     </div>
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Three</p>
 
-                        <Link href={'dashboard/tab-three/parental-medical-history/new'}>
+                        <a href={'dashboard/tab-three/parental-medical-history/new'}>
                             Parental Medical History
-                        </Link>
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
