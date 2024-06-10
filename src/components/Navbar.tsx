@@ -2,18 +2,13 @@
 
 import React, { useState } from "react";
 import Link from 'next/link'
-import { useRouter } from "next/navigation";
 
 import useAppStore from "@/lib/useAppStore";
 import { setCookie } from "@/lib/useAppStore";
 
 const Navbar: React.FC = () => {
-    const router = useRouter();
-
     const user = useAppStore((state) => state.user);
     const setUser = useAppStore(state => state.setUser);
-
-    const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
     const [isOpen, setOpen] = useState(false);
 
@@ -25,7 +20,7 @@ const Navbar: React.FC = () => {
         setCookie('jwt', '')
         setUser(null);
 
-        router.push('/dashboard')
+        window.location.href = '/sign-in';
     }
 
     return (
