@@ -9,7 +9,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createUser } from "./actions";
 import { ISignupFormData, SignupSchema } from "./definitions";
 import useAppStore from "@/lib/useAppStore";
-import { setCookie } from "@/lib/useAppStore";
 
 const SignupPage: React.FC = () => {
   const router = useRouter()
@@ -30,9 +29,8 @@ const SignupPage: React.FC = () => {
         throw new Error('Password and ConfirmPassword do not match');
       }
 
-      const { user, token } = await createUser(data);
+      const { user } = await createUser(data);
 
-      setCookie('jwt', token, { maxAge: 3600 });
       setUser(user);
     } catch (error) {
       console.error(error);

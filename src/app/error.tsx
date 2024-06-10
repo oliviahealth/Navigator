@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import useAppStore, { setCookie } from '@/lib/useAppStore'
+import useAppStore from '@/lib/useAppStore'
 
 export default function Error({
     error,
@@ -15,8 +15,7 @@ export default function Error({
     
     useEffect(() => {
         console.error(error)
-
-        setCookie('jwt', '')
+        
         setUser(null)
         setErrorMessage("Something went wrong! Please try again later");
     }, [error])

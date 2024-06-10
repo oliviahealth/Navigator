@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import Link from 'next/link'
 
+import { signoutUser } from "@/app/actions";
 import useAppStore from "@/lib/useAppStore";
-import { setCookie } from "@/lib/useAppStore";
 
 const Navbar: React.FC = () => {
     const user = useAppStore((state) => state.user);
@@ -16,8 +16,8 @@ const Navbar: React.FC = () => {
         setOpen(!isOpen);
     };
 
-    const signoutUser = () => {
-        setCookie('jwt', '')
+    const signout = () => {
+        signoutUser();
         setUser(null);
 
         window.location.href = '/sign-in';
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                         {user ? (
                             <button
                                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-                                onClick={signoutUser}
+                                onClick={signout}
                             >
                                 Sign Out
                             </button>

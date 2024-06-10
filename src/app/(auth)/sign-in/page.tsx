@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signin } from "./actions";
 import { SigninSchema, ISigninFormData } from "./definitions";
-import useAppStore, { setCookie } from "@/lib/useAppStore";
+import useAppStore from "@/lib/useAppStore";
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
@@ -25,9 +25,8 @@ const SignInPage: React.FC = () => {
 
   const signinUser = async (data: ISigninFormData) => {
     try {
-      const { user, token } = await signin(data);
+      const { user } = await signin(data);
 
-      setCookie('jwt', token, { maxAge: 3600 });
       setUser(user);
     } catch (error) {
       console.error(error);
