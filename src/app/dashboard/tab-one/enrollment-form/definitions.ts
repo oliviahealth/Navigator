@@ -21,9 +21,17 @@ export const EnrollmentFormInputsSchema = z.object({
     dateOfBirth: z.union([z.date(), z.string().min(1, "Date of Birth is required")]),
     emergencyContacts: z.array(EnrollmentEmergencyContactsSchema),
     clientName: z.string().min(1, 'Client name is required'),
+    clientAge: z
+    .string()
+    .transform((val) => parseInt(val, 10))
+    .refine((age) => !isNaN(age) && age >= 1, {
+      message:
+        "Client Age is required and should be a number greater than 0",
+      path: ["clientAge"],
+    }),
     clientDate: z.union([z.date(), z.string().min(1, "Date is required")]),
-    guardianName: z.string().min(1, 'Guardian name is required'),
-    guardianDate: z.union([z.date(), z.string().min(1, "Date is required")]),
+    guardianName: z.string().min(1, 'Guardian name is required').optional(),
+    guardianDate: z.union([z.date(), z.string().min(1, "Date is required")]).optional(),
     gcMomsName: z.string().min(1, 'GC-MOMS name is required'),
     gcMomsDate: z.union([z.date(), z.string().min(1, "Date is required")])
 });

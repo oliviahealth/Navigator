@@ -106,9 +106,51 @@ const EnrollmentLog: React.FC = () => {
       content: [
         `I allow the Program and Texas A&M University College of Nursing (TAMU-CON) to share health information about me, my child and my family collected during my participation in the GC-MOMS Program as described below. 
         
-        This health information may include names, contact information, birth dates, medical history, treatment records, information from surveys and during visits with my MCHN, and other information collected about me, my child and my family in the Program. `
-      ]
-    }
+        This health information may include names, contact information, birth dates, medical history, treatment records, information from surveys and during visits with my MCHN, and other information collected about me, my child and my family in the Program. `,
+      ],
+    },
+    {
+      title: `Permission to Share Health Information (Release of Information - ROI)`,
+      content: [
+        `TAMU-CON may share health information about me, my child and my family to others for the following reasons:
+        
+         TAMU-CON will share health information to the GC-MOMS Program Service Office and the grant funding agency (Health Resources and Services Administration, HRSA) and others that fund or support the Program. They will monitor how the Program helps families and provide TAMU-SON with feedback and support about the Program.  
+         
+         TAMU-CON may share health information with service providers in the community, such as health care and childcare providers, to help me get other services or resources I need. 
+         
+         MCHNs in the Program will ask me questions and work with me to fill out forms on behalf of the state of Texas. This information will help them know how this Program is helping families.  
+         
+         GC-MOMS welcomes nursing and other Texas A&M students engaged in an educational purpose, all of whom are under the direct supervision of a privileged staff member. By consenting to [care/treatment], you acknowledge that students may be involved in the care you receive. If you do not want students present during your care, please let an staff member know. 
+         
+         We will keep the information we collect about you for potential use in research projects.  We will remove identifying information before it is shared for research. `,
+      ],
+    },
+    {
+      title: `Permission to Share Health Information (Release of Information - ROI)`,
+      content: [
+        `This permission will remain in effect until I cancel it. I can cancel this permission at any time by notifying the Program in writing at 8441 Riverside Parkway, Clinical Building 1, Rm 3539, Bryan, TX 77807. I understand that use or sharing of my information before I cancel this permission will not be affected. 
+        
+        I understand that this Program is voluntary, and I may refuse to sign this permission form. However, I will not be able to participate in the Program if I do not sign this permission form. I understand that my present or future health care outside of the Program, the payment of my health care or any other benefits to which I have a right will not be affected if I do not sign this permission form. 
+        
+        I understand that refusal to sign this permission form will not prevent sharing my health information as required or permitted by law. I also understand once health information about me, my child and my family has been shared outside TAMU-CON it may no longer be protected by federal or state privacy laws. 
+
+ `,
+      ],
+    },
+    {
+      title: `Signature Authorization`,
+      content: [
+        `By signing below: 
+
+        I confirm that the information provided by me in this enrollment form is correct and that I will provide TAMU-CON with any updates to my information in writing during my participation in the Program. 
+
+        I agree to participate in the GC-MOMS Program at Texas A&M University College of Nursing. 
+
+        I have read and understand this enrollment form. I agree to the uses and sharing of health information described above.
+        
+        `,
+      ],
+    },
   ];
 
   const goBack = () => {
@@ -126,6 +168,7 @@ const EnrollmentLog: React.FC = () => {
   const {
     register,
     control,
+    watch,
     handleSubmit,
     reset,
     formState: { errors },
@@ -166,9 +209,9 @@ const EnrollmentLog: React.FC = () => {
 
         const formattedData = {
           ...validResponse,
-          guardianDate: new Date(validResponse.guardianDate)
-            .toISOString()
-            .split("T")[0],
+          guardianDate: validResponse.guardianDate
+            ? new Date(validResponse.guardianDate).toISOString().split("T")[0]
+            : undefined,
           gcMomsDate: new Date(validResponse.gcMomsDate)
             .toISOString()
             .split("T")[0],
@@ -240,6 +283,7 @@ const EnrollmentLog: React.FC = () => {
             </div>
           </div>
 
+          {currentStep !== 5 && currentStep !== 9 && (
             <div className="flex justify-end space-x-4 mr-12">
               <button
                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
@@ -256,233 +300,373 @@ const EnrollmentLog: React.FC = () => {
                 Continue
               </button>
             </div>
-
+          )}
         </div>
       </div>
-      {currentStep < steps.length - 1 && (
-        <div className="flex justify-center space-x-4 mt-4">
-          {steps.map((_, index) => (
-            <button
-              key={index}
-              className="focus:outline-none button"
-              onClick={() => setCurrentStep(index)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
 
-      <div className="mt-10"> 
-      {currentStep === steps.length - 1 && ( // Display form on last step
-        <form
-          onSubmit={handleSubmit((data) => submit(data))}
-          className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4 mt-10" // Adjust the value as needed
-        >
-          <p className="text-2xl pt-8 font-semibold text-left">
-            Your Contact Information
-          </p>
-          <p className="font-medium pb-2 pt-8">First Name</p>
-          <input
-            {...register("firstName")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.firstName && (
-            <span className="label-text-alt text-red-500">
-              {errors.firstName.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Last Name</p>
-          <input
-            {...register("lastName")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.lastName && (
-            <span className="label-text-alt text-red-500">
-              {errors.lastName.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Address</p>
-          <input
-            {...register("address")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.address && (
-            <span className="label-text-alt text-red-500">
-              {errors.address.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">City</p>
-          <input
-            {...register("city")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.city && (
-            <span className="label-text-alt text-red-500">
-              {errors.city.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">State</p>
-          <input
-            {...register("state")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.state && (
-            <span className="label-text-alt text-red-500">
-              {errors.state.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Zip Code</p>
-          <input
-            {...register("zip")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.zip && (
-            <span className="label-text-alt text-red-500">
-              {errors.zip.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Home Phone Number</p>
-          <input
-            {...register("homePhone")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.homePhone && (
-            <span className="label-text-alt text-red-500">
-              {errors.homePhone.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Cell Phone Number</p>
-          <input
-            {...register("cellPhone")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.cellPhone && (
-            <span className="label-text-alt text-red-500">
-              {errors.cellPhone.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Email</p>
-          <input
-            {...register("email")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-            type="email"
-          />
-          {errors.email && (
-            <span className="label-text-alt text-red-500">
-              {errors.email.message}
-            </span>
-          )}
-          <p className="font-medium pb-2 pt-8">Date of Birth</p>
-          <input
-            {...register("dateOfBirth")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.dateOfBirth && (
-            <span className="label-text-alt text-red-500">
-              {errors.dateOfBirth.message}
-            </span>
-          )}
+      <div className="flex justify-center space-x-4 mt-4">
+        {steps.map((_, index) => (
+          <button
+            key={index}
+            className={`focus:outline-none button ${
+              currentStep === index ? "button-filled" : ""
+            }`}
+            onClick={() => setCurrentStep(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
-          <div className="mt-4">
-          <p className="text-2xl pt-8 font-semibold text-left">
-              Emergency Contact Information
+      <div className="mt-10">
+        {currentStep === 5 && ( // Display form on last step
+          <form
+            onSubmit={handleSubmit((data) => submit(data))}
+            className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4 mt-10 pb-10" // Adjust the value as needed
+          >
+            <p className="text-2xl pt-8 font-semibold text-left">
+              Your Contact Information
             </p>
-            {fields.map((field, index) => (
-              <div key={field.id}>
-                <div className="flex justify-between items-center">
-                  <p className="text-lg font-semibold pb-2 pt-8">
-                    Emergency Contact {index + 1}
+            <p className="font-medium pb-2 pt-8">First Name</p>
+            <input
+              {...register("firstName")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.firstName && (
+              <span className="label-text-alt text-red-500">
+                {errors.firstName.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Last Name</p>
+            <input
+              {...register("lastName")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.lastName && (
+              <span className="label-text-alt text-red-500">
+                {errors.lastName.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Address</p>
+            <input
+              {...register("address")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.address && (
+              <span className="label-text-alt text-red-500">
+                {errors.address.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">City</p>
+            <input
+              {...register("city")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.city && (
+              <span className="label-text-alt text-red-500">
+                {errors.city.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">State</p>
+            <input
+              {...register("state")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.state && (
+              <span className="label-text-alt text-red-500">
+                {errors.state.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Zip Code</p>
+            <input
+              {...register("zip")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.zip && (
+              <span className="label-text-alt text-red-500">
+                {errors.zip.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Home Phone Number</p>
+            <input
+              {...register("homePhone")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.homePhone && (
+              <span className="label-text-alt text-red-500">
+                {errors.homePhone.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Cell Phone Number</p>
+            <input
+              {...register("cellPhone")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.cellPhone && (
+              <span className="label-text-alt text-red-500">
+                {errors.cellPhone.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Email</p>
+            <input
+              {...register("email")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="email"
+            />
+            {errors.email && (
+              <span className="label-text-alt text-red-500">
+                {errors.email.message}
+              </span>
+            )}
+            <p className="font-medium pb-2 pt-8">Date of Birth</p>
+            <input
+              {...register("dateOfBirth")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              type="date"
+            />
+            {errors.dateOfBirth && (
+              <span className="label-text-alt text-red-500">
+                {errors.dateOfBirth.message}
+              </span>
+            )}
+
+            <div className="mt-4">
+              <p className="text-2xl pt-8 font-semibold text-left">
+                Emergency Contact Information
+              </p>
+              {fields.map((field, index) => (
+                <div key={field.id}>
+                  <div className="flex justify-between items-center">
+                    <p className="text-lg font-semibold pb-2 pt-8">
+                      Emergency Contact {index + 1}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      className="text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
+                    >
+                      - Remove Emergency Contact
+                    </button>
+                  </div>
+
+                  <p className="pb-2 pt-8 font-semibold">
+                    Emergency Contact Name
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    className="text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
-                  >
-                    - Remove Emergency Contact
-                  </button>
+                  <input
+                    {...register(`emergencyContacts.${index}.name`)}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                    type="text"
+                  />
+                  {errors.emergencyContacts &&
+                    errors.emergencyContacts[index]?.name && (
+                      <span className="label-text-alt text-red-500">
+                        {errors.emergencyContacts[index]?.name?.message}
+                      </span>
+                    )}
+
+                  <p className="font-medium pb-2 pt-8">
+                    Emergency Contact Phone Number
+                  </p>
+                  <input
+                    {...register(`emergencyContacts.${index}.phone`)}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                    type="text"
+                  />
+                  {errors.emergencyContacts &&
+                    errors.emergencyContacts[index]?.phone && (
+                      <span className="label-text-alt text-red-500">
+                        {errors.emergencyContacts[index]?.phone?.message}
+                      </span>
+                    )}
+
+                  <p className="font-medium pb-2 pt-8">
+                    Relationship to Patient
+                  </p>
+                  <input
+                    {...register(`emergencyContacts.${index}.relationship`)}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                    type="text"
+                  />
+                  {errors.emergencyContacts &&
+                    errors.emergencyContacts[index]?.relationship && (
+                      <span className="label-text-alt text-red-500">
+                        {errors.emergencyContacts[index]?.relationship?.message}
+                      </span>
+                    )}
+
+                  <p className="font-medium pb-2 pt-8">
+                    Emergency Contact Email
+                  </p>
+                  <input
+                    {...register(`emergencyContacts.${index}.email`)}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                    type="text"
+                  />
+                  {errors.emergencyContacts &&
+                    errors.emergencyContacts[index]?.email && (
+                      <span className="label-text-alt text-red-500">
+                        {errors.emergencyContacts[index]?.email?.message}
+                      </span>
+                    )}
                 </div>
-
-                <p className="pb-2 pt-8 font-semibold">
-                  Emergency Contact Name
-                </p>
-                <input
-                  {...register(`emergencyContacts.${index}.name`)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                  type="text"
-                />
-                {errors.emergencyContacts &&
-                  errors.emergencyContacts[index]?.name && (
-                    <span className="label-text-alt text-red-500">
-                      {errors.emergencyContacts[index]?.name?.message}
-                    </span>
-                  )}
-
-                <p className="font-medium pb-2 pt-8">
-                  Emergency Contact Phone Number
-                </p>
-                <input
-                  {...register(`emergencyContacts.${index}.phone`)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                  type="text"
-                />
-                {errors.emergencyContacts &&
-                  errors.emergencyContacts[index]?.phone && (
-                    <span className="label-text-alt text-red-500">
-                      {errors.emergencyContacts[index]?.phone?.message}
-                    </span>
-                  )}
-
-                <p className="font-medium pb-2 pt-8">Relationship to Patient</p>
-                <input
-                  {...register(`emergencyContacts.${index}.relationship`)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                  type="text"
-                />
-                {errors.emergencyContacts &&
-                  errors.emergencyContacts[index]?.relationship && (
-                    <span className="label-text-alt text-red-500">
-                      {errors.emergencyContacts[index]?.relationship?.message}
-                    </span>
-                  )}
-
-                <p className="font-medium pb-2 pt-8">Emergency Contact Email</p>
-                <input
-                  {...register(`emergencyContacts.${index}.email`)}
-                  className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                  type="text"
-                />
-                {errors.emergencyContacts &&
-                  errors.emergencyContacts[index]?.email && (
-                    <span className="label-text-alt text-red-500">
-                      {errors.emergencyContacts[index]?.email?.message}
-                    </span>
-                  )}
+              ))}
+              <div className="flex justify-center ml-[-0px]">
+                <button
+                  type="button"
+                  onClick={addNewEmergencyContact}
+                  className="text-green-500 px-20 py-4 font-medium rounded-md whitespace-nowrap"
+                >
+                  + Add New Contact
+                </button>
               </div>
-              
-            ))}
-           <div className="flex justify-center ml-[-0px]"> 
+            </div>
+            <div className="pt-4">
               <button
-                type="button"
-                onClick={addNewEmergencyContact}
-                className="text-green-500 px-20 py-4 font-medium rounded-md whitespace-nowrap"
-                
+                type="submit"
+                className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto"
               >
-                + Add New Contact
+                Submit
               </button>
             </div>
+            <p></p>
+            <div className="flex justify-between space-x-4 mr-12 w-full">
+              <button
+                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                onClick={goBack}
+              >
+                Back
+              </button>
+              <button
+                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                onClick={goForward}
+                disabled={currentStep === steps.length - 1}
+              >
+                Continue
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+      {currentStep === 9 && (
+        <form
+          onSubmit={handleSubmit((data) => submit(data))}
+          className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-1 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4 mt-10 pb-10" // Added pb-10 here
+        >
+          <p className="text-2xl pt-8 font-semibold text-left">
+            Your Additional Information
+          </p>
+          <p className="font-medium pb-2 pt-8">Client Name</p>
+          <input
+            {...register("clientName")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+          />
+          {errors.clientName && (
+            <span className="label-text-alt text-red-500">
+              {errors.clientName.message}
+            </span>
+          )}
+          <p className="font-medium pb-2 pt-8">Client Date</p>
+          <input
+            {...register("clientDate")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="date"
+          />
+          {errors.clientDate && (
+            <span className="label-text-alt text-red-500">
+              {errors.clientDate.message}
+            </span>
+          )}
+          <p className="font-medium pb-2 pt-8">Client Age</p>
+          <input
+            {...register("clientAge")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="number"
+          />
+          {errors.clientAge && (
+            <span className="label-text-alt text-red-500">
+              {errors.clientAge.message}
+            </span>
+          )}
+          {watch("clientAge") && watch("clientAge") < 18 && (
+            <div className="space-y-4">
+              <p className="font-medium pb-2 pt-8">Legal Guardian Name</p>
+              <input
+                {...register("guardianName", {
+                  required: watch("clientAge") < 18,
+                })}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.guardianName && (
+                <span className="label-text-alt text-red-500">
+                  {errors.guardianName.message}
+                </span>
+              )}
+
+              <p className="font-medium pb-2 pt-8">Legal Guardian Date</p>
+              <input
+                {...register("guardianDate", {
+                  required: watch("clientAge") < 18,
+                })}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                type="date"
+              />
+              {errors.guardianDate && (
+                <span className="label-text-alt text-red-500">
+                  {errors.guardianDate.message}
+                </span>
+              )}
+            </div>
+          )}
+          <p className="font-medium pb-2 pt-8">
+            GC-MOMS at Texas A&M University College of Nursing Representative
+            Name{" "}
+          </p>
+          <input
+            {...register("gcMomsName")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+          />
+          {errors.gcMomsName && (
+            <span className="label-text-alt text-red-500">
+              {errors.gcMomsName.message}
+            </span>
+          )}
+          <p className="font-medium pb-2 pt-8">GC-MOMS Date</p>
+          <input
+            {...register("gcMomsDate")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="date"
+          />
+          {errors.gcMomsDate && (
+            <span className="label-text-alt text-red-500">
+              {errors.gcMomsDate.message}
+            </span>
+          )}
+          <div className="pt-4">
+            <button
+              type="submit"
+              className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto"
+            >
+              Submit
+            </button>
           </div>
-          <button
-            type="submit"
-            className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-[-20px]" // Adjust the value as needed
-          >
-            Submit
-          </button>
           <p></p>
+          <div className="flex justify-between space-x-4 mr-12 w-full">
+            <button
+              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+              onClick={goBack}
+            >
+              Back
+            </button>
+            <button
+              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+              onClick={goForward}
+              disabled={currentStep === steps.length - 1}
+            >
+              Continue
+            </button>
+          </div>
         </form>
-        
       )}
-    </div>
     </div>
   );
 };
