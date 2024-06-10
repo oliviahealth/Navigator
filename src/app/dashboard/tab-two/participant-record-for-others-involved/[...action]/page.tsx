@@ -135,15 +135,59 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
         })
     }
 
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readParticipantRecordForOthersInvolved(submissionId, user.id);
+                ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
+
+                const formattedEntries = response.participantRecordForOthersInvolvedEntries.map(entry => ({
+                    ...entry,
+                    dateOfBirth: new Date(entry.dateOfBirth).toISOString().split('T')[0],
+                    effectiveDate: new Date(entry.effectiveDate).toISOString().split('T')[0],
+                    dueDate: new Date(entry.dueDate).toISOString().split('T')[0],
+                    deliveryDate: new Date(entry.deliveryDate).toISOString().split('T')[0],
+                    postpartumVisitDate: entry.postpartumVisitDate ? new Date(entry.postpartumVisitDate).toISOString().split('T')[0] : null,
+                }));
+                reset({ participantRecordForOthersInvolvedEntries: formattedEntries });
+
+                const initialShowPostpartumLocationDate = response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes');
+                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+            } catch (error) {
+                console.error(error);
+                
+                setErrorMessage('Something went wrong! Please try again later');
+                router.push('/dashboard');
+                return;
+            }
+        }
+
+        if(!user) return;
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
     const submit = async (data: { participantRecordForOthersInvolvedEntries: IParticipantRecordForOthersEntry[] }) => {
         try {
+            let response;
+
             if (!user) {
                 throw new Error('User not found');
             }
 
             const { participantRecordForOthersInvolvedEntries } = data;
-
-            let response;
 
             if (verb === 'new') {
                 response = await createParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, user.id);
@@ -156,94 +200,14 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard')
 
             return;
         }
 
         setSuccessMessage('Participant Record For Others Involved submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
-
-    useEffect(() => {
-        const fetchAndPopulatePastSubmissionData = async () => {
-            try {
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
-                if (verb !== 'edit') {
-                    return;
-                }
-
-                const addNewParticipantRecordForOthersInvolvedEntry = () => {
-                    append({
-                        name: '',
-                        dateOfBirth: '',
-                        currentLivingArrangement: null,
-                        streetAddress: '',
-                        city: '',
-                        state: '',
-                        zipCode: '',
-                        county: '',
-                        primaryPhoneNumber: '',
-                        emergencyContact: '',
-                        emergencyContactPhone: '',
-                        emergencyContactRelationship: '',
-                        maritalStatus: null,
-                        insurancePlan: '',
-                        effectiveDate: '',
-                        subscriberId: '',
-                        groupId: '',
-                        gestationalAge: '',
-                        dueDate: '',
-                        deliveryDate: '',
-                        plannedModeDelivery: null,
-                        actualModeDelivery: null,
-                        attendedPostpartumVisit: '',
-                        postpartumVisitLocation: '',
-                        postpartumVisitDate: '',
-                        totalNumPregnancies: '',
-                        numLiveBirths: '',
-                        numChildrenWithMother: '',
-                        priorComplications: null,
-                        ongoingMedicalProblems: ''
-                    })
-                }
-
-                const response = await readParticipantRecordForOthersInvolved(submissionId, user.id);
-
-                ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
-
-                const formattedEntries = response.participantRecordForOthersInvolvedEntries.map(entry => ({
-                    ...entry,
-                    dateOfBirth: new Date(entry.dateOfBirth).toISOString().slice(0, 10),
-                    effectiveDate: new Date(entry.effectiveDate).toISOString().slice(0, 10),
-                    dueDate: new Date(entry.dueDate).toISOString().slice(0, 10),
-                    deliveryDate: new Date(entry.deliveryDate).toISOString().slice(0, 10),
-                    postpartumVisitDate: entry.postpartumVisitDate ? new Date(entry.postpartumVisitDate).toISOString().slice(0, 10) : null,
-                }));
-
-                reset({ participantRecordForOthersInvolvedEntries: formattedEntries });
-
-                const initialShowPostpartumLocationDate = response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes');
-                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
-            } catch (error) {
-                console.error(error);
-                setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-
-                return;
-            }
-        }
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
-
-    if (!user) {
-        return <h1>Unauthorized</h1>
-    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
@@ -260,7 +224,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                 <div className="space-y-16 pt-12">
                     {fields.map((field, index) => {
                         return (
-                            <div className="space-y-12">
+                            <div key={field.id} className="space-y-12">
                                 <div className="space-y-4">
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center">
@@ -359,11 +323,9 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 className="dropdown border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 defaultValue={'--'}
                                             >
-                                                <option selected disabled>
-                                                    --
-                                                </option>
+                                                <option value="--" disabled>--</option>
                                                 {states.map((state) => (
-                                                    <option key={state}>{state}</option>
+                                                    <option key={state} value={state}>{state}</option>
                                                 ))}
                                             </select>
                                             {errors.participantRecordForOthersInvolvedEntries && errors.participantRecordForOthersInvolvedEntries[index]?.state && (
@@ -372,6 +334,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 </span>
                                             )}
                                         </div>
+
                                     </div>
 
                                     <div className="flex flex-nowrap space-x-4">
@@ -665,7 +628,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        {showPostpartumLocationDate && (
+                                        {showPostpartumLocationDate[index] && (
                                             <>
                                                 <div className="space-y-3">
                                                     <p className="font-semibold">Postpartum Visit Location</p>

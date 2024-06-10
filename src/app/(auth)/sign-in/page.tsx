@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -16,7 +16,6 @@ const SignInPage: React.FC = () => {
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
   const setUser = useAppStore(state => state.setUser);
-  const setAccessToken = useAppStore(state => state.setAccessToken);
 
   const {
     register,
@@ -26,10 +25,9 @@ const SignInPage: React.FC = () => {
 
   const signinUser = async (data: ISigninFormData) => {
     try {
-      const { user, token } = await signin(data);
+      const { user } = await signin(data);
 
       setUser(user);
-      setAccessToken(token);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");

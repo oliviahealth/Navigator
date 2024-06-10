@@ -96,13 +96,13 @@ const CommunicationLog: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard')
 
             return;
         }
 
         setSuccessMessage('Communication Log submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     // If this is an update submission, fetch the past submission data using the submissionId from the url
@@ -112,12 +112,12 @@ const CommunicationLog: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+
+                if (!user) {
+                    throw new Error('User not found');
                 }
 
                 if (!submissionId) {
@@ -138,18 +138,16 @@ const CommunicationLog: React.FC = () => {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
 
-                router.push('/');
+                router.push('/dashboard');
 
                 return;
             }
         }
 
+        if(!user) return;
+
         fetchAndPopulatePastSubmissionData()
     }, [])
-
-    if (!user) {
-        return <h1>Unauthorized</h1>
-    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

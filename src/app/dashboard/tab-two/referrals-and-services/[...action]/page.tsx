@@ -146,12 +146,12 @@ const ReferralsAndServices: React.FC = () => {
                     return;
                 }
 
-                if (!submissionId) {
-                    throw new Error('Missing submissionId when fetching past submission');
-                }
-
                 if (!user) {
                     throw new Error('Missing user');
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
                 }
 
                 const response = await readReferralsAndServices(submissionId, user.id);
@@ -163,16 +163,16 @@ const ReferralsAndServices: React.FC = () => {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
 
-                router.push('/');
+                router.push('/dashboard')
 
                 return;
             }
         }
 
+        if(!user) return;
+
         fetchAndPopulatePastSubmissionData()
     }, [])
-
-    console.log(errors);
 
     const submit = async (data: IReferralsAndServicesInputs) => {
         try {
@@ -197,7 +197,7 @@ const ReferralsAndServices: React.FC = () => {
         }
 
         setSuccessMessage('Referrals & Services submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     const generateFormFields = (

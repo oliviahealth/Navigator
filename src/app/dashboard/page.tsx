@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const Dashboard: React.FC = () => {
     return (
@@ -7,57 +6,87 @@ const Dashboard: React.FC = () => {
             <div>
                 <h1 className="font-semibold">Dashboard</h1>
 
-                <div className="flex flex-col gap-y-4 pt-8">
-                    <Link href={'/dashboard/tab-one/communication-log/new'}>
-                        Communication log
-                    </Link>
+                <div className="flex flex-row gap-x-8 pt-8">
 
-                    <Link href={'/dashboard/tab-one/appointment-log'}>
-                        Appointment log
-                    </Link>
+                    <div className="flex flex-col gap-y-4">
 
-                    <Link href={'/dashboard/tab-two/participant-demographics-record/new'}>
-                        Participant Demographics Record
-                    </Link>
+                        <p className="font-bold text-lg">Tab One</p>
 
-                    <Link href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
-                        Participant Record For Others Involved
-                    </Link>
+                        <a href={'/dashboard/tab-one/communication-log/new'}>
+                            Communication Log
+                        </a>
 
-                    <Link href={'/dashboard/tab-two/child-demographics-record/new'}>
-                        Child Demographics Record
-                    </Link>
+                        <a href={'/dashboard/tab-one/appointment-log'}>
+                            Appointment Log
+                        </a>
+                    </div>
 
-                    <Link href={'/dashboard/tab-two/support-systems/new'}>
-                        Support Systems
-                    </Link>
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Two</p>
 
-                    <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
-                        Current Living Arrangement
-                    </Link>
+                        <a href={'dashboard/tab-two/children-needs/new'}>
+                            Children Needs
+                        </a>
 
-                    <Link href={'dashboard/tab-two/children-needs/new'}>
-                        Children Needs
-                    </Link>
+                        <a href={'dashboard/tab-four/current-medication-list/new'}>
+                            Current Medication List
+                        </a>
+                        <a href={'/dashboard/tab-two/participant-demographics-record/new'}>
+                            Participant Demographics Record
+                        </a>
 
-                    <Link href={'dashboard/tab-three/parental-medical-history/new'}>
-                        Parental Medical History
-                    </Link>
-                    
-                    <Link href={'dashboard/tab-two/referrals-and-services/new'}>
-                        Referrals & Services
-                    </Link>
+                        <a href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
+                            Participant Record For Others Involved
+                        </a>
 
-                    <Link href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
-                        Smoking and Tobacco Use During Pregnancy
-                    </Link>
+                        <a href={'/dashboard/tab-two/child-demographics-record/new'}>
+                            Child Demographics Record
+                        </a>
 
-                    <Link href={'dashboard/tab-five/substance-use-history/new'}>
-                        Substance Use History
-                    </Link>
+                        <a href={'/dashboard/tab-two/support-systems/new'}>
+                            Support Systems
+                        </a>
+
+                        <a href={'dashboard/tab-two/current-living-arrangement/new'}>
+                            Current Living Arrangement
+                        </a>
+
+                        <a href={'dashboard/tab-two/children-needs/new'}>
+                            Children Needs
+                        </a>
+
+                        <a href={'dashboard/tab-two/referrals-and-services/new'}>
+                            Referrals & Services
+                        </a>
+
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Three</p>
+
+                        <a href={'dashboard/tab-three/parental-medical-history/new'}>
+                            Parental Medical History
+                        </a>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Four</p>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Five</p>
+
+                        <a href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
+                            Smoking and Tobacco Use During Pregnancy
+                        </a>
+
+                        <a href={'dashboard/tab-five/substance-use-history/new'}>
+                            Substance Use History
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
