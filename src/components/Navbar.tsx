@@ -5,15 +5,13 @@ import Link from 'next/link'
 import { useRouter } from "next/navigation";
 
 import useAppStore from "@/lib/useAppStore";
+import { setCookie } from "@/lib/useAppStore";
 
 const Navbar: React.FC = () => {
     const router = useRouter();
 
     const user = useAppStore((state) => state.user);
     const setUser = useAppStore(state => state.setUser);
-
-    const accessToken = useAppStore(state => state.accessToken);
-    const setAccessToken = useAppStore(state => state.setAccessToken);
 
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
@@ -24,21 +22,10 @@ const Navbar: React.FC = () => {
     };
 
     const signoutUser = () => {
-        try {
-            if (!accessToken) {
-                throw new Error("User not found");
-            }
+        setCookie('jwt', '')
+        setUser(null);
 
-            sessionStorage.removeItem('access_token');
-            setUser(null);
-            setAccessToken(null);
-            
-        } catch (error) {
-            console.error(error);
-            setErrorMessage("Something went wrong! Please try again later");
-        }
-
-        router.push('/');
+        router.push('/dashboard')
     }
 
     return (
@@ -76,11 +63,11 @@ const Navbar: React.FC = () => {
                     <div
                         className={`${isOpen ? 'block bg-white border shadow mt-4 mr-1' : 'hidden'} absolute rounded-xl md:shadow-none md:bg-none md:border-0 md:relative right-0 md:mt-0 p-4 md:p-0 md:flex space-y-6 md:space-y-0 md:space-x-4 text-sm md:text-base`}
                     >
-                        <Link href={'/dashboard'} className="block md:flex button">
+                        {user && (<Link href={'/dashboard'} className="block md:flex button">
                             Dashboard
-                        </Link>
+                        </Link>)}
 
-                        {(user && accessToken) ? (
+                        {user ? (
                             <button
                                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
                                 onClick={signoutUser}

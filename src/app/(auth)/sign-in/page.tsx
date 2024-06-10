@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { signin } from "./actions";
 import { SigninSchema, ISigninFormData } from "./definitions";
-import useAppStore from "@/lib/useAppStore";
+import useAppStore, { setCookie } from "@/lib/useAppStore";
 
 const SignInPage: React.FC = () => {
   const router = useRouter();
@@ -16,7 +16,6 @@ const SignInPage: React.FC = () => {
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
   const setUser = useAppStore(state => state.setUser);
-  const setAccessToken = useAppStore(state => state.setAccessToken);
 
   const {
     register,
@@ -28,8 +27,8 @@ const SignInPage: React.FC = () => {
     try {
       const { user, token } = await signin(data);
 
+      setCookie('jwt', token, { maxAge: 3600 });
       setUser(user);
-      setAccessToken(token);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");

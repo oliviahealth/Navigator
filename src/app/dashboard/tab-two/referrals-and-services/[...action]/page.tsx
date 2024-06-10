@@ -142,13 +142,12 @@ const ReferralsAndServices: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
+                if (verb !== 'edit') {
+                    return;
+                }
 
                 if (!user) {
                     throw new Error('Missing user');
-                }
-
-                if (verb !== 'edit') {
-                    return;
                 }
 
                 if (!submissionId) {
@@ -163,10 +162,14 @@ const ReferralsAndServices: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+
+                router.push('/dashboard')
+
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -194,7 +197,7 @@ const ReferralsAndServices: React.FC = () => {
         }
 
         setSuccessMessage('Referrals & Services submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     const generateFormFields = (

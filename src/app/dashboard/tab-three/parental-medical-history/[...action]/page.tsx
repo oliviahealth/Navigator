@@ -55,12 +55,12 @@ const ParentalMedicalHistory: React.FC = () => {
         const fetchAndPopulatePastSubmissionData = async () => {
 
             try {
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+                
+                if (!user) {
+                    throw new Error('User not found');
                 }
 
                 const response = await readParentalMedicalHistory(submissionId, user.id);
@@ -81,11 +81,13 @@ const ParentalMedicalHistory: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard')
 
                 return;
             }
         }
+
+        if(user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -113,7 +115,7 @@ const ParentalMedicalHistory: React.FC = () => {
         }
 
         setSuccessMessage('Parental Medical History submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     return (

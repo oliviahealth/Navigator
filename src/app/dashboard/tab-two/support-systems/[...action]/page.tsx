@@ -38,12 +38,12 @@ const SupportSystems: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-                
                 if (verb !== 'edit') {
                     return;
+                }
+                
+                if (!user) {
+                    throw new Error('Missing user');
                 }
 
                 if (!submissionId) {
@@ -63,6 +63,8 @@ const SupportSystems: React.FC = () => {
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])

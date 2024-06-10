@@ -197,12 +197,96 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            return
+            router.push('/dashboard')
+
+            return;
         }
 
         setSuccessMessage('Participant Record For Others Involved submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
+
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                const addNewParticipantRecordForOthersInvolvedEntry = () => {
+                    append({
+                        name: '',
+                        dateOfBirth: '',
+                        currentLivingArrangement: null,
+                        streetAddress: '',
+                        city: '',
+                        state: '',
+                        zipCode: '',
+                        county: '',
+                        primaryPhoneNumber: '',
+                        emergencyContact: '',
+                        emergencyContactPhone: '',
+                        emergencyContactRelationship: '',
+                        maritalStatus: null,
+                        insurancePlan: '',
+                        effectiveDate: '',
+                        subscriberId: '',
+                        groupId: '',
+                        gestationalAge: '',
+                        dueDate: '',
+                        deliveryDate: '',
+                        plannedModeDelivery: null,
+                        actualModeDelivery: null,
+                        attendedPostpartumVisit: '',
+                        postpartumVisitLocation: '',
+                        postpartumVisitDate: '',
+                        totalNumPregnancies: '',
+                        numLiveBirths: '',
+                        numChildrenWithMother: '',
+                        priorComplications: null,
+                        ongoingMedicalProblems: ''
+                    })
+                }
+
+                const response = await readParticipantRecordForOthersInvolved(submissionId, user.id);
+
+                ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
+
+                const formattedEntries = response.participantRecordForOthersInvolvedEntries.map(entry => ({
+                    ...entry,
+                    dateOfBirth: new Date(entry.dateOfBirth).toISOString().slice(0, 10),
+                    effectiveDate: new Date(entry.effectiveDate).toISOString().slice(0, 10),
+                    dueDate: new Date(entry.dueDate).toISOString().slice(0, 10),
+                    deliveryDate: new Date(entry.deliveryDate).toISOString().slice(0, 10),
+                    postpartumVisitDate: entry.postpartumVisitDate ? new Date(entry.postpartumVisitDate).toISOString().slice(0, 10) : null,
+                }));
+
+                reset({ participantRecordForOthersInvolvedEntries: formattedEntries });
+
+                const initialShowPostpartumLocationDate = response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes');
+                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/dashboard')
+
+                return;
+            }
+        }
+
+        if(!user) return;
+
+        fetchAndPopulatePastSubmissionData()
+    }, [])
+
+    if (!user) {
+        return <h1>Unauthorized</h1>
+    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

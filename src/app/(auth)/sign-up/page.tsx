@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createUser } from "./actions";
 import { ISignupFormData, SignupSchema } from "./definitions";
 import useAppStore from "@/lib/useAppStore";
+import { setCookie } from "@/lib/useAppStore";
 
 const SignupPage: React.FC = () => {
   const router = useRouter()
@@ -16,7 +17,6 @@ const SignupPage: React.FC = () => {
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
   const setUser = useAppStore((state) => state.setUser);
-  const setAccessToken = useAppStore((state) => state.setAccessToken);
 
   const {
     register,
@@ -32,9 +32,8 @@ const SignupPage: React.FC = () => {
 
       const { user, token } = await createUser(data);
 
+      setCookie('jwt', token, { maxAge: 3600 });
       setUser(user);
-      setAccessToken(token);
-
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");

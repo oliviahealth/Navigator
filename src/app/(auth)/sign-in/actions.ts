@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import { serialize } from 'cookie';
 
 import { ISigninFormData } from "./definitions";
 
@@ -25,5 +26,12 @@ export const signin = async(signinFormData: ISigninFormData) => {
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
-    return { user, token }
+    const cookie = serialize('jwt', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production', // Ensure this is set to true in production
+        sameSite: 'strict',
+        path: '/' // Set the path of the cookie
+    });
+
+    return { user, token, cookie }
 }
