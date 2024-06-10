@@ -1,11 +1,14 @@
-import { prisma } from '@/lib/prisma';
-import { SmokingTobaccoPregnancyInputs, SmokingTobaccoPregnancyResponseSchema } from './definitions';
+'use server';
 
-export const createSmokingTobaccoPregnancyRecord = async (input: SmokingTobaccoPregnancyInputs, userId: string) => {
+import { prisma } from '@/lib/prisma';
+import { ISmokingTobaccoPregnancyInputs, SmokingTobaccoPregnancyResponseSchema } from './definitions';
+import { SmokingStatus } from '@prisma/client';
+
+export const createSmokingTobaccoPregnancyRecord = async (input: ISmokingTobaccoPregnancyInputs, userId: string) => {
   const response = await prisma.smokingTobaccoPregnancy.create({
     data: {
       userId,
-      ...input,
+      smokingStatus: input.smokingStatus as SmokingStatus
     },
   });
 
@@ -23,14 +26,14 @@ export const readSmokingTobaccoPregnancyRecord = async (id: string, userId: stri
   return SmokingTobaccoPregnancyResponseSchema.parse(response);
 };
 
-export const updateSmokingTobaccoPregnancyRecord = async (id: string, input: SmokingTobaccoPregnancyInputs, userId: string) => {
+export const updateSmokingTobaccoPregnancyRecord = async (input: ISmokingTobaccoPregnancyInputs, id: string, userId: string) => {
   const response = await prisma.smokingTobaccoPregnancy.update({
     where: {
       id,
       userId,
     },
     data: {
-      ...input,
+      smokingStatus: input.smokingStatus as SmokingStatus
     },
   });
 

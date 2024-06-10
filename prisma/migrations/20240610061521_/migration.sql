@@ -46,6 +46,12 @@ CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never'
 -- CreateEnum
 CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
 
+-- CreateEnum
+CREATE TYPE "TobaccoUseScreeningAndDocumentation" AS ENUM ('NEVER_SMOKED', 'STOPPED_BEFORE_PREGNANCY', 'STOPPED_AFTER_PREGNANCY', 'STOPPED_DURING_PREGNANCY_BUT_SMOKING_NOW', 'SMOKED_DURING_PREGNANCY_AND_SMOKING_NOW');
+
+-- CreateEnum
+CREATE TYPE "Substance" AS ENUM ('ALCOHOL', 'AMPHETAMINES', 'BENZODIAZEPINES', 'CANNABIS', 'COCAINE', 'HEROIN', 'KUSH', 'PRESCRIPTION_DRUGS', 'TOBACCO', 'OTHER');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -342,6 +348,118 @@ CREATE TABLE "ChildrenNeedsForm" (
     CONSTRAINT "ChildrenNeedsForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ReferralsAndServices" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "parentingClasses" JSONB NOT NULL,
+    "transportationServices" JSONB NOT NULL,
+    "ssiDisability" JSONB NOT NULL,
+    "temporaryAssistanceForNeedyFamilies" JSONB NOT NULL,
+    "personalSafety" JSONB NOT NULL,
+    "homeVisitationProgram" JSONB NOT NULL,
+    "housingAssistance" JSONB NOT NULL,
+    "healthyStartProgram" JSONB NOT NULL,
+    "employmentServices" JSONB NOT NULL,
+    "supportServicesOther" JSONB[],
+    "breastfeedingSupport" JSONB NOT NULL,
+    "localFoodPantries" JSONB NOT NULL,
+    "snap" JSONB NOT NULL,
+    "womenInfantsAndChildren" JSONB NOT NULL,
+    "foodNutritionOther" JSONB[],
+    "healthInsuranceEnrollment" JSONB NOT NULL,
+    "prenatalHealthcare" JSONB NOT NULL,
+    "familyPlanning" JSONB NOT NULL,
+    "primaryCare" JSONB NOT NULL,
+    "mentalHealthCounseling" JSONB NOT NULL,
+    "smokingCessation" JSONB NOT NULL,
+    "healthcareOther" JSONB[],
+    "residential" JSONB NOT NULL,
+    "outpatient" JSONB NOT NULL,
+    "caringForTwoProgram" JSONB NOT NULL,
+    "theCradlesProgram" JSONB NOT NULL,
+    "recoverySupportServices" JSONB NOT NULL,
+    "naloxone" JSONB NOT NULL,
+    "medicationAssistedTreatment" JSONB NOT NULL,
+    "transportationToTreatment" JSONB NOT NULL,
+    "substanceUseTreatmentOther" JSONB[],
+    "earlyChildhoodIntervention" JSONB NOT NULL,
+    "earlyHeadStart" JSONB NOT NULL,
+    "nciChildcareSubsidy" JSONB NOT NULL,
+    "pediatricianPrimaryCare" JSONB NOT NULL,
+    "safeSleepEducation" JSONB NOT NULL,
+    "childRelatedOther" JSONB[],
+    "childProtectiveService" JSONB NOT NULL,
+    "legalAid" JSONB NOT NULL,
+    "specialtyCourt" JSONB NOT NULL,
+    "legalAssistanceOther" JSONB[],
+    "additionalNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ReferralsAndServices_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ParentalMedicalHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "gestationalAge" TEXT NOT NULL,
+    "dueDate" TIMESTAMP(3) NOT NULL,
+    "deliveryDate" TIMESTAMP(3) NOT NULL,
+    "plannedModeDelivery" "DeliveryMode" NOT NULL,
+    "actualModeDelivery" "DeliveryMode" NOT NULL,
+    "attendedPostpartumVisit" "YesNo" NOT NULL,
+    "postpartumVisitLocation" TEXT,
+    "postpartumVisitDate" TIMESTAMP(3),
+    "totalNumPregnancies" TEXT NOT NULL,
+    "numChildrenWithMother" TEXT NOT NULL,
+    "priorPregnancyDates" TEXT NOT NULL,
+    "priorPregnancyOutcomes" TEXT NOT NULL,
+    "gravida" TEXT NOT NULL,
+    "term" TEXT NOT NULL,
+    "preterm" TEXT NOT NULL,
+    "abortions" TEXT NOT NULL,
+    "living" TEXT NOT NULL,
+    "priorComplications" TEXT,
+    "ongoingMedicalProblems" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ParentalMedicalHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SmokingTobaccoPregnancy" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "drugsOtherThanMedicines" "YesNo" NOT NULL,
+    "abuseMoreThanOneDrug" "YesNo" NOT NULL,
+    "ableToStopUsingDrugs" "YesNo" NOT NULL,
+    "haveBlackoutsFlashbacksFromDrugs" "YesNo" NOT NULL,
+    "guiltFromDrugUse" "YesNo" NOT NULL,
+    "spouseParentsComplainAboutUsage" "YesNo" NOT NULL,
+    "neglectedFamily" "YesNo" NOT NULL,
+    "illegalActivitiesToObtainDrugs" "YesNo" NOT NULL,
+    "withdrawalsWhenStoppedDrugs" "YesNo" NOT NULL,
+    "medicalProblemsFromUsage" "YesNo" NOT NULL,
+    "tobaccoUseScreeningAndDocumentation" "TobaccoUseScreeningAndDocumentation" NOT NULL,
+
+    CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SubstanceUseHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "substance" "Substance" NOT NULL,
+    "everUsed" BOOLEAN NOT NULL,
+    "usedDuringPregnancy" BOOLEAN NOT NULL,
+    "dateLastUsed" TIMESTAMP(3),
+
+    CONSTRAINT "SubstanceUseHistory_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -386,3 +504,15 @@ ALTER TABLE "CurrentLivingArrangement" ADD CONSTRAINT "CurrentLivingArrangement_
 
 -- AddForeignKey
 ALTER TABLE "ChildrenNeedsForm" ADD CONSTRAINT "ChildrenNeedsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ReferralsAndServices" ADD CONSTRAINT "ReferralsAndServices_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
