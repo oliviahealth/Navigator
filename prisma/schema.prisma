@@ -38,12 +38,9 @@ model User {
   ChildrenNeedsForm                      ChildrenNeedsForm[]
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
-<<<<<<< HEAD
   SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
   SubstanceUseHistory                    SubstanceUseHistory[]
-=======
   CurrentMedicationList                  CurrentMedicationList[]
->>>>>>> main
 }
 
 enum CommunicationMethod {
@@ -579,4 +576,17 @@ model SubstanceUseHistory {
   everUsed            Boolean
   usedDuringPregnancy Boolean
   dateLastUsed        DateTime?
+}
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
