@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { cookies } from "next/headers";
-import { serialize } from 'cookie';
 
 import { ISigninFormData } from "./definitions";
 
