@@ -39,6 +39,7 @@ model User {
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
   SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
+  SubstanceUseHistory                    SubstanceUseHistory[]
 }
 
 enum CommunicationMethod {
@@ -560,4 +561,28 @@ model SmokingTobaccoPregnancy {
   withdrawalsWhenStoppedDrugs         YesNo
   medicalProblemsFromUsage            YesNo
   tobaccoUseScreeningAndDocumentation TobaccoUseScreeningAndDocumentation
+}
+
+enum Substance {
+  ALCOHOL
+  AMPHETAMINES
+  BENZODIAZEPINES
+  CANNABIS
+  COCAINE
+  HEROIN
+  KUSH
+  PRESCRIPTION_DRUGS
+  TOBACCO
+  OTHER
+}
+
+model SubstanceUseHistory {
+  id String @id @default(uuid())
+
+  User                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId              String
+  substance           Substance
+  everUsed            Boolean
+  usedDuringPregnancy Boolean
+  dateLastUsed        DateTime?
 }

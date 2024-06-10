@@ -51,6 +51,10 @@ const Dashboard: React.FC = () => {
                     <Link href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
                         Smoking and Tobacco Use During Pregnancy
                     </Link>
+
+                    <Link href={'dashboard/tab-five/substance-use-history/new'}>
+                        Substance Use History
+                    </Link>
                 </div>
             </div>
         </div>
