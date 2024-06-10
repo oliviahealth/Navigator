@@ -27,13 +27,13 @@ const Navbar: React.FC = () => {
         <div className="flex min-h-[4.5rem] w-full items-center text-black border-b z-10 shadow-sm">
             <div className="xl:container xl:px-2 flex w-full px-5 mx-auto items-center justify-between">
                 <div>
-                    <Link href={'/'}>
+                    <a href={'/'}>
                         <img
                             className="h-[3rem]"
                             alt="Olivia Health Plan of Safecare logo"
                             src="/images/logo.svg"
                         />
-                    </Link>
+                    </a>
                 </div>
 
                 <div>
@@ -58,9 +58,9 @@ const Navbar: React.FC = () => {
                     <div
                         className={`${isOpen ? 'block bg-white border shadow mt-4 mr-1' : 'hidden'} absolute rounded-xl md:shadow-none md:bg-none md:border-0 md:relative right-0 md:mt-0 p-4 md:p-0 md:flex space-y-6 md:space-y-0 md:space-x-4 text-sm md:text-base`}
                     >
-                        {user && (<Link href={'/dashboard'} className="block md:flex button">
+                        {user && (<a href={'/dashboard'} className="block md:flex button">
                             Dashboard
-                        </Link>)}
+                        </a>)}
 
                         {user ? (
                             <button
