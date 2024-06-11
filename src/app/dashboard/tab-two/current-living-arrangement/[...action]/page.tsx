@@ -94,30 +94,30 @@ const ParticipantDemographicsRecord: React.FC = () => {
                 if (verb !== 'edit') {
                     return;
                 }
+                
+                if (!user) {
+                    throw new Error('Missing user');
+                }
 
                 if (!submissionId) {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-
                 const response = await readCurrentLivingArrangement(submissionId, user.id);
-
                 const validResponse = CurrentLivingArrangementResponseSchema.parse(response);
-
                 reset(validResponse);
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
 
-                router.push('/');
+                router.push('/dashboard')
 
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -141,12 +141,11 @@ const ParticipantDemographicsRecord: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            return;
+            return
         }
 
         setSuccessMessage('Current Living Arrangement submitted successfully!')
-        router.push('/dashboard');
-        console.log(data);
+        router.push('/dashboard')
     };
 
     return (

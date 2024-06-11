@@ -38,7 +38,7 @@ export const createParticipantDemographicsRecord = async (participantDemographic
  * Retrieves a participant demographics record from the database based on its ID and the user ID.
  * @param {string} participantDemographicsRecordId - The ID of the Participant Demographics Record to retrieve
  * @param {string} userId - The ID of the user request the Participant Demographics Record.
- * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved Partricipant Demographics Record,
+ * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved Participant Demographics Record,
  * or null if no entry is found
  * @throws {Error} If there's an issue retrieving the Participant Demographics Record.
  * @remarks This function retrieves a Participant Demographics Record from the database using Prisma based on the provided ID and the user ID.
@@ -95,15 +95,7 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
  * Deletes a Participant Demographics Record from the database.
  * @param submissionId - The ID of the Participant Demographics Record to delete.
  * @param userId - The ID of the user requesting to delete the record.
-<<<<<<< HEAD
-<<<<<<< HEAD
- * @returns {Promise<ICommunicationLogResponse>}
-=======
  * @returns {Promise<IParticipantDemographicsFormResponse>}
->>>>>>> fb4b680 (implemented backend functionality)
-=======
- * @returns {Promise<ICommunicationLogResponse>}
->>>>>>> 05e5dc3 (adjusted schema to be an array of entries)
  * @remarks To be used by the dashboard
  */
 export const deleteParticipantDemographicsRecord = async (submissionId: string, userId: string) => {

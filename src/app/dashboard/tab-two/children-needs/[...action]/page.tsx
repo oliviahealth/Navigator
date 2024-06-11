@@ -63,27 +63,27 @@ const ChildrenNeedsForm: React.FC = () => {
                     return;
                 }
 
-                if (!submissionId) {
-                    throw new Error('Missing submissionId when fetching past submission');
-                }
-
                 if (!user) {
                     throw new Error('Missing user');
                 }
 
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
                 const response = await readChildrenNeedsForm(submissionId, user.id);
-
                 const validResponse = ChildrenNeedsFormResponseSchema.parse(response);
-
                 reset(validResponse);
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
+                router.push('/dashboard');
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -107,13 +107,13 @@ const ChildrenNeedsForm: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard')
 
             return;
         }
 
         setSuccessMessage('Children Needs Form submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     const sections: Record<string, [string, string]> = {

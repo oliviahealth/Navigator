@@ -41,13 +41,13 @@ const SupportSystems: React.FC = () => {
                 if (verb !== 'edit') {
                     return;
                 }
+                
+                if (!user) {
+                    throw new Error('Missing user');
+                }
 
                 if (!submissionId) {
                     throw new Error('Missing submissionId when fetching past submission');
-                }
-
-                if (!user) {
-                    throw new Error('Missing user');
                 }
 
                 const response = await readSupportSystems(submissionId, user.id);
@@ -59,12 +59,12 @@ const SupportSystems: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-
+                router.push('/dashboard');
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -88,9 +88,7 @@ const SupportSystems: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
-
-            return;
+            return
         }
 
         setSuccessMessage('Support Systems Record submitted successfully!')
