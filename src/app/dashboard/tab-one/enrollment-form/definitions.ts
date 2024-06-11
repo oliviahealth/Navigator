@@ -30,17 +30,18 @@ export const EnrollmentFormInputsSchema = z.object({
       path: ["clientAge"],
     }),
     clientDate: z.union([z.date(), z.string().min(1, "Date is required")]),
-    guardianName: z.string().min(1, 'Guardian name is required').optional(),
-    guardianDate: z.union([z.date(), z.string().min(1, "Date is required")]).optional(),
+    guardianName: z.string().nullish(),
+    guardianDate: z.union([z.date(), z.string()]).nullish(),
     gcMomsName: z.string().min(1, 'GC-MOMS name is required'),
     gcMomsDate: z.union([z.date(), z.string().min(1, "Date is required")])
 });
 export type IEnrollmentFormInputs = z.infer<typeof EnrollmentFormInputsSchema>;
 
-export const EnrollmentFormResponseSchema = EnrollmentFormInputsSchema.extend({
-    id: z.string(),
-    userId: z.string(),
-    dateCreated: z.date(),
-    dateModified: z.date()
+export const EnrollmentFormResponseSchema = EnrollmentFormInputsSchema.omit({ clientAge: true }).extend({
+  id: z.string(),
+  userId: z.string(),
+  dateCreated: z.date(),
+  dateModified: z.date()
 });
+
 export type IEnrollmentFormResponse = z.infer<typeof EnrollmentFormResponseSchema>

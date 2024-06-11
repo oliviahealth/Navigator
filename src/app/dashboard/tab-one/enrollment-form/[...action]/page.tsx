@@ -233,6 +233,8 @@ const EnrollmentLog: React.FC = () => {
       }
     };
 
+    if(!user) return;
+
     fetchAndPopulatePastSubmissionData();
   }, []);
 
@@ -263,6 +265,12 @@ const EnrollmentLog: React.FC = () => {
     setSuccessMessage("Enrollment Form submitted successfully!");
     router.push("/dashboard");
   };
+
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setErrorMessage("Please ensure all fields have been completed on tabs 6 and 10");
+    }
+  }, [errors])
 
   return (
     <div className="w-full h-full flex flex-col items-center mt-2 text-base pt-20 ">
@@ -308,9 +316,8 @@ const EnrollmentLog: React.FC = () => {
         {steps.map((_, index) => (
           <button
             key={index}
-            className={`focus:outline-none button ${
-              currentStep === index ? "button-filled" : ""
-            }`}
+            className={`focus:outline-none button ${currentStep === index ? "button-filled" : ""
+              }`}
             onClick={() => setCurrentStep(index)}
           >
             {index + 1}
@@ -520,15 +527,6 @@ const EnrollmentLog: React.FC = () => {
                 </button>
               </div>
             </div>
-            <div className="pt-4">
-              <button
-                type="submit"
-                className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto"
-              >
-                Submit
-              </button>
-            </div>
-            <p></p>
             <div className="flex justify-between space-x-4 mr-12 w-full">
               <button
                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
@@ -565,7 +563,7 @@ const EnrollmentLog: React.FC = () => {
               {errors.clientName.message}
             </span>
           )}
-          <p className="font-medium pb-2 pt-8">Client Date</p>
+          <p className="font-medium pb-2 pt-8">Date</p>
           <input
             {...register("clientDate")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
@@ -602,7 +600,7 @@ const EnrollmentLog: React.FC = () => {
                 </span>
               )}
 
-              <p className="font-medium pb-2 pt-8">Legal Guardian Date</p>
+              <p className="font-medium pb-2 pt-8">Date</p>
               <input
                 {...register("guardianDate", {
                   required: watch("clientAge") < 18,
@@ -630,7 +628,7 @@ const EnrollmentLog: React.FC = () => {
               {errors.gcMomsName.message}
             </span>
           )}
-          <p className="font-medium pb-2 pt-8">GC-MOMS Date</p>
+          <p className="font-medium pb-2 pt-8">Date</p>
           <input
             {...register("gcMomsDate")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
