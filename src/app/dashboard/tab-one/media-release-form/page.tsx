@@ -108,8 +108,8 @@ const MediaReleaseForm: React.FC = () => {
   return (
     // Wizard to display text with back/continue buttons
     // change padding based on whether text is displayed or form
-    <div className="w-full h-full flex flex-col items-center p-2 mt-2 text-base pt-20 px-32">
-      <div className="flex flex-col items-center">
+    <div className="w-full h-full flex flex-col items-center mt-2 text-base pt-20 ">
+      <div className="flex flex-col items-center max-w-7xl">
         <div>
           <div className="mb-2 pl-24 pr-24">
             <h2 className="text-3xl font-semibold pl-8">
@@ -119,44 +119,47 @@ const MediaReleaseForm: React.FC = () => {
               {steps[currentStep].content[0]
                 .split("\n")
                 .map((line: string, lineIndex: number) => (
-                  <p key={lineIndex} className="mt-4 mb-4 text-xl">
+                  <p key={lineIndex} className="mt-4 mb-4 text-base">
                     {line.trim()}
                   </p>
                 ))}
             </div>
           </div>
 
-          <div className="flex justify-end space-x-4 mr-12">
-            <button
-              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-              onClick={goBack}
-              disabled={currentStep === 0}
-            >
-              Back
-            </button>
-            <button
-              className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-              onClick={goForward}
-              disabled={currentStep === steps.length - 1}
-            >
-              Continue
-            </button>
-          </div>
+          {currentStep !== 4 && (
+            <div className="flex justify-end space-x-4 mr-12">
+              <button
+                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                onClick={goBack}
+                disabled={currentStep === 0}
+              >
+                Back
+              </button>
+              <button
+                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                onClick={goForward}
+                disabled={currentStep === steps.length - 1}
+              >
+                Continue
+              </button>
+            </div>
+          )}
         </div>
       </div>
-      {currentStep < steps.length - 1 && (
-        <div className="flex justify-center space-x-4 mt-4">
-          {steps.map((_, index) => (
-            <button
-              key={index}
-              className="focus:outline-none button"
-              onClick={() => setCurrentStep(index)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      )}
+
+      <div className="flex justify-center space-x-4 mt-4">
+        {steps.map((_, index) => (
+          <button
+            key={index}
+            className={`focus:outline-none button ${
+              currentStep === index ? "button-filled" : ""
+            }`}
+            onClick={() => setCurrentStep(index)}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
 
       {currentStep === steps.length - 1 && ( // Form
         <form
@@ -224,13 +227,21 @@ const MediaReleaseForm: React.FC = () => {
               )}
             </div>
           )}
-          <div className="mb-4">
+          <div className="mb-2">
             <button
               type="submit"
-              className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-10"
+              className="w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto mt-4"
             >
               Submit
             </button>
+            <div className="flex justify-center space-x-4 mr-12 w-full mt-4">
+              <button
+                className="block md:flex button md:button-filled md:rounded-full gap-x-2"
+                onClick={goBack}
+              >
+                Back
+              </button>
+            </div>
           </div>
         </form>
       )}
