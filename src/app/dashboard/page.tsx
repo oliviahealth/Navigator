@@ -11,6 +11,9 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
 
                         <p className="font-bold text-lg">Tab One</p>
+                        <a href={'/dashboard/tab-one/enrollment-form/new'}>
+                            Enrollment log
+                        </a>
 
                         <a href={'/dashboard/tab-one/communication-log/new'}>
                             Communication Log
@@ -24,13 +27,13 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Two</p>
 
-                    <a href={'dashboard/tab-two/children-needs/new'}>
-                        Children Needs
-                    </a>
+                        <a href={'dashboard/tab-two/children-needs/new'}>
+                            Children Needs
+                        </a>
 
-                    <a href={'dashboard/tab-four/current-medication-list/new'}>
-                        Current Medication List
-                    </a>
+                        <a href={'dashboard/tab-four/current-medication-list/new'}>
+                            Current Medication List
+                        </a>
                         <a href={'/dashboard/tab-two/participant-demographics-record/new'}>
                             Participant Demographics Record
                         </a>

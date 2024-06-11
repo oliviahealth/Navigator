@@ -105,18 +105,6 @@ CREATE TABLE "AppointmentLog" (
 );
 
 -- CreateTable
-CREATE TABLE "EmergencyContact" (
-    "id" TEXT NOT NULL,
-    "enrollmentFormId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "relationship" TEXT NOT NULL,
-    "telephone" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-
-    CONSTRAINT "EmergencyContact_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "EnrollmentForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -130,6 +118,7 @@ CREATE TABLE "EnrollmentForm" (
     "cellPhone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "emergencyContacts" JSONB[],
     "clientName" TEXT NOT NULL,
     "clientDate" TIMESTAMP(3) NOT NULL,
     "guardianName" TEXT NOT NULL,
@@ -356,9 +345,6 @@ ALTER TABLE "AppointmentEntry" ADD CONSTRAINT "AppointmentEntry_appointmentLogId
 
 -- AddForeignKey
 ALTER TABLE "AppointmentLog" ADD CONSTRAINT "AppointmentLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "EmergencyContact" ADD CONSTRAINT "EmergencyContact_enrollmentFormId_fkey" FOREIGN KEY ("enrollmentFormId") REFERENCES "EnrollmentForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "EnrollmentForm" ADD CONSTRAINT "EnrollmentForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
