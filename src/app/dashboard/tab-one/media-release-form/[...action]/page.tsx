@@ -3,31 +3,15 @@
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
-const MediaReleaseFormSchema = z.object({
-  participantName: z.string().min(1, "Participant Name is required"),
-  // added participant age as if participant is under 18 years old, legal guardian name is required and will pop up on form
-  // tranforms string into integer and checks if it is a number and greater than 1
-  participantAge: z
-    .string()
-    .transform((val) => parseInt(val, 10))
-    .refine((age) => !isNaN(age) && age >= 1, {
-      message:
-        "Participant Age is required and should be a number greater than 0",
-      path: ["participantAge"],
-    }),
-  date: z.string().min(1, "Date is required"),
-  // make optional in case user is over the age of 18
-  legalGuardianName: z
-    .string()
-    .min(1, "Legal Guardian Name is required")
-    .optional(),
-});
-
-export type IMediaReleaseForm = z.infer<typeof MediaReleaseFormSchema>;
+import useAppStore from "@/lib/useAppStore";
+import { MediaReleaseFormInputSchema,  IMediaReleaseFormInput } from "../definitions";
 
 const MediaReleaseForm: React.FC = () => {
+  const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
+  const setErrorMessage = useAppStore(state => state.setErrorMessage);
+
   const [currentStep, setCurrentStep] = useState(0);
   // Array of steps to display in the wizard
   const steps = [
@@ -80,14 +64,12 @@ const MediaReleaseForm: React.FC = () => {
 
   const {
     register,
-    control,
     handleSubmit,
-    setValue,
     watch,
     unregister,
     formState: { errors },
-  } = useForm<IMediaReleaseForm>({
-    resolver: zodResolver(MediaReleaseFormSchema),
+  } = useForm<IMediaReleaseFormInput>({
+    resolver: zodResolver(MediaReleaseFormInputSchema),
     defaultValues: {},
   });
 
@@ -97,7 +79,7 @@ const MediaReleaseForm: React.FC = () => {
     }
   }, [watch("participantAge"), unregister]);
 
-  const submit = (data: IMediaReleaseForm) => {
+  const submit = (data: IMediaReleaseFormInput) => {
     if (data.participantAge >= 18) {
       delete data.legalGuardianName;
     }
@@ -111,7 +93,7 @@ const MediaReleaseForm: React.FC = () => {
     <div className="w-full h-full flex flex-col items-center mt-2 text-base pt-20 ">
       <div className="flex flex-col items-center max-w-7xl">
         <div>
-          <div className="mb-2 pl-24 pr-24">
+          <div className="mb-2 px-24">
             <h2 className="text-3xl font-semibold pl-8">
               {steps[currentStep].title}
             </h2>
@@ -127,7 +109,7 @@ const MediaReleaseForm: React.FC = () => {
           </div>
 
           {currentStep !== 4 && (
-            <div className="flex justify-end space-x-4 mr-12">
+            <div className="flex justify-end space-x-4 px-24">
               <button
                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
                 onClick={goBack}
@@ -234,7 +216,7 @@ const MediaReleaseForm: React.FC = () => {
             >
               Submit
             </button>
-            <div className="flex justify-center space-x-4 mr-12 w-full mt-4">
+            <div className="flex justify-start space-x-4 mr-12 w-full mt-4">
               <button
                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
                 onClick={goBack}
