@@ -38,7 +38,7 @@ export const createChildDemographicsRecord = async (ChildDemographicsRecordInput
  * Retrieves a Child demographics record from the database based on its ID and the user ID.
  * @param {string} ChildDemographicsRecordId - The ID of the Child Demographics Record to retrieve
  * @param {string} userId - The ID of the user request the Child Demographics Record.
- * @returns {Promise<IChildDemographicsRecordResponse | null>} A promise resolving to the retrieved Partricipant Demographics Record,
+ * @returns {Promise<IChildDemographicsRecordResponse | null>} A promise resolving to the retrieved Child Demographics Record,
  * or null if no entry is found
  * @throws {Error} If there's an issue retrieving the Child Demographics Record.
  * @remarks This function retrieves a Child Demographics Record from the database using Prisma based on the provided ID and the user ID.

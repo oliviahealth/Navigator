@@ -4,36 +4,27 @@ import { prisma } from "@/lib/prisma";
 import { IEnrollmentFormInputs } from "./definitions";
 
 export const createEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, userId: string) => {
-    const { emergencyContacts } = enrollmentFormInput;
+    const { clientAge, ...rest } = enrollmentFormInput;
 
     const response = await prisma.enrollmentForm.create({
         data: {
             userId,
-            ...enrollmentFormInput,
-            guardianDate: new Date(enrollmentFormInput.guardianDate).toISOString(),
-            gcMomsDate: new Date(enrollmentFormInput.gcMomsDate).toISOString(),
-            dateOfBirth: new Date(enrollmentFormInput.dateOfBirth).toISOString(),
-            clientDate: new Date(enrollmentFormInput.clientDate).toISOString(),
-            emergencyContacts: {
-                create: emergencyContacts
-            }
-        },
-        include: {
-            emergencyContacts: true
+            ...rest,
+            guardianDate: rest.guardianDate ? new Date(rest.guardianDate).toISOString() : null,
+            gcMomsDate: new Date(rest.gcMomsDate).toISOString(),
+            dateOfBirth: new Date(rest.dateOfBirth).toISOString(),
+            clientDate: new Date(rest.clientDate).toISOString(),
         }
     });
 
     return response;
 }
 
-export const readEnrollmentForm = async(enrollmentFormId: string, userId: string) => {
+export const readEnrollmentForm = async (enrollmentFormId: string, userId: string) => {
     const response = await prisma.enrollmentForm.findUniqueOrThrow({
         where: {
             userId,
             id: enrollmentFormId
-        },
-        include: {
-            emergencyContacts: true
         }
     });
 
@@ -41,26 +32,16 @@ export const readEnrollmentForm = async(enrollmentFormId: string, userId: string
 }
 
 export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, enrollmentFormId: string, userId: string) => {
-    const { emergencyContacts } = enrollmentFormInput;
+    const { clientAge, ...rest } = enrollmentFormInput;
 
-    const response = await prisma.enrollmentForm.update({
-        where: {
-            id: enrollmentFormId
-        },
+    const response = await prisma.enrollmentForm.create({
         data: {
             userId,
-            ...enrollmentFormInput,
-            guardianDate: new Date(enrollmentFormInput.guardianDate).toISOString(),
-            gcMomsDate: new Date(enrollmentFormInput.gcMomsDate).toISOString(),
-            dateOfBirth: new Date(enrollmentFormInput.dateOfBirth).toISOString(),
-            clientDate: new Date(enrollmentFormInput.clientDate).toISOString(),
-            emergencyContacts: {
-                deleteMany: {},
-                create: emergencyContacts
-            }
-        },
-        include: {
-            emergencyContacts: true
+            ...rest,
+            guardianDate: rest.guardianDate ? new Date(rest.guardianDate).toISOString() : null,
+            gcMomsDate: new Date(rest.gcMomsDate).toISOString(),
+            dateOfBirth: new Date(rest.dateOfBirth).toISOString(),
+            clientDate: new Date(rest.clientDate).toISOString(),
         }
     });
 
