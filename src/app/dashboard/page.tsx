@@ -15,6 +15,10 @@ const Dashboard: React.FC = () => {
                             Enrollment log
                         </a>
 
+                        <a href={'dashboard/tab-one/media-appearance-form/new'}>
+                            Media Appearance Form
+                        </a>
+
                         <a href={'/dashboard/tab-one/communication-log/new'}>
                             Communication Log
                         </a>

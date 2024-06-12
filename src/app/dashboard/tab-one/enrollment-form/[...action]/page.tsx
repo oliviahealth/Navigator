@@ -233,7 +233,7 @@ const EnrollmentLog: React.FC = () => {
       }
     };
 
-    if(!user) return;
+    if (!user) return;
 
     fetchAndPopulatePastSubmissionData();
   }, []);
