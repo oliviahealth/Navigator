@@ -46,9 +46,9 @@ const Dashboard: React.FC = () => {
                         Children Needs
                     </Link>
 
-                    <a href={'dashboard/tab-one/media-release-form/new'}>
+                    <Link href={'dashboard/tab-one/media-release-form/new'}>
                         Media Release Form
-                    </a>
+                    </Link>
                 </div>
             </div>
         </div>

@@ -2,13 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import { z } from "zod";
+import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import useAppStore from "@/lib/useAppStore";
-import { MediaReleaseFormInputSchema,  IMediaReleaseFormInput } from "../definitions";
+import { MediaApperanceFormInputSchema, IMediaAppearanceFormInput, MediaAppearanceFormResponseSchema } from "../definitions";
+import { createMediaApperanceForm, updateMediaAppearanceForm } from "../actions";
 
-const MediaReleaseForm: React.FC = () => {
+
+const MediaAppearanceForm: React.FC = () => {
+  const router = useRouter();
+  const { action } = useParams();
+
+  const verb = action[0];
+  const submissionId = action[1];
+
+  const user = useAppStore((state) => state.user);
+
   const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
@@ -68,25 +79,47 @@ const MediaReleaseForm: React.FC = () => {
     watch,
     unregister,
     formState: { errors },
-  } = useForm<IMediaReleaseFormInput>({
-    resolver: zodResolver(MediaReleaseFormInputSchema),
+  } = useForm<IMediaAppearanceFormInput>({
+    resolver: zodResolver(MediaApperanceFormInputSchema),
     defaultValues: {},
   });
 
   useEffect(() => {
     if (watch("participantAge") >= 18) {
-      unregister("legalGuardianName");
+      unregister("guardianName");
     }
   }, [watch("participantAge"), unregister]);
 
-  const submit = (data: IMediaReleaseFormInput) => {
-    if (data.participantAge >= 18) {
-      delete data.legalGuardianName;
+  const submit = async (data: IMediaAppearanceFormInput) => {
+    try {
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      let response;
+
+      if (verb === "new") {
+        response = await createMediaApperanceForm({...data, guardianDate: data.guardianName ? data.participantDate : null}, user.id);
+      } else {
+        response = await updateMediaAppearanceForm(data, submissionId, user.id);
+      }
+
+      MediaAppearanceFormResponseSchema.parse(response);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong! Please try again later");
+
+      router.push('/dashboard');
+
+      return;
     }
 
-    alert("Media Release form submitted successfully");
-    console.log(data);
+    setSuccessMessage('Enrollment form submitted successfully');
+    router.push('/dashboard');
   };
+
+  console.log(errors);
+
   return (
     // Wizard to display text with back/continue buttons
     // change padding based on whether text is displayed or form
@@ -133,9 +166,8 @@ const MediaReleaseForm: React.FC = () => {
         {steps.map((_, index) => (
           <button
             key={index}
-            className={`focus:outline-none button ${
-              currentStep === index ? "button-filled" : ""
-            }`}
+            className={`focus:outline-none button ${currentStep === index ? "button-filled" : ""
+              }`}
             onClick={() => setCurrentStep(index)}
           >
             {index + 1}
@@ -172,15 +204,28 @@ const MediaReleaseForm: React.FC = () => {
               {errors.participantAge.message}
             </span>
           )}
+
+          <p className="font-medium pb-2 pt-8">Address</p>
+          <input
+            {...register("address")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="text"
+          />
+          {errors.address && (
+            <span className="label-text-alt text-red-500">
+              {errors.address.message}
+            </span>
+          )}
+
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("date")}
+            {...register("participantDate")}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
-          {errors.date && (
+          {errors.participantDate && (
             <span className="label-text-alt text-red-500">
-              {errors.date.message}
+              {errors.participantDate.message}
             </span>
           )}
           {watch("participantAge") < 18 && (
@@ -197,14 +242,14 @@ const MediaReleaseForm: React.FC = () => {
                 </p>
               </div>
               <input
-                {...register("legalGuardianName", {
+                {...register("guardianName", {
                   required: watch("participantAge") < 18,
                 })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
               />
-              {errors.legalGuardianName && (
+              {errors.guardianName && (
                 <span className="label-text-alt text-red-500">
-                  {errors.legalGuardianName.message}
+                  {errors.guardianName.message}
                 </span>
               )}
             </div>
@@ -231,4 +276,4 @@ const MediaReleaseForm: React.FC = () => {
   );
 };
 
-export default MediaReleaseForm;
+export default MediaAppearanceForm;
