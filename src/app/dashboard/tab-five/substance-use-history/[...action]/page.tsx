@@ -1,111 +1,175 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
-import { useRouter, useParams } from 'next/navigation';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
+import { ISubstanceUseHistoryInputs, SubstanceUseHistoryResponseSchema, SubstanceUseHistoryInputsSchema, SubstanceSchema } from '../definitions';
+import useAppStore from '@/lib/useAppStore';
 import {
-  SubstanceSchema,
-  SubstanceUseHistorySchema,
-  SubstanceUseHistory,
-} from "../definitions";
+    createSubstanceUseHistoryRecord,
+    readSubstanceUseHistoryRecord,
+    updateSubstanceUseHistoryRecord,
+    deleteSubstanceUseHistoryRecord,
+} from '../actions';
 
-import useAppStore from "@/lib/useAppStore";
-import {
-  createSubstanceUseHistoryRecord,
-  readSubstanceUseHistoryRecord,
-  updateSubstanceUseHistoryRecord,
-} from "../actions";
+const SubstanceUseHistoryForm: React.FC = () => {
+    const router = useRouter();
+    const user = useAppStore((state) => state.user);
+    const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
+    const setErrorMessage = useAppStore((state) => state.setErrorMessage);
 
-const SubstanceUseHistoryPage: React.FC = () => {
-  const router = useRouter();
-  const { action } = useParams();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm<ISubstanceUseHistoryInputs>({
+        resolver: zodResolver(SubstanceUseHistoryInputsSchema),
+    });
 
-  const verb = action[0];
-  const submissionId = action[1];
+    const [otherSubstances, setOtherSubstances] = useState<{ name: string; everUsed: boolean; usedDuringPregnancy: boolean; dateLastUsed: string }[]>([]);
 
-  const user = useAppStore((state) => state.user);
+    useEffect(() => {
+        reset();
+    }, [reset]);
 
-  const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
-  const setErrorMessage = useAppStore((state) => state.setErrorMessage);
+    const onSubmit = async (data: ISubstanceUseHistoryInputs) => {
+        try {
+            if (!user) {
+                throw new Error('User missing');
+            }
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<SubstanceUseHistory>({
-    resolver: zodResolver(SubstanceUseHistorySchema),
-  });
+            const response = await createSubstanceUseHistoryRecord({
+                ...data,
+                userId: user.id,
+            });
 
-  useEffect(() => {
-    const fetchAndPopulatePastSubmissionData = async () => {
-      try {
-        if (!user) {
-          throw new Error("User not found");
+            SubstanceUseHistoryResponseSchema.parse(response);
+
+            setSuccessMessage('Substance use history submitted successfully!');
+            router.push('/dashboard');
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
         }
-    
-        if (verb !== "edit") {
-          return;
-        }
-    
-        const response = await readSubstanceUseHistoryRecord(submissionId, user.id);
-    
-        if (response) {
-          const formattedResponse = {
-            ...response,
-            dateLastUsed: response.dateLastUsed ? new Date(response.dateLastUsed) : null,
-          };
-    
-          reset(formattedResponse);
-        }
-      } catch (error) {
-        console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-        router.push("/dashboard");
-      }
     };
 
-    fetchAndPopulatePastSubmissionData();
-  }, []);
+    const handleOtherSubstanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value.trim();
+        if (value && !otherSubstances.some((substance) => substance.name === value)) {
+            setOtherSubstances([...otherSubstances, { name: value, everUsed: false, usedDuringPregnancy: false, dateLastUsed: '' }]);
+        }
+    };
 
-  const submit = async (data: SubstanceUseHistory) => {
-    try {
-      if (!user) {
-        throw new Error("User missing");
-      }
-  
-      let response;
-  
-      if (verb === "new") {
-        response = await createSubstanceUseHistoryRecord(data);
-      } else {
-        response = await updateSubstanceUseHistoryRecord(submissionId, data);
-      }
-  
-      if (response) {
-        setSuccessMessage("Substance Use History submitted successfully!");
-        router.push("/dashboard");
-      } else {
-        throw new Error("Failed to submit Substance Use History");
-      }
-    } catch (error) {
-      console.error(error);
-      setErrorMessage("Something went wrong! Please try again later");
-    }
-  };
+    const handleCheckboxChange = (index: number, field: 'everUsed' | 'usedDuringPregnancy', value: boolean) => {
+        setOtherSubstances((prevSubstances) => {
+            const updatedSubstances = [...prevSubstances];
+            updatedSubstances[index][field] = value;
+            return updatedSubstances;
+        });
+    };
 
-  return (
-    <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
-      <form
-        onSubmit={handleSubmit(submit)}
-        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
-      >
-        {/* ... */}
-      </form>
-    </div>
-  );
+    const handleDateChange = (index: number, value: string) => {
+        setOtherSubstances((prevSubstances) => {
+            const updatedSubstances = [...prevSubstances];
+            updatedSubstances[index].dateLastUsed = value;
+            return updatedSubstances;
+        });
+    };
+
+    const removeOtherSubstance = (index: number) => {
+        setOtherSubstances((prevSubstances) => prevSubstances.filter((_, i) => i !== index));
+    };
+
+    const predefinedSubstances = [
+        'Alcohol',
+        'Amphetamines',
+        'Benzodiazepines',
+        'Cannabis',
+        'Cocaine',
+        'Heroin',
+        'Kush',
+        'Prescription Drugs',
+        'Tobacco',
+    ];
+
+    return (
+        <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+            >
+                <div className="flex justify-center">
+                  <div className="pb-4 pt-4 flex flex-col">
+                      <p className="font-semibold text-2xl">Substance Use History</p>
+                  </div>
+                </div>
+
+                <table className="w-full">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Ever Used</th>
+                            <th>Used During Pregnancy</th>
+                            <th>Date Last Used</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {[...predefinedSubstances, ...otherSubstances.map((substance) => substance.name)].map((substance, index) => (
+                            <tr key={substance}>
+                                <td className="whitespace-nowrap overflow-hidden overflow-ellipsis">
+                                    {substance}
+                                </td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        {...register('everUsed')}
+                                        checked={otherSubstances[index]?.everUsed || false}
+                                        onChange={(e) => handleCheckboxChange(index, 'everUsed', e.target.checked)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        {...register('usedDuringPregnancy')}
+                                        checked={otherSubstances[index]?.usedDuringPregnancy || false}
+                                        onChange={(e) => handleCheckboxChange(index, 'usedDuringPregnancy', e.target.checked)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="date"
+                                        {...register('dateLastUsed')}
+                                        value={otherSubstances[index]?.dateLastUsed || ''}
+                                        onChange={(e) => handleDateChange(index, e.target.value)}
+                                    />
+                                </td>
+                                <td>
+                                    {otherSubstances.some((s) => s.name === substance) && (
+                                        <button type="button" onClick={() => removeOtherSubstance(index)}>
+                                            Remove
+                                        </button>
+                                    )}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <div className="flex justify-center">
+                    <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="text-white bg-[#AFAFAFAF] px-20 py-2 mt-6 rounded-md whitespace-nowrap"
+                    >
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
 };
 
-export default SubstanceUseHistoryPage;
+export default SubstanceUseHistoryForm;

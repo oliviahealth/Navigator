@@ -83,6 +83,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-five/substance-use-history/new'}>
                             Substance Use History
                         </a>
+
+                        <a href="dashboard/tab-five/medical-services-for-substance-use/new">
+                            Medical Services for Substance Use
+                        </a>
                     </div>
                 </div>
             </div>

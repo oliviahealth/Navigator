@@ -590,3 +590,18 @@ model CurrentMedicationList {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
+model MedicalServicesSubstanceUse {
+  id                              String       @id @default(uuid())
+  userId                          String
+  mat_engaged                     String
+  date_used_mat                   DateTime?
+  medications                     Json
+  mat_clinic_name                 String?
+  mat_clinic_phone                String?
+  used_addiction_medicine_services String
+  date_used_medicine_service      DateTime?
+  addiction_medicine_clinic       String?
+  addiction_medicine_clinic_phone String?
+  addiction_medication_service    String
+}
