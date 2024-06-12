@@ -118,8 +118,6 @@ const MediaAppearanceForm: React.FC = () => {
     router.push('/dashboard');
   };
 
-  console.log(errors);
-
   return (
     // Wizard to display text with back/continue buttons
     // change padding based on whether text is displayed or form
