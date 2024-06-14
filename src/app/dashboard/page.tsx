@@ -79,6 +79,10 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Four</p>
                     </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Five</p>
+                    </div>
                 </div>
             </div>
         </div >
