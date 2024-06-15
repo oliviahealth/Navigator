@@ -25,7 +25,7 @@ const NutritionHistory: React.FC = () => {
         }
     };
 
-    const consumeEveryday = watch("consumeEveryday", []);
+    const consumeEveryday = watch("consumeEveryday", []) || [];
 
     const [selectedOption, setSelectedOption] = useState('');
     const handleOptionChange = (value: string) => {
@@ -42,6 +42,27 @@ const NutritionHistory: React.FC = () => {
             setValue('dietsAndSupplements', ['None_apply']);
         }
     }, [selectedOption, setValue]);
+
+    const handleCheckboxChange = (value: string, checked: boolean) => {
+        console.log("handling change")
+        handleOptionChange(value);
+        const updatedValue = checked
+            ? [...dietsAndSupplements, value]
+            : dietsAndSupplements.filter((v: string) => v !== value);
+
+        setValue("dietsAndSupplements", updatedValue);
+
+        // Reset fields to null when unchecked
+        if (!checked) {
+            if (value === 'Vitamin_supplement') {
+                setValue("vitaminSupplementsType", null);
+                console.log("vitamins set to null")
+            }
+            if (value === 'Herbal_supplement') {
+                setValue("herbalSupplementsType", null);
+            }
+        }
+    };
 
     return (
         <>
@@ -339,14 +360,7 @@ const NutritionHistory: React.FC = () => {
                                         {...register("dietsAndSupplements")}
                                         type="checkbox"
                                         value={option}
-                                        onChange={(e) => {
-                                            handleOptionChange(e.target.value);
-                                            const updatedValue = e.target.checked
-                                                ? [...dietsAndSupplements, e.target.value]
-                                                : dietsAndSupplements.filter((v: String) => v !== e.target.value);
-
-                                            setValue("dietsAndSupplements", updatedValue);
-                                        }}
+                                        onChange={(e) => handleCheckboxChange(option, e.target.checked)}
                                         disabled={selectedOption === 'None_apply' && option !== 'None_apply'}
                                     />
                                     <span className="ml-2">{labelMapping.dietsAndSupplements[option]}</span>

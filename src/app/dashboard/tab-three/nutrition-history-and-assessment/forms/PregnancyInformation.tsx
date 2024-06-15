@@ -173,7 +173,7 @@ const PregnancyInformation: React.FC = () => {
                             {CurrentPregnancyInfoEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
-                                        {...register("pregnancyInfo")}
+                                        {...register("currentPregnancyInfo")}
                                         type="checkbox"
                                         value={option}
                                         onChange={(e) => handleOptionChange(e.target.value)}
@@ -183,9 +183,9 @@ const PregnancyInformation: React.FC = () => {
                                 </label>
                             ))}
                         </div>
-                        {errors.pregnancyInfo && (
+                        {errors.currentPregnancyInfo && (
                             <span className="label-text-alt text-red-500">
-                                {getErrorMessage(errors.pregnancyInfo)}
+                                {getErrorMessage(errors.currentPregnancyInfo)}
                             </span>
                         )}
                     </div>

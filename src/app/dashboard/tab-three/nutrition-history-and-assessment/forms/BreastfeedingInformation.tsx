@@ -79,7 +79,9 @@ const BreastfeedingInformation: React.FC = () => {
                             )}
                         </div>
                     </div>
+                </div>
 
+                <div className="space-y-4">
                     <div className="space-y-3">
                         <p className="font-semibold">Are you currently breastfeeding or pumping breast milk?</p>
                         <div className="flex flex-col space-y-3">
@@ -128,9 +130,19 @@ const BreastfeedingInformation: React.FC = () => {
                         </div>
                     </div>
 
-                </div>
+                    <div className="space-y-3">
+                        <p className="font-semibold">Infant ID</p>
+                        <input
+                            type="text"
+                            {...register("infantId")}
+                            className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
+                        {errors.infantId && (
+                            <span className="label-text-alt text-red-500">
+                                {getErrorMessage(errors.infantId)}
+                            </span>
+                        )}
+                    </div>
 
-                <div className="space-y-4">
                     <div className="space-y-3">
                         <p className="font-semibold">Are you breastfeeding or pumping milk for more than one child?</p>
                         <div className="flex flex-col space-y-3">
@@ -138,7 +150,7 @@ const BreastfeedingInformation: React.FC = () => {
                                 {YesNoEnum.options.map(option => (
                                     <label key={option} className="inline-flex items-center">
                                         <input
-                                            {...register("breastfeedingFromSamePregnancy")}
+                                            {...register("breastfeedingMultipleChildren")}
                                             type="radio"
                                             value={option}
                                             className="form-radio"

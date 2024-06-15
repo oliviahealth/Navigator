@@ -40,17 +40,19 @@ const NutritionHistoryAndAssessment: React.FC = () => {
     const goForward = () => {
         if (currentStep < lastStep) {
             setCurrentStep(currentStep + 1);
-        } else {
-            // Submit data or navigate to a different route
         }
     };
 
     const methods = useForm<INutritionHistoryAndAssessmentInputs>({
         resolver: zodResolver(NutritionHistoryAndAssessmentInputSchema),
+        defaultValues: {
+            vitaminSupplementsType: null,
+            herbalSupplementsType: null
+        }
     });
 
-    const submit = (data: any) => {
-        setShowErrors(true);
+    const submit = (data: INutritionHistoryAndAssessmentInputs) => {
+        // setShowErrors(true);
         alert("Nutrition History and Assessment submitted successfully");
         console.log(data);
     };
@@ -81,7 +83,7 @@ const NutritionHistoryAndAssessment: React.FC = () => {
                     </div>
 
                     {currentStep === lastStep - 1 && (
-                        <button type="submit" className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold">
+                        <button type="submit" className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold mt-4">
                             Save
                         </button>
                     )}

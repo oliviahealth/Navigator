@@ -1,9 +1,15 @@
 import { YesNo } from "@prisma/client";
 import { z } from "zod";
 
-export const MarriedEnum = z.enum(["Married", "Unmarried"]);
+export const MarriedEnum = z.enum([
+    "Married",
+    "Unmarried"
+]);
 
-export const YesNoEnum = z.enum(["Yes", "No"]);
+export const YesNoEnum = z.enum([
+    "Yes",
+    "No"
+]);
 
 export const RaceEnum = z.enum([
     "American_Indian",
@@ -14,7 +20,11 @@ export const RaceEnum = z.enum([
     "Middle_Eastern"
 ]);
 
-export const NumMonthsPregnantTwentyWeeksEnum = z.enum(["None", "Number_of_pregnancies", "Unknown"]);
+export const NumMonthsPregnantTwentyWeeksEnum = z.enum([
+    "None",
+    "Number_of_pregnancies",
+    "Unknown"
+]);
 
 export const NumMonthsPregnantEnum = z.enum([
     'First',
@@ -286,7 +296,7 @@ export const labelMapping = {
         Dont_want_to: "I don't want to breastfeed",
         Dont_know: "I don't know",
         Other: "Other"
-    }, 
+    },
     breastfeedingMedicalConcerns: {
         Breast_surgery: "Breast Surgery/Trauma",
         Hypothyroidism: "Hypothyroidism",
@@ -334,7 +344,7 @@ export const labelMapping = {
 };
 
 export const NutritionHistoryAndAssessmentInputSchema = z.object({
-    todaysDate: z.string().min(1, "Today's date required."),
+    todaysDate: z.union([z.date(), z.string().min(1, "Today's date required.")]),
     name: z.string().min(1, "Name required."),
     gradesCompleted: z.string().min(1, "Grades completed required."),
     currentlyMarried: MarriedEnum,
@@ -347,8 +357,8 @@ export const NutritionHistoryAndAssessmentInputSchema = z.object({
     numLiveBabies: z.string().min(1, "Number of live babies required."),
     timesPregnantTwentyWeeks: NumMonthsPregnantTwentyWeeksEnum,
     numPregnanciesTwentyWeeks: z.string().nullable(),
-    numMonthsPregnant: z.string().min(1, "Number of months pregnant required."),
-    pregnancyInfo: z.array(CurrentPregnancyInfoEnum),
+    numMonthsPregnant: NumMonthsPregnantEnum,
+    currentPregnancyInfo: z.array(CurrentPregnancyInfoEnum),
     timesSeenHealthProvider: z.string().min(1, "Number of times seen health provider required."),
     hivBloodTest: z.string().min(1, "HIV blood test taken required."),
     previousPregnancyInfo: z.array(PreviousPregnancyInfoEnum),
@@ -404,6 +414,14 @@ export const NutritionHistoryAndAssessmentInputSchema = z.object({
     staffNotes: z.string().nullable()
 });
 export type INutritionHistoryAndAssessmentInputs = z.infer<typeof NutritionHistoryAndAssessmentInputSchema>;
+
+export const NutritionHistoryAndAssessmentResponseSchema = NutritionHistoryAndAssessmentInputSchema.extend({
+    id: z.string(),
+    userId: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
+});
+export type INutritionHistoryAndAssessmentResponse = z.infer<typeof NutritionHistoryAndAssessmentResponseSchema>
 
 export const getErrorMessage = (error: any) => {
     if (error && typeof error.message === 'string') {
