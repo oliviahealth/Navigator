@@ -74,6 +74,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-three/parental-medical-history/new'}>
                             Parental Medical History
                         </a>
+
+                        <a href={'dashboard/tab-three/nutrition-history-and-assessment/new'}>
+                            Nutrition History Assessment
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
