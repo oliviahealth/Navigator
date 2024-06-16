@@ -186,7 +186,7 @@ CREATE TABLE "ParticipantDemographicsForm" (
     "reenrollmentWithGap" "YesNo" NOT NULL,
     "transferFromAnotherSite" "YesNo" NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ParticipantDemographicsForm_pkey" PRIMARY KEY ("id")
 );
@@ -276,7 +276,7 @@ CREATE TABLE "ChildDemographicsRecord" (
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ChildDemographicsRecord_pkey" PRIMARY KEY ("id")
 );
@@ -290,7 +290,7 @@ CREATE TABLE "SupportSystemsForm" (
     "areasForImprovement" TEXT NOT NULL,
     "goals" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "SupportSystemsForm_pkey" PRIMARY KEY ("id")
 );
@@ -342,6 +342,113 @@ CREATE TABLE "ChildrenNeedsForm" (
     CONSTRAINT "ChildrenNeedsForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ReferralsAndServices" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "parentingClasses" JSONB NOT NULL,
+    "transportationServices" JSONB NOT NULL,
+    "ssiDisability" JSONB NOT NULL,
+    "temporaryAssistanceForNeedyFamilies" JSONB NOT NULL,
+    "personalSafety" JSONB NOT NULL,
+    "homeVisitationProgram" JSONB NOT NULL,
+    "housingAssistance" JSONB NOT NULL,
+    "healthyStartProgram" JSONB NOT NULL,
+    "employmentServices" JSONB NOT NULL,
+    "supportServicesOther" JSONB[],
+    "breastfeedingSupport" JSONB NOT NULL,
+    "localFoodPantries" JSONB NOT NULL,
+    "snap" JSONB NOT NULL,
+    "womenInfantsAndChildren" JSONB NOT NULL,
+    "foodNutritionOther" JSONB[],
+    "healthInsuranceEnrollment" JSONB NOT NULL,
+    "prenatalHealthcare" JSONB NOT NULL,
+    "familyPlanning" JSONB NOT NULL,
+    "primaryCare" JSONB NOT NULL,
+    "mentalHealthCounseling" JSONB NOT NULL,
+    "smokingCessation" JSONB NOT NULL,
+    "healthcareOther" JSONB[],
+    "residential" JSONB NOT NULL,
+    "outpatient" JSONB NOT NULL,
+    "caringForTwoProgram" JSONB NOT NULL,
+    "theCradlesProgram" JSONB NOT NULL,
+    "recoverySupportServices" JSONB NOT NULL,
+    "naloxone" JSONB NOT NULL,
+    "medicationAssistedTreatment" JSONB NOT NULL,
+    "transportationToTreatment" JSONB NOT NULL,
+    "substanceUseTreatmentOther" JSONB[],
+    "earlyChildhoodIntervention" JSONB NOT NULL,
+    "earlyHeadStart" JSONB NOT NULL,
+    "nciChildcareSubsidy" JSONB NOT NULL,
+    "pediatricianPrimaryCare" JSONB NOT NULL,
+    "safeSleepEducation" JSONB NOT NULL,
+    "childRelatedOther" JSONB[],
+    "childProtectiveService" JSONB NOT NULL,
+    "legalAid" JSONB NOT NULL,
+    "specialtyCourt" JSONB NOT NULL,
+    "legalAssistanceOther" JSONB[],
+    "additionalNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ReferralsAndServices_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ParentalMedicalHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "gestationalAge" TEXT NOT NULL,
+    "dueDate" TIMESTAMP(3) NOT NULL,
+    "deliveryDate" TIMESTAMP(3) NOT NULL,
+    "plannedModeDelivery" "DeliveryMode" NOT NULL,
+    "actualModeDelivery" "DeliveryMode" NOT NULL,
+    "attendedPostpartumVisit" "YesNo" NOT NULL,
+    "postpartumVisitLocation" TEXT,
+    "postpartumVisitDate" TIMESTAMP(3),
+    "totalNumPregnancies" TEXT NOT NULL,
+    "numChildrenWithMother" TEXT NOT NULL,
+    "priorPregnancyDates" TEXT NOT NULL,
+    "priorPregnancyOutcomes" TEXT NOT NULL,
+    "gravida" TEXT NOT NULL,
+    "term" TEXT NOT NULL,
+    "preterm" TEXT NOT NULL,
+    "abortions" TEXT NOT NULL,
+    "living" TEXT NOT NULL,
+    "priorComplications" TEXT,
+    "ongoingMedicalProblems" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ParentalMedicalHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EncounterForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "monthYear" TEXT NOT NULL,
+    "encounterEntries" JSONB[],
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EncounterForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentMedicationList" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentMedicationList" JSONB[],
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -386,3 +493,15 @@ ALTER TABLE "CurrentLivingArrangement" ADD CONSTRAINT "CurrentLivingArrangement_
 
 -- AddForeignKey
 ALTER TABLE "ChildrenNeedsForm" ADD CONSTRAINT "ChildrenNeedsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ReferralsAndServices" ADD CONSTRAINT "ReferralsAndServices_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EncounterForm" ADD CONSTRAINT "EncounterForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

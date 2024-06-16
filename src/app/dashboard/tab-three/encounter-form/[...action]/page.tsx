@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -22,7 +22,6 @@ import {
     ReasonsEnum,
     EncounterFormResponseSchema,
 } from "../definitions";
-// import { createEncounterForm, readEncounterForm, updateEncounterForm } from "../actions";
 
 import useAppStore from "@/lib/useAppStore";
 import { createEncounterForm, readEncounterForm, updateEncounterForm } from "../actions";
@@ -84,18 +83,7 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
     };
 
     const [showOtherReason, setShowOtherReason] = useState<boolean[][]>([]);
-    // const handleShowOtherReason = (value: string, fieldIndex: number, visitIndex: number) => {
-    //     setShowOtherReason(prev => {
-    //         const newState = [...prev];
-    //         if (value === 'Other') {
-    //             newState[fieldIndex][visitIndex] = true;
-    //         } else {
-    //             newState[fieldIndex][visitIndex] = false;
-    //             setValue(`encounterEntries.${fieldIndex}.careVisitsDatesAndReasonsList.${visitIndex}.otherReason`, '');
-    //         }
-    //         return newState;
-    //     })
-    // }
+   
     const handleShowOtherReason = (value: string, fieldIndex: number, visitIndex: number) => {
         setShowOtherReason(prev => {
             // Ensure the outer array exists

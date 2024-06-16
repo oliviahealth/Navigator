@@ -8,16 +8,16 @@ export const ReasonsEnum = z.enum(["Injury", "Other"]);
 
 export const careVisitsDatesAndReasons = z.object({
     visitDate: z.union([z.date(), z.string().min(1, "Visit date is required.")]),
-    reason: ReasonsEnum.nullable().refine(val => val != null, { message: "Reason required." }),
+    reason: ReasonsEnum.refine(val => val != null, { message: "Reason required." }).nullable(),
     otherReason: z.string().nullable()
 });
 
 export const EncounterEntrySchema = z.object({
     dateOfVisit: z.union([z.date(), z.string().min(1, "Date of visit is required")]),
     staff: z.string().min(1, "Staff name required."),
-    healthInsurance: YesNoEnum.nullable().refine(val => val != null, { message: "Health insurance is required." }),
+    healthInsurance: YesNoEnum.refine(val => val != null, { message: "Health insurance is required." }).nullable(),
     parentConcerns: ParentConcernsEnum.nullable(),
-    careVisits: YesNoEnum.nullable().refine(val => val !== null, { message: "Visits attended required." }),
+    careVisits: YesNoEnum.nullable().refine(val => val !== null, { message: "Visits attended required." }).nullable(),
     careVisitsDatesAndReasonsList: z.array(careVisitsDatesAndReasons).nullable(),
     wellchildVisits: YesNoEnum.nullable(),
     wellchildVisitsCompleted: z.string().nullable()

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IEncounterFormInputs, IEncounterFormResponse } from "./definitions";
+import { IEncounterFormInputs } from "./definitions";
 
 /**
  * Creates a new Encounter Form in the db.
