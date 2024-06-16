@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { YesNoEnum, getErrorMessage, labelMapping, PregnancyTypeEnum, NotBreastfedDesiredLengthReasonsEnum, BreastfeedingMethodEnum, BreastfeedingMedicalConcernsEnum } from "../definitions";
+import {
+    getErrorMessage,
+    labelMapping,
+    BreastfeedingMedicalConcernsEnum,
+    INutritionHistoryAndAssessmentInputs
+} from "../definitions";
 
-const BreastfeedingAssessment: React.FC = () => {
+const BreastfeedingAssessment: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, formState: { errors } } = useFormContext();
 
     const [selectedOption, setSelectedOption] = useState('');
@@ -13,6 +18,13 @@ const BreastfeedingAssessment: React.FC = () => {
             setSelectedOption('');
         }
     };
+
+
+    useEffect(() => {
+        if (formData) {
+            setSelectedOption(formData.breastfeedingMedicalConcerns.includes('No_concerns') ? 'No_concerns' : '');
+        }
+    }, [formData]);
 
     return (
         <>

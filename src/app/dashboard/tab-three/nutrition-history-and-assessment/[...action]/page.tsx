@@ -35,8 +35,9 @@ const NutritionHistoryAndAssessment: React.FC = () => {
         }
     };
 
-    const goForward = () => {
-        if (currentStep < 5) {
+    const goForward = async () => {
+        const isValid = await methods.trigger();
+        if (isValid && currentStep < steps.length - 1) {
             setCurrentStep(currentStep + 1);
         }
     };
@@ -135,32 +136,24 @@ const NutritionHistoryAndAssessment: React.FC = () => {
         router.push('/dashboard')
     };
 
+    const steps = [
+        <PregnantWomanHealthAndDiet />,
+        <PregnancyInformation formData={formData} />,
+        <MedicalInformation formData={formData} />,
+        <BreastfeedingInformation formData={formData} />,
+        <BreastfeedingAssessment formData={formData} />,
+        <NutritionHistory formData={formData} />
+    ];
+
     return (
         <div className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${currentStep < 5 ? "pt-20" : "pt-4"} px-32`}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2">
                     <div className="flex flex-col items-center">
-                        {currentStep === 0 && (
-                            <PregnantWomanHealthAndDiet />
-                        )}
-                        {currentStep === 1 && (
-                            <PregnancyInformation formData={formData} />
-                        )}
-                        {currentStep === 2 && (
-                            <MedicalInformation formData={formData} />
-                        )}
-                        {currentStep === 3 && (
-                            <BreastfeedingInformation formData={formData} />
-                        )}
-                        {currentStep === 4 && (
-                            <BreastfeedingAssessment />
-                        )}
-                        {currentStep === 5 && (
-                            <NutritionHistory formData={formData} />
-                        )}
+                        {steps[currentStep]}
                     </div>
 
-                    {currentStep === 5 && (
+                    {currentStep === steps.length - 1 && (
                         <button type="submit" className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold mt-4">
                             Save
                         </button>
@@ -173,7 +166,7 @@ const NutritionHistoryAndAssessment: React.FC = () => {
                         Back
                     </button>
                 )}
-                {currentStep !== 5 && (
+                {currentStep !== steps.length - 1 && (
                     <button className="block md:flex button md:button-filled md:rounded-full gap-x-2" onClick={goForward}>
                         Continue
                     </button>
