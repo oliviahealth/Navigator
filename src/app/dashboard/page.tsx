@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const Dashboard: React.FC = () => {
     return (
@@ -12,66 +11,73 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
 
                         <p className="font-bold text-lg">Tab One</p>
+                        <a href={'/dashboard/tab-one/enrollment-form/new'}>
+                            Enrollment log
+                        </a>
 
-                        <Link href={'/dashboard/tab-one/communication-log/new'}>
+                        <a href={'dashboard/tab-one/media-appearance-form/new'}>
+                            Media Appearance Form
+                        </a>
+
+                        <a href={'/dashboard/tab-one/communication-log/new'}>
                             Communication Log
-                        </Link>
+                        </a>
 
-                        <Link href={'/dashboard/tab-one/appointment-log'}>
+                        <a href={'/dashboard/tab-one/appointment-log'}>
                             Appointment Log
-                        </Link>
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Two</p>
 
-                    <Link href={'dashboard/tab-two/children-needs/new'}>
-                        Children Needs
-                    </Link>
-
-                    <Link href={'dashboard/tab-four/current-medication-list/new'}>
-                        Current Medication List
-                    </Link>
-                        <Link href={'/dashboard/tab-two/participant-demographics-record/new'}>
-                            Participant Demographics Record
-                        </Link>
-
-                        <Link href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
-                            Participant Record For Others Involved
-                        </Link>
-
-                        <Link href={'/dashboard/tab-two/child-demographics-record/new'}>
-                            Child Demographics Record
-                        </Link>
-
-                        <Link href={'/dashboard/tab-two/support-systems/new'}>
-                            Support Systems
-                        </Link>
-
-                        <Link href={'dashboard/tab-two/current-living-arrangement/new'}>
-                            Current Living Arrangement
-                        </Link>
-
-                        <Link href={'dashboard/tab-two/children-needs/new'}>
+                        <a href={'dashboard/tab-two/children-needs/new'}>
                             Children Needs
-                        </Link>
+                        </a>
 
-                        <Link href={'dashboard/tab-two/referrals-and-services/new'}>
+                        <a href={'dashboard/tab-four/current-medication-list/new'}>
+                            Current Medication List
+                        </a>
+                        <a href={'/dashboard/tab-two/participant-demographics-record/new'}>
+                            Participant Demographics Record
+                        </a>
+
+                        <a href={'/dashboard/tab-two/participant-record-for-others-involved/new'}>
+                            Participant Record For Others Involved
+                        </a>
+
+                        <a href={'/dashboard/tab-two/child-demographics-record/new'}>
+                            Child Demographics Record
+                        </a>
+
+                        <a href={'/dashboard/tab-two/support-systems/new'}>
+                            Support Systems
+                        </a>
+
+                        <a href={'dashboard/tab-two/current-living-arrangement/new'}>
+                            Current Living Arrangement
+                        </a>
+
+                        <a href={'dashboard/tab-two/children-needs/new'}>
+                            Children Needs
+                        </a>
+
+                        <a href={'dashboard/tab-two/referrals-and-services/new'}>
                             Referrals & Services
-                        </Link>
+                        </a>
 
                     </div>
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Three</p>
 
-                        <Link href={'dashboard/tab-three/parental-medical-history/new'}>
+                        <a href={'dashboard/tab-three/parental-medical-history/new'}>
                             Parental Medical History
-                        </Link>
+                        </a>
 
-                        <Link href={'dashboard/tab-three/encounter-form/new'}>
+                        <a href={'dashboard/tab-three/encounter-form/new'}>
                             Encounter Form
-                        </Link>
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">

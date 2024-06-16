@@ -91,13 +91,12 @@ const ParticipantDemographicsRecord: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+                
+                if (!user) {
+                    throw new Error('Missing user');
                 }
 
                 if (!submissionId) {
@@ -111,10 +110,14 @@ const ParticipantDemographicsRecord: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+
+                router.push('/dashboard')
+
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -142,7 +145,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
         }
 
         setSuccessMessage('Current Living Arrangement submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     return (

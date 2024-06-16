@@ -16,7 +16,6 @@ const SignupPage: React.FC = () => {
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
   const setUser = useAppStore((state) => state.setUser);
-  const setAccessToken = useAppStore((state) => state.setAccessToken);
 
   const {
     register,
@@ -30,11 +29,9 @@ const SignupPage: React.FC = () => {
         throw new Error('Password and ConfirmPassword do not match');
       }
 
-      const { user, token } = await createUser(data);
+      const { user } = await createUser(data);
 
       setUser(user);
-      setAccessToken(token);
-
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");

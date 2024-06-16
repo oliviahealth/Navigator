@@ -167,11 +167,14 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                 setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
             } catch (error) {
                 console.error(error);
+                
                 setErrorMessage('Something went wrong! Please try again later');
                 router.push('/dashboard');
                 return;
             }
         }
+
+        if(!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
@@ -197,11 +200,13 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            return
+            router.push('/dashboard')
+
+            return;
         }
 
         setSuccessMessage('Participant Record For Others Involved submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     return (
