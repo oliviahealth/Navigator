@@ -29,7 +29,7 @@ const BreastfeedingInformation: React.FC<{ formData: INutritionHistoryAndAssessm
             setShowNotBreastfedDesiredLengthReasons(true);
         } else {
             setShowNotBreastfedDesiredLengthReasons(false);
-            setValue("notBreastfedDesiredLengthReasons", null);
+            setValue("notBreastfedDesiredLengthReasons", []);
         }
     };
 

@@ -14,15 +14,6 @@ import {
 const PregnancyInformation: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
 
-    const [selectedOption, setSelectedOption] = useState('');
-    const handleOptionChange = (value: string) => {
-        if (value === 'None_Apply') {
-            setSelectedOption(prev => prev === value ? '' : value);
-        } else {
-            setSelectedOption('');
-        }
-    };
-
     const [showNumPregnancies, setShowNumPregnancies] = useState<boolean>(false);
     const handleShowNumPregnancies = (value: string) => {
         if (value === 'Number_of_pregnancies') {
@@ -33,11 +24,29 @@ const PregnancyInformation: React.FC<{ formData: INutritionHistoryAndAssessmentI
         }
     };
 
+    const [selectedCurrentPregnancyInfo, setSelectedCurrentPregnancyInfo] = useState('');
+    const handleCurrentPregnancyInfo = (value: string) => {
+        if (value === 'None_Apply') {
+            setSelectedCurrentPregnancyInfo(prev => prev === value ? '' : value);
+        } else {
+            setSelectedCurrentPregnancyInfo('');
+        }
+    };
+
+    const [selectedPreviousPregnancyInfo, setSelectedPreviousPregnancyInfo] = useState('');
+    const handlePreviousPregnancyInfo = (value: string) => {
+        if (value === 'None_Apply') {
+            setSelectedPreviousPregnancyInfo(prev => prev === value ? '' : value);
+        } else {
+            setSelectedPreviousPregnancyInfo('');
+        }
+    };
+
     useEffect(() => {
         if (formData) {
             setShowNumPregnancies(formData.timesPregnantTwentyWeeks === 'Number_of_pregnancies');
-            setSelectedOption(formData.currentPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
-            setSelectedOption(formData.previousPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
+            setSelectedCurrentPregnancyInfo(formData.currentPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
+            setSelectedPreviousPregnancyInfo(formData.previousPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
         }
     }, [formData]);
 
@@ -193,8 +202,8 @@ const PregnancyInformation: React.FC<{ formData: INutritionHistoryAndAssessmentI
                                         {...register("currentPregnancyInfo")}
                                         type="checkbox"
                                         value={option}
-                                        onChange={(e) => handleOptionChange(e.target.value)}
-                                        disabled={selectedOption === 'None_Apply' && option !== 'None_Apply'}
+                                        onChange={(e) => handleCurrentPregnancyInfo(e.target.value)}
+                                        disabled={selectedCurrentPregnancyInfo === 'None_Apply' && option !== 'None_Apply'}
                                     />
                                     <span className="ml-2">{labelMapping.currentPregnancyInfo[option]}</span>
                                 </label>
@@ -258,8 +267,8 @@ const PregnancyInformation: React.FC<{ formData: INutritionHistoryAndAssessmentI
                                     {...register("previousPregnancyInfo")}
                                     type="checkbox"
                                     value={option}
-                                    onChange={(e) => handleOptionChange(e.target.value)}
-                                    disabled={selectedOption === 'None_Apply' && option !== 'None_Apply'}
+                                    onChange={(e) => handlePreviousPregnancyInfo(e.target.value)}
+                                    disabled={selectedPreviousPregnancyInfo === 'None_Apply' && option !== 'None_Apply'}
                                 />
                                 <span className="ml-2">{labelMapping.previousPregnancyInfo[option]}</span>
                             </label>

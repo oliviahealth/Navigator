@@ -1,4 +1,3 @@
-import { YesNo } from "@prisma/client";
 import { z } from "zod";
 
 export const MarriedEnum = z.enum([
@@ -234,7 +233,7 @@ export const labelMapping = {
         Died_before_one_month: "Infant died before 1 month",
         Miscarriage: "Miscarriage",
         Birth_defects: "Congenital/birth defects",
-        Nine_pounds_at_birth: "Infant 9 pounds ore more at birth",
+        Nine_pounds_at_birth: "Infant 9 pounds or more at birth",
         None_Apply: "None Apply"
     },
     timesTakenMultivitamin: {
@@ -358,10 +357,10 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     timesPregnantTwentyWeeks: NumMonthsPregnantTwentyWeeksEnum,
     numPregnanciesTwentyWeeks: z.string().nullable(),
     numMonthsPregnant: NumMonthsPregnantEnum,
-    currentPregnancyInfo: z.array(CurrentPregnancyInfoEnum),
+    currentPregnancyInfo: z.array(CurrentPregnancyInfoEnum).min(1, "Select at least one option."),
     timesSeenHealthProvider: z.string().min(1, "Number of times seen health provider required."),
     hivBloodTest: z.string().min(1, "HIV blood test taken required."),
-    previousPregnancyInfo: z.array(PreviousPregnancyInfoEnum),
+    previousPregnancyInfo: z.array(PreviousPregnancyInfoEnum).min(1, "Select at least one option."),
     takesMedication: YesNoEnum,
     medications: z.string().nullable(),
     hasSideEffects: YesNoEnum,
@@ -379,7 +378,7 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     alcoholBeforePregnancy: AlcoholBeforePregnancyEnum,
     specifiedNumDrinks: z.string().regex(/^\d+$/, 'Must be a number').nullable(),
     alcoholDuringPregnancy: YesNoEnum,
-    substanceUse: z.array(SubstanceUseEnum),
+    substanceUse: z.array(SubstanceUseEnum).min(1, "Select at least one option."),
     disabilityLimitingFeedingDecisions: YesNoEnum,
     hasBreastfed: YesNoEnum,
     currentlyBreastfeeding: YesNoEnum,
@@ -395,7 +394,7 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     breastfeedingMethodOther: z.string().nullable(),
     breastfeedingGoal: z.string().min(1, "Breastfeeding goal required."),
     moreInformationInterest: YesNoEnum,
-    breastfeedingMedicalConcerns: z.array(BreastfeedingMedicalConcernsEnum),
+    breastfeedingMedicalConcerns: z.array(BreastfeedingMedicalConcernsEnum).min(1, "Select at least one option."),
     numMealsPerDay: NumPerDayEnum,
     numSnacksPerDay: NumPerDayEnum,
     milkPerDay: NumPerDayEnum,
@@ -405,10 +404,10 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     fastFoodPerWeek: NumPerDayEnum,
     hasFoodAllergies: YesNoEnum,
     foodAllergiesType: z.string().nullable(),
-    consumeEveryday: z.array(EverydayFoodEnum),
+    consumeEveryday: z.array(EverydayFoodEnum).min(1, "Select at least one option."),
     milkType: z.string().nullable(),
-    highRiskFood: z.array(HighRiskFoodEnum),
-    dietsAndSupplements: z.array(DietsAndSupplementsEnum),
+    highRiskFood: z.array(HighRiskFoodEnum).min(1, "Select at least one option."),
+    dietsAndSupplements: z.array(DietsAndSupplementsEnum).min(1, "Select at least one option."),
     vitaminSupplementsType: z.string().nullable(),
     herbalSupplementsType: z.string().nullable(),
     staffNotes: z.string().nullable()

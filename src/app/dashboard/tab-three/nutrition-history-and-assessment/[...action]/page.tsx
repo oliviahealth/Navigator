@@ -35,8 +35,66 @@ const NutritionHistoryAndAssessment: React.FC = () => {
         }
     };
 
-    const goForward = async () => {
-        const isValid = await methods.trigger();
+    const pages: Array<keyof Partial<INutritionHistoryAndAssessmentInputs>>[] = [
+        ["todaysDate", "name", "gradesCompleted", "currentlyMarried", "hispanicLatino", "race"],
+        ["lastMenstrualPeriod", "dueDate", "weightBeforePregnancy", "numPregnancies", "numLiveBabies", "timesPregnantTwentyWeeks", "numPregnanciesTwentyWeeks", "numMonthsPregnant", "currentPregnancyInfo", "timesSeenHealthProvider", "hivBloodTest", "previousPregnancyInfo"],
+        ["takesMedication",
+            "medications",
+            "hasSideEffects",
+            "sideEffects",
+            "hasDentalProblems",
+            "dentalProblems",
+            "timesTakenMultivitaminOptions",
+            "specifiedTimesTakenMultivitamin",
+            "hasTakenVitaminsMinerals",
+            "cigarettesBeforePregnancy",
+            "specifiedNumCigarettesBeforePregnancy",
+            "cigarettesSmokedNow",
+            "specifiedNumCigarettesSmokedNow",
+            "householdSmoking",
+            "alcoholBeforePregnancy",
+            "specifiedNumDrinks",
+            "alcoholDuringPregnancy",
+            "substanceUse",
+            "disabilityLimitingFeedingDecisions"
+        ],
+        ["hasBreastfed",
+            "currentlyBreastfeeding",
+            "babyLessThanOneYear",
+            "infantId",
+            "breastfeedingMultipleChildren",
+            "pregnancyType",
+            "breastfedDesiredLength",
+            "notBreastfedDesiredLengthReasons",
+            "notBreastfedDesiredLengthReasonsOther",
+            "heardAboutBreastfeeding",
+            "breastfeedingMethod",
+            "breastfeedingMethodOther",
+            "breastfeedingGoal",
+            "moreInformationInterest"
+        ],
+        ["breastfeedingMedicalConcerns"],
+        ["numMealsPerDay",
+            "numSnacksPerDay",
+            "milkPerDay",
+            "appetite",
+            "hasSpecialDiet",
+            "specialDietType",
+            "fastFoodPerWeek",
+            "hasFoodAllergies",
+            "foodAllergiesType",
+            "consumeEveryday",
+            "milkType",
+            "highRiskFood",
+            "dietsAndSupplements",
+            "vitaminSupplementsType",
+            "herbalSupplementsType",
+            "staffNotes",
+        ]
+    ];
+
+    const goForward = async (step: number) => {
+        const isValid = await methods.trigger(pages[step]);
         if (isValid && currentStep < steps.length - 1) {
             setCurrentStep(currentStep + 1);
         }
@@ -45,6 +103,11 @@ const NutritionHistoryAndAssessment: React.FC = () => {
     const methods = useForm<INutritionHistoryAndAssessmentInputs>({
         resolver: zodResolver(NutritionHistoryAndAssessmentInputsSchema),
         defaultValues: {
+            race: [],
+            notBreastfedDesiredLengthReasons: [],
+            currentPregnancyInfo: [],
+            previousPregnancyInfo: [],
+            substanceUse: [],
             hispanicLatino: null,
             numPregnanciesTwentyWeeks: null,
             medications: null,
@@ -107,8 +170,6 @@ const NutritionHistoryAndAssessment: React.FC = () => {
         }
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
-
-
     const submit = async (data: INutritionHistoryAndAssessmentInputs) => {
         console.log(data);
         try {
@@ -167,7 +228,7 @@ const NutritionHistoryAndAssessment: React.FC = () => {
                     </button>
                 )}
                 {currentStep !== steps.length - 1 && (
-                    <button className="block md:flex button md:button-filled md:rounded-full gap-x-2" onClick={goForward}>
+                    <button className="block md:flex button md:button-filled md:rounded-full gap-x-2" onClick={() => goForward(currentStep)}>
                         Continue
                     </button>
                 )}
