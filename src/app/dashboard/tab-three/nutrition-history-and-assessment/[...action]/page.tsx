@@ -171,7 +171,6 @@ const NutritionHistoryAndAssessment: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: INutritionHistoryAndAssessmentInputs) => {
-        console.log(data);
         try {
             let response;
 

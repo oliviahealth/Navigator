@@ -719,7 +719,7 @@ model NutritionHistoryAndAssessment {
   name                                  String
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
-  hispanicLatino                        YesNo?
+  hispanicLatino                        YesNo
   race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime
@@ -729,9 +729,9 @@ model NutritionHistoryAndAssessment {
   timesPregnantTwentyWeeks              NumMonthsPregnantTwentyWeeks
   numPregnanciesTwentyWeeks             String?
   numMonthsPregnant                     NumMonthsPregnant
-  currentPregnancyInfo                         CurrentPregnancyInfo[]
+  currentPregnancyInfo                  CurrentPregnancyInfo[]
   timesSeenHealthProvider               String
-  hivBloodTest                          String
+  hivBloodTest                          YesNo
   previousPregnancyInfo                 PreviousPregnancyInfo[]
   takesMedication                       YesNo
   medications                           String?

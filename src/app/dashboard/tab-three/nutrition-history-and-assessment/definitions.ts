@@ -347,8 +347,8 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     name: z.string().min(1, "Name required."),
     gradesCompleted: z.string().min(1, "Grades completed required."),
     currentlyMarried: MarriedEnum,
-    hispanicLatino: YesNoEnum.nullable(),
-    race: z.array(RaceEnum).default([]), // work around for prisma not allowing nullable arrays
+    hispanicLatino: YesNoEnum.nullish(),
+    race: z.array(RaceEnum).nullish(),
     lastMenstrualPeriod: z.union([z.date(), z.string().min(1, "Last menstrual period required.")]),
     dueDate: z.union([z.date(), z.string().min(1, "Baby's due date required.")]),
     weightBeforePregnancy: z.string().min(1, "Weight before pregnancy required."),
@@ -387,7 +387,7 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     breastfeedingMultipleChildren: YesNoEnum,
     pregnancyType: PregnancyTypeEnum.nullable(),
     breastfedDesiredLength: YesNoEnum,
-    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum).default([]),  // work around for prisma not allowing nullable arrays
+    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum).nullish(),
     notBreastfedDesiredLengthReasonsOther: z.string().nullable(),
     heardAboutBreastfeeding: z.string().min(1, "Required."),
     breastfeedingMethod: BreastfeedingMethodEnum,

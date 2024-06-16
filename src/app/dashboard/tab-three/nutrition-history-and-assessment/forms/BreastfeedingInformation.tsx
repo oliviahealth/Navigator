@@ -177,9 +177,9 @@ const BreastfeedingInformation: React.FC<{ formData: INutritionHistoryAndAssessm
                                     </label>
                                 ))}
                             </div>
-                            {errors.breastfeedingFromSamePregnancy && (
+                            {errors.breastfeedingMultipleChildren && (
                                 <span className="label-text-alt text-red-500">
-                                    {getErrorMessage(errors.breastfeedingFromSamePregnancy)}
+                                    {getErrorMessage(errors.breastfeedingMultipleChildren)}
                                 </span>
                             )}
                         </div>
