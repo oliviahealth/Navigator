@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { NumMonthsPregnantEnum, NumMonthsPregnantTwentyWeeksEnum, CurrentPregnancyInfoEnum, PreviousPregnancyInfoEnum, YesNoEnum, getErrorMessage, labelMapping, NumPerDayEnum, AppetiteEnum, EverydayFoodEnum, HighRiskFoodEnum, DietsAndSupplementsEnum } from "../definitions";
+import {
+    YesNoEnum,
+    getErrorMessage,
+    labelMapping,
+    NumPerDayEnum,
+    AppetiteEnum,
+    EverydayFoodEnum,
+    HighRiskFoodEnum,
+    DietsAndSupplementsEnum,
+    INutritionHistoryAndAssessmentInputs
+} from "../definitions";
 
-const NutritionHistory: React.FC = () => {
+const NutritionHistory: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, setValue, watch, formState: { errors } } = useFormContext();
 
     const [showSpecialDietType, setShowSpecialDietType] = useState<boolean>(false);
@@ -44,7 +54,6 @@ const NutritionHistory: React.FC = () => {
     }, [selectedOption, setValue]);
 
     const handleCheckboxChange = (value: string, checked: boolean) => {
-        console.log("handling change")
         handleOptionChange(value);
         const updatedValue = checked
             ? [...dietsAndSupplements, value]
@@ -63,6 +72,14 @@ const NutritionHistory: React.FC = () => {
             }
         }
     };
+
+    useEffect(() => {
+        if (formData) {
+            setShowSpecialDietType(formData.hasSpecialDiet === 'Yes');
+            setShowFoodAllergies(formData.hasFoodAllergies === 'Yes');
+            setSelectedOption(formData.dietsAndSupplements?.includes('None_apply') ? 'None_apply' : '');
+        }
+    }, [formData]);
 
     return (
         <>

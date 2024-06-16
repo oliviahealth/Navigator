@@ -3,7 +3,7 @@ import { useFormContext } from "react-hook-form";
 import { YesNoEnum, getErrorMessage, labelMapping, PregnancyTypeEnum, NotBreastfedDesiredLengthReasonsEnum, BreastfeedingMethodEnum, BreastfeedingMedicalConcernsEnum } from "../definitions";
 
 const BreastfeedingAssessment: React.FC = () => {
-    const { register, setValue, formState: { errors }, watch } = useFormContext();
+    const { register, formState: { errors } } = useFormContext();
 
     const [selectedOption, setSelectedOption] = useState('');
     const handleOptionChange = (value: string) => {

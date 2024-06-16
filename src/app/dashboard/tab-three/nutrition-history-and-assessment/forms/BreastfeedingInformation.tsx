@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { YesNoEnum, getErrorMessage, labelMapping, PregnancyTypeEnum, NotBreastfedDesiredLengthReasonsEnum, BreastfeedingMethodEnum } from "../definitions";
+import {
+    YesNoEnum,
+    getErrorMessage,
+    labelMapping,
+    PregnancyTypeEnum,
+    NotBreastfedDesiredLengthReasonsEnum,
+    BreastfeedingMethodEnum,
+    INutritionHistoryAndAssessmentInputs
+} from "../definitions";
 
-const BreastfeedingInformation: React.FC = () => {
+const BreastfeedingInformation: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, setValue, formState: { errors }, watch } = useFormContext();
 
     const [showPregnancyType, setShowPregnancyType] = useState<boolean>(false);
@@ -46,6 +54,15 @@ const BreastfeedingInformation: React.FC = () => {
             setValue("breastfeedingMethodOther", null);
         }
     };
+
+    useEffect(() => {
+        if (formData) {
+            setShowPregnancyType(formData.breastfeedingMultipleChildren === 'Yes');
+            setShowNotBreastfedDesiredLengthReasons(formData.breastfedDesiredLength === 'No')
+            setNotBreastfedDesiredLengthReasonsOtherSelected(formData.notBreastfedDesiredLengthReasons?.includes('Other') || false);
+            setBreastfeedingMethodOther(formData.breastfeedingMethod === 'Other');
+        }
+    }, [formData]);
 
     return (
         <>

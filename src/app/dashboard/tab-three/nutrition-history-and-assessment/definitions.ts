@@ -343,13 +343,13 @@ export const labelMapping = {
     }
 };
 
-export const NutritionHistoryAndAssessmentInputSchema = z.object({
+export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     todaysDate: z.union([z.date(), z.string().min(1, "Today's date required.")]),
     name: z.string().min(1, "Name required."),
     gradesCompleted: z.string().min(1, "Grades completed required."),
     currentlyMarried: MarriedEnum,
     hispanicLatino: YesNoEnum.nullable(),
-    race: z.array(RaceEnum).nullable(),
+    race: z.array(RaceEnum).default([]), // work around for prisma not allowing nullable arrays
     lastMenstrualPeriod: z.union([z.date(), z.string().min(1, "Last menstrual period required.")]),
     dueDate: z.union([z.date(), z.string().min(1, "Baby's due date required.")]),
     weightBeforePregnancy: z.string().min(1, "Weight before pregnancy required."),
@@ -388,7 +388,7 @@ export const NutritionHistoryAndAssessmentInputSchema = z.object({
     breastfeedingMultipleChildren: YesNoEnum,
     pregnancyType: PregnancyTypeEnum.nullable(),
     breastfedDesiredLength: YesNoEnum,
-    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum).nullable(),
+    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum).default([]),  // work around for prisma not allowing nullable arrays
     notBreastfedDesiredLengthReasonsOther: z.string().nullable(),
     heardAboutBreastfeeding: z.string().min(1, "Required."),
     breastfeedingMethod: BreastfeedingMethodEnum,
@@ -413,9 +413,9 @@ export const NutritionHistoryAndAssessmentInputSchema = z.object({
     herbalSupplementsType: z.string().nullable(),
     staffNotes: z.string().nullable()
 });
-export type INutritionHistoryAndAssessmentInputs = z.infer<typeof NutritionHistoryAndAssessmentInputSchema>;
+export type INutritionHistoryAndAssessmentInputs = z.infer<typeof NutritionHistoryAndAssessmentInputsSchema>;
 
-export const NutritionHistoryAndAssessmentResponseSchema = NutritionHistoryAndAssessmentInputSchema.extend({
+export const NutritionHistoryAndAssessmentResponseSchema = NutritionHistoryAndAssessmentInputsSchema.extend({
     id: z.string(),
     userId: z.string(),
     dateCreated: z.date(),

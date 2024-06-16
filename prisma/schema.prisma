@@ -720,7 +720,7 @@ model NutritionHistoryAndAssessment {
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
   hispanicLatino                        YesNo?
-  race                                  NutritionHistoryAndAssessmentRace?
+  race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime
   weightBeforePregnancy                 String
@@ -729,7 +729,7 @@ model NutritionHistoryAndAssessment {
   timesPregnantTwentyWeeks              NumMonthsPregnantTwentyWeeks
   numPregnanciesTwentyWeeks             String?
   numMonthsPregnant                     NumMonthsPregnant
-  pregnancyInfo                         CurrentPregnancyInfo[]
+  currentPregnancyInfo                         CurrentPregnancyInfo[]
   timesSeenHealthProvider               String
   hivBloodTest                          String
   previousPregnancyInfo                 PreviousPregnancyInfo[]
@@ -759,7 +759,7 @@ model NutritionHistoryAndAssessment {
   breastfeedingMultipleChildren         YesNo
   pregnancyType                         PregnancyType?
   breastfedDesiredLength                YesNo
-  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] //should be nullable 
+  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] @default([])
   notBreastfedDesiredLengthReasonsOther String?
   heardAboutBreastfeeding               String
   breastfeedingMethod                   BreastfeedingMethod

@@ -1,8 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { NumMonthsPregnantEnum, NumMonthsPregnantTwentyWeeksEnum, CurrentPregnancyInfoEnum, PreviousPregnancyInfoEnum, YesNoEnum, getErrorMessage, labelMapping } from "../definitions";
+import {
+    NumMonthsPregnantEnum,
+    NumMonthsPregnantTwentyWeeksEnum,
+    CurrentPregnancyInfoEnum,
+    PreviousPregnancyInfoEnum,
+    YesNoEnum,
+    getErrorMessage,
+    labelMapping,
+    INutritionHistoryAndAssessmentInputs
+} from "../definitions";
 
-const PregnancyInformation: React.FC = () => {
+const PregnancyInformation: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
 
     const [selectedOption, setSelectedOption] = useState('');
@@ -23,6 +32,14 @@ const PregnancyInformation: React.FC = () => {
             setValue("numPregnanciesTwentyWeeks", '');
         }
     };
+
+    useEffect(() => {
+        if (formData) {
+            setShowNumPregnancies(formData.timesPregnantTwentyWeeks === 'Number_of_pregnancies');
+            setSelectedOption(formData.currentPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
+            setSelectedOption(formData.previousPregnancyInfo.includes('None_Apply') ? 'None_Apply' : '');
+        }
+    }, [formData]);
 
     return (
         <>
@@ -235,18 +252,18 @@ const PregnancyInformation: React.FC = () => {
                 <div className="space-y-4">
                     <div className="space-y-3">
                         <p className="font-semibold">For any previous pregnancies, please check all that occurred.</p>
-                            {PreviousPregnancyInfoEnum.options.map(option => (
-                                <label key={option} className="flex items-center">
-                                    <input
-                                        {...register("previousPregnancyInfo")}
-                                        type="checkbox"
-                                        value={option}
-                                        onChange={(e) => handleOptionChange(e.target.value)}
-                                        disabled={selectedOption === 'None_Apply' && option !== 'None_Apply'}
-                                    />
-                                    <span className="ml-2">{labelMapping.previousPregnancyInfo[option]}</span>
-                                </label>
-                            ))}
+                        {PreviousPregnancyInfoEnum.options.map(option => (
+                            <label key={option} className="flex items-center">
+                                <input
+                                    {...register("previousPregnancyInfo")}
+                                    type="checkbox"
+                                    value={option}
+                                    onChange={(e) => handleOptionChange(e.target.value)}
+                                    disabled={selectedOption === 'None_Apply' && option !== 'None_Apply'}
+                                />
+                                <span className="ml-2">{labelMapping.previousPregnancyInfo[option]}</span>
+                            </label>
+                        ))}
                         {errors.previousPregnancyInfo && (
                             <span className="label-text-alt text-red-500">
                                 {getErrorMessage(errors.previousPregnancyInfo)}

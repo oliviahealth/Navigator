@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
                             Parental Medical History
                         </a>
 
-                        <a href={'dashboard/tab-three/nutrition-history-and-assessment/new'}>
+                        <a href={'dashboard/tab-three/nutrition-history-and-assessment/edit/be8087fa-4b62-4dd1-8ba7-2d5fb7ef6e4b'}>
                             Nutrition History Assessment
                         </a>
                     </div>

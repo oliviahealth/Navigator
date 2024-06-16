@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
     YesNoEnum,
@@ -8,10 +8,11 @@ import {
     YesNoUnknownEnum, CigarettesEnum,
     HouseholdSmokingEnum,
     AlcoholBeforePregnancyEnum,
-    SubstanceUseEnum
+    SubstanceUseEnum,
+    INutritionHistoryAndAssessmentInputs
 } from "../definitions";
 
-const MedicalInformation: React.FC = () => {
+const MedicalInformation: React.FC<{ formData: INutritionHistoryAndAssessmentInputs | null }> = ({ formData }) => {
     const { register, setValue, formState: { errors } } = useFormContext();
 
     const [showMedications, setShowMedications] = useState<boolean>(false);
@@ -92,6 +93,19 @@ const MedicalInformation: React.FC = () => {
             setSelectedOption('');
         }
     };
+
+    useEffect(() => {
+        if (formData) {
+            setShowMedications(formData.takesMedication === 'Yes');
+            setShowSideEffects(formData.hasSideEffects === 'Yes');
+            setShowDentalProblems(formData.hasDentalProblems === 'Yes');
+            setShowSpecifiedTimesTakenMultivitamin(formData.timesTakenMultivitaminOptions === 'Specify_number_of_times');
+            setShowSpecifiedNumCigarettesBeforePregnancy(formData.cigarettesBeforePregnancy === 'Specified_number');
+            setShowSpecifiedNumCigarettesNow(formData.cigarettesSmokedNow === 'Specified_number');
+            setShowSpecifiedNumDrinks(formData.alcoholBeforePregnancy === 'Specified_number');
+            setSelectedOption(formData.substanceUse.includes('None') ? 'None' : '');
+        }
+    }, [formData]);
 
     return (
         <>
@@ -463,18 +477,18 @@ const MedicalInformation: React.FC = () => {
                     <div className="space-y-3">
                         <p className="font-semibold">Are you currently?</p>
                         <small>Check all that apply</small>
-                            {SubstanceUseEnum.options.map(option => (
-                                <label key={option} className="flex items-center">
-                                    <input
-                                        {...register("substanceUse")}
-                                        type="checkbox"
-                                        value={option}
-                                        onChange={(e) => handleOptionChange(e.target.value)}
-                                        disabled={selectedOption === 'None' && option !== 'None'}
-                                    />
-                                    <span className="ml-2">{labelMapping.substanceUse[option]}</span>
-                                </label>
-                            ))}
+                        {SubstanceUseEnum.options.map(option => (
+                            <label key={option} className="flex items-center">
+                                <input
+                                    {...register("substanceUse")}
+                                    type="checkbox"
+                                    value={option}
+                                    onChange={(e) => handleOptionChange(e.target.value)}
+                                    disabled={selectedOption === 'None' && option !== 'None'}
+                                />
+                                <span className="ml-2">{labelMapping.substanceUse[option]}</span>
+                            </label>
+                        ))}
                         {errors.substanceUse && (
                             <span className="label-text-alt text-red-500">
                                 {getErrorMessage(errors.substanceUse)}
