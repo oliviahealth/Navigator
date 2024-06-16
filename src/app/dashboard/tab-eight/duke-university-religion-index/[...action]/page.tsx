@@ -106,6 +106,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
             >
                 <div className="pt-6">
                     <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Duke University Religion Index</p>
+                    <small>This is a short assessment to better understand how you are involved (if at all) in religion or religious practices.</small>
                 </div>
 
                 <div className="space-y-16 pt-12">
