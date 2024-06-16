@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useAppStore from "@/lib/useAppStore";
 import PregnantWomanHealthAndDiet from "../forms/PregnantWomanHealthAndDietQuestions";
 import PregnancyInformation from "../forms/PregnancyInformation";
-import { INutritionHistoryAndAssessmentInputs, NutritionHistoryAndAssessmentInputsSchema, NutritionHistoryAndAssessmentResponseSchema } from "../definitions";
+import { INutritionHistoryAndAssessmentInputs, NutritionHistoryAndAssessmentInputsSchema, NutritionHistoryAndAssessmentResponseSchema, pages } from "../definitions";
 import MedicalInformation from "../forms/MedicalInformation";
 import BreastfeedingInformation from "../forms/BreastfeedingInformation";
 import BreastfeedingAssessment from "../forms/BreastfeedingAssessment";
@@ -34,64 +34,6 @@ const NutritionHistoryAndAssessment: React.FC = () => {
             setCurrentStep(currentStep - 1);
         }
     };
-
-    const pages: Array<keyof Partial<INutritionHistoryAndAssessmentInputs>>[] = [
-        ["todaysDate", "name", "gradesCompleted", "currentlyMarried", "hispanicLatino", "race"],
-        ["lastMenstrualPeriod", "dueDate", "weightBeforePregnancy", "numPregnancies", "numLiveBabies", "timesPregnantTwentyWeeks", "numPregnanciesTwentyWeeks", "numMonthsPregnant", "currentPregnancyInfo", "timesSeenHealthProvider", "hivBloodTest", "previousPregnancyInfo"],
-        ["takesMedication",
-            "medications",
-            "hasSideEffects",
-            "sideEffects",
-            "hasDentalProblems",
-            "dentalProblems",
-            "timesTakenMultivitaminOptions",
-            "specifiedTimesTakenMultivitamin",
-            "hasTakenVitaminsMinerals",
-            "cigarettesBeforePregnancy",
-            "specifiedNumCigarettesBeforePregnancy",
-            "cigarettesSmokedNow",
-            "specifiedNumCigarettesSmokedNow",
-            "householdSmoking",
-            "alcoholBeforePregnancy",
-            "specifiedNumDrinks",
-            "alcoholDuringPregnancy",
-            "substanceUse",
-            "disabilityLimitingFeedingDecisions"
-        ],
-        ["hasBreastfed",
-            "currentlyBreastfeeding",
-            "babyLessThanOneYear",
-            "infantId",
-            "breastfeedingMultipleChildren",
-            "pregnancyType",
-            "breastfedDesiredLength",
-            "notBreastfedDesiredLengthReasons",
-            "notBreastfedDesiredLengthReasonsOther",
-            "heardAboutBreastfeeding",
-            "breastfeedingMethod",
-            "breastfeedingMethodOther",
-            "breastfeedingGoal",
-            "moreInformationInterest"
-        ],
-        ["breastfeedingMedicalConcerns"],
-        ["numMealsPerDay",
-            "numSnacksPerDay",
-            "milkPerDay",
-            "appetite",
-            "hasSpecialDiet",
-            "specialDietType",
-            "fastFoodPerWeek",
-            "hasFoodAllergies",
-            "foodAllergiesType",
-            "consumeEveryday",
-            "milkType",
-            "highRiskFood",
-            "dietsAndSupplements",
-            "vitaminSupplementsType",
-            "herbalSupplementsType",
-            "staffNotes",
-        ]
-    ];
 
     const goForward = async (step: number) => {
         const isValid = await methods.trigger(pages[step]);

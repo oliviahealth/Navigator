@@ -347,8 +347,8 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     name: z.string().min(1, "Name required."),
     gradesCompleted: z.string().min(1, "Grades completed required."),
     currentlyMarried: MarriedEnum,
-    hispanicLatino: YesNoEnum.nullish(),
-    race: z.array(RaceEnum).nullish(),
+    hispanicLatino: YesNoEnum.nullable(),
+    race: z.array(RaceEnum),
     lastMenstrualPeriod: z.union([z.date(), z.string().min(1, "Last menstrual period required.")]),
     dueDate: z.union([z.date(), z.string().min(1, "Baby's due date required.")]),
     weightBeforePregnancy: z.string().min(1, "Weight before pregnancy required."),
@@ -359,7 +359,7 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     numMonthsPregnant: NumMonthsPregnantEnum,
     currentPregnancyInfo: z.array(CurrentPregnancyInfoEnum).min(1, "Select at least one option."),
     timesSeenHealthProvider: z.string().min(1, "Number of times seen health provider required."),
-    hivBloodTest: z.string().min(1, "HIV blood test taken required."),
+    hivBloodTest: YesNoEnum,
     previousPregnancyInfo: z.array(PreviousPregnancyInfoEnum).min(1, "Select at least one option."),
     takesMedication: YesNoEnum,
     medications: z.string().nullable(),
@@ -387,7 +387,7 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     breastfeedingMultipleChildren: YesNoEnum,
     pregnancyType: PregnancyTypeEnum.nullable(),
     breastfedDesiredLength: YesNoEnum,
-    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum).nullish(),
+    notBreastfedDesiredLengthReasons: z.array(NotBreastfedDesiredLengthReasonsEnum),
     notBreastfedDesiredLengthReasonsOther: z.string().nullable(),
     heardAboutBreastfeeding: z.string().min(1, "Required."),
     breastfeedingMethod: BreastfeedingMethodEnum,
@@ -428,3 +428,86 @@ export const getErrorMessage = (error: any) => {
     }
     return '';
 };
+
+export const pages: Array<keyof Partial<INutritionHistoryAndAssessmentInputs>>[] = [
+    [
+        "todaysDate",
+        "name",
+        "gradesCompleted",
+        "currentlyMarried",
+        "hispanicLatino",
+        "race"
+    ],
+    [
+        "lastMenstrualPeriod",
+        "dueDate",
+        "weightBeforePregnancy",
+        "numPregnancies",
+        "numLiveBabies",
+        "timesPregnantTwentyWeeks",
+        "numPregnanciesTwentyWeeks",
+        "numMonthsPregnant",
+        "currentPregnancyInfo",
+        "timesSeenHealthProvider",
+        "hivBloodTest",
+        "previousPregnancyInfo"
+    ],
+    [
+        "takesMedication",
+        "medications",
+        "hasSideEffects",
+        "sideEffects",
+        "hasDentalProblems",
+        "dentalProblems",
+        "timesTakenMultivitaminOptions",
+        "specifiedTimesTakenMultivitamin",
+        "hasTakenVitaminsMinerals",
+        "cigarettesBeforePregnancy",
+        "specifiedNumCigarettesBeforePregnancy",
+        "cigarettesSmokedNow",
+        "specifiedNumCigarettesSmokedNow",
+        "householdSmoking",
+        "alcoholBeforePregnancy",
+        "specifiedNumDrinks",
+        "alcoholDuringPregnancy",
+        "substanceUse",
+        "disabilityLimitingFeedingDecisions"
+    ],
+    [
+        "hasBreastfed",
+        "currentlyBreastfeeding",
+        "babyLessThanOneYear",
+        "infantId",
+        "breastfeedingMultipleChildren",
+        "pregnancyType",
+        "breastfedDesiredLength",
+        "notBreastfedDesiredLengthReasons",
+        "notBreastfedDesiredLengthReasonsOther",
+        "heardAboutBreastfeeding",
+        "breastfeedingMethod",
+        "breastfeedingMethodOther",
+        "breastfeedingGoal",
+        "moreInformationInterest"
+    ],
+    [
+        "breastfeedingMedicalConcerns"
+    ],
+    [
+        "numMealsPerDay",
+        "numSnacksPerDay",
+        "milkPerDay",
+        "appetite",
+        "hasSpecialDiet",
+        "specialDietType",
+        "fastFoodPerWeek",
+        "hasFoodAllergies",
+        "foodAllergiesType",
+        "consumeEveryday",
+        "milkType",
+        "highRiskFood",
+        "dietsAndSupplements",
+        "vitaminSupplementsType",
+        "herbalSupplementsType",
+        "staffNotes"
+    ]
+];

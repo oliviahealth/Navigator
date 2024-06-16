@@ -750,7 +750,7 @@ model NutritionHistoryAndAssessment {
   name                                  String
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
-  hispanicLatino                        YesNo
+  hispanicLatino                        YesNo?
   race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime

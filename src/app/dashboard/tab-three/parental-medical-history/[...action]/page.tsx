@@ -39,7 +39,6 @@ const ParentalMedicalHistory: React.FC = () => {
         }
     };
 
-
     const {
         register,
         handleSubmit,
@@ -49,18 +48,20 @@ const ParentalMedicalHistory: React.FC = () => {
     } = useForm<IParentalMedicalHistoryInputs>({
         resolver: zodResolver(ParentalMedicalHistoryInputsSchema),
     });
-
-
+    
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
-
             try {
                 if (verb !== 'edit') {
                     return;
                 }
-                
+
                 if (!user) {
-                    throw new Error('User not found');
+                    throw new Error("User not found");
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
                 }
 
                 const response = await readParentalMedicalHistory(submissionId, user.id);
@@ -76,21 +77,18 @@ const ParentalMedicalHistory: React.FC = () => {
 
                 reset(formattedResponse);
 
-                const initialShowPostpartumLocationDate = response.attendedPostpartumVisit === 'Yes';
-                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+                setShowPostpartumLocationDate(response.attendedPostpartumVisit === 'Yes');
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard')
-
-                return;
+                router.push('/dashboard');
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
-
-        if(user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IParentalMedicalHistoryInputs) => {
         console.log(data);
