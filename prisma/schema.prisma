@@ -534,3 +534,34 @@ model CurrentMedicationList {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
+model HousingSecurityHomeVisitForm {
+  id              Int              @id @default(autoincrement())
+  participantName String
+  dateOfVisit     DateTime
+  caseId          BigInt
+  staffName       String
+  healthInsurance Int
+  concerns        Int
+  erVisit         Int
+  wellChild       Int
+  userId          String?
+  ErVisits        ErVisits[]
+  WellChildVisits WellChildVisits[]
+}
+
+model ErVisits {
+  id           Int                       @id @default(autoincrement())
+  visitId      BigInt                    @map("visitid")
+  date         DateTime
+  reason       Int
+  HomeVisit    HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
+}
+
+model WellChildVisits {
+  id               Int                       @id @default(autoincrement())
+  visitId          BigInt                    @map("visitid")
+  childName        String
+  visitsCompleted  String[]                  @pg.Array(String)
+  HomeVisit        HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
+}
