@@ -40,6 +40,7 @@ model User {
   ParentalMedicalHistory                 ParentalMedicalHistory[]
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
+  NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
 }
 
 enum CommunicationMethod {
@@ -548,6 +549,271 @@ model CurrentMedicationList {
 
   currentMedicationList Json[]
   notes                 String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum MarriedEnum {
+  Married
+  Unmarried
+}
+
+enum NutritionHistoryAndAssessmentRace {
+  American_Indian
+  Black
+  White_European
+  Hawaiian
+  North_African
+  Middle_Eastern
+}
+
+enum NumMonthsPregnantTwentyWeeks {
+  None
+  Number_of_pregnancies
+  Unknown
+}
+
+enum NumMonthsPregnant {
+  First
+  Second
+  Third
+  Fourth
+  Fifth
+  Sixth
+  Seventh
+  Eighth_Ninth
+  Unknown
+  No_medical_care
+}
+
+enum CurrentPregnancyInfo {
+  Weight_loss
+  Nausea
+  Gestational_Diabetes
+  Twins
+  Fetal_Growth_Restriction
+  High_Blood_Pressure
+  None_Apply
+}
+
+enum PreviousPregnancyInfo {
+  GDM
+  Preterm_delivery
+  Early_term_delivery
+  Five_pounds_or_less
+  Died_after_5_months_PG
+  Preeclampsia
+  Died_before_one_month
+  Miscarriage
+  Birth_defects
+  Nine_pounds_at_birth
+  None_Apply
+}
+
+enum TimesTakenMultivitamin {
+  Less_than_once_per_week
+  Specify_number_of_times
+  Eight_or_more_times
+  Unknown
+}
+
+enum YesNoUnknown {
+  Yes
+  No
+  Unknown
+}
+
+enum Cigarettes {
+  Do_not_smoke
+  Specified_number
+  Ninety_seven_or_more
+  Smoked_but_quantity_unknown
+  Unknown_or_refused
+}
+
+enum HouseholdSmoking {
+  Someone_else
+  No_one_else
+  Unknown
+}
+
+enum AlcoholBeforePregnancy {
+  Did_not_drink
+  Specified_number
+  Twenty_one_or_more
+  Drank_but_quantity_unknown
+  Unknown_or_refused
+}
+
+enum SubstanceUse {
+  Illegal_substance
+  Abusing_prescription
+  Marijuana
+  None
+}
+
+enum PregnancyType {
+  Same_pregnancy
+  Different_pregnancy
+}
+
+enum NotBreastfedDesiredLengthReasons {
+  Difficult_latching
+  Baby_not_satisfied
+  Baby_not_gaining_weight
+  Sore_nipples
+  Not_producing_milk
+  Too_many_household_duties
+  Right_time_to_stop
+  Sick_or_medical_reasons
+  Work
+  School
+  Lack_of_support
+  Baby_illness
+  Doctor_recommended
+  Other
+}
+
+enum BreastfeedingMethod {
+  Nurse
+  Pump_and_nurse
+  Pump_only
+  Formula_and_milk
+  Dont_want_to
+  Dont_know
+  Other
+}
+
+enum BreastfeedingMedicalConcerns {
+  Breast_surgery
+  Hypothyroidism
+  Diabetes
+  Depression
+  HIV
+  No_concerns
+}
+
+enum NumPerDay {
+  zero
+  one
+  two
+  three
+  four
+  five_or_more
+}
+
+enum Appetite {
+  Good
+  Fair
+  Poor
+}
+
+enum EverydayFood {
+  Milk
+  Sweet_beverages
+  Snacks
+  Whole_grains
+  Fruits_and_vegetables
+}
+
+enum HighRiskFood {
+  Unpasteurized_drink
+  Soft_cheese
+  Raw_meat
+  Raw_sprouts
+  Refrigerated_pate
+  Hot_dogs
+  Michigan_fish
+  None_apply
+}
+
+enum DietsAndSupplements {
+  Vegetarian
+  Low_calorie
+  Low_carb
+  Bariatric_surgery
+  PICA
+  Vitamin_supplement
+  Herbal_supplement
+  Fluoride
+  None_apply
+}
+
+model NutritionHistoryAndAssessment {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  todaysDate                            DateTime
+  name                                  String
+  gradesCompleted                       String
+  currentlyMarried                      MarriedEnum
+  hispanicLatino                        YesNo
+  race                                  NutritionHistoryAndAssessmentRace[] @default([])
+  lastMenstrualPeriod                   DateTime
+  dueDate                               DateTime
+  weightBeforePregnancy                 String
+  numPregnancies                        String
+  numLiveBabies                         String
+  timesPregnantTwentyWeeks              NumMonthsPregnantTwentyWeeks
+  numPregnanciesTwentyWeeks             String?
+  numMonthsPregnant                     NumMonthsPregnant
+  currentPregnancyInfo                  CurrentPregnancyInfo[]
+  timesSeenHealthProvider               String
+  hivBloodTest                          YesNo
+  previousPregnancyInfo                 PreviousPregnancyInfo[]
+  takesMedication                       YesNo
+  medications                           String?
+  hasSideEffects                        YesNo
+  sideEffects                           String?
+  hasDentalProblems                     YesNo
+  dentalProblems                        String?
+  timesTakenMultivitaminOptions         TimesTakenMultivitamin
+  specifiedTimesTakenMultivitamin       String?
+  hasTakenVitaminsMinerals              YesNoUnknown
+  cigarettesBeforePregnancy             Cigarettes
+  specifiedNumCigarettesBeforePregnancy String?
+  cigarettesSmokedNow                   Cigarettes
+  specifiedNumCigarettesSmokedNow       String?
+  householdSmoking                      HouseholdSmoking
+  alcoholBeforePregnancy                AlcoholBeforePregnancy
+  specifiedNumDrinks                    String?
+  alcoholDuringPregnancy                YesNo
+  substanceUse                          SubstanceUse[]
+  disabilityLimitingFeedingDecisions    YesNo
+  hasBreastfed                          YesNo
+  currentlyBreastfeeding                YesNo
+  babyLessThanOneYear                   YesNo
+  infantId                              String
+  breastfeedingMultipleChildren         YesNo
+  pregnancyType                         PregnancyType?
+  breastfedDesiredLength                YesNo
+  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] @default([])
+  notBreastfedDesiredLengthReasonsOther String?
+  heardAboutBreastfeeding               String
+  breastfeedingMethod                   BreastfeedingMethod
+  breastfeedingMethodOther              String?
+  breastfeedingGoal                     String
+  moreInformationInterest               YesNo
+  breastfeedingMedicalConcerns          BreastfeedingMedicalConcerns[]
+  numMealsPerDay                        NumPerDay
+  numSnacksPerDay                       NumPerDay
+  milkPerDay                            NumPerDay
+  appetite                              Appetite
+  hasSpecialDiet                        YesNo
+  specialDietType                       String?
+  fastFoodPerWeek                       NumPerDay
+  hasFoodAllergies                      YesNo
+  foodAllergiesType                     String?
+  consumeEveryday                       EverydayFood[]
+  milkType                              String?
+  highRiskFood                          HighRiskFood[]
+  dietsAndSupplements                   DietsAndSupplements[]
+  vitaminSupplementsType                String?
+  herbalSupplementsType                 String?
+  staffNotes                            String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
