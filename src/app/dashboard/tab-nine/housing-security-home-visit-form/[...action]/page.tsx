@@ -135,15 +135,15 @@ const HousingSecurityHomeVisit: React.FC = () => {
                 </div>
 
                 <div className="space-y-3">
-                    <p className="font-semibold">Date Completed</p>
+                    <p className="font-semibold">Date of Visit</p>
                     <input
-                        {...register("dateCompleted")}
+                        {...register("dateOfVisit")}
                         className="border border-gray-300 px-4 py-2 rounded-md w-full"
                         type="date"
                     />
-                    {errors.dateCompleted && (
+                    {errors.dateOfVisit && (
                         <span className="label-text-alt text-red-500">
-                            {errors.dateCompleted.message}
+                            {errors.dateOfVisit.message}
                         </span>
                     )}
                 </div>
