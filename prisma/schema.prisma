@@ -38,6 +38,7 @@ model User {
   ChildrenNeedsForm                      ChildrenNeedsForm[]
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
+  EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
 }
@@ -523,6 +524,36 @@ model ParentalMedicalHistory {
   dateModified DateTime @updatedAt
 }
 
+model EncounterForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName String
+  caseId          String
+  monthYear       String
+
+  encounterEntries Json[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
 enum MarriedEnum {
   Married
   Unmarried
@@ -783,19 +814,6 @@ model NutritionHistoryAndAssessment {
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
   staffNotes                            String?
-
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
-}
-
-model CurrentMedicationList {
-  id String @id @default(uuid())
-
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  currentMedicationList Json[]
-  notes                 String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
