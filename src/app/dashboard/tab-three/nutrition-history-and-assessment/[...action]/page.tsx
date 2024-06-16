@@ -151,7 +151,11 @@ const NutritionHistoryAndAssessment: React.FC = () => {
         <div className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${currentStep < 5 ? "pt-20" : "pt-4"} px-32`}>
             <FormProvider {...methods}>
                 <form onSubmit={methods.handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2">
-                    <div className="flex flex-col items-center">
+                    <div>
+                        <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Nutrition History And Assessment</p>
+                    </div>
+
+                    <div className="flex flex-col items-center pt-6">
                         {steps[currentStep]}
                     </div>
 
