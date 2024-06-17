@@ -12,7 +12,8 @@ import {
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
-import { createHousingSecurityHomeVisit, readHousingSecurityHomeVisit, updateHousingSecurityHomeVisit } from "../actions";
+import { createHousingSecurityHomeVisit} from "../actions";
+// import { createHousingSecurityHomeVisit, readHousingSecurityHomeVisit, updateHousingSecurityHomeVisit } from "../actions";
 
 const HousingSecurityHomeVisit: React.FC = () => {
     const router = useRouter();
@@ -36,34 +37,34 @@ const HousingSecurityHomeVisit: React.FC = () => {
         resolver: zodResolver(HousingSecurityHomeVisitInputsSchema),
     });
 
-    useEffect(() => {
-        const fetchAndPopulatePastSubmissionData = async () => {
-            try {
-                if (verb !== 'edit') {
-                    return;
-                }
+    // useEffect(() => {
+    //     const fetchAndPopulatePastSubmissionData = async () => {
+    //         try {
+    //             if (verb !== 'edit') {
+    //                 return;
+    //             }
                 
-                if (!user) {
-                    throw new Error('User not found');
-                }
+    //             if (!user) {
+    //                 throw new Error('User not found');
+    //             }
 
-                const response = await readHousingSecurityHomeVisit(submissionId, user.id);
+    //             const response = await readHousingSecurityHomeVisit(submissionId, user.id);
 
-                const validResponse = HousingSecurityHomeVisitResponseSchema.parse(response);
+    //             const validResponse = HousingSecurityHomeVisitResponseSchema.parse(response);
 
-                reset(validResponse);
-            } catch (error) {
-                console.error(error);
-                setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
-                return;
-            }
-        }
+    //             reset(validResponse);
+    //         } catch (error) {
+    //             console.error(error);
+    //             setErrorMessage('Something went wrong! Please try again later');
+    //             router.push('/dashboard');
+    //             return;
+    //         }
+    //     }
 
-        if(user) return;
+    //     if(user) return;
 
-        fetchAndPopulatePastSubmissionData();
-    }, [user, verb, submissionId, reset, setErrorMessage, router]);
+    //     fetchAndPopulatePastSubmissionData();
+    // }, [user, verb, submissionId, reset, setErrorMessage, router]);
 
     const submit = async (data: IHousingSecurityHomeVisitInputs) => {
         console.log(data);
@@ -74,10 +75,17 @@ const HousingSecurityHomeVisit: React.FC = () => {
                 throw new Error("User missing");
             }
 
+            // if (verb === 'new') {
+            //     response = await createHousingSecurityHomeVisit(data, user.id);
+            // } 
+            // else {
+            //     response = await updateHousingSecurityHomeVisit(data, submissionId, user.id);
+            // }
             if (verb === 'new') {
                 response = await createHousingSecurityHomeVisit(data, user.id);
-            } else {
-                response = await updateHousingSecurityHomeVisit(data, submissionId, user.id);
+            } 
+            else {
+                response = await createHousingSecurityHomeVisit(data, user.id);
             }
 
             HousingSecurityHomeVisitResponseSchema.parse(response);

@@ -552,11 +552,4 @@ model HousingSecurityHomeVisitForm {
   dateOfVisit     DateTime
   caseId          String
   staffName       String
-  healthInsurance YesNo
-  concerns        YesNoDidNotAsk
-  erVisit         YesNo
-  wellChild       Int
-  ErVisits        Json[]
-  WellChildVisits YesNo
-  WellChildVisitsSpecific Json[]
 }
