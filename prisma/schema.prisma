@@ -127,6 +127,7 @@ model EnrollmentForm {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
+  HomeVisits         HousingSecurityHomeVisitForm[]
 }
 
 model MediaAppearanceForm {
@@ -536,7 +537,7 @@ model CurrentMedicationList {
 }
 
 model HousingSecurityHomeVisitForm {
-  id              Int              @id @default(autoincrement())
+  id              Int       @id @default(autoincrement())
   participantName String
   dateOfVisit     DateTime
   caseId          BigInt
@@ -545,23 +546,25 @@ model HousingSecurityHomeVisitForm {
   concerns        Int
   erVisit         Int
   wellChild       Int
-  userId          String?
+  userId          String?   @db.VarChar(255)
+  User            User?     @relation(fields: [userId], references: [id])
+
   ErVisits        ErVisits[]
   WellChildVisits WellChildVisits[]
 }
 
 model ErVisits {
-  id           Int                       @id @default(autoincrement())
-  visitId      BigInt                    @map("visitid")
+  id           Int                        @id @default(autoincrement())
+  visitId      Int                        @map("visitid")
   date         DateTime
   reason       Int
   HomeVisit    HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
 }
 
 model WellChildVisits {
-  id               Int                       @id @default(autoincrement())
-  visitId          BigInt                    @map("visitid")
+  id               Int                        @id @default(autoincrement())
+  visitId          Int                        @map("visitid")
   childName        String
-  visitsCompleted  String[]                  @pg.Array(String)
+  visitsCompleted  String[]                   // Correct type for PostgreSQL
   HomeVisit        HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
 }
