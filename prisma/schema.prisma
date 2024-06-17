@@ -552,4 +552,7 @@ model HousingSecurityHomeVisitForm {
   dateOfVisit     DateTime
   caseId          String
   staffName       String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt @default(now())
 }

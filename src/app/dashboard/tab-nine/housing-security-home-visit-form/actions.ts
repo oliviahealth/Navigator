@@ -12,7 +12,7 @@ import { IHousingSecurityHomeVisitInputs, IHousingSecurityHomeVisitResponse } fr
  */
 export const createHousingSecurityHomeVisit = async (housingSecurityHomeVisitInput: IHousingSecurityHomeVisitInputs, userId: string) => {
 
-    const { dateOfVisit, ...otherData } = housingSecurityHomeVisitInput;
+    const { dateOfVisit, ...rest } = housingSecurityHomeVisitInput;
 
     const formattedDate = new Date(dateOfVisit); 
 
@@ -20,7 +20,7 @@ export const createHousingSecurityHomeVisit = async (housingSecurityHomeVisitInp
         data: {
             userId,
             dateOfVisit: formattedDate,
-            ...otherData,
+            ...rest,
         },
     });
     return response;
