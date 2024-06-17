@@ -41,6 +41,7 @@ model User {
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
+  EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
 }
 
 enum CommunicationMethod {
@@ -540,7 +541,6 @@ model EncounterForm {
   dateModified DateTime @updatedAt
 }
 
-
 model CurrentMedicationList {
   id String @id @default(uuid())
 
@@ -790,7 +790,7 @@ model NutritionHistoryAndAssessment {
   breastfeedingMultipleChildren         YesNo
   pregnancyType                         PregnancyType?
   breastfedDesiredLength                YesNo
-  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] @default([])
+  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[]  @default([])
   notBreastfedDesiredLengthReasonsOther String?
   heardAboutBreastfeeding               String
   breastfeedingMethod                   BreastfeedingMethod
@@ -814,6 +814,110 @@ model NutritionHistoryAndAssessment {
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
   staffNotes                            String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum Laugh {
+  As_much_as_always
+  Not_quite_so_much
+  Definitely_not_so_much
+  Not_at_all
+}
+
+enum Enjoyment {
+  As_much_as_ever
+  Rather_less
+  Definitely_less
+  Hardly
+}
+
+enum SelfBlame {
+  Yes_mostly
+  Yes_some
+  Not_often
+  Never
+}
+
+enum Anxiety {
+  Not_at_all
+  Hardly_ever
+  Yes_sometimes
+  Yes_often
+}
+
+enum Scared {
+  Yes_a_lot
+  Yes_sometimes
+  Not_much
+  Not_at_all
+}
+
+enum CopeInability {
+  Yes_mostly_have_not
+  Yes_sometimes_have_not
+  No_mostly_have
+  No_always_have
+}
+
+enum Unhappiness {
+  Yes_mostly
+  Yes_sometimes
+  Not_often
+  Not_at_all
+}
+
+enum Sadness {
+  Yes_mostly
+  Yes_often
+  Not_often
+  Not_at_all
+}
+
+enum Crying {
+  Yes_mostly
+  Yes_often
+  Occasionally
+  Never
+}
+
+enum SelfHarmThoughts {
+  Yes_often
+  Sometimes
+  Hardly_ever
+  Never
+}
+
+enum Timeframe {
+  Prenatal
+  Postnatal
+}
+
+model EdinburgPostnatalDepressionScale {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  laugh            Laugh
+  enjoyment        Enjoyment
+  selfBlame        SelfBlame
+  anxiety          Anxiety
+  scared           Scared
+  copeInability    CopeInability
+  unhappiness      Unhappiness
+  sadness          Sadness
+  crying           Crying
+  selfHarmThoughts SelfHarmThoughts
+  participantName  String
+  caseId           String
+  dateCompleted    DateTime
+  staffName        String
+  timeframe        Timeframe
+  answerToTen      SelfHarmThoughts
+  totalScore       String
+  notes            String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
