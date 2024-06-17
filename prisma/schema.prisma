@@ -39,6 +39,7 @@ model User {
   ReferralsAndServices                   ReferralsAndServices[]
   ParentalMedicalHistory                 ParentalMedicalHistory[]
   CurrentMedicationList                  CurrentMedicationList[]
+  HomeVisits                             HousingSecurityHomeVisitForm[]
 }
 
 enum CommunicationMethod {
@@ -127,7 +128,6 @@ model EnrollmentForm {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
-  HomeVisits         HousingSecurityHomeVisitForm[]
 }
 
 model MediaAppearanceForm {
@@ -536,35 +536,27 @@ model CurrentMedicationList {
   dateModified DateTime @updatedAt
 }
 
+enum YesNoDidNotAsk {
+  Yes
+  No
+  Did_Not_Ask
+}
+
 model HousingSecurityHomeVisitForm {
-  id              Int       @id @default(autoincrement())
+  id String @id @default(uuid())
+  
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
   participantName String
   dateOfVisit     DateTime
-  caseId          BigInt
+  caseId          String
   staffName       String
-  healthInsurance Int
-  concerns        Int
-  erVisit         Int
+  healthInsurance YesNo
+  concerns        YesNoDidNotAsk
+  erVisit         YesNo
   wellChild       Int
-  userId          String?   @db.VarChar(255)
-  User            User?     @relation(fields: [userId], references: [id])
-
-  ErVisits        ErVisits[]
-  WellChildVisits WellChildVisits[]
-}
-
-model ErVisits {
-  id           Int                        @id @default(autoincrement())
-  visitId      Int                        @map("visitid")
-  date         DateTime
-  reason       Int
-  HomeVisit    HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
-}
-
-model WellChildVisits {
-  id               Int                        @id @default(autoincrement())
-  visitId          Int                        @map("visitid")
-  childName        String
-  visitsCompleted  String[]                   // Correct type for PostgreSQL
-  HomeVisit        HousingSecurityHomeVisitForm @relation(fields: [visitId], references: [id])
+  ErVisits        Json[]
+  WellChildVisits YesNo
+  WellChildVisitsSpecific Json[]
 }
