@@ -554,28 +554,48 @@ model SmokingTobaccoPregnancy {
   smokingStatus SmokingStatus
 }
 
-enum Substance {
-  ALCOHOL
-  AMPHETAMINES
-  BENZODIAZEPINES
-  CANNABIS
-  COCAINE
-  HEROIN
-  KUSH
-  PRESCRIPTION_DRUGS
-  TOBACCO
-  OTHER
-}
-
 model SubstanceUseHistory {
-  id String @id @default(uuid())
-
-  User                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId              String
-  substance           Substance
-  everUsed            Boolean
-  usedDuringPregnancy Boolean
-  dateLastUsed        DateTime?
+  id                                       String  @id @default(uuid())
+  userId                                   String
+  alcohol_ever_used                        String
+  alcohol_used_during_pregnancy            String
+  alcohol_date_last_used                   String?
+  alcohol_notes                            String?
+  benzodiazepines_ever_used                String
+  benzodiazepines_used_during_pregnancy    String
+  benzodiazepines_date_last_used           String?
+  benzodiazepines_notes                    String?
+  cocaine_ever_used                        String
+  cocaine_used_during_pregnancy            String
+  cocaine_date_last_used                   String?
+  cocaine_notes                            String?
+  heroin_ever_used                         String
+  heroin_used_during_pregnancy             String
+  heroin_date_last_used                    String?
+  heroin_notes                             String?
+  kush_ever_used                           String
+  kush_used_during_pregnancy               String
+  kush_date_last_used                      String?
+  kush_notes                               String?
+  marijuana_ever_used                      String
+  marijuana_used_during_pregnancy          String
+  marijuana_date_last_used                 String?
+  marijuana_notes                          String?
+  methamphetamine_ever_used                String
+  methamphetamine_used_during_pregnancy    String
+  methamphetamine_date_last_used           String?
+  methamphetamine_notes                    String?
+  prescription_drugs_ever_used             String
+  prescription_drugs_used_during_pregnancy String
+  prescription_drugs_date_last_used        String?
+  prescription_drugs_notes                 String?
+  tobacco_ever_used                        String
+  tobacco_used_during_pregnancy            String
+  tobacco_date_last_used                   String?
+  tobacco_notes                            String?
+  other_drugs                              Json
+  notes                                    String?
+  User                                     User?   @relation(fields: [userId], references: [id])
 }
 
 model CurrentMedicationList {
@@ -592,16 +612,16 @@ model CurrentMedicationList {
 }
 
 model MedicalServicesSubstanceUse {
-  id                              String       @id @default(uuid())
-  userId                          String
-  mat_engaged                     String
-  date_used_mat                   DateTime?
-  medications                     Json
-  mat_clinic_name                 String?
-  mat_clinic_phone                String?
+  id                               String    @id @default(uuid())
+  userId                           String
+  mat_engaged                      String
+  date_used_mat                    DateTime?
+  medications                      Json
+  mat_clinic_name                  String?
+  mat_clinic_phone                 String?
   used_addiction_medicine_services String
-  date_used_medicine_service      DateTime?
-  addiction_medicine_clinic       String?
-  addiction_medicine_clinic_phone String?
-  addiction_medication_service    String
+  date_used_medicine_service       DateTime?
+  addiction_medicine_clinic        String?
+  addiction_medicine_clinic_phone  String?
+  addiction_medication_service     String
 }

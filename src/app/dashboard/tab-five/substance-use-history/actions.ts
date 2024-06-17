@@ -1,62 +1,45 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
-import { ISubstanceUseHistoryInputs, ISubstanceUseHistoryResponse, ISubstanceUseHistoryUpdateInput } from './definitions';
+import { prisma } from "@/lib/prisma";
+import { ISubstanceUseHistoryInput, SubstanceUseHistoryResponseSchema } from "./definitions";
 
-export const createSubstanceUseHistoryRecord = async (substanceUseHistoryInput: ISubstanceUseHistoryInputs) => {
-    const { userId, substance, everUsed, usedDuringPregnancy, dateLastUsed } = substanceUseHistoryInput;
-
+export const createSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, userId: string) => {
+    const { other_drugs, ...rest } = data;
     const response = await prisma.substanceUseHistory.create({
         data: {
+            ...rest,
+            other_drugs: JSON.stringify(other_drugs),
             userId,
-            substance,
-            everUsed,
-            usedDuringPregnancy,
-            dateLastUsed,
         },
-        include: { User: true },
     });
 
     return response;
 };
 
-export const readSubstanceUseHistoryRecord = async (substanceUseHistoryId: string) => {
+export const readSubstanceUseHistory = async (submissionId: string, userId: string) => {
     const response = await prisma.substanceUseHistory.findUniqueOrThrow({
         where: {
-            id: substanceUseHistoryId,
+            id: submissionId,
+            userId,
         },
-        include: { User: true },
     });
 
-    return response;
+    return {
+        ...response,
+        other_drugs: JSON.parse(response.other_drugs as string),
+    };
 };
 
-export const updateSubstanceUseHistoryRecord = async (substanceUseHistoryInput: ISubstanceUseHistoryUpdateInput, id: string) => {
-    const { userId, substance, everUsed, usedDuringPregnancy, dateLastUsed } = substanceUseHistoryInput;
-
+export const updateSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, submissionId: string) => {
+    const { other_drugs, ...rest } = data;
     const response = await prisma.substanceUseHistory.update({
         where: {
-            id,
+            id: submissionId,
         },
         data: {
-            userId,
-            substance,
-            everUsed,
-            usedDuringPregnancy,
-            dateLastUsed,
+            ...rest,
+            other_drugs: JSON.stringify(other_drugs),
         },
-        include: { User: true },
-    });
-
-    return response;
-};
-
-export const deleteSubstanceUseHistoryRecord = async (substanceUseHistoryId: string) => {
-    const response = await prisma.substanceUseHistory.delete({
-        where: {
-            id: substanceUseHistoryId,
-        },
-        include: { User: true },
     });
 
     return response;
