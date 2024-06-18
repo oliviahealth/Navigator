@@ -8,6 +8,9 @@ export type ISmokingTobaccoPregnancyInputs = z.infer<typeof SmokingTobaccoPregna
 
 export const SmokingTobaccoPregnancyResponseSchema = SmokingTobaccoPregnancyInputSchema.extend({
   id: z.string(),
+  userId: z.string(),
+  dateCreated: z.date(),
+  dateModified: z.date()
 });
 
 export type ISmokingTobaccoPregnancyResponse = z.infer<typeof SmokingTobaccoPregnancyResponseSchema>;

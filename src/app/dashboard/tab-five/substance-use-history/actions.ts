@@ -10,16 +10,15 @@ import { ISubstanceUseHistoryInput, SubstanceUseHistoryResponseSchema } from "./
  * @throws {Error} If there's an issue creating the Substance Use History.
  * @remarks This function takes Substance Use History data and saves them to the database using Prisma.
  */
-export const createSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, userId: string) => {
-  const { other_drugs, ...rest } = data;
+export const createSubstanceUseHistory = async (input: ISubstanceUseHistoryInput, userId: string) => {
   const response = await prisma.substanceUseHistory.create({
     data: {
-      ...rest,
-      other_drugs: JSON.stringify(other_drugs),
       userId,
-    },
+      ...input
+    }
   });
-  return response;
+
+  return SubstanceUseHistoryResponseSchema.parse(response);
 };
 
 /**
@@ -38,10 +37,8 @@ export const readSubstanceUseHistory = async (submissionId: string, userId: stri
       userId,
     },
   });
-  return {
-    ...response,
-    other_drugs: JSON.parse(response.other_drugs as string),
-  };
+  
+  return SubstanceUseHistoryResponseSchema.parse(response);
 };
 
 /**
@@ -53,18 +50,18 @@ export const readSubstanceUseHistory = async (submissionId: string, userId: stri
  * @remarks This function updates a Substance Use History in the database using Prisma. It replaces the existing
  * record with the record provided in the input.
  */
-export const updateSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, submissionId: string) => {
-  const { other_drugs, ...rest } = data;
+export const updateSubstanceUseHistory = async (input: ISubstanceUseHistoryInput, id: string, userId: string) => {
   const response = await prisma.substanceUseHistory.update({
     where: {
-      id: submissionId,
+      id,
+      userId
     },
     data: {
-      ...rest,
-      other_drugs: JSON.stringify(other_drugs),
+      ...input,
     },
   });
-  return response;
+
+  return SubstanceUseHistoryResponseSchema.parse(response);
 };
 
 /**
@@ -75,12 +72,13 @@ export const updateSubstanceUseHistory = async (data: ISubstanceUseHistoryInput,
  * @throws {Error} If there's an issue deleting the Substance Use History.
  * @remarks This function deletes a Substance Use History from the database using Prisma based on the provided ID and the user ID.
  */
-export const deleteSubstanceUseHistory = async (submissionId: string, userId: string) => {
-    const response = await prisma.substanceUseHistory.deleteMany({
-        where: {
-            id: submissionId,
-            userId: userId
-        }
-    });
-    return response
+export const deleteSubstanceUseHistory = async (id: string, userId: string) => {
+  const response = await prisma.substanceUseHistory.deleteMany({
+      where: {
+          id,
+          userId
+      }
+  });
+
+  return SubstanceUseHistoryResponseSchema.parse(response);
 }

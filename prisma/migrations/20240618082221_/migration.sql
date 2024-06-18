@@ -47,10 +47,10 @@ CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never'
 CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
 
 -- CreateEnum
-CREATE TYPE "TobaccoUseScreeningAndDocumentation" AS ENUM ('NEVER_SMOKED', 'STOPPED_BEFORE_PREGNANCY', 'STOPPED_AFTER_PREGNANCY', 'STOPPED_DURING_PREGNANCY_BUT_SMOKING_NOW', 'SMOKED_DURING_PREGNANCY_AND_SMOKING_NOW');
+CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
 
 -- CreateEnum
-CREATE TYPE "Substance" AS ENUM ('ALCOHOL', 'AMPHETAMINES', 'BENZODIAZEPINES', 'CANNABIS', 'COCAINE', 'HEROIN', 'KUSH', 'PRESCRIPTION_DRUGS', 'TOBACCO', 'OTHER');
+CREATE TYPE "MAT_ENGAGED" AS ENUM ('Never', 'Currently', 'Prior');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -192,7 +192,7 @@ CREATE TABLE "ParticipantDemographicsForm" (
     "reenrollmentWithGap" "YesNo" NOT NULL,
     "transferFromAnotherSite" "YesNo" NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ParticipantDemographicsForm_pkey" PRIMARY KEY ("id")
 );
@@ -282,7 +282,7 @@ CREATE TABLE "ChildDemographicsRecord" (
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ChildDemographicsRecord_pkey" PRIMARY KEY ("id")
 );
@@ -296,7 +296,7 @@ CREATE TABLE "SupportSystemsForm" (
     "areasForImprovement" TEXT NOT NULL,
     "goals" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "SupportSystemsForm_pkey" PRIMARY KEY ("id")
 );
@@ -433,17 +433,7 @@ CREATE TABLE "ParentalMedicalHistory" (
 CREATE TABLE "SmokingTobaccoPregnancy" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "drugsOtherThanMedicines" "YesNo" NOT NULL,
-    "abuseMoreThanOneDrug" "YesNo" NOT NULL,
-    "ableToStopUsingDrugs" "YesNo" NOT NULL,
-    "haveBlackoutsFlashbacksFromDrugs" "YesNo" NOT NULL,
-    "guiltFromDrugUse" "YesNo" NOT NULL,
-    "spouseParentsComplainAboutUsage" "YesNo" NOT NULL,
-    "neglectedFamily" "YesNo" NOT NULL,
-    "illegalActivitiesToObtainDrugs" "YesNo" NOT NULL,
-    "withdrawalsWhenStoppedDrugs" "YesNo" NOT NULL,
-    "medicalProblemsFromUsage" "YesNo" NOT NULL,
-    "tobaccoUseScreeningAndDocumentation" "TobaccoUseScreeningAndDocumentation" NOT NULL,
+    "smokingStatus" "SmokingStatus" NOT NULL,
 
     CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
 );
@@ -452,12 +442,68 @@ CREATE TABLE "SmokingTobaccoPregnancy" (
 CREATE TABLE "SubstanceUseHistory" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "substance" "Substance" NOT NULL,
-    "everUsed" BOOLEAN NOT NULL,
-    "usedDuringPregnancy" BOOLEAN NOT NULL,
-    "dateLastUsed" TIMESTAMP(3),
+    "alcohol_ever_used" "YesNo" NOT NULL,
+    "alcohol_used_during_pregnancy" "YesNo",
+    "alcohol_date_last_used" TIMESTAMP(3),
+    "alcohol_notes" TEXT,
+    "benzodiazepines_ever_used" "YesNo" NOT NULL,
+    "benzodiazepines_used_during_pregnancy" "YesNo",
+    "benzodiazepines_date_last_used" TIMESTAMP(3),
+    "benzodiazepines_notes" TEXT,
+    "cocaine_ever_used" "YesNo" NOT NULL,
+    "cocaine_used_during_pregnancy" "YesNo",
+    "cocaine_date_last_used" TIMESTAMP(3),
+    "cocaine_notes" TEXT,
+    "heroin_ever_used" "YesNo" NOT NULL,
+    "heroin_used_during_pregnancy" "YesNo",
+    "heroin_date_last_used" TIMESTAMP(3),
+    "heroin_notes" TEXT,
+    "kush_ever_used" "YesNo" NOT NULL,
+    "kush_used_during_pregnancy" "YesNo",
+    "kush_date_last_used" TIMESTAMP(3),
+    "kush_notes" TEXT,
+    "marijuana_ever_used" "YesNo" NOT NULL,
+    "marijuana_used_during_pregnancy" "YesNo",
+    "marijuana_date_last_used" TIMESTAMP(3),
+    "marijuana_notes" TEXT,
+    "methamphetamine_ever_used" "YesNo" NOT NULL,
+    "methamphetamine_used_during_pregnancy" "YesNo",
+    "methamphetamine_date_last_used" TIMESTAMP(3),
+    "methamphetamine_notes" TEXT,
+    "prescription_drugs_ever_used" "YesNo" NOT NULL,
+    "prescription_drugs_used_during_pregnancy" "YesNo",
+    "prescription_drugs_date_last_used" TIMESTAMP(3),
+    "prescription_drugs_notes" TEXT,
+    "tobacco_ever_used" "YesNo" NOT NULL,
+    "tobacco_used_during_pregnancy" "YesNo",
+    "tobacco_date_last_used" TIMESTAMP(3),
+    "tobacco_notes" TEXT,
+    "other_drugs" JSONB[],
+    "notes" TEXT,
+    "mat_engaged" "MAT_ENGAGED" NOT NULL,
+    "medications" JSONB,
+    "mat_clinic_name" TEXT,
+    "mat_clinic_phone" TEXT,
+    "used_addiction_medicine_services" "MAT_ENGAGED" NOT NULL,
+    "date_used_medicine_service" TIMESTAMP(3),
+    "addiction_medicine_clinic" TEXT,
+    "addiction_medicine_clinic_phone" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "SubstanceUseHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentMedicationList" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentMedicationList" JSONB[],
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -515,4 +561,7 @@ ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_user
 ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

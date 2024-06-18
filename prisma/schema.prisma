@@ -556,46 +556,51 @@ model SmokingTobaccoPregnancy {
 
 model SubstanceUseHistory {
   id                                       String  @id @default(uuid())
-  userId                                   String
-  alcohol_ever_used                        String
-  alcohol_used_during_pregnancy            String
-  alcohol_date_last_used                   String?
-  alcohol_notes                            String?
-  benzodiazepines_ever_used                String
-  benzodiazepines_used_during_pregnancy    String
-  benzodiazepines_date_last_used           String?
-  benzodiazepines_notes                    String?
-  cocaine_ever_used                        String
-  cocaine_used_during_pregnancy            String
-  cocaine_date_last_used                   String?
-  cocaine_notes                            String?
-  heroin_ever_used                         String
-  heroin_used_during_pregnancy             String
-  heroin_date_last_used                    String?
-  heroin_notes                             String?
-  kush_ever_used                           String
-  kush_used_during_pregnancy               String
-  kush_date_last_used                      String?
-  kush_notes                               String?
-  marijuana_ever_used                      String
-  marijuana_used_during_pregnancy          String
-  marijuana_date_last_used                 String?
-  marijuana_notes                          String?
-  methamphetamine_ever_used                String
-  methamphetamine_used_during_pregnancy    String
-  methamphetamine_date_last_used           String?
-  methamphetamine_notes                    String?
-  prescription_drugs_ever_used             String
-  prescription_drugs_used_during_pregnancy String
-  prescription_drugs_date_last_used        String?
-  prescription_drugs_notes                 String?
-  tobacco_ever_used                        String
-  tobacco_used_during_pregnancy            String
-  tobacco_date_last_used                   String?
-  tobacco_notes                            String?
-  other_drugs                              Json
-  notes                                    String?
+  
   User                                     User?   @relation(fields: [userId], references: [id])
+  userId                                   String
+  
+  alcohol_ever_used                        YesNo
+  alcohol_used_during_pregnancy            YesNo?
+  alcohol_date_last_used                   DateTime?
+  alcohol_notes                            String?
+  benzodiazepines_ever_used                YesNo
+  benzodiazepines_used_during_pregnancy    YesNo?
+  benzodiazepines_date_last_used           DateTime?
+  benzodiazepines_notes                    String?
+  cocaine_ever_used                        YesNo
+  cocaine_used_during_pregnancy            YesNo?
+  cocaine_date_last_used                   DateTime?
+  cocaine_notes                            String?
+  heroin_ever_used                         YesNo
+  heroin_used_during_pregnancy             YesNo?
+  heroin_date_last_used                    DateTime?
+  heroin_notes                             String?
+  kush_ever_used                           YesNo
+  kush_used_during_pregnancy               YesNo?
+  kush_date_last_used                      DateTime?
+  kush_notes                               String?
+  marijuana_ever_used                      YesNo
+  marijuana_used_during_pregnancy          YesNo?
+  marijuana_date_last_used                 DateTime?
+  marijuana_notes                          String?
+  methamphetamine_ever_used                YesNo
+  methamphetamine_used_during_pregnancy    YesNo?
+  methamphetamine_date_last_used           DateTime?
+  methamphetamine_notes                    String?
+  prescription_drugs_ever_used             YesNo
+  prescription_drugs_used_during_pregnancy YesNo?
+  prescription_drugs_date_last_used        DateTime?
+  prescription_drugs_notes                 String?
+  tobacco_ever_used                        YesNo
+  tobacco_used_during_pregnancy            YesNo?
+  tobacco_date_last_used                   DateTime?
+  tobacco_notes                            String?
+  other_drugs                              Json[]
+  notes                                    String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model CurrentMedicationList {

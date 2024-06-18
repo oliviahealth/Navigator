@@ -17,7 +17,7 @@ import {
 } from "../actions";
 import useAppStore from "@/lib/useAppStore";
 
-const EnrollmentLog: React.FC = () => {
+const SmokingTobaccoPregnancyForm: React.FC = () => {
   const router = useRouter();
   const { action } = useParams();
 
@@ -135,7 +135,6 @@ const EnrollmentLog: React.FC = () => {
         response = await updateSmokingTobaccoPregnancyRecord(data, submissionId, user.id);
       }
 
-      SmokingTobaccoPregnancyResponseSchema.parse(response);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
@@ -281,4 +280,4 @@ const EnrollmentLog: React.FC = () => {
   );
 };
 
-export default EnrollmentLog;
+export default SmokingTobaccoPregnancyForm;
