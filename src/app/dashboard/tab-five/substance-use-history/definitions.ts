@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const AdditionalDrugSchema = z.object({
   drug_used: z.string().min(1, 'Substance name required'),

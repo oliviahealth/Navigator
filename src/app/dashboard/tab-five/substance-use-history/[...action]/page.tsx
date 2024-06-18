@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation'
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useFieldArray, useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { createSubstanceUseHistory, readSubstanceUseHistory, updateSubstanceUseHistory } from "../actions";
 import { ISubstanceUseHistoryInput, SubstanceUseHistoryInputSchema, SubstanceUseHistoryResponseSchema } from "../definitions";
-import useAppStore from "@/lib/useAppStore";
+import useAppStore from '@/lib/useAppStore';
 
 const SubstanceUseHistory: React.FC = () => {
     const router = useRouter();
