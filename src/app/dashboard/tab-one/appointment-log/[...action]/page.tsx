@@ -1,29 +1,38 @@
 "use client";
 
-import React from "react";
-import { z } from "zod";
+import React, { useEffect } from "react";
+import { useRouter, useParams } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 
-const AppointmentEntrySchema = z.object({
-    dateTime: z.string().min(1, "Date/Time is required"),
-    who: z.string().min(1, "Who is required"),
-    location: z.string().min(1, "Location is required"),
-    notes: z.string().nullable()
-});
-export type IAppointmentEntrySchema = z.infer<typeof AppointmentEntrySchema>;
+// Import necessary schemas and types
+import {
+    IAppointmentLogInputs,
+    AppointmentLogInputsSchema,
+    IAppointmentEntry,
+    AppointmentLogResponseSchema,
+} from "../definitions";
+import { createAppointmentLog, readAppointmentLog, updateAppointmentLog } from "../actions";
 
-const AppointmentLogInputsSchema = z.object({
-    appointmentEntries: z.array(AppointmentEntrySchema)
-});
-export type IAppointmentLogInputs = z.infer<typeof AppointmentLogInputsSchema>;
+import useAppStore from "@/lib/useAppStore";
 
 const AppointmentLog: React.FC = () => {
+    const router = useRouter();
+    const { action } = useParams();
+
+    const verb = action[0]; 
+    const submissionId = action[1]; 
+    const user = useAppStore(state => state.user);
+
+    const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
+    const setErrorMessage = useAppStore(state => state.setErrorMessage);
+
     const {
         register,
         control,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
+        reset
     } = useForm<IAppointmentLogInputs>({
         resolver: zodResolver(AppointmentLogInputsSchema),
         defaultValues: {
@@ -32,7 +41,7 @@ const AppointmentLog: React.FC = () => {
                     dateTime: "",
                     who: "",
                     location: "",
-                    notes: ""
+                    notes: "",
                 },
             ],
         },
@@ -43,13 +52,84 @@ const AppointmentLog: React.FC = () => {
         name: "appointmentEntries",
     });
 
-    const addNewAppointmentEntry = () => append({ dateTime: "", who: "", location: "", notes: "" });
+    const addNewAppointmentEntry = () => {
+        append({
+            dateTime: "",
+            who: "",
+            location: "",
+            notes: "",
+        });
+    };
 
-    const submit = (data: IAppointmentLogInputs) => {
-        alert("Appointment Log submitted successfully");
+    const submit = async (data: { appointmentEntries: IAppointmentEntry[] }) => {
+        try {
+            if (!user) {
+                throw new Error('User not found');
+            }
 
-        console.log(data);
-    }
+            const { appointmentEntries } = data;
+
+            let response;
+
+            if (verb === 'new') {
+                response = await createAppointmentLog(appointmentEntries, user.id);
+            } else {
+                
+                response = await updateAppointmentLog(appointmentEntries, submissionId, "userIdValue");
+            }
+
+            AppointmentLogResponseSchema.parse(response);
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
+
+            return;
+        }
+
+        setSuccessMessage('Appointment Log submitted successfully!');
+        router.push('/dashboard');
+    };
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!user) {
+                    throw new Error('User not found');
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readAppointmentLog(submissionId, user.id);
+
+                AppointmentLogResponseSchema.parse(response);
+
+                const formattedEntries = response.appointmentEntries.map(entry => ({
+                    ...entry,
+                    dateTime: new Date(entry.dateTime).toISOString().slice(0, 16),
+                }));
+
+                reset({ appointmentEntries: formattedEntries });
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+
+                router.push('/dashboard');
+
+                return;
+            }
+        }
+
+        if(!user) return;
+
+        fetchAndPopulatePastSubmissionData();
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

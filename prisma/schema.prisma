@@ -534,3 +534,23 @@ model CurrentMedicationList {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
+
+model IntimatePartnerViolenceFormResponse {
+  id             String    @id @default(uuid())
+  userId         String
+  physicallyHurt IPVStatus
+  insultOrTalkDown IPVStatus
+  threatenWithHarm IPVStatus
+  screamOrCurse IPVStatus
+  dateCreated    DateTime  @default(now())
+  dateModified   DateTime  @updatedAt
+}
