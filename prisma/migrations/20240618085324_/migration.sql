@@ -47,10 +47,70 @@ CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never'
 CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
 
 -- CreateEnum
-CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
+CREATE TYPE "MarriedEnum" AS ENUM ('Married', 'Unmarried');
 
 -- CreateEnum
-CREATE TYPE "MAT_ENGAGED" AS ENUM ('Never', 'Currently', 'Prior');
+CREATE TYPE "NutritionHistoryAndAssessmentRace" AS ENUM ('American_Indian', 'Black', 'White_European', 'Hawaiian', 'North_African', 'Middle_Eastern');
+
+-- CreateEnum
+CREATE TYPE "NumMonthsPregnantTwentyWeeks" AS ENUM ('None', 'Number_of_pregnancies', 'Unknown');
+
+-- CreateEnum
+CREATE TYPE "NumMonthsPregnant" AS ENUM ('First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth_Ninth', 'Unknown', 'No_medical_care');
+
+-- CreateEnum
+CREATE TYPE "CurrentPregnancyInfo" AS ENUM ('Weight_loss', 'Nausea', 'Gestational_Diabetes', 'Twins', 'Fetal_Growth_Restriction', 'High_Blood_Pressure', 'None_Apply');
+
+-- CreateEnum
+CREATE TYPE "PreviousPregnancyInfo" AS ENUM ('GDM', 'Preterm_delivery', 'Early_term_delivery', 'Five_pounds_or_less', 'Died_after_5_months_PG', 'Preeclampsia', 'Died_before_one_month', 'Miscarriage', 'Birth_defects', 'Nine_pounds_at_birth', 'None_Apply');
+
+-- CreateEnum
+CREATE TYPE "TimesTakenMultivitamin" AS ENUM ('Less_than_once_per_week', 'Specify_number_of_times', 'Eight_or_more_times', 'Unknown');
+
+-- CreateEnum
+CREATE TYPE "YesNoUnknown" AS ENUM ('Yes', 'No', 'Unknown');
+
+-- CreateEnum
+CREATE TYPE "Cigarettes" AS ENUM ('Do_not_smoke', 'Specified_number', 'Ninety_seven_or_more', 'Smoked_but_quantity_unknown', 'Unknown_or_refused');
+
+-- CreateEnum
+CREATE TYPE "HouseholdSmoking" AS ENUM ('Someone_else', 'No_one_else', 'Unknown');
+
+-- CreateEnum
+CREATE TYPE "AlcoholBeforePregnancy" AS ENUM ('Did_not_drink', 'Specified_number', 'Twenty_one_or_more', 'Drank_but_quantity_unknown', 'Unknown_or_refused');
+
+-- CreateEnum
+CREATE TYPE "SubstanceUse" AS ENUM ('Illegal_substance', 'Abusing_prescription', 'Marijuana', 'None');
+
+-- CreateEnum
+CREATE TYPE "PregnancyType" AS ENUM ('Same_pregnancy', 'Different_pregnancy');
+
+-- CreateEnum
+CREATE TYPE "NotBreastfedDesiredLengthReasons" AS ENUM ('Difficult_latching', 'Baby_not_satisfied', 'Baby_not_gaining_weight', 'Sore_nipples', 'Not_producing_milk', 'Too_many_household_duties', 'Right_time_to_stop', 'Sick_or_medical_reasons', 'Work', 'School', 'Lack_of_support', 'Baby_illness', 'Doctor_recommended', 'Other');
+
+-- CreateEnum
+CREATE TYPE "BreastfeedingMethod" AS ENUM ('Nurse', 'Pump_and_nurse', 'Pump_only', 'Formula_and_milk', 'Dont_want_to', 'Dont_know', 'Other');
+
+-- CreateEnum
+CREATE TYPE "BreastfeedingMedicalConcerns" AS ENUM ('Breast_surgery', 'Hypothyroidism', 'Diabetes', 'Depression', 'HIV', 'No_concerns');
+
+-- CreateEnum
+CREATE TYPE "NumPerDay" AS ENUM ('zero', 'one', 'two', 'three', 'four', 'five_or_more');
+
+-- CreateEnum
+CREATE TYPE "Appetite" AS ENUM ('Good', 'Fair', 'Poor');
+
+-- CreateEnum
+CREATE TYPE "EverydayFood" AS ENUM ('Milk', 'Sweet_beverages', 'Snacks', 'Whole_grains', 'Fruits_and_vegetables');
+
+-- CreateEnum
+CREATE TYPE "HighRiskFood" AS ENUM ('Unpasteurized_drink', 'Soft_cheese', 'Raw_meat', 'Raw_sprouts', 'Refrigerated_pate', 'Hot_dogs', 'Michigan_fish', 'None_apply');
+
+-- CreateEnum
+CREATE TYPE "DietsAndSupplements" AS ENUM ('Vegetarian', 'Low_calorie', 'Low_carb', 'Bariatric_surgery', 'PICA', 'Vitamin_supplement', 'Herbal_supplement', 'Fluoride', 'None_apply');
+
+-- CreateEnum
+CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -111,18 +171,6 @@ CREATE TABLE "AppointmentLog" (
 );
 
 -- CreateTable
-CREATE TABLE "EmergencyContact" (
-    "id" TEXT NOT NULL,
-    "enrollmentFormId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "relationship" TEXT NOT NULL,
-    "telephone" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-
-    CONSTRAINT "EmergencyContact_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "EnrollmentForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -136,10 +184,11 @@ CREATE TABLE "EnrollmentForm" (
     "cellPhone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "dateOfBirth" TIMESTAMP(3) NOT NULL,
+    "emergencyContacts" JSONB[],
     "clientName" TEXT NOT NULL,
     "clientDate" TIMESTAMP(3) NOT NULL,
-    "guardianName" TEXT NOT NULL,
-    "guardianDate" TEXT NOT NULL,
+    "guardianName" TEXT,
+    "guardianDate" TEXT,
     "gcMomsName" TEXT NOT NULL,
     "gcMomsDate" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -430,12 +479,107 @@ CREATE TABLE "ParentalMedicalHistory" (
 );
 
 -- CreateTable
-CREATE TABLE "SmokingTobaccoPregnancy" (
+CREATE TABLE "EncounterForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "smokingStatus" "SmokingStatus" NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "monthYear" TEXT NOT NULL,
+    "encounterEntries" JSONB[],
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "EncounterForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentMedicationList" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentMedicationList" JSONB[],
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "NutritionHistoryAndAssessment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "todaysDate" TIMESTAMP(3) NOT NULL,
+    "name" TEXT NOT NULL,
+    "gradesCompleted" TEXT NOT NULL,
+    "currentlyMarried" "MarriedEnum" NOT NULL,
+    "hispanicLatino" "YesNo" NOT NULL,
+    "race" "NutritionHistoryAndAssessmentRace"[] DEFAULT ARRAY[]::"NutritionHistoryAndAssessmentRace"[],
+    "lastMenstrualPeriod" TIMESTAMP(3) NOT NULL,
+    "dueDate" TIMESTAMP(3) NOT NULL,
+    "weightBeforePregnancy" TEXT NOT NULL,
+    "numPregnancies" TEXT NOT NULL,
+    "numLiveBabies" TEXT NOT NULL,
+    "timesPregnantTwentyWeeks" "NumMonthsPregnantTwentyWeeks" NOT NULL,
+    "numPregnanciesTwentyWeeks" TEXT,
+    "numMonthsPregnant" "NumMonthsPregnant" NOT NULL,
+    "currentPregnancyInfo" "CurrentPregnancyInfo"[],
+    "timesSeenHealthProvider" TEXT NOT NULL,
+    "hivBloodTest" "YesNo" NOT NULL,
+    "previousPregnancyInfo" "PreviousPregnancyInfo"[],
+    "takesMedication" "YesNo" NOT NULL,
+    "medications" TEXT,
+    "hasSideEffects" "YesNo" NOT NULL,
+    "sideEffects" TEXT,
+    "hasDentalProblems" "YesNo" NOT NULL,
+    "dentalProblems" TEXT,
+    "timesTakenMultivitaminOptions" "TimesTakenMultivitamin" NOT NULL,
+    "specifiedTimesTakenMultivitamin" TEXT,
+    "hasTakenVitaminsMinerals" "YesNoUnknown" NOT NULL,
+    "cigarettesBeforePregnancy" "Cigarettes" NOT NULL,
+    "specifiedNumCigarettesBeforePregnancy" TEXT,
+    "cigarettesSmokedNow" "Cigarettes" NOT NULL,
+    "specifiedNumCigarettesSmokedNow" TEXT,
+    "householdSmoking" "HouseholdSmoking" NOT NULL,
+    "alcoholBeforePregnancy" "AlcoholBeforePregnancy" NOT NULL,
+    "specifiedNumDrinks" TEXT,
+    "alcoholDuringPregnancy" "YesNo" NOT NULL,
+    "substanceUse" "SubstanceUse"[],
+    "disabilityLimitingFeedingDecisions" "YesNo" NOT NULL,
+    "hasBreastfed" "YesNo" NOT NULL,
+    "currentlyBreastfeeding" "YesNo" NOT NULL,
+    "babyLessThanOneYear" "YesNo" NOT NULL,
+    "infantId" TEXT NOT NULL,
+    "breastfeedingMultipleChildren" "YesNo" NOT NULL,
+    "pregnancyType" "PregnancyType",
+    "breastfedDesiredLength" "YesNo" NOT NULL,
+    "notBreastfedDesiredLengthReasons" "NotBreastfedDesiredLengthReasons"[] DEFAULT ARRAY[]::"NotBreastfedDesiredLengthReasons"[],
+    "notBreastfedDesiredLengthReasonsOther" TEXT,
+    "heardAboutBreastfeeding" TEXT NOT NULL,
+    "breastfeedingMethod" "BreastfeedingMethod" NOT NULL,
+    "breastfeedingMethodOther" TEXT,
+    "breastfeedingGoal" TEXT NOT NULL,
+    "moreInformationInterest" "YesNo" NOT NULL,
+    "breastfeedingMedicalConcerns" "BreastfeedingMedicalConcerns"[],
+    "numMealsPerDay" "NumPerDay" NOT NULL,
+    "numSnacksPerDay" "NumPerDay" NOT NULL,
+    "milkPerDay" "NumPerDay" NOT NULL,
+    "appetite" "Appetite" NOT NULL,
+    "hasSpecialDiet" "YesNo" NOT NULL,
+    "specialDietType" TEXT,
+    "fastFoodPerWeek" "NumPerDay" NOT NULL,
+    "hasFoodAllergies" "YesNo" NOT NULL,
+    "foodAllergiesType" TEXT,
+    "consumeEveryday" "EverydayFood"[],
+    "milkType" TEXT,
+    "highRiskFood" "HighRiskFood"[],
+    "dietsAndSupplements" "DietsAndSupplements"[],
+    "vitaminSupplementsType" TEXT,
+    "herbalSupplementsType" TEXT,
+    "staffNotes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "NutritionHistoryAndAssessment_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -480,14 +624,6 @@ CREATE TABLE "SubstanceUseHistory" (
     "tobacco_notes" TEXT,
     "other_drugs" JSONB[],
     "notes" TEXT,
-    "mat_engaged" "MAT_ENGAGED" NOT NULL,
-    "medications" JSONB,
-    "mat_clinic_name" TEXT,
-    "mat_clinic_phone" TEXT,
-    "used_addiction_medicine_services" "MAT_ENGAGED" NOT NULL,
-    "date_used_medicine_service" TIMESTAMP(3),
-    "addiction_medicine_clinic" TEXT,
-    "addiction_medicine_clinic_phone" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -495,15 +631,32 @@ CREATE TABLE "SubstanceUseHistory" (
 );
 
 -- CreateTable
-CREATE TABLE "CurrentMedicationList" (
+CREATE TABLE "MedicalServicesSubstanceUse" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "currentMedicationList" JSONB[],
-    "notes" TEXT,
+    "mat_engaged" TEXT NOT NULL,
+    "date_used_mat" TIMESTAMP(3),
+    "medications" JSONB NOT NULL,
+    "mat_clinic_name" TEXT,
+    "mat_clinic_phone" TEXT,
+    "used_addiction_medicine_services" TEXT NOT NULL,
+    "date_used_medicine_service" TIMESTAMP(3),
+    "addiction_medicine_clinic" TEXT,
+    "addiction_medicine_clinic_phone" TEXT,
+    "addiction_medication_service" TEXT NOT NULL,
+
+    CONSTRAINT "MedicalServicesSubstanceUse_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SmokingTobaccoPregnancy" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "smokingStatus" "SmokingStatus" NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -520,9 +673,6 @@ ALTER TABLE "AppointmentEntry" ADD CONSTRAINT "AppointmentEntry_appointmentLogId
 
 -- AddForeignKey
 ALTER TABLE "AppointmentLog" ADD CONSTRAINT "AppointmentLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "EmergencyContact" ADD CONSTRAINT "EmergencyContact_enrollmentFormId_fkey" FOREIGN KEY ("enrollmentFormId") REFERENCES "EnrollmentForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "EnrollmentForm" ADD CONSTRAINT "EnrollmentForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -558,10 +708,16 @@ ALTER TABLE "ReferralsAndServices" ADD CONSTRAINT "ReferralsAndServices_userId_f
 ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "EncounterForm" ADD CONSTRAINT "EncounterForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
