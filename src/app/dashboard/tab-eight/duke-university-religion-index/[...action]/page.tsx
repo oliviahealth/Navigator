@@ -8,7 +8,6 @@ import { useForm } from "react-hook-form";
 import {
     ChurchAttendanceEnum,
     DukeUniversityReligionIndexInputsSchema,
-    DukeUniversityReligionIndexResponseSchema,
     IDukeUniversityReligionIndexInputs,
     TimeSpentReligiouslyEnum,
     TruthLevelEnum,
@@ -59,8 +58,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                 }
 
                 const response = await readDukeUniversityReligionIndex(submissionId, user.id);
-                const validResponse = DukeUniversityReligionIndexResponseSchema.parse(response);
-                reset(validResponse);
+                reset(response);
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -86,8 +84,6 @@ const DukeUniversityReligionIndex: React.FC = () => {
             } else {
                 response = await updatedukeUniversityReligionIndex(data, submissionId, user.id)
             }
-
-            DukeUniversityReligionIndexResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IDukeUniversityReligionIndexInputs, IDukeUniversityReligionIndexResponse } from "./definitions";
+import { DukeUniversityReligionIndexResponseSchema, IDukeUniversityReligionIndexInputs, IDukeUniversityReligionIndexResponse } from "./definitions";
 
 /**
  * Creates a new Duke University Religion Index Record in the db.
@@ -21,7 +21,7 @@ export const createDukeUniversityReligionIndex = async (dukeUniversityReligionIn
         },
     });
 
-    return response;
+    return DukeUniversityReligionIndexResponseSchema.parse(response)
 };
 
 /**
@@ -41,7 +41,7 @@ export const readDukeUniversityReligionIndex = async (dukeUniversityReligionInde
         },
     })
 
-    return response;
+    return DukeUniversityReligionIndexResponseSchema.parse(response)
 }
 
 /**
@@ -67,7 +67,7 @@ export const updatedukeUniversityReligionIndex = async (dukeUniversityReligionIn
         }
     })
 
-    return response;
+    return DukeUniversityReligionIndexResponseSchema.parse(response)
 }
 
 /**
@@ -84,5 +84,6 @@ export const deletedukeUniversityReligionIndex = async (submissionId: string, us
             userId: userId
         }
     });
-    return response;
+    
+    return DukeUniversityReligionIndexResponseSchema.parse(response)
 };
