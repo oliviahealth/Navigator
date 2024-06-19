@@ -80,26 +80,13 @@ model CommunicationLog {
   dateModified DateTime @updatedAt
 }
 
-model AppointmentEntry {
-  id String @id @default(uuid())
-
-  appointmentLogId String
-
-  dateTime DateTime
-  who      String
-  location String
-  notes    String?
-
-  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
-}
-
 model AppointmentLog {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  appointmentEntries AppointmentEntry[]
+  appointmentEntries Json[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

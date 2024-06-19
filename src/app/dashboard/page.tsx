@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
                             Communication Log
                         </a>
 
-                        <a href={'/dashboard/tab-one/appointment-log'}>
+                        <a href={'/dashboard/tab-one/appointment-log/new'}>
                             Appointment Log
                         </a>
                     </div>
