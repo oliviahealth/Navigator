@@ -42,6 +42,7 @@ model User {
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   MentalHealthHistory                    MentalHealthHistory[]
+  GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
 }
 
 enum CommunicationMethod {
@@ -829,6 +830,40 @@ model MentalHealthHistory {
   takingMedication    YesNo
   medicationDetails   String?
   notes               String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum GADAnswers {
+  Not_at_all
+  Several_days
+  More_than_half
+  Everyday
+}
+
+enum Difficulty {
+  Not_at_all
+  Somewhat
+  Very
+  Extremely
+}
+
+model GeneralizedAnxietyDisorder {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  feelingNervous          GADAnswers
+  unableToControlWorrying GADAnswers
+  worryingTooMuch         GADAnswers
+  troubleRelaxing         GADAnswers
+  restlessness            GADAnswers
+  easilyAnnoyed           GADAnswers
+  feelingAfraid           GADAnswers
+  problemsDifficulty      Difficulty
+  totalScore              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
