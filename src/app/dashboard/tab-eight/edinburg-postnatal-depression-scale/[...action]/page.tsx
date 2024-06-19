@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useAppStore from "@/lib/useAppStore";
-import { IEdinburgPostnatalDepressionScaleInputs, EdinburgPostnatalDepressionScaleInputsSchema, EdinburgPostnatalDepressionScaleResponseSchema, pages } from "../definitions";
+import { IEdinburgPostnatalDepressionScaleInputs, EdinburgPostnatalDepressionScaleInputsSchema, pages } from "../definitions";
 import { createEdinburgPostnatalDepressionScale, readEdinburgPostnatalDepressionScale, updateEdinburgPostnatalDepressionScale } from "../actions";
 import EdinburgPostnatalDepressionScaleQuestions from "../forms/EdinburgPostnatalDepressionScaleQuestions";
 import EdinburgResultsTouchpoint from "../forms/EdinburgResultsTouchpoint";
@@ -94,11 +94,10 @@ const EdinburgPostnatalDepressionScale: React.FC = () => {
                 }
 
                 const response = await readEdinburgPostnatalDepressionScale(submissionId, user.id);
-                const validResponse = EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 
                 const formattedData = {
-                    ...validResponse,
-                    dateCompleted: new Date(validResponse.dateCompleted).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                    ...response,
+                    dateCompleted: new Date(response.dateCompleted).toISOString().split('T')[0], // Format as YYYY-MM-DD
                 };
                 reset(formattedData);
                 setTotalScore(parseInt(formattedData.totalScore));

@@ -41,6 +41,8 @@ model User {
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
+  DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
+  MentalHealthHistory                    MentalHealthHistory[]
   EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
 }
 
@@ -79,26 +81,13 @@ model CommunicationLog {
   dateModified DateTime @updatedAt
 }
 
-model AppointmentEntry {
-  id String @id @default(uuid())
-
-  appointmentLogId String
-
-  dateTime DateTime
-  who      String
-  location String
-  notes    String?
-
-  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
-}
-
 model AppointmentLog {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  appointmentEntries AppointmentEntry[]
+  appointmentEntries Json[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -750,7 +739,7 @@ model NutritionHistoryAndAssessment {
   name                                  String
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
-  hispanicLatino                        YesNo
+  hispanicLatino                        YesNo?
   race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime
@@ -818,6 +807,59 @@ model NutritionHistoryAndAssessment {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
+enum ChurchAttendance {
+  Never
+  Once_a_year
+  Few_times_a_year
+  Few_times_a_month
+  Once_a_week
+  More_than_once_a_week
+}
+
+enum TimeSpentReligiously {
+  Rarely_or_never
+  Once_a_month
+  Once_a_week
+  Few_times_a_week
+  Once_a_day
+  More_than_once_a_day
+}
+
+enum TruthLevel {
+  Definitely_not_true
+  Somewhat_not_true
+  Neutral
+  Somewhat_true
+  Definitely_true
+}
+
+model DukeUniversityReligionIndex {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  churchAttendance           ChurchAttendance
+  timeSpentReligiously       TimeSpentReligiously
+  divineExperience           TruthLevel
+  beliefLifeInfluence        TruthLevel
+  religiousIntegrationEffort TruthLevel
+}
+model MentalHealthHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  mentalHealthHistory Json
+  takingMedication    YesNo
+  medicationDetails   String?
+  notes               String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
 
 enum Laugh {
   As_much_as_always

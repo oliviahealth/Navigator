@@ -109,6 +109,48 @@ CREATE TYPE "HighRiskFood" AS ENUM ('Unpasteurized_drink', 'Soft_cheese', 'Raw_m
 -- CreateEnum
 CREATE TYPE "DietsAndSupplements" AS ENUM ('Vegetarian', 'Low_calorie', 'Low_carb', 'Bariatric_surgery', 'PICA', 'Vitamin_supplement', 'Herbal_supplement', 'Fluoride', 'None_apply');
 
+-- CreateEnum
+CREATE TYPE "ChurchAttendance" AS ENUM ('Never', 'Once_a_year', 'Few_times_a_year', 'Few_times_a_month', 'Once_a_week', 'More_than_once_a_week');
+
+-- CreateEnum
+CREATE TYPE "TimeSpentReligiously" AS ENUM ('Rarely_or_never', 'Once_a_month', 'Once_a_week', 'Few_times_a_week', 'Once_a_day', 'More_than_once_a_day');
+
+-- CreateEnum
+CREATE TYPE "TruthLevel" AS ENUM ('Definitely_not_true', 'Somewhat_not_true', 'Neutral', 'Somewhat_true', 'Definitely_true');
+
+-- CreateEnum
+CREATE TYPE "Laugh" AS ENUM ('As_much_as_always', 'Not_quite_so_much', 'Definitely_not_so_much', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Enjoyment" AS ENUM ('As_much_as_ever', 'Rather_less', 'Definitely_less', 'Hardly');
+
+-- CreateEnum
+CREATE TYPE "SelfBlame" AS ENUM ('Yes_mostly', 'Yes_some', 'Not_often', 'Never');
+
+-- CreateEnum
+CREATE TYPE "Anxiety" AS ENUM ('Not_at_all', 'Hardly_ever', 'Yes_sometimes', 'Yes_often');
+
+-- CreateEnum
+CREATE TYPE "Scared" AS ENUM ('Yes_a_lot', 'Yes_sometimes', 'Not_much', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "CopeInability" AS ENUM ('Yes_mostly_have_not', 'Yes_sometimes_have_not', 'No_mostly_have', 'No_always_have');
+
+-- CreateEnum
+CREATE TYPE "DifficultySleeping" AS ENUM ('Yes_mostly', 'Yes_sometimes', 'Not_often', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Sadness" AS ENUM ('Yes_mostly', 'Yes_often', 'Not_often', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Crying" AS ENUM ('Yes_mostly', 'Yes_often', 'Occasionally', 'Never');
+
+-- CreateEnum
+CREATE TYPE "SelfHarmThoughts" AS ENUM ('Yes_often', 'Sometimes', 'Hardly_ever', 'Never');
+
+-- CreateEnum
+CREATE TYPE "Timeframe" AS ENUM ('Prenatal', 'Postnatal');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -146,21 +188,10 @@ CREATE TABLE "CommunicationLog" (
 );
 
 -- CreateTable
-CREATE TABLE "AppointmentEntry" (
-    "id" TEXT NOT NULL,
-    "appointmentLogId" TEXT NOT NULL,
-    "dateTime" TIMESTAMP(3) NOT NULL,
-    "who" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
-    "notes" TEXT,
-
-    CONSTRAINT "AppointmentEntry_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "AppointmentLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "appointmentEntries" JSONB[],
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -476,6 +507,32 @@ CREATE TABLE "ParentalMedicalHistory" (
 );
 
 -- CreateTable
+CREATE TABLE "EncounterForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "monthYear" TEXT NOT NULL,
+    "encounterEntries" JSONB[],
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EncounterForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentMedicationList" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentMedicationList" JSONB[],
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "NutritionHistoryAndAssessment" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -493,9 +550,9 @@ CREATE TABLE "NutritionHistoryAndAssessment" (
     "timesPregnantTwentyWeeks" "NumMonthsPregnantTwentyWeeks" NOT NULL,
     "numPregnanciesTwentyWeeks" TEXT,
     "numMonthsPregnant" "NumMonthsPregnant" NOT NULL,
-    "pregnancyInfo" "CurrentPregnancyInfo"[],
+    "currentPregnancyInfo" "CurrentPregnancyInfo"[],
     "timesSeenHealthProvider" TEXT NOT NULL,
-    "hivBloodTest" TEXT NOT NULL,
+    "hivBloodTest" "YesNo" NOT NULL,
     "previousPregnancyInfo" "PreviousPregnancyInfo"[],
     "takesMedication" "YesNo" NOT NULL,
     "medications" TEXT,
@@ -554,15 +611,57 @@ CREATE TABLE "NutritionHistoryAndAssessment" (
 );
 
 -- CreateTable
-CREATE TABLE "CurrentMedicationList" (
+CREATE TABLE "DukeUniversityReligionIndex" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
-    "currentMedicationList" JSONB[],
+    "churchAttendance" "ChurchAttendance" NOT NULL,
+    "timeSpentReligiously" "TimeSpentReligiously" NOT NULL,
+    "divineExperience" "TruthLevel" NOT NULL,
+    "beliefLifeInfluence" "TruthLevel" NOT NULL,
+    "religiousIntegrationEffort" "TruthLevel" NOT NULL,
+
+    CONSTRAINT "DukeUniversityReligionIndex_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MentalHealthHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "mentalHealthHistory" JSONB NOT NULL,
+    "takingMedication" "YesNo" NOT NULL,
+    "medicationDetails" TEXT,
     "notes" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "MentalHealthHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "EdinburgPostnatalDepressionScale" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "laugh" "Laugh" NOT NULL,
+    "enjoyment" "Enjoyment" NOT NULL,
+    "selfBlame" "SelfBlame" NOT NULL,
+    "anxiety" "Anxiety" NOT NULL,
+    "scared" "Scared" NOT NULL,
+    "copeInability" "CopeInability" NOT NULL,
+    "difficultySleeping" "DifficultySleeping" NOT NULL,
+    "sadness" "Sadness" NOT NULL,
+    "crying" "Crying" NOT NULL,
+    "selfHarmThoughts" "SelfHarmThoughts" NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "timeframe" "Timeframe" NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "EdinburgPostnatalDepressionScale_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -573,9 +672,6 @@ ALTER TABLE "CommunicationEntry" ADD CONSTRAINT "CommunicationEntry_communicatio
 
 -- AddForeignKey
 ALTER TABLE "CommunicationLog" ADD CONSTRAINT "CommunicationLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "AppointmentEntry" ADD CONSTRAINT "AppointmentEntry_appointmentLogId_fkey" FOREIGN KEY ("appointmentLogId") REFERENCES "AppointmentLog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AppointmentLog" ADD CONSTRAINT "AppointmentLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -614,7 +710,19 @@ ALTER TABLE "ReferralsAndServices" ADD CONSTRAINT "ReferralsAndServices_userId_f
 ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "EncounterForm" ADD CONSTRAINT "EncounterForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligionIndex_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MentalHealthHistory" ADD CONSTRAINT "MentalHealthHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EdinburgPostnatalDepressionScale" ADD CONSTRAINT "EdinburgPostnatalDepressionScale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

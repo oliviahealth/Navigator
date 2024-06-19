@@ -71,7 +71,7 @@ export const SelfHarmThoughtsEnum = z.enum([
 ]);
 
 export const TimeframeEnum = z.enum([
-    "Prenatal (not required for Olivia-Navigator)",
+    "Prenatal",
     "Postnatal",
 ]);
 
@@ -135,6 +135,10 @@ export const labelMapping = {
         Sometimes: "Sometimes",
         Hardly_ever: "Hardly ever",
         Never: "Never",
+    },
+    timeframe: {
+        Prenatal: "Prenatal (not required for Olivia-Navigator)",
+        Postnatal: "Postnatal"
     }
 };
 

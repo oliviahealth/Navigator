@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IEdinburgPostnatalDepressionScaleInputs, IEdinburgPostnatalDepressionScaleResponse } from "./definitions";
+import { IEdinburgPostnatalDepressionScaleInputs, IEdinburgPostnatalDepressionScaleResponse, EdinburgPostnatalDepressionScaleResponseSchema } from "./definitions";
 
 /**
  * Creates a new Edinburg Postnatal Depression Scale Record in the db.
@@ -24,7 +24,7 @@ export const createEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDe
         },
     });
 
-    return response;
+    return EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 };
 
 /**
@@ -44,7 +44,7 @@ export const readEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDepr
         },
     })
 
-    return response;
+    return EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 }
 
 /**
@@ -72,7 +72,7 @@ export const updateEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDe
         }
     })
 
-    return response;
+    return EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 }
 
 /**
@@ -89,5 +89,5 @@ export const deleteEdinburgPostnatalDepressionScale = async (submissionId: strin
             userId: userId
         }
     });
-    return response;
+    return EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 };
