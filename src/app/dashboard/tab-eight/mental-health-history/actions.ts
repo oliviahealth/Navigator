@@ -1,7 +1,7 @@
 "use server"
 
 import { prisma } from "@/lib/prisma";
-import { IMentalHealthHistoryInputs, IMentalHealthHistoryResponse } from "./definitions";
+import { IMentalHealthHistoryInputs, IMentalHealthHistoryResponse, MentalHealthHistoryResponseSchema } from "./definitions";
 
 /**
  * Creates a new Mental Health History Record in the db.
@@ -21,7 +21,7 @@ export const createMentalHealthHistory = async (mentalHealthHistoryInput: IMenta
         },
     });
 
-    return response;
+    return MentalHealthHistoryResponseSchema.parse(response);
 };
 
 /**
@@ -41,7 +41,7 @@ export const readMentalHealthHistory = async (mentalHealthHistoryId: string, use
         },
     })
 
-    return response
+    return MentalHealthHistoryResponseSchema.parse(response);
 }
 
 /**
@@ -67,7 +67,7 @@ export const updateMentalHealthHistory = async (mentalHealthHistoryInput: IMenta
         }
     })
 
-    return response;
+    return MentalHealthHistoryResponseSchema.parse(response);
 }
 
 /**
@@ -84,5 +84,6 @@ export const deleteMentalHealthHistory = async (submissionId: string, userId: st
             userId: userId
         }
     });
-    return response;
+    
+    return MentalHealthHistoryResponseSchema.parse(response);
 };

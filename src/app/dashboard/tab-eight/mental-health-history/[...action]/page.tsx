@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 
-import { IMentalHealthHistoryInputs, MentalHealthHistoryInputsSchema, MentalHealthHistoryResponseSchema, YesNoEnum } from '../definitions';
+import { IMentalHealthHistoryInputs, MentalHealthHistoryInputsSchema, YesNoEnum } from '../definitions';
 import useAppStore from '@/lib/useAppStore';
 import {
     createMentalHealthHistory,
@@ -70,11 +70,10 @@ const MentalHealthHistory: React.FC = () => {
                 }
 
                 const response = await readMentalHealthHistory(submissionId, user.id);
-                const validResponse = MentalHealthHistoryResponseSchema.parse(response);
 
-                reset(validResponse);
+                reset(response);
 
-                if(validResponse.medicationDetails) {
+                if(response.medicationDetails) {
                     setShowMedicationDetails(true);
                 }
 
@@ -104,8 +103,6 @@ const MentalHealthHistory: React.FC = () => {
             } else {
                 response = await updateMentalHealthHistory(data, submissionId, user.id);
             }
-
-            MentalHealthHistoryResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
