@@ -41,6 +41,7 @@ model User {
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
+  DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
 }
 
@@ -819,6 +820,43 @@ model NutritionHistoryAndAssessment {
   dateModified DateTime @updatedAt
 }
 
+enum ChurchAttendance {
+  Never
+  Once_a_year
+  Few_times_a_year
+  Few_times_a_month
+  Once_a_week
+  More_than_once_a_week
+}
+
+enum TimeSpentReligiously {
+  Rarely_or_never
+  Once_a_month
+  Once_a_week
+  Few_times_a_week
+  Once_a_day
+  More_than_once_a_day
+}
+
+enum TruthLevel {
+  Definitely_not_true
+  Somewhat_not_true
+  Neutral
+  Somewhat_true
+  Definitely_true
+}
+
+model DukeUniversityReligionIndex {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  churchAttendance           ChurchAttendance
+  timeSpentReligiously       TimeSpentReligiously
+  divineExperience           TruthLevel
+  beliefLifeInfluence        TruthLevel
+  religiousIntegrationEffort TruthLevel
+}
 model MentalHealthHistory {
   id String @id @default(uuid())
 

@@ -88,6 +88,10 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Eight</p>
 
+                        <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
+                            Duke University Religion Index
+                        </a>
+                        
                         <a href={'dashboard/tab-eight/mental-health-history/new'}>
                             Mental Health History
                         </a>
