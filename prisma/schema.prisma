@@ -42,6 +42,7 @@ model User {
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
+  MentalHealthHistory                    MentalHealthHistory[]
 }
 
 enum CommunicationMethod {
@@ -750,7 +751,7 @@ model NutritionHistoryAndAssessment {
   name                                  String
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
-  hispanicLatino                        YesNo
+  hispanicLatino                        YesNo?
   race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime
@@ -855,6 +856,17 @@ model DukeUniversityReligionIndex {
   divineExperience           TruthLevel
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
+}
+model MentalHealthHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  mentalHealthHistory Json
+  takingMedication    YesNo
+  medicationDetails   String?
+  notes               String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

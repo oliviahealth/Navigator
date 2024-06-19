@@ -91,6 +91,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
                             Duke University Religion Index
                         </a>
+                        
+                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
+                            Mental Health History
+                        </a>
                     </div>
                 </div>
             </div>
