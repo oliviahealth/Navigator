@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter, useParams } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -10,9 +10,8 @@ import {
     IAppointmentLogInputs,
     AppointmentLogInputsSchema,
     IAppointmentEntry,
-    AppointmentLogResponseSchema,
 } from "../definitions";
-import { createAppointmentLog, readAppointmentLog, updateAppointmentLog } from "../actions";
+import { createAppointmentLog, updateAppointmentLog } from "../actions";
 
 import useAppStore from "@/lib/useAppStore";
 
@@ -78,7 +77,6 @@ const AppointmentLog: React.FC = () => {
                 response = await updateAppointmentLog(appointmentEntries, submissionId, "userIdValue");
             }
 
-            AppointmentLogResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
@@ -91,45 +89,6 @@ const AppointmentLog: React.FC = () => {
         setSuccessMessage('Appointment Log submitted successfully!');
         router.push('/dashboard');
     };
-    useEffect(() => {
-        const fetchAndPopulatePastSubmissionData = async () => {
-            try {
-                if (verb !== 'edit') {
-                    return;
-                }
-
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
-                if (!submissionId) {
-                    throw new Error('Missing submissionId when fetching past submission');
-                }
-
-                const response = await readAppointmentLog(submissionId, user.id);
-
-                AppointmentLogResponseSchema.parse(response);
-
-                const formattedEntries = response.appointmentEntries.map(entry => ({
-                    ...entry,
-                    dateTime: new Date(entry.dateTime).toISOString().slice(0, 16),
-                }));
-
-                reset({ appointmentEntries: formattedEntries });
-            } catch (error) {
-                console.error(error);
-                setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/dashboard');
-
-                return;
-            }
-        }
-
-        if(!user) return;
-
-        fetchAndPopulatePastSubmissionData();
-    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IAppointmentEntry, IAppointmentLogInputs, IAppointmentLogResponse } from './definitions';
+import { AppointmentLogResponseSchema, IAppointmentEntry, IAppointmentLogResponse } from './definitions';
 
 /**
  * Creates a new appointment log entry in the database.
@@ -21,16 +21,11 @@ export const createAppointmentLog = async (appointmentLogInput: IAppointmentEntr
     const response = await prisma.appointmentLog.create({
         data: {
             userId,
-            appointmentEntries: {
-                create: formattedAppointmentEntries
-            },
-        },
-        include: {
-            appointmentEntries: true
+            appointmentEntries: formattedAppointmentEntries
         }
     });
 
-    return response;
+    return AppointmentLogResponseSchema.parse(response);
 }
 
 /**
@@ -48,41 +43,29 @@ export const readAppointmentLog = async (appointmentLogId: string, userId: strin
             userId,
             id: appointmentLogId
         },
-        include: {
-            appointmentEntries: true
-        }
     });
 
-    return response;
+    return AppointmentLogResponseSchema.parse(response);
 }
 
 export const updateAppointmentLog = async (appointmentLogInput: IAppointmentEntry[], appointmentLogId: string, userId: string) => {
-    // Format updated appointment log entries
+    // Format appointment log entries
     const formattedAppointmentEntries = appointmentLogInput.map(appointmentEntry => ({
         ...appointmentEntry,
         dateTime: new Date(appointmentEntry.dateTime).toISOString(),
-        who: appointmentEntry.who,
-        location: appointmentEntry.location,
-        notes: appointmentEntry.notes,
     }));
 
     // Update appointment log entry in the database
     const response = await prisma.appointmentLog.update({
         where: {
             id: appointmentLogId,
-            // Optionally, you can ensure that the log belongs to the user attempting the update
-            // userId: userId,
+            userId: userId,
         },
         data: {
-            appointmentEntries: {
-                deleteMany: {}, // Deletes existing entries
-                create: formattedAppointmentEntries // Creates new entries
-            },
-        },
-        include: {
-            appointmentEntries: true
+            userId,
+            appointmentEntries: formattedAppointmentEntries
         }
     });
 
-    return response;
+    return AppointmentLogResponseSchema.parse(response);
 }
