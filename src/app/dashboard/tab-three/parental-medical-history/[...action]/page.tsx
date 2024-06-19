@@ -91,7 +91,6 @@ const ParentalMedicalHistory: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IParentalMedicalHistoryInputs) => {
-        console.log(data);
         try {
             let response;
 
