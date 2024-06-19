@@ -84,6 +84,14 @@ const Dashboard: React.FC = () => {
                             Current Medication List
                         </a>
                     </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Eight</p>
+
+                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
+                            Mental Health History
+                        </a>
+                    </div>
                 </div>
             </div>
         </div >

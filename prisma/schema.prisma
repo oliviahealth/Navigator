@@ -41,6 +41,7 @@ model User {
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
+  MentalHealthHistory                    MentalHealthHistory[]
 }
 
 enum CommunicationMethod {
@@ -540,7 +541,6 @@ model EncounterForm {
   dateModified DateTime @updatedAt
 }
 
-
 model CurrentMedicationList {
   id String @id @default(uuid())
 
@@ -790,7 +790,7 @@ model NutritionHistoryAndAssessment {
   breastfeedingMultipleChildren         YesNo
   pregnancyType                         PregnancyType?
   breastfedDesiredLength                YesNo
-  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] @default([])
+  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[]  @default([])
   notBreastfedDesiredLengthReasonsOther String?
   heardAboutBreastfeeding               String
   breastfeedingMethod                   BreastfeedingMethod
@@ -814,6 +814,21 @@ model NutritionHistoryAndAssessment {
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
   staffNotes                            String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model MentalHealthHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  mentalHealthHistory Json
+  takingMedication    YesNo
+  medicationDetails   String?
+  notes               String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
