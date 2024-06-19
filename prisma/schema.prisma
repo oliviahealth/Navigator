@@ -861,7 +861,7 @@ enum CopeInability {
   No_always_have
 }
 
-enum Unhappiness {
+enum DifficultySleeping {
   Yes_mostly
   Yes_sometimes
   Not_often
@@ -900,24 +900,23 @@ model EdinburgPostnatalDepressionScale {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  laugh            Laugh
-  enjoyment        Enjoyment
-  selfBlame        SelfBlame
-  anxiety          Anxiety
-  scared           Scared
-  copeInability    CopeInability
-  unhappiness      Unhappiness
-  sadness          Sadness
-  crying           Crying
-  selfHarmThoughts SelfHarmThoughts
-  participantName  String
-  caseId           String
-  dateCompleted    DateTime
-  staffName        String
-  timeframe        Timeframe
-  answerToTen      SelfHarmThoughts
-  totalScore       String
-  notes            String?
+  laugh              Laugh
+  enjoyment          Enjoyment
+  selfBlame          SelfBlame
+  anxiety            Anxiety
+  scared             Scared
+  copeInability      CopeInability
+  difficultySleeping DifficultySleeping
+  sadness            Sadness
+  crying             Crying
+  selfHarmThoughts   SelfHarmThoughts
+  participantName    String
+  caseId             String
+  dateCompleted      DateTime
+  staffName          String
+  timeframe          Timeframe
+  totalScore         String
+  notes              String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

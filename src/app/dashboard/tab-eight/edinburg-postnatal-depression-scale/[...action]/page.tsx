@@ -23,7 +23,37 @@ const EdinburgPostnatalDepressionScale: React.FC = () => {
     const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
     const [currentStep, setCurrentStep] = useState(0);
-    const [formData, setFormData] = useState<IEdinburgPostnatalDepressionScaleInputs | null>(null);
+
+    const [totalScore, setTotalScore] = useState(0);
+
+    const [scores, setScores] = useState({
+        laugh: 0,
+        enjoyment: 0,
+        selfBlame: 3,
+        anxiety: 0,
+        scared: 3,
+        copeInability: 3,
+        difficultySleeping: 3,
+        sadness: 3,
+        crying: 3,
+        selfHarmThoughts: 3
+    });
+
+    const handleScore = (value: string, score: number) => {
+        setScores(prevScores => ({
+            ...prevScores,
+            [value]: score,
+        }));
+    };
+
+    useEffect(() => {
+        const { laugh, enjoyment, selfBlame, anxiety, scared, copeInability, difficultySleeping, sadness, crying, selfHarmThoughts } = scores;
+        setTotalScore(laugh + enjoyment + (3 - selfBlame) + anxiety + (3 - scared) + (3 - copeInability) + (3 - difficultySleeping) + (3 - sadness) + (3 - crying) + (3 - selfHarmThoughts));
+    }, [scores]);
+
+    useEffect(() => {
+        setValue("totalScore", totalScore.toString())
+    }, [totalScore]);
 
     const goBack = () => {
         if (currentStep > 0) {
@@ -45,7 +75,7 @@ const EdinburgPostnatalDepressionScale: React.FC = () => {
         }
     });
 
-    const { reset } = methods;
+    const { reset, setValue } = methods;
 
     useEffect(() => {
 
@@ -71,7 +101,7 @@ const EdinburgPostnatalDepressionScale: React.FC = () => {
                     dateCompleted: new Date(validResponse.dateCompleted).toISOString().split('T')[0], // Format as YYYY-MM-DD
                 };
                 reset(formattedData);
-                setFormData(formattedData);
+                setTotalScore(parseInt(formattedData.totalScore));
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -111,13 +141,19 @@ const EdinburgPostnatalDepressionScale: React.FC = () => {
     };
 
     const steps = [
-        <EdinburgPostnatalDepressionScaleQuestions formData={formData} />,
-        <EdinburgResultsTouchpoint formData={formData} />,
+        <EdinburgPostnatalDepressionScaleQuestions
+            handleScore={handleScore}
+            totalScore={totalScore}
+        />,
+        <EdinburgResultsTouchpoint />,
     ];
 
     return (
         <div className={`w-full h-full flex flex-col items-center p-2 mt-2 text-base ${currentStep < 5 ? "pt-20" : "pt-4"} px-32`}>
             <FormProvider {...methods}>
+                <div className="">
+                    <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Edinburg Postnatal Depression Scale</p>
+                </div>
                 <form onSubmit={methods.handleSubmit((data) => submit(data))} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2">
                     <div className="flex flex-col items-center">
                         {steps[currentStep]}

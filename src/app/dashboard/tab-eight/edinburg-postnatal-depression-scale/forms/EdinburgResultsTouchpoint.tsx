@@ -1,20 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
     getErrorMessage,
     labelMapping,
-    IEdinburgPostnatalDepressionScaleInputs,
     TimeframeEnum,
     SelfHarmThoughtsEnum,
 } from "../definitions";
 
-const EdinburgResultsTouchpoint: React.FC<{ formData: IEdinburgPostnatalDepressionScaleInputs | null }> = ({ formData }) => {
-    const { register, formState: { errors } } = useFormContext();
+const EdinburgResultsTouchpoint: React.FC = () => {
+    const { register, formState: { errors }, setValue, watch } = useFormContext();
+
+    const selectedOption = watch("selfHarmThoughts");
+
+    const [disabledOptions, setDisabledOptions] = useState(['']);
+
+    useEffect(() => {
+        setDisabledOptions(SelfHarmThoughtsEnum.options.filter(opt => opt !== selectedOption));
+    }, [selectedOption]);
+
+    const isOptionDisabled = (option: string) => {
+        return disabledOptions.includes(option);
+    };
 
     return (
         <>
             <div className="pt-6">
-                <p className="font-semibold text-xl"> Patient Questions</p>
+                <p className="font-semibold text-2xl">Results TouchPoint</p>
                 <small>This is a short assessment to better understand how you are involved (if at all) in religion or religious practices.</small>
             </div>
 
@@ -83,19 +94,17 @@ const EdinburgResultsTouchpoint: React.FC<{ formData: IEdinburgPostnatalDepressi
                     <div className="space-y-3">
                         <p className="font-semibold">Timeframe</p>
                         <div className="flex flex-col space-y-3">
-                            <div className="flex items-center gap-x-12">
-                                {TimeframeEnum.options.map(option => (
-                                    <label key={option} className="inline-flex items-center">
-                                        <input
-                                            {...register("timeframe")}
-                                            type="radio"
-                                            value={option}
-                                            className="form-radio"
-                                        />
-                                        <span className="ml-2">{option}</span>
-                                    </label>
-                                ))}
-                            </div>
+                            {TimeframeEnum.options.map(option => (
+                                <label key={option} className="inline-flex items-center">
+                                    <input
+                                        {...register("timeframe")}
+                                        type="radio"
+                                        value={option}
+                                        className="form-radio"
+                                    />
+                                    <span className="ml-2">{option}</span>
+                                </label>
+                            ))}
                             {errors.timeframe && (
                                 <span className="label-text-alt text-red-500">
                                     {getErrorMessage(errors.timeframe)}
@@ -110,10 +119,11 @@ const EdinburgResultsTouchpoint: React.FC<{ formData: IEdinburgPostnatalDepressi
                             {SelfHarmThoughtsEnum.options.map(option => (
                                 <label key={option} className="flex items-center">
                                     <input
-                                        {...register("answerToTen")}
+                                        {...register("selfHarmThoughts")}
                                         type="radio"
                                         value={option}
                                         className="form-radio"
+                                        disabled={isOptionDisabled(option)}
                                     />
                                     <span className="ml-2">{labelMapping.selfHarmThoughts[option]}</span>
                                 </label>
@@ -130,6 +140,7 @@ const EdinburgResultsTouchpoint: React.FC<{ formData: IEdinburgPostnatalDepressi
                         <p className="font-semibold">Total Score</p>
                         <input
                             type="text"
+                            disabled
                             {...register("totalScore")}
                             className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
                         {errors.totalScore && (
@@ -141,8 +152,7 @@ const EdinburgResultsTouchpoint: React.FC<{ formData: IEdinburgPostnatalDepressi
 
                     <div className="space-y-3">
                         <p className="font-semibold">Notes</p>
-                        <input
-                            type="text"
+                        <textarea
                             {...register("notes")}
                             className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
                         {errors.notes && (

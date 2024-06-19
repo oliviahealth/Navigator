@@ -1,82 +1,88 @@
-import React, { useEffect, useState } from "react";
-import { useFormContext, useWatch } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useFormContext } from "react-hook-form";
 import {
     getErrorMessage,
     labelMapping,
-    IEdinburgPostnatalDepressionScaleInputs,
     EnjoymentEnum,
     SelfHarmThoughtsEnum,
     CryingEnum,
     SadnessEnum,
-    UnhappinessEnum,
     ScaredEnum,
     AnxietyEnum,
     SelfBlameEnum,
     LaughEnum,
-    CopeInabilityEnum
+    CopeInabilityEnum,
+    DifficultySleepingEnum
 } from "../definitions";
 
-const scoreMapping = {
-    laugh: [0, 1, 2, 3],
-    enjoyment: [0, 1, 2, 3],
-    selfBlame: [3, 2, 1, 0],
-    anxiety: [0, 1, 2, 3],
-    scared: [3, 2, 1, 0],
-    copeInability: [3, 2, 1, 0],
-    unhappiness: [3, 2, 1, 0],
-    sadness: [3, 2, 1, 0],
-    crying: [3, 2, 1, 0],
-    selfHarmThoughts: [3, 2, 1, 0]
+type Scores = {
+    laugh: number;
+    enjoyment: number;
+    selfBlame: number;
+    anxiety: number;
+    scared: number;
+    copeInability: number;
+    difficultySleeping: number;
+    sadness: number;
+    crying: number;
+    selfHarmThoughts: number;
 };
 
-type ScaleQuestionKeys = keyof typeof scoreMapping;
+const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
+    handleScore: (value: keyof Scores, score: number) => void;
+    totalScore: number;
+}> = ({ handleScore, totalScore }) => {
+    const { register, formState: { errors }, watch } = useFormContext();
 
-const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgPostnatalDepressionScaleInputs | null }> = ({ formData }) => {
-    const { register, formState: { errors }, control } = useFormContext();
-    const [totalScore, setTotalScore] = useState(0);
-
-    const watchedValues = useWatch({ control });
+    const laugh = watch("laugh");
+    const enjoyment = watch("enjoyment");
+    const selfBlame = watch("selfBlame");
+    const anxiety = watch("anxiety");
+    const scared = watch("scared");
+    const copeInability = watch("copeInability");
+    const difficultySleeping = watch("difficultySleeping");
+    const sadness = watch("sadness");
+    const crying = watch("crying");
+    const selfHarmThoughts = watch("selfHarmThoughts");
 
     useEffect(() => {
-        const calculateScore = () => {
-            let score = 0;
-
-            for (const key in watchedValues) {
-                if (scoreMapping.hasOwnProperty(key)) {
-                    const value = parseInt(watchedValues[key], 10);
-                    if (!isNaN(value)) {
-                        console.log(`Adding score for ${key}:`, scoreMapping[key as ScaleQuestionKeys][value]);
-                        score += scoreMapping[key as ScaleQuestionKeys][value];
-                    }
-                }
-            }
-            setTotalScore(score);
-        };
-
-        calculateScore();
-    }, [watchedValues]);
+        handleScore("laugh", LaughEnum.options.indexOf(laugh));
+        handleScore("enjoyment", EnjoymentEnum.options.indexOf(enjoyment));
+        handleScore("selfBlame", SelfBlameEnum.options.indexOf(selfBlame));
+        handleScore("anxiety", AnxietyEnum.options.indexOf(anxiety));
+        handleScore("scared", ScaredEnum.options.indexOf(scared));
+        handleScore("copeInability", CopeInabilityEnum.options.indexOf(copeInability));
+        handleScore("difficultySleeping", DifficultySleepingEnum.options.indexOf(difficultySleeping));
+        handleScore("sadness", SadnessEnum.options.indexOf(sadness));
+        handleScore("crying", CryingEnum.options.indexOf(crying));
+        handleScore("selfHarmThoughts", SelfHarmThoughtsEnum.options.indexOf(selfHarmThoughts));
+    }, [laugh, enjoyment, selfBlame, anxiety, scared, copeInability, difficultySleeping, sadness, crying, selfHarmThoughts]);
 
     return (
         <>
             <div className="pt-6">
-                <p className="font-semibold text-xl">Patient Questions</p>
-                <small>This is a short assessment to better understand how you are involved (if at all) in religion or religious practices.</small>
+                <p className="font-semibold text-2xl">Patient Questions</p>
+                <small>This assessment helps healthcare providers (HCPs) screen you for postpartum (after childbirth) depression.
+                    Postpartum depression can happen to any mom, and this screening allows HCPs to provide you with helpful resources or treatment if needed.</small>
             </div>
 
             <div className="space-y-16 pt-12">
-                <div className="space-y-2">
-                    <p>We would like to know how you are feeling. Please choose the answer which comes closest to how you have felt <strong>IN THE PAST 7 DAYS</strong>, not just how you feel today.</p>
-                    <p>Here is an example, already completed:</p>
-                    <p className="font-semibold">I have felt happy:</p>
-                    <ul className="list-disc pl-5">
+                <div className="">
+                    <div className="mb-4">
+                        <strong>We would like to know how you are feeling. Please choose the answer which comes closest to how you have felt <u>in the past 7 days</u>, not just how you feel today.</strong>
+                    </div>
+                    <div className="mb-2">Here is an example, already completed:</div>
+                    <div className="mb-2">
+                        <span className="font-semibold">I have felt happy:</span>
+                    </div>
+                    <ul className="list-disc pl-5 mb-4">
                         <li>Yes, all the time</li>
                         <li><u>Yes, most of the time</u></li>
                         <li>No, not very often</li>
                         <li>No, not at all</li>
                     </ul>
-                    <p>This would mean: “I have felt happy most of the time” during the past week. Please complete the other questions in the same way.</p>
+                    <div>This would mean: <span className="font-semibold">“I have felt happy most of the time” during the past week.</span> Please complete the other questions in the same way.</div>
                 </div>
-
 
                 <div className="space-y-4">
                     <div className="space-y-3">
@@ -87,7 +93,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("laugh")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.laugh[option]}</span>
@@ -109,7 +115,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("enjoyment")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.enjoyment[option]}</span>
@@ -131,7 +137,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("selfBlame")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.selfBlame[option]}</span>
@@ -153,7 +159,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("anxiety")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.anxiety[option]}</span>
@@ -175,7 +181,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("scared")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.scared[option]}</span>
@@ -197,7 +203,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("copeInability")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.copeInability[option]}</span>
@@ -214,20 +220,20 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                     <div className="space-y-3">
                         <p className="font-semibold">*I have been so unhappy that I have had difficulty sleeping</p>
                         <div className="space-y-2">
-                            {UnhappinessEnum.options.map((option, index) => (
+                            {DifficultySleepingEnum.options.map((option, index) => (
                                 <label key={option} className="flex items-center">
                                     <input
-                                        {...register("unhappiness")}
+                                        {...register("difficultySleeping")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.unhappiness[option]}</span>
+                                    <span className="ml-2">{labelMapping.difficultySleeping[option]}</span>
                                 </label>
                             ))}
-                            {errors.unhappiness && (
+                            {errors.difficultySleeping && (
                                 <span className="label-text-alt text-red-500">
-                                    {getErrorMessage(errors.unhappiness)}
+                                    {getErrorMessage(errors.difficultySleeping)}
                                 </span>
                             )}
                         </div>
@@ -241,7 +247,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("sadness")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.sadness[option]}</span>
@@ -263,7 +269,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("crying")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.crying[option]}</span>
@@ -285,7 +291,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                                     <input
                                         {...register("selfHarmThoughts")}
                                         type="radio"
-                                        value={index}
+                                        value={option}
                                         className="form-radio"
                                     />
                                     <span className="ml-2">{labelMapping.selfHarmThoughts[option]}</span>
@@ -300,32 +306,26 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{ formData: IEdinburgP
                     </div>
                 </div>
 
-                <div className="pt-6">
-                    <p className="font-semibold text-lg">Scoring:</p>
-                    <ul className="list-disc pl-5">
-                        <li>
-                            Responses are scored 0, 1, 2, or 3 according to increased severity of the symptom.
-                            Items marked with an asterisk (*) are reverse scored (i.e., 3, 2, 1, and 0).
-                            The total score is determined by adding together the scores for each of the 10 items.
-                        </li>
-                        <li>
-                            <span className="font-semibold">Priority:</span>
-                            Always look at item 10 (suicidal thoughts) and, if appropriate, assess the safety of the mother and infant/family.
-                        </li>
-                        <li>
-                            <span className="font-semibold">Maximum Score:</span> 30
-                        </li>
-                        <li>
-                            <span className="font-semibold">Depression Risk:</span> 10 or greater
-                        </li>
-                        <li>
-                            Scores greater than 13 indicate the likelihood of depressive illness of varying severity; refer for further assessment and treatment as appropriate.
-                        </li>
-                    </ul>
-                </div>
-
-                <div className="pt-6">
-                    <p className="font-semibold text-xl">Total Score: {totalScore}</p>
+                <div>
+                    <p className="font-bold">Scoring:</p>
+                    <p className="mb-4">
+                        Responses are scored 0, 1, 2, or 3 according to increased severity of the symptom. Items marked with an asterisk (*) are reverse scored (i.e., 3, 2, 1, and 0). The total score is determined by adding together the scores for each of the 10 items.
+                    </p>
+                    <p className="mb-2">
+                        <strong>Priority:</strong> Always look at item 10 (suicidal thoughts) and, if appropriate, assess the safety of the mother and infant/family.
+                    </p>
+                    <p className="mb-2">
+                        <strong>Maximum Score:</strong> 30
+                    </p>
+                    <p className="mb-2">
+                        <strong>Depression Risk:</strong> 10 or greater
+                    </p>
+                    <p className="mb-2">
+                        Scores greater than 13 indicate the likelihood of depressive illness of varying severity; refer for further assessment and treatment as appropriate.
+                    </p>
+                    <p className="mb-2 text-lg font-bold">
+                        <strong>Your Score:</strong> {totalScore}
+                    </p>
                 </div>
             </div>
         </>

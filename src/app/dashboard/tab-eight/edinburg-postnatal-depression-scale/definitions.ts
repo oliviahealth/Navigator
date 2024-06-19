@@ -42,7 +42,7 @@ export const CopeInabilityEnum = z.enum([
     "No_always_have",
 ]);
 
-export const UnhappinessEnum = z.enum([
+export const DifficultySleepingEnum = z.enum([
     "Yes_mostly",
     "Yes_sometimes",
     "Not_often",
@@ -71,7 +71,7 @@ export const SelfHarmThoughtsEnum = z.enum([
 ]);
 
 export const TimeframeEnum = z.enum([
-    "Prenatal",
+    "Prenatal (not required for Olivia-Navigator)",
     "Postnatal",
 ]);
 
@@ -112,18 +112,18 @@ export const labelMapping = {
         No_mostly_have: "No, most of the time I have coped quite well",
         No_always_have: "No, have been coping as well as ever",
     },
-    unhappiness: {
+    difficultySleeping: {
         Yes_mostly: "Yes, most of the time",
         Yes_sometimes: "Yes, sometimes",
         Not_often: "Not very often",
         Not_at_all: "No, not at all",
-    }, 
+    },
     sadness: {
         Yes_mostly: "Yes, most of the time",
         Yes_often: "Yes, quite often",
         Not_often: "Not very often",
         Not_at_all: "No, not at all",
-    }, 
+    },
     crying: {
         Yes_mostly: "Yes, most of the time",
         Yes_often: "Yes, quite often",
@@ -145,7 +145,7 @@ export const EdinburgPostnatalDepressionScaleInputsSchema = z.object({
     anxiety: AnxietyEnum,
     scared: ScaredEnum,
     copeInability: CopeInabilityEnum,
-    unhappiness: UnhappinessEnum,
+    difficultySleeping: DifficultySleepingEnum,
     sadness: SadnessEnum,
     crying: CryingEnum,
     selfHarmThoughts: SelfHarmThoughtsEnum,
@@ -154,7 +154,6 @@ export const EdinburgPostnatalDepressionScaleInputsSchema = z.object({
     dateCompleted: z.union([z.date(), z.string().min(1, "Date completed required")]),
     staffName: z.string().min(1, "Staff name required."),
     timeframe: TimeframeEnum,
-    answerToTen: SelfHarmThoughtsEnum,
     totalScore: z.string().min(1, "Total score required."),
     notes: z.string().nullable()
 });
@@ -183,7 +182,7 @@ export const pages: Array<keyof Partial<IEdinburgPostnatalDepressionScaleInputs>
         "anxiety",
         "scared",
         "copeInability",
-        "unhappiness",
+        "difficultySleeping",
         "sadness",
         "crying",
         "selfHarmThoughts"],
@@ -193,7 +192,6 @@ export const pages: Array<keyof Partial<IEdinburgPostnatalDepressionScaleInputs>
         "dateCompleted",
         "staffName",
         "timeframe",
-        "answerToTen",
         "totalScore",
         "notes",
     ],
