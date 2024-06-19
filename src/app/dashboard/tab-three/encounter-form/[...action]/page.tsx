@@ -34,6 +34,12 @@ interface EncounterEntryProps {
     field: FieldArrayWithId<IEncounterFormInputs, "encounterEntries", "id">;
     removeEncounterEntry: UseFieldArrayRemove;
     setValue: UseFormSetValue<IEncounterFormInputs>;
+    showCareVisitsList: boolean;
+    setShowCareVisitsList: React.Dispatch<React.SetStateAction<boolean[]>>;
+    showWellchildVisits: boolean;
+    setShowWellchildVisits: React.Dispatch<React.SetStateAction<boolean[]>>;
+    showOtherReason: boolean[][];
+    setShowOtherReason: React.Dispatch<React.SetStateAction<boolean[][]>>;
 }
 
 const EncounterEntry: React.FC<EncounterEntryProps> = ({
@@ -44,6 +50,12 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
     field,
     removeEncounterEntry,
     setValue,
+    showCareVisitsList,
+    setShowCareVisitsList,
+    showWellchildVisits,
+    setShowWellchildVisits,
+    showOtherReason,
+    setShowOtherReason
 }) => {
     const {
         fields: careVisitsDatesAndReasonsFields,
@@ -54,7 +66,6 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
         name: `encounterEntries.${index}.careVisitsDatesAndReasonsList`,
     });
 
-    const [showCareVisitsList, setShowCareVisitsList] = useState<boolean[]>([]);
     const handleShowCareVisitsList = (value: string, fieldIndex: number) => {
         setShowCareVisitsList(prev => {
             const newState = [...prev];
@@ -68,7 +79,6 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
         });
     };
 
-    const [showWellchildVisits, setShowWellchildVisits] = useState<boolean[]>([]);
     const handleShowWellchildVisits = (value: string, fieldIndex: number) => {
         setShowWellchildVisits(prev => {
             const newState = [...prev];
@@ -82,8 +92,7 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
         });
     };
 
-    const [showOtherReason, setShowOtherReason] = useState<boolean[][]>([]);
-   
+    // const [showOtherReason, setShowOtherReason] = useState<boolean[][]>([]);
     const handleShowOtherReason = (value: string, fieldIndex: number, visitIndex: number) => {
         setShowOtherReason(prev => {
             // Ensure the outer array exists
@@ -219,7 +228,7 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
                 </div>
             </div>
 
-            {showCareVisitsList[index] && (
+            {showCareVisitsList && (
                 <div className="space-y-3">
                     <p className="font-bold text-xl">Care Visits Dates and Reasons</p>
                     {careVisitsDatesAndReasonsFields?.map((visit, visitIndex) => (
@@ -332,7 +341,7 @@ const EncounterEntry: React.FC<EncounterEntryProps> = ({
                 </div>
             </div>
 
-            {showWellchildVisits[index] && (
+            {showWellchildVisits && (
                 <>
                     <div className="space-y-3">
                         <p className="font-semibold">Visit(s) Completed</p>
@@ -421,6 +430,10 @@ const EncounterForm: React.FC = () => {
         },
     });
 
+    const [showCareVisitsList, setShowCareVisitsList] = useState<boolean[]>([]);
+    const [showWellchildVisits, setShowWellchildVisits] = useState<boolean[]>([]);
+    const [showOtherReason, setShowOtherReason] = useState<boolean[][]>([]);
+
     const {
         fields: encounterEntriesFields,
         append: appendEncounterEntry,
@@ -452,13 +465,12 @@ const EncounterForm: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+
+                if (!user) {
+                    throw new Error("User not found");
                 }
 
                 if (!submissionId) {
@@ -467,18 +479,32 @@ const EncounterForm: React.FC = () => {
 
                 const response = await readEncounterForm(submissionId, user.id);
                 const validResponse = EncounterFormResponseSchema.parse(response);
+
                 reset(validResponse);
+
+                setShowCareVisitsList(
+                    validResponse.encounterEntries.map(entry => entry.careVisits === 'Yes')
+                );
+                setShowWellchildVisits(
+                    validResponse.encounterEntries.map(entry => entry.wellchildVisits === 'Yes')
+                );
+                setShowOtherReason(
+                    validResponse.encounterEntries.map(entry =>
+                        entry.careVisitsDatesAndReasonsList ? entry.careVisitsDatesAndReasonsList.map(visit => visit.reason === 'Other') : []
+                    )
+                );
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
                 router.push('/dashboard');
-                return;
             }
-        }
+        };
 
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
+        }
+    }, [user, verb, submissionId, reset, router, setErrorMessage, setShowCareVisitsList, setShowWellchildVisits, setShowOtherReason]);
 
     const submit = async (encounterFormData: IEncounterFormInputs) => {
         try {
@@ -489,7 +515,7 @@ const EncounterForm: React.FC = () => {
             }
 
             EncounterFormInputsSchema.parse(encounterFormData);
-            
+
             if (verb === 'new') {
                 response = await createEncounterForm(encounterFormData, user.id);
             } else {
@@ -572,6 +598,12 @@ const EncounterForm: React.FC = () => {
                                 field={field}
                                 removeEncounterEntry={removeEncounterEntry}
                                 setValue={setValue}
+                                showCareVisitsList={showCareVisitsList[index]}
+                                setShowCareVisitsList={setShowCareVisitsList}
+                                showWellchildVisits={showWellchildVisits[index]}
+                                setShowWellchildVisits={setShowWellchildVisits}
+                                showOtherReason={showOtherReason}
+                                setShowOtherReason={setShowOtherReason}
                             />
                         ))}
 
