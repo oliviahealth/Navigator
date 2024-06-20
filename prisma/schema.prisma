@@ -544,19 +544,18 @@ enum YesNoDidNotAsk {
 
 model HousingSecurityHomeVisitForm {
   id String @id @default(uuid())
-  
+
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  participantName String
-  dateOfVisit     DateTime
-  caseId          String
-  staffName       String
-  healthInsurance YesNo
-  concerns        YesNoDidNotAsk
-  erVisit         YesNo
-  wellChild       Int
-  ErVisits        Json[]
-  WellChildVisits YesNo
+  participantName         String
+  dateOfVisit             DateTime
+  caseId                  String
+  staffName               String
+  healthInsurance         YesNo
+  concerns                YesNoDidNotAsk
+  erVisit                 YesNo
+  erVisitSpecific        Json?
+  wellChildVisits         YesNo
   WellChildVisitsSpecific Json[]
 }

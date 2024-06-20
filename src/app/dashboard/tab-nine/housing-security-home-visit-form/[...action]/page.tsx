@@ -1,179 +1,229 @@
-"use client"
+"use client";
 
 import React, { useEffect } from "react";
-import { useRouter, useParams } from 'next/navigation'
+import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {
-    HousingSecurityHomeVisitResponseSchema,
-    IHousingSecurityHomeVisitInputs,
-    HousingSecurityHomeVisitInputsSchema
+  HousingSecurityHomeVisitResponseSchema,
+  IHousingSecurityHomeVisitInputs,
+  HousingSecurityHomeVisitInputsSchema,
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
-import { createHousingSecurityHomeVisit, readHousingSecurityHomeVisit, updateHousingSecurityHomeVisit } from "../actions";
+import {
+  createHousingSecurityHomeVisit,
+  readHousingSecurityHomeVisit,
+  updateHousingSecurityHomeVisit,
+} from "../actions";
 
 const HousingSecurityHomeVisit: React.FC = () => {
-    const router = useRouter();
-    const { action } = useParams();
+  const router = useRouter();
+  const { action } = useParams();
 
-    const verb = action[0];
-    const submissionId = action[1];
+  const verb = action[0];
+  const submissionId = action[1];
 
-    const user = useAppStore(state => state.user);
+  const user = useAppStore((state) => state.user);
 
-    const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
-    const setErrorMessage = useAppStore(state => state.setErrorMessage);
+  const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
+  const setErrorMessage = useAppStore((state) => state.setErrorMessage);
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        setValue,
-        formState: { errors, isSubmitting },
-    } = useForm<IHousingSecurityHomeVisitInputs>({
-        resolver: zodResolver(HousingSecurityHomeVisitInputsSchema),
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<IHousingSecurityHomeVisitInputs>({
+    resolver: zodResolver(HousingSecurityHomeVisitInputsSchema),
+  });
 
-    useEffect(() => {
-        const fetchAndPopulatePastSubmissionData = async () => {
-            try {
-                if (verb !== 'edit') {
-                    return;
-                }
-                
-                if (!user) {
-                    throw new Error('User not found');
-                }
+  const submit = async (data: IHousingSecurityHomeVisitInputs) => {
+    console.log(data);
+    return;
 
-                const response = await readHousingSecurityHomeVisit(submissionId, user.id);
+    try {
+      let response;
 
-                const validResponse = HousingSecurityHomeVisitResponseSchema.parse(response);
+      if (!user) {
+        throw new Error("User missing");
+      }
 
-                reset(validResponse);
-            } catch (error) {
-                console.error(error);
-                setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
-                return;
-            }
-        }
+      if (verb === "new") {
+        response = await createHousingSecurityHomeVisit(data, user.id);
+      } else {
+        response = await updateHousingSecurityHomeVisit(
+          data,
+          submissionId,
+          user.id
+        );
+      }
 
-        if(user) return;
+      HousingSecurityHomeVisitResponseSchema.parse(response);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong! Please try again later");
+      return;
+    }
 
-        fetchAndPopulatePastSubmissionData();
-    }, [user, verb, submissionId, reset, setErrorMessage, router]);
+    setSuccessMessage("Housing Security Home Visit submitted successfully!");
+    router.push("/dashboard");
+  };
 
-    const submit = async (data: IHousingSecurityHomeVisitInputs) => {
-        console.log(data);
-        try {
-            let response;
-
-            if (!user) {
-                throw new Error("User missing");
-            }
-
-            if (verb === 'new') {
-                response = await createHousingSecurityHomeVisit(data, user.id);
-            } else {
-                response = await updateHousingSecurityHomeVisit(data, submissionId, user.id);
-            }
-
-            HousingSecurityHomeVisitResponseSchema.parse(response);
-        } catch (error) {
-            console.error(error);
-            setErrorMessage('Something went wrong! Please try again later');
-            return;
-        }
-
-        setSuccessMessage('Housing Security Home Visit submitted successfully!');
-        router.push('/dashboard');
-    };
-
-    return (
-        <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
-            <form
-                onSubmit={handleSubmit((data) => submit(data))}
-                className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
-            >
-                <div className="pt-6">
-                    <p className="font-semibold text-2xl">{verb === 'new' ? 'New' : 'Edit'} Housing Security Home Visit Form</p>
-                </div>
-
-                <div className="space-y-16 pt-12">
-                    <div className="space-y-4">
-                        <div className="space-y-4">
-                            <div className="space-y-3">
-                                <p className="font-semibold">Participant Name</p>
-                                <input
-                                    {...register("participantName")}
-                                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                                />
-                                {errors.participantName?.message && (
-                                    <span className="label-text-alt text-red-500">
-                                        {errors.participantName.message}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="space-y-3">
-                    <p className="font-semibold">Case ID</p>
-                    <input
-                        {...register("caseId")}
-                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                        type="text"
-                    />
-                    {errors.caseId?.message && (
-                        <span className="label-text-alt text-red-500">
-                            {errors.caseId.message}
-                        </span>
-                    )}
-                </div>
-
-                <div className="space-y-3">
-                    <p className="font-semibold">Date of Visit</p>
-                    <input
-                        {...register("dateOfVisit")}
-                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                        type="date"
-                    />
-                    {errors.dateOfVisit && (
-                        <span className="label-text-alt text-red-500">
-                            {errors.dateOfVisit.message}
-                        </span>
-                    )}
-                </div>
-
-
-                <div className="space-y-3">
-                    <p className="font-semibold">Staff Name</p>
-                    <input
-                        {...register("staffName")}
-                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                    />
-                    {errors.staffName?.message && (
-                        <span className="label-text-alt text-red-500">
-                            {errors.staffName.message}
-                        </span>
-                    )}
-                </div>
-
-                <div className="flex justify-center py-4">
-                    <button
-                        type="submit"
-                        className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
-                    >
-                        {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
-                        Save
-                    </button>
-                </div>
-            </form>
+  return (
+    <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
+      <form
+        onSubmit={handleSubmit((data) => submit(data))}
+        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+      >
+        <div className="pt-6">
+          <p className="font-semibold text-2xl">
+            {verb === "new" ? "New" : "Edit"} Housing Security Home Visit Form
+          </p>
         </div>
-    )
-}
+
+        <div className="space-y-16 pt-12">
+          <div className="space-y-4">
+            <div className="space-y-4">
+              <div className="space-y-3">
+                <p className="font-semibold">Participant Name</p>
+                <input
+                  {...register("participantName")}
+                  className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                />
+                {errors.participantName?.message && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.participantName.message}
+                  </span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Case ID</p>
+          <input
+            {...register("caseId")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="text"
+          />
+          {errors.caseId?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.caseId.message}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Date of Visit</p>
+          <input
+            {...register("dateOfVisit")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            type="date"
+          />
+          {errors.dateOfVisit && (
+            <span className="label-text-alt text-red-500">
+              {errors.dateOfVisit.message}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Staff Name</p>
+          <input
+            {...register("staffName")}
+            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+          />
+          {errors.staffName?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.staffName.message}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Do you have health insurance coverage?</p>
+          <div className="space-x-12">
+            {["Yes", "No"].map((status, idx) => (
+              <label key={idx} className="inline-flex items-center">
+                <input
+                  {...register(`healthInsurance`)}
+                  type="radio"
+                  value={status}
+                  className="form-radio"
+                />
+                <span className="ml-2">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.staffName?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.staffName.message}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Do you have concerns about your child's development, behavior or learning?</p>
+          <div className="space-x-12">
+            {["Yes", "No"].map((status, idx) => (
+              <label key={idx} className="inline-flex items-center">
+                <input
+                  {...register(`concerns`)}
+                  type="radio"
+                  value={status}
+                  className="form-radio"
+                />
+                <span className="ml-2">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.staffName?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.staffName.message}
+            </span>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Since our last visit, have you taken your child to the emergency room?</p>
+          <div className="space-x-12">
+            {["Yes", "No"].map((status, idx) => (
+              <label key={idx} className="inline-flex items-center">
+                <input
+                  {...register(`concerns`)}
+                  type="radio"
+                  value={status}
+                  className="form-radio"
+                />
+                <span className="ml-2">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.staffName?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.staffName.message}
+            </span>
+          )}
+        </div>
+
+        <div className="flex justify-center py-4">
+          <button
+            type="submit"
+            className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
+          >
+            {isSubmitting && (
+              <span className="loading loading-spinner loading-sm"></span>
+            )}
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
 export default HousingSecurityHomeVisit;
