@@ -41,7 +41,8 @@ model User {
   EncounterForm                          EncounterForm[]
   CurrentMedicationList                  CurrentMedicationList[]
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
-  SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
+  DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
+  MentalHealthHistory                    MentalHealthHistory[]
   SubstanceUseHistory                    SubstanceUseHistory[]
 }
 
@@ -80,26 +81,13 @@ model CommunicationLog {
   dateModified DateTime @updatedAt
 }
 
-model AppointmentEntry {
-  id String @id @default(uuid())
-
-  appointmentLogId String
-
-  dateTime DateTime
-  who      String
-  location String
-  notes    String?
-
-  appointmentLog AppointmentLog @relation(fields: [appointmentLogId], references: [id], onDelete: Cascade)
-}
-
 model AppointmentLog {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  appointmentEntries AppointmentEntry[]
+  appointmentEntries Json[]
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -751,7 +739,7 @@ model NutritionHistoryAndAssessment {
   name                                  String
   gradesCompleted                       String
   currentlyMarried                      MarriedEnum
-  hispanicLatino                        YesNo
+  hispanicLatino                        YesNo?
   race                                  NutritionHistoryAndAssessmentRace[] @default([])
   lastMenstrualPeriod                   DateTime
   dueDate                               DateTime
@@ -791,7 +779,7 @@ model NutritionHistoryAndAssessment {
   breastfeedingMultipleChildren         YesNo
   pregnancyType                         PregnancyType?
   breastfedDesiredLength                YesNo
-  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[] @default([])
+  notBreastfedDesiredLengthReasons      NotBreastfedDesiredLengthReasons[]  @default([])
   notBreastfedDesiredLengthReasonsOther String?
   heardAboutBreastfeeding               String
   breastfeedingMethod                   BreastfeedingMethod
@@ -815,6 +803,58 @@ model NutritionHistoryAndAssessment {
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
   staffNotes                            String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum ChurchAttendance {
+  Never
+  Once_a_year
+  Few_times_a_year
+  Few_times_a_month
+  Once_a_week
+  More_than_once_a_week
+}
+
+enum TimeSpentReligiously {
+  Rarely_or_never
+  Once_a_month
+  Once_a_week
+  Few_times_a_week
+  Once_a_day
+  More_than_once_a_day
+}
+
+enum TruthLevel {
+  Definitely_not_true
+  Somewhat_not_true
+  Neutral
+  Somewhat_true
+  Definitely_true
+}
+
+model DukeUniversityReligionIndex {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  churchAttendance           ChurchAttendance
+  timeSpentReligiously       TimeSpentReligiously
+  divineExperience           TruthLevel
+  beliefLifeInfluence        TruthLevel
+  religiousIntegrationEffort TruthLevel
+}
+model MentalHealthHistory {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  mentalHealthHistory Json
+  takingMedication    YesNo
+  medicationDetails   String?
+  notes               String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -874,41 +914,6 @@ model SubstanceUseHistory {
   date_used_medicine_service String?
   addiction_medicine_clinic String?
   addiction_medicine_clinic_phone String?
-
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
-}
-
-model MedicalServicesSubstanceUse {
-  id                               String    @id @default(uuid())
-  userId                           String
-  mat_engaged                      String
-  date_used_mat                    DateTime?
-  medications                      Json?
-  mat_clinic_name                  String?
-  mat_clinic_phone                 String?
-  used_addiction_medicine_services String
-  date_used_medicine_service       DateTime?
-  addiction_medicine_clinic        String?
-  addiction_medicine_clinic_phone  String?
-  addiction_medication_service     String
-}
-
-enum SmokingStatus {
-  NEVER
-  NOT_BEFORE_AND_NOT_NOW
-  NOT_AFTER_AND_NOT_NOW
-  NOT_DURING_AND_NOT_NOW
-  NOT_DURING_AND_NOW
-}
-
-model SmokingTobaccoPregnancy {
-  id String @id @default(uuid())
-
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  smokingStatus SmokingStatus
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

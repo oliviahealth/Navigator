@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
                             Communication Log
                         </a>
 
-                        <a href={'/dashboard/tab-one/appointment-log'}>
+                        <a href={'/dashboard/tab-one/appointment-log/new'}>
                             Appointment Log
                         </a>
                     </div>
@@ -94,6 +94,16 @@ const Dashboard: React.FC = () => {
 
                         <a href={'dashboard/tab-five/substance-use-history/new'}>
                             Substance Use History
+                        </a>
+                        
+                        <p className="font-bold text-lg">Tab Eight</p>
+
+                        <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
+                            Duke University Religion Index
+                        </a>
+                        
+                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
+                            Mental Health History
                         </a>
                     </div>
                 </div>
