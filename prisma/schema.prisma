@@ -324,7 +324,7 @@ enum ChildLivingWith {
   Other
 }
 
-enum childProtectiveService {
+enum CurrentlyPreviouslyNever {
   Currently
   Previously
   Never
@@ -364,7 +364,7 @@ model ChildDemographicsRecord {
   difficultiesServicesReceived String
   lactationConsultant          YesNo
   legalSystemInvolvement       YesNo
-  childProtectiveService       childProtectiveService
+  childProtectiveService       CurrentlyPreviouslyNever
   caseworker                   String?
   caseworkerPhoneNumber        String?
   importantInformation         String?
@@ -541,7 +541,6 @@ model EncounterForm {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
-
 
 model CurrentMedicationList {
   id String @id @default(uuid())
@@ -821,8 +820,6 @@ model NutritionHistoryAndAssessment {
   dateModified DateTime @updatedAt
 }
 
-
-
 model SubstanceUseHistory {
   id                                       String  @id @default(uuid())
   
@@ -868,6 +865,16 @@ model SubstanceUseHistory {
   other_drugs                              Json[]
   notes                                    String?
 
+  mat_engaged CurrentlyPreviouslyNever
+  date_used_mat String?
+  medications Json
+  mat_clinic_name String?
+  mat_clinic_phone String?
+  used_addiction_medicine_services CurrentlyPreviouslyNever
+  date_used_medicine_service String?
+  addiction_medicine_clinic String?
+  addiction_medicine_clinic_phone String?
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -877,7 +884,7 @@ model MedicalServicesSubstanceUse {
   userId                           String
   mat_engaged                      String
   date_used_mat                    DateTime?
-  medications                      Json
+  medications                      Json?
   mat_clinic_name                  String?
   mat_clinic_phone                 String?
   used_addiction_medicine_services String

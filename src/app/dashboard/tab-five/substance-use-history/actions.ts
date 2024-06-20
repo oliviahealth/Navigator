@@ -1,6 +1,7 @@
 'use server';
 import { prisma } from "@/lib/prisma";
 import { ISubstanceUseHistoryInput, SubstanceUseHistoryResponseSchema } from "./definitions";
+import { CurrentlyPreviouslyNever } from "@prisma/client";
 
 /**
  * Creates a new Substance Use History in the db.
@@ -14,7 +15,10 @@ export const createSubstanceUseHistory = async (input: ISubstanceUseHistoryInput
   const response = await prisma.substanceUseHistory.create({
     data: {
       userId,
-      ...input
+      ...input,
+      mat_engaged: input.mat_engaged as CurrentlyPreviouslyNever,
+      medications: input.medications ? input.medications : [],
+      used_addiction_medicine_services: input.used_addiction_medicine_services as CurrentlyPreviouslyNever
     }
   });
 
@@ -58,7 +62,10 @@ export const updateSubstanceUseHistory = async (input: ISubstanceUseHistoryInput
     },
     data: {
       ...input,
-    },
+      mat_engaged: input.mat_engaged as CurrentlyPreviouslyNever,
+      medications: input.medications ? input.medications : [],
+      used_addiction_medicine_services: input.used_addiction_medicine_services as CurrentlyPreviouslyNever
+    }
   });
 
   return SubstanceUseHistoryResponseSchema.parse(response);

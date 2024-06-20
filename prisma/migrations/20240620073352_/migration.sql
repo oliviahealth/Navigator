@@ -41,7 +41,7 @@ CREATE TYPE "Sex" AS ENUM ('Female', 'Male');
 CREATE TYPE "ChildLivingWith" AS ENUM ('Mother', 'Father', 'Grandparents', 'Siblings', 'Foster_Family', 'Other');
 
 -- CreateEnum
-CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never');
+CREATE TYPE "CurrentlyPreviouslyNever" AS ENUM ('Currently', 'Previously', 'Never');
 
 -- CreateEnum
 CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
@@ -326,7 +326,7 @@ CREATE TABLE "ChildDemographicsRecord" (
     "difficultiesServicesReceived" TEXT NOT NULL,
     "lactationConsultant" "YesNo" NOT NULL,
     "legalSystemInvolvement" "YesNo" NOT NULL,
-    "childProtectiveService" "childProtectiveService" NOT NULL,
+    "childProtectiveService" "CurrentlyPreviouslyNever" NOT NULL,
     "caseworker" TEXT,
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
@@ -624,6 +624,15 @@ CREATE TABLE "SubstanceUseHistory" (
     "tobacco_notes" TEXT,
     "other_drugs" JSONB[],
     "notes" TEXT,
+    "mat_engaged" "CurrentlyPreviouslyNever" NOT NULL,
+    "date_used_mat" TIMESTAMP(3),
+    "medications" JSONB NOT NULL,
+    "mat_clinic_name" TEXT,
+    "mat_clinic_phone" TEXT,
+    "used_addiction_medicine_services" "CurrentlyPreviouslyNever" NOT NULL,
+    "date_used_medicine_service" TIMESTAMP(3),
+    "addiction_medicine_clinic" TEXT,
+    "addiction_medicine_clinic_phone" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
