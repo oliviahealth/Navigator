@@ -557,5 +557,8 @@ model HousingSecurityHomeVisitForm {
   erVisit                 YesNo
   erVisitSpecific        Json?
   wellChildVisits         YesNo
-  WellChildVisitsSpecific Json[]
+  wellChildVisitsSpecific Json?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }

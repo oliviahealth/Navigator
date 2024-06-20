@@ -1,7 +1,8 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IHousingSecurityHomeVisitInputs, IHousingSecurityHomeVisitResponse } from "./definitions";
+import { HousingSecurityHomeVisitResponseSchema, IHousingSecurityHomeVisitInputs } from "./definitions";
+import { YesNoDidNotAsk } from "@prisma/client";
 
 /**
  * Creates a new Housing Security Home Visit in the db.
@@ -11,14 +12,17 @@ import { IHousingSecurityHomeVisitInputs, IHousingSecurityHomeVisitResponse } fr
  * @throws {Error} If there's an issue creating the Housing Security Home Visit.
  */
 export const createHousingSecurityHomeVisit = async (housingSecurityHomeVisitInput: IHousingSecurityHomeVisitInputs, userId: string) => {
-    const response = await prisma.housingSecurityHomeVisit.create({
+    const response = await prisma.housingSecurityHomeVisitForm.create({
         data: {
             userId,
             ...housingSecurityHomeVisitInput,
+            concerns: housingSecurityHomeVisitInput.concerns as YesNoDidNotAsk,
+            erVisitSpecific: housingSecurityHomeVisitInput.erVisitSpecific ? housingSecurityHomeVisitInput.erVisitSpecific : [],
+            wellChildVisitsSpecific: housingSecurityHomeVisitInput.wellChildVisitsSpecific ? housingSecurityHomeVisitInput.wellChildVisitsSpecific : []
         },
     });
 
-    return response;
+    return HousingSecurityHomeVisitResponseSchema.parse(response)
 };
 
 /**
@@ -30,14 +34,14 @@ export const createHousingSecurityHomeVisit = async (housingSecurityHomeVisitInp
  * @throws {Error} If there's an issue retrieving the Housing Security Home Visit.
  */
 export const readHousingSecurityHomeVisit = async (housingSecurityHomeVisitId: string, userId: string) => {
-    const response = await prisma.housingSecurityHomeVisit.findUniqueOrThrow({
+    const response = await prisma.housingSecurityHomeVisitForm.findUniqueOrThrow({
         where: {
             id: housingSecurityHomeVisitId,
             userId,
         },
     });
 
-    return response;
+    return HousingSecurityHomeVisitResponseSchema.parse(response)
 };
 
 /**
@@ -49,19 +53,21 @@ export const readHousingSecurityHomeVisit = async (housingSecurityHomeVisitId: s
  * @throws {Error} If there's an issue updating the Housing Security Home Visit.
  */
 export const updateHousingSecurityHomeVisit = async (housingSecurityHomeVisitInput: IHousingSecurityHomeVisitInputs, id: string, userId: string) => {
-    const response = await prisma.housingSecurityHomeVisit.update({
+    const response = await prisma.housingSecurityHomeVisitForm.update({
         where: {
-            id_userId: {
-                id,
-                userId,
-            },
+            id,
+            userId,
         },
         data: {
+            userId,
             ...housingSecurityHomeVisitInput,
+            concerns: housingSecurityHomeVisitInput.concerns as YesNoDidNotAsk,
+            erVisitSpecific: housingSecurityHomeVisitInput.erVisitSpecific ? housingSecurityHomeVisitInput.erVisitSpecific : [],
+            wellChildVisitsSpecific: housingSecurityHomeVisitInput.wellChildVisitsSpecific ? housingSecurityHomeVisitInput.wellChildVisitsSpecific : []
         },
     });
 
-    return response;
+    return HousingSecurityHomeVisitResponseSchema.parse(response)
 };
 
 /**
@@ -71,12 +77,12 @@ export const updateHousingSecurityHomeVisit = async (housingSecurityHomeVisitInp
  * @returns {Promise<IHousingSecurityHomeVisitResponse>}
  */
 export const deleteHousingSecurityHomeVisit = async (submissionId: string, userId: string) => {
-    const response = await prisma.housingSecurityHomeVisit.deleteMany({
+    const response = await prisma.housingSecurityHomeVisitForm.deleteMany({
         where: {
             id: submissionId,
             userId,
         },
     });
 
-    return response;
+    return HousingSecurityHomeVisitResponseSchema.parse(response)
 };

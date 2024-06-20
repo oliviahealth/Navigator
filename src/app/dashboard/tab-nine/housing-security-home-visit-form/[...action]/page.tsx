@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import {
   HousingSecurityHomeVisitResponseSchema,
@@ -17,6 +17,7 @@ import {
   readHousingSecurityHomeVisit,
   updateHousingSecurityHomeVisit,
 } from "../actions";
+import { error } from "console";
 
 const HousingSecurityHomeVisit: React.FC = () => {
   const router = useRouter();
@@ -33,17 +34,70 @@ const HousingSecurityHomeVisit: React.FC = () => {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<IHousingSecurityHomeVisitInputs>({
     resolver: zodResolver(HousingSecurityHomeVisitInputsSchema),
+    defaultValues: {
+      erVisitSpecific: [{
+        visitDate: null,
+        visitReason: null
+      }],
+      wellChildVisitsSpecific: [{
+        childName: '',
+        wellChildVisitsCompleted: ''
+      }]
+    }
   });
 
-  const submit = async (data: IHousingSecurityHomeVisitInputs) => {
-    console.log(data);
-    return;
+  const { fields: erVisitSpecificFields, append: addErVisitSpecific, remove: removeErVisitSpecific } = useFieldArray({
+    control,
+    name: 'erVisitSpecific',
+  });
 
+  const { fields: wellChildVisitsSpecificFields, append: addWellChildVisitSpecific, remove: removeWellChildVisitsSpecific } = useFieldArray({
+    control,
+    name: 'wellChildVisitsSpecific',
+  });
+
+  const addNewErVisit = () => {
+    addErVisitSpecific({
+      visitDate: null,
+      visitReason: null
+    })
+  }
+
+  const addNewWellChildVisit = () => {
+    addWellChildVisitSpecific({
+      childName: '',
+      wellChildVisitsCompleted: ''
+    })
+  }
+
+  const [showErVisitSpecific, setShowErVisitSpecific] = useState(false);
+  const [showWellChildVisitsSpecific, setShowWellChildVisitsSpecific] = useState(false);
+
+  const handleErVisitChange = (value: string) => {
+    if (value === 'Yes') {
+      setShowErVisitSpecific(true);
+    } else {
+      setShowErVisitSpecific(false);
+      setValue("erVisitSpecific", null);
+    }
+  };
+
+  const handleWellChildVisitChange = (value: string) => {
+    if (value === 'Yes') {
+      setShowWellChildVisitsSpecific(true);
+    } else {
+      setShowWellChildVisitsSpecific(false);
+      setValue("wellChildVisitsSpecific", null);
+    }
+  };
+
+  const submit = async (data: IHousingSecurityHomeVisitInputs) => {
     try {
       let response;
 
@@ -76,7 +130,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
     <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
       <form
         onSubmit={handleSubmit((data) => submit(data))}
-        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-4 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
       >
         <div className="pt-6">
           <p className="font-semibold text-2xl">
@@ -120,7 +174,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
         <div className="space-y-3">
           <p className="font-semibold">Date of Visit</p>
           <input
-            {...register("dateOfVisit")}
+            {...register("dateOfVisit", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
@@ -169,17 +223,35 @@ const HousingSecurityHomeVisit: React.FC = () => {
         <div className="space-y-3">
           <p className="font-semibold">Do you have concerns about your child's development, behavior or learning?</p>
           <div className="space-x-12">
-            {["Yes", "No"].map((status, idx) => (
-              <label key={idx} className="inline-flex items-center">
+            <label className="inline-flex items-center">
                 <input
                   {...register(`concerns`)}
                   type="radio"
-                  value={status}
+                  value="Yes"
                   className="form-radio"
                 />
-                <span className="ml-2">{status}</span>
+                <span className="ml-2">Yes</span>
               </label>
-            ))}
+
+              <label className="inline-flex items-center">
+                <input
+                  {...register(`concerns`)}
+                  type="radio"
+                  value="No"
+                  className="form-radio"
+                />
+                <span className="ml-2">No</span>
+              </label>
+
+              <label className="inline-flex items-center">
+                <input
+                  {...register(`concerns`)}
+                  type="radio"
+                  value="Did_Not_Ask"
+                  className="form-radio"
+                />
+                <span className="ml-2">Did Not Ask</span>
+              </label>
           </div>
           {errors.staffName?.message && (
             <span className="label-text-alt text-red-500">
@@ -194,10 +266,11 @@ const HousingSecurityHomeVisit: React.FC = () => {
             {["Yes", "No"].map((status, idx) => (
               <label key={idx} className="inline-flex items-center">
                 <input
-                  {...register(`concerns`)}
+                  {...register(`erVisit`)}
                   type="radio"
                   value={status}
                   className="form-radio"
+                  onChange={(e) => handleErVisitChange(e.target.value)}
                 />
                 <span className="ml-2">{status}</span>
               </label>
@@ -207,6 +280,196 @@ const HousingSecurityHomeVisit: React.FC = () => {
             <span className="label-text-alt text-red-500">
               {errors.staffName.message}
             </span>
+          )}
+          {showErVisitSpecific && (
+            <div>
+              {erVisitSpecificFields.map((field, index) => {
+                return (
+                  <div key={field.id} className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      {(erVisitSpecificFields.length > 0) && (
+                        <div className="w-full flex justify-end">
+                          <button
+                            type="button"
+                            onClick={() => removeErVisitSpecific(index)}
+                            className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
+                          >
+                            - Remove Entry
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col justify-between space-y-3">
+                      <p className="font-semibold">ER Visit Date</p>
+
+                      <input
+                        {...register(`erVisitSpecific.${index}.visitDate`, { valueAsDate: true })}
+                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        type="date"
+
+                      />
+                      {errors.erVisitSpecific && errors.erVisitSpecific[index]?.visitDate && (
+                        <span className="label-text-alt text-red-500">
+                          {errors.erVisitSpecific[index]?.visitDate?.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col justify-between space-y-3">
+                      <p className="font-semibold">ER Visit Reason</p>
+
+                      <div className="flex flex-row space-x-4">
+                        <label className="inline-flex items-center pt-2">
+                          <input
+                            {...register(`erVisitSpecific.${index}.visitReason`)}
+                            type="radio"
+                            value="Injury"
+                            className="form-radio"
+                          />
+                          <span className="ml-2">Injury</span>
+                        </label>
+
+                        <label className="inline-flex items-center pt-2">
+                          <input
+                            {...register(`erVisitSpecific.${index}.visitReason`)}
+                            type="radio"
+                            value="Other"
+                            className="form-radio"
+                          />
+                          <span className="ml-2">Other</span>
+                        </label>
+                      </div>
+                      {errors.erVisitSpecific && errors.erVisitSpecific[index]?.visitReason && (
+                        <span className="label-text-alt text-red-500">
+                          {errors.erVisitSpecific[index]?.visitReason?.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              <div className="flex justify-center py-4">
+                <button
+                  type="button"
+                  onClick={addNewErVisit}
+                  className="text-green-500 px-20 py-4 font-semibold rounded-md whitespace-nowrap"
+                >
+                  + Add ER Visit Entry
+                </button>
+              </div>
+
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-3">
+          <p className="font-semibold">Since our last visit, has your child had any well-child visits?</p>
+          <div className="space-x-12">
+            {["Yes", "No"].map((status, idx) => (
+              <label key={idx} className="inline-flex items-center">
+                <input
+                  {...register(`wellChildVisits`)}
+                  type="radio"
+                  value={status}
+                  className="form-radio"
+                  onChange={(e) => handleWellChildVisitChange(e.target.value)}
+                />
+                <span className="ml-2">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.wellChildVisits?.message && (
+            <span className="label-text-alt text-red-500">
+              {errors.wellChildVisits.message}
+            </span>
+          )}
+          {showWellChildVisitsSpecific && (
+            <div>
+              {wellChildVisitsSpecificFields.map((field, index) => {
+                return (
+                  <div key={field.id} className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      {(wellChildVisitsSpecificFields.length > 0) && (
+                        <div className="w-full flex justify-end">
+                          <button
+                            type="button"
+                            onClick={() => removeWellChildVisitsSpecific(index)}
+                            className="font-semibold text-red-600 px-4 py-2 rounded-md whitespace-nowrap"
+                          >
+                            - Remove Entry
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col justify-between space-y-3">
+                      <p className="font-semibold">Child Name</p>
+
+                      <input
+                        {...register(`wellChildVisitsSpecific.${index}.childName`)}
+                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        type="text"
+                      />
+                      {errors.wellChildVisitsSpecific && errors.wellChildVisitsSpecific[index]?.childName && (
+                        <span className="label-text-alt text-red-500">
+                          {errors.wellChildVisitsSpecific[index]?.childName?.message}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex flex-col justify-between space-y-3">
+                      <p className="font-semibold">Well Child Visits Completed</p>
+                      <textarea
+                        {...register(`wellChildVisitsSpecific.${index}.wellChildVisitsCompleted`)}
+                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                      />
+                      <div>
+                        Well-child visits (write in any new visits completed above)
+                        <div className="flex flex-wrap justify-between">
+                          <div className="flex flex-col">
+                            <small >Newborn</small>
+                            <small>3-7 days old</small>
+                            <small>2-4 weeks old</small>
+                            <small>2-3 months old</small>
+                          </div>
+                          <div className="flex flex-col">
+                            <small>4-5 months old</small>
+                            <small>6-7 months old</small>
+                            <small>9-10 months old</small>
+                            <small>12-13 months old</small>
+                          </div>
+                          <div className="flex flex-col">
+                            <small>15-16 months old</small>
+                            <small>18-19 months old</small>
+                            <small>2-2.5 years old</small>
+                            <small>3-3.5 years old</small>
+                            <small>4-4.5 years old</small>
+                          </div>
+                        </div>
+                      </div>
+                      {errors.erVisitSpecific && errors.erVisitSpecific[index]?.visitReason && (
+                        <span className="label-text-alt text-red-500">
+                          {errors.erVisitSpecific[index]?.visitReason?.message}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+              <div className="flex justify-center py-4">
+                <button
+                  type="button"
+                  onClick={addNewWellChildVisit}
+                  className="text-green-500 px-20 py-4 font-semibold rounded-md whitespace-nowrap"
+                >
+                  + Add Well-Child Visit Entry
+                </button>
+              </div>
+
+            </div>
           )}
         </div>
 

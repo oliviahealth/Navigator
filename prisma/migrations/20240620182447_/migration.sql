@@ -438,10 +438,11 @@ CREATE TABLE "HousingSecurityHomeVisitForm" (
     "healthInsurance" "YesNo" NOT NULL,
     "concerns" "YesNoDidNotAsk" NOT NULL,
     "erVisit" "YesNo" NOT NULL,
-    "wellChild" INTEGER NOT NULL,
-    "ErVisits" JSONB[],
-    "WellChildVisits" "YesNo" NOT NULL,
-    "WellChildVisitsSpecific" JSONB[],
+    "erVisitSpecific" JSONB,
+    "wellChildVisits" "YesNo" NOT NULL,
+    "wellChildVisitsSpecific" JSONB,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "HousingSecurityHomeVisitForm_pkey" PRIMARY KEY ("id")
 );
