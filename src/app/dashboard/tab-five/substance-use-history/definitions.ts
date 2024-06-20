@@ -1,14 +1,18 @@
 import { z } from 'zod';
 
-export const AdditionalDrugSchema = z.object({
+const MedicationSchema = z.object({
+  medication: z.string().min(1, 'Medication required'),
+  dose: z.string().min(1, 'Dose required'),
+});
+
+const AdditionalDrugSchema = z.object({
   drug_used: z.string().min(1, 'Substance name required'),
   used_during_pregnancy: z.string().min(1, 'Field required'),
   date_last_used: z.string().min(1, 'Date required'),
   notes: z.string().nullable(),
 });
-export type IAdditionalDrug = z.infer<typeof AdditionalDrugSchema>;
 
-export const SubstanceUseHistoryInputSchema = z.object({
+export const SubstanceUseHistorySchema = z.object({
   alcohol_ever_used: z.string().min(1, 'Field required'),
   alcohol_used_during_pregnancy: z.string().min(1, 'Field required'),
   alcohol_date_last_used: z.string().nullable(),
@@ -47,12 +51,21 @@ export const SubstanceUseHistoryInputSchema = z.object({
   tobacco_notes: z.string().nullable(),
   other_drugs: z.array(AdditionalDrugSchema).nullable(),
   notes: z.string().nullable(),
+  mat_engaged: z.string().min(1, 'MAT engaged required'),
+  date_used_mat: z.string().nullable(),
+  medications: z.array(MedicationSchema),
+  mat_clinic_name: z.string().nullable(),
+  mat_clinic_phone: z.string().nullable(),
+  used_addiction_medicine_services: z.string().min(1, 'This field is required'),
+  date_used_medicine_service: z.string().nullable(),
+  addiction_medicine_clinic: z.string().nullable(),
+  addiction_medicine_clinic_phone: z.string().nullable(),
 });
 
-export type ISubstanceUseHistoryInput = z.infer<typeof SubstanceUseHistoryInputSchema>;
+export type ISubstanceUseHistory = z.infer<typeof SubstanceUseHistorySchema>;
 
-export const SubstanceUseHistoryResponseSchema = SubstanceUseHistoryInputSchema.extend({
-  id: z.string()
+export const SubstanceUseHistoryResponseSchema = SubstanceUseHistorySchema.extend({
+  id: z.string(),
 });
 
 export type ISubstanceUseHistoryResponse = z.infer<typeof SubstanceUseHistoryResponseSchema>;

@@ -1,3 +1,4 @@
+'use server';
 import { prisma } from '@/lib/prisma';
 import { IMedicalServicesSubstanceUseInputs, IMedicalServicesSubstanceUseResponse } from './definitions';
 

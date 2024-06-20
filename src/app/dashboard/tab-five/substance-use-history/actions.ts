@@ -1,6 +1,6 @@
 'use server';
 import { prisma } from "@/lib/prisma";
-import { ISubstanceUseHistoryInput, SubstanceUseHistoryResponseSchema } from "./definitions";
+import { ISubstanceUseHistory, SubstanceUseHistoryResponseSchema } from "./definitions";
 
 /**
  * Creates a new Substance Use History in the db.
@@ -10,7 +10,7 @@ import { ISubstanceUseHistoryInput, SubstanceUseHistoryResponseSchema } from "./
  * @throws {Error} If there's an issue creating the Substance Use History.
  * @remarks This function takes Substance Use History data and saves them to the database using Prisma.
  */
-export const createSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, userId: string) => {
+export const createSubstanceUseHistory = async (data: ISubstanceUseHistory, userId: string) => {
   const { other_drugs, ...rest } = data;
   const response = await prisma.substanceUseHistory.create({
     data: {
@@ -53,7 +53,7 @@ export const readSubstanceUseHistory = async (submissionId: string, userId: stri
  * @remarks This function updates a Substance Use History in the database using Prisma. It replaces the existing
  * record with the record provided in the input.
  */
-export const updateSubstanceUseHistory = async (data: ISubstanceUseHistoryInput, submissionId: string) => {
+export const updateSubstanceUseHistory = async (data: ISubstanceUseHistory, submissionId: string) => {
   const { other_drugs, ...rest } = data;
   const response = await prisma.substanceUseHistory.update({
     where: {
