@@ -55,14 +55,14 @@ export const SubstanceUseHistoryInputSchema = z.object({
   other_drugs: z.array(AdditionalDrugSchema),
   notes: z.string().nullable(),
   mat_engaged: z.string().min(1, 'MAT engaged required'),
-  date_used_mat: z.string().nullable(),
+  date_used_mat: z.string().nullish(),
   medications: z.array(MedicationSchema).nullish(),
-  mat_clinic_name: z.string().nullable(),
-  mat_clinic_phone: z.string().nullable(),
+  mat_clinic_name: z.string().nullish(),
+  mat_clinic_phone: z.string().nullish(),
   used_addiction_medicine_services: z.string().min(1, 'This field is required'),
-  date_used_medicine_service: z.string().nullable(),
-  addiction_medicine_clinic: z.string().nullable(),
-  addiction_medicine_clinic_phone: z.string().nullable(),
+  date_used_medicine_service: z.string().nullish(),
+  addiction_medicine_clinic: z.string().nullish(),
+  addiction_medicine_clinic_phone: z.string().nullish(),
 });
 export type ISubstanceUseHistoryInput = z.infer<typeof SubstanceUseHistoryInputSchema>;
 

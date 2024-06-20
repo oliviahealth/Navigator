@@ -110,7 +110,13 @@ CREATE TYPE "HighRiskFood" AS ENUM ('Unpasteurized_drink', 'Soft_cheese', 'Raw_m
 CREATE TYPE "DietsAndSupplements" AS ENUM ('Vegetarian', 'Low_calorie', 'Low_carb', 'Bariatric_surgery', 'PICA', 'Vitamin_supplement', 'Herbal_supplement', 'Fluoride', 'None_apply');
 
 -- CreateEnum
-CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
+CREATE TYPE "ChurchAttendance" AS ENUM ('Never', 'Once_a_year', 'Few_times_a_year', 'Few_times_a_month', 'Once_a_week', 'More_than_once_a_week');
+
+-- CreateEnum
+CREATE TYPE "TimeSpentReligiously" AS ENUM ('Rarely_or_never', 'Once_a_month', 'Once_a_week', 'Few_times_a_week', 'Once_a_day', 'More_than_once_a_day');
+
+-- CreateEnum
+CREATE TYPE "TruthLevel" AS ENUM ('Definitely_not_true', 'Somewhat_not_true', 'Neutral', 'Somewhat_true', 'Definitely_true');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -149,21 +155,10 @@ CREATE TABLE "CommunicationLog" (
 );
 
 -- CreateTable
-CREATE TABLE "AppointmentEntry" (
-    "id" TEXT NOT NULL,
-    "appointmentLogId" TEXT NOT NULL,
-    "dateTime" TIMESTAMP(3) NOT NULL,
-    "who" TEXT NOT NULL,
-    "location" TEXT NOT NULL,
-    "notes" TEXT,
-
-    CONSTRAINT "AppointmentEntry_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "AppointmentLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "appointmentEntries" JSONB[],
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -512,7 +507,7 @@ CREATE TABLE "NutritionHistoryAndAssessment" (
     "name" TEXT NOT NULL,
     "gradesCompleted" TEXT NOT NULL,
     "currentlyMarried" "MarriedEnum" NOT NULL,
-    "hispanicLatino" "YesNo" NOT NULL,
+    "hispanicLatino" "YesNo",
     "race" "NutritionHistoryAndAssessmentRace"[] DEFAULT ARRAY[]::"NutritionHistoryAndAssessmentRace"[],
     "lastMenstrualPeriod" TIMESTAMP(3) NOT NULL,
     "dueDate" TIMESTAMP(3) NOT NULL,
@@ -583,6 +578,33 @@ CREATE TABLE "NutritionHistoryAndAssessment" (
 );
 
 -- CreateTable
+CREATE TABLE "DukeUniversityReligionIndex" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "churchAttendance" "ChurchAttendance" NOT NULL,
+    "timeSpentReligiously" "TimeSpentReligiously" NOT NULL,
+    "divineExperience" "TruthLevel" NOT NULL,
+    "beliefLifeInfluence" "TruthLevel" NOT NULL,
+    "religiousIntegrationEffort" "TruthLevel" NOT NULL,
+
+    CONSTRAINT "DukeUniversityReligionIndex_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "MentalHealthHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "mentalHealthHistory" JSONB NOT NULL,
+    "takingMedication" "YesNo" NOT NULL,
+    "medicationDetails" TEXT,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "MentalHealthHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "SubstanceUseHistory" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -625,47 +647,18 @@ CREATE TABLE "SubstanceUseHistory" (
     "other_drugs" JSONB[],
     "notes" TEXT,
     "mat_engaged" "CurrentlyPreviouslyNever" NOT NULL,
-    "date_used_mat" TIMESTAMP(3),
+    "date_used_mat" TEXT,
     "medications" JSONB NOT NULL,
     "mat_clinic_name" TEXT,
     "mat_clinic_phone" TEXT,
     "used_addiction_medicine_services" "CurrentlyPreviouslyNever" NOT NULL,
-    "date_used_medicine_service" TIMESTAMP(3),
+    "date_used_medicine_service" TEXT,
     "addiction_medicine_clinic" TEXT,
     "addiction_medicine_clinic_phone" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "SubstanceUseHistory_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "MedicalServicesSubstanceUse" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "mat_engaged" TEXT NOT NULL,
-    "date_used_mat" TIMESTAMP(3),
-    "medications" JSONB NOT NULL,
-    "mat_clinic_name" TEXT,
-    "mat_clinic_phone" TEXT,
-    "used_addiction_medicine_services" TEXT NOT NULL,
-    "date_used_medicine_service" TIMESTAMP(3),
-    "addiction_medicine_clinic" TEXT,
-    "addiction_medicine_clinic_phone" TEXT,
-    "addiction_medication_service" TEXT NOT NULL,
-
-    CONSTRAINT "MedicalServicesSubstanceUse_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "SmokingTobaccoPregnancy" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "smokingStatus" "SmokingStatus" NOT NULL,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -676,9 +669,6 @@ ALTER TABLE "CommunicationEntry" ADD CONSTRAINT "CommunicationEntry_communicatio
 
 -- AddForeignKey
 ALTER TABLE "CommunicationLog" ADD CONSTRAINT "CommunicationLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "AppointmentEntry" ADD CONSTRAINT "AppointmentEntry_appointmentLogId_fkey" FOREIGN KEY ("appointmentLogId") REFERENCES "AppointmentLog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "AppointmentLog" ADD CONSTRAINT "AppointmentLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -726,7 +716,10 @@ ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId
 ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligionIndex_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "MentalHealthHistory" ADD CONSTRAINT "MentalHealthHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
