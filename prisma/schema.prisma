@@ -44,6 +44,7 @@ model User {
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
   EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
+  SubstanceUseHistory                    SubstanceUseHistory[]
 }
 
 enum CommunicationMethod {
@@ -312,7 +313,7 @@ enum ChildLivingWith {
   Other
 }
 
-enum childProtectiveService {
+enum CurrentlyPreviouslyNever {
   Currently
   Previously
   Never
@@ -352,7 +353,7 @@ model ChildDemographicsRecord {
   difficultiesServicesReceived String
   lactationConsultant          YesNo
   legalSystemInvolvement       YesNo
-  childProtectiveService       childProtectiveService
+  childProtectiveService       CurrentlyPreviouslyNever
   caseworker                   String?
   caseworkerPhoneNumber        String?
   importantInformation         String?
@@ -860,7 +861,6 @@ model MentalHealthHistory {
   dateModified DateTime @updatedAt
 }
 
-
 enum Laugh {
   As_much_as_always
   Not_quite_so_much
@@ -959,6 +959,61 @@ model EdinburgPostnatalDepressionScale {
   timeframe          Timeframe
   totalScore         String
   notes              String?
+}
+model SubstanceUseHistory {
+  id                                       String  @id @default(uuid())
+  
+  User                                     User?   @relation(fields: [userId], references: [id])
+  userId                                   String
+  
+  alcohol_ever_used                        YesNo
+  alcohol_used_during_pregnancy            YesNo?
+  alcohol_date_last_used                   DateTime?
+  alcohol_notes                            String?
+  benzodiazepines_ever_used                YesNo
+  benzodiazepines_used_during_pregnancy    YesNo?
+  benzodiazepines_date_last_used           DateTime?
+  benzodiazepines_notes                    String?
+  cocaine_ever_used                        YesNo
+  cocaine_used_during_pregnancy            YesNo?
+  cocaine_date_last_used                   DateTime?
+  cocaine_notes                            String?
+  heroin_ever_used                         YesNo
+  heroin_used_during_pregnancy             YesNo?
+  heroin_date_last_used                    DateTime?
+  heroin_notes                             String?
+  kush_ever_used                           YesNo
+  kush_used_during_pregnancy               YesNo?
+  kush_date_last_used                      DateTime?
+  kush_notes                               String?
+  marijuana_ever_used                      YesNo
+  marijuana_used_during_pregnancy          YesNo?
+  marijuana_date_last_used                 DateTime?
+  marijuana_notes                          String?
+  methamphetamine_ever_used                YesNo
+  methamphetamine_used_during_pregnancy    YesNo?
+  methamphetamine_date_last_used           DateTime?
+  methamphetamine_notes                    String?
+  prescription_drugs_ever_used             YesNo
+  prescription_drugs_used_during_pregnancy YesNo?
+  prescription_drugs_date_last_used        DateTime?
+  prescription_drugs_notes                 String?
+  tobacco_ever_used                        YesNo
+  tobacco_used_during_pregnancy            YesNo?
+  tobacco_date_last_used                   DateTime?
+  tobacco_notes                            String?
+  other_drugs                              Json[]
+  notes                                    String?
+
+  mat_engaged CurrentlyPreviouslyNever
+  date_used_mat String?
+  medications Json
+  mat_clinic_name String?
+  mat_clinic_phone String?
+  used_addiction_medicine_services CurrentlyPreviouslyNever
+  date_used_medicine_service String?
+  addiction_medicine_clinic String?
+  addiction_medicine_clinic_phone String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
