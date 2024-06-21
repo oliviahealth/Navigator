@@ -98,12 +98,16 @@ const Dashboard: React.FC = () => {
                         
                         <p className="font-bold text-lg">Tab Eight</p>
 
+                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
+                            Mental Health History
+                        </a>
+                        
                         <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
                             Duke University Religion Index
                         </a>
-                        
-                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
-                            Mental Health History
+
+                        <a href={'dashboard/tab-eight/edinburg-postnatal-depression-scale/new'}>
+                            Edinburg Postnatal Depression Scale
                         </a>
                     </div>
                 </div>
