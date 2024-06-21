@@ -95,6 +95,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eight/mental-health-history/new'}>
                             Mental Health History
                         </a>
+
+                        <a href={'dashboard/tab-eight/perceived-stress-scale/new'}>
+                            Perceived Stress Scale
+                        </a>
                     </div>
                 </div>
             </div>
