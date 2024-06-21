@@ -110,6 +110,24 @@ const Dashboard: React.FC = () => {
                             Edinburg Postnatal Depression Scale
                         </a>
                     </div>
+
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Nine</p>
+
+                        <a href={'dashboard/tab-nine/housing-security-home-visit-form/new'}>
+                            Housing Security Home Visit Form
+                        </a>
+
+                        <a href={'#'}>
+                            Household Housing Safety Profile
+                        </a>
+
+                        <a href={'#'}>
+                            Food Security
+                        </a>
+                       
+                    </div>
                 </div>
             </div>
         </div >

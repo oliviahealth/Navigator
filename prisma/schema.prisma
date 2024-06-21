@@ -45,6 +45,7 @@ model User {
   MentalHealthHistory                    MentalHealthHistory[]
   EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
   SubstanceUseHistory                    SubstanceUseHistory[]
+  HomeVisits                             HousingSecurityHomeVisitForm[]
 }
 
 enum CommunicationMethod {
@@ -1014,6 +1015,33 @@ model SubstanceUseHistory {
   date_used_medicine_service String?
   addiction_medicine_clinic String?
   addiction_medicine_clinic_phone String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum YesNoDidNotAsk {
+  Yes
+  No
+  Did_Not_Ask
+}
+
+model HousingSecurityHomeVisitForm {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName         String
+  dateOfVisit             DateTime
+  caseId                  String
+  staffName               String
+  healthInsurance         YesNo
+  concerns                YesNoDidNotAsk
+  erVisit                 YesNo
+  erVisitSpecific        Json?
+  wellChildVisits         YesNo
+  wellChildVisitsSpecific Json?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
