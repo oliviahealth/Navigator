@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { INutritionHistoryAndAssessmentInputs, INutritionHistoryAndAssessmentResponse } from "./definitions";
+import { INutritionHistoryAndAssessmentInputs, NutritionHistoryAndAssessmentResponseSchema } from "./definitions";
 
 /**
  * Creates a new Nutrition History and Assessment in the db.
@@ -33,7 +33,7 @@ export const createNutritionHistoryAndAssessment = async (nutritionHistoryAndAss
         },
     });
 
-    return response;
+    return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 };
 
 /**
@@ -53,7 +53,7 @@ export const readNutritionHistoryAndAssessment = async (NutritionHistoryAndAsses
         },
     })
 
-    return response;
+    return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 }
 
 /**
@@ -91,7 +91,7 @@ export const updateNutritionHistoryAndAssessment = async (nutritionHistoryAndAss
         }
     })
 
-    return response;
+    return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 }
 
 /**
@@ -108,5 +108,6 @@ export const deleteNutritionHistoryAndAssessment = async (submissionId: string, 
             userId: userId
         }
     });
-    return response;
+    
+    return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 };

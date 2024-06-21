@@ -46,6 +46,7 @@ model User {
   EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
   SubstanceUseHistory                    SubstanceUseHistory[]
   HomeVisits                             HousingSecurityHomeVisitForm[]
+  SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
 }
 
 enum CommunicationMethod {
@@ -56,28 +57,13 @@ enum CommunicationMethod {
   Other
 }
 
-model CommunicationEntry {
-  id String @id @default(uuid())
-
-  communicationLogId String
-
-  dateTime           DateTime
-  method             CommunicationMethod
-  organizationPerson String
-  purpose            String
-  notes              String?
-  followUpNeeded     YesNo
-
-  communicationLog CommunicationLog @relation(fields: [communicationLogId], references: [id], onDelete: Cascade)
-}
-
 model CommunicationLog {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  communicationEntries CommunicationEntry[]
+  communicationEntries Json?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -249,52 +235,13 @@ enum DeliveryMode {
   Cesarean
 }
 
-model ParticipantRecordForOthersInvolvedEntry {
-  id String @id @default(uuid())
-
-  participantRecordForOthersInvolvedFormId String
-
-  name                         String
-  dateOfBirth                  DateTime
-  currentLivingArrangement     LivingArrangements
-  streetAddress                String
-  city                         String
-  state                        String
-  zipCode                      String
-  county                       String
-  primaryPhoneNumber           String
-  emergencyContact             String
-  emergencyContactPhone        String
-  emergencyContactRelationship String
-  maritalStatus                ParticipantRecordForOthersInvolvedMaritalStatus
-  insurancePlan                String
-  effectiveDate                DateTime
-  subscriberId                 String
-  groupId                      String
-  gestationalAge               String
-  dueDate                      DateTime
-  deliveryDate                 DateTime
-  plannedModeDelivery          DeliveryMode
-  actualModeDelivery           DeliveryMode
-  attendedPostpartumVisit      String
-  postpartumVisitLocation      String?
-  postpartumVisitDate          DateTime?
-  totalNumPregnancies          String
-  numLiveBirths                String
-  numChildrenWithMother        String
-  priorComplications           String?
-  ongoingMedicalProblems       String
-
-  participantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm @relation(fields: [participantRecordForOthersInvolvedFormId], references: [id], onDelete: Cascade)
-}
-
 model ParticipantRecordForOthersInvolvedForm {
   id String @id @default(uuid())
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  participantRecordForOthersInvolvedEntries ParticipantRecordForOthersInvolvedEntry[]
+  participantRecordForOthersInvolvedEntries Json
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -960,6 +907,26 @@ model EdinburgPostnatalDepressionScale {
   timeframe          Timeframe
   totalScore         String
   notes              String?
+}
+
+enum SmokingStatus {
+  NEVER
+  NOT_BEFORE_AND_NOT_NOW
+  NOT_AFTER_AND_NOT_NOW
+  NOT_DURING_AND_NOT_NOW
+  NOT_DURING_AND_NOW
+}
+
+model SmokingTobaccoPregnancy {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  smokingStatus SmokingStatus
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 model SubstanceUseHistory {
   id                                       String  @id @default(uuid())

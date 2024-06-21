@@ -8,7 +8,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import {
     CurrentLivingArrangementInputsSchema,
     ICurrentLivingArrangementInputs,
-    CurrentLivingArrangementResponseSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -103,10 +102,9 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readCurrentLivingArrangement(submissionId, user.id);
-                const validResponse = CurrentLivingArrangementResponseSchema.parse(response);
-                reset(validResponse);
+                const validResponse = await readCurrentLivingArrangement(submissionId, user.id);
 
+                reset(validResponse);
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -135,8 +133,6 @@ const ParticipantDemographicsRecord: React.FC = () => {
             } else {
                 response = await updateCurrentLivingArrangements(data, submissionId, user.id)
             }
-
-            CurrentLivingArrangementResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
