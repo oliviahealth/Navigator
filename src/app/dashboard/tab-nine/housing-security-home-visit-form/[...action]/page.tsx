@@ -47,7 +47,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
       }],
       wellChildVisitsSpecific: [{
         childName: '',
-        wellChildVisitsCompleted: ''
+        wellChildVisitsCompleted: []
       }]
     }
   });
@@ -72,7 +72,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
   const addNewWellChildVisit = () => {
     addWellChildVisitSpecific({
       childName: '',
-      wellChildVisitsCompleted: ''
+      wellChildVisitsCompleted: []
     })
   }
 
@@ -224,34 +224,34 @@ const HousingSecurityHomeVisit: React.FC = () => {
           <p className="font-semibold">Do you have concerns about your child's development, behavior or learning?</p>
           <div className="space-x-12">
             <label className="inline-flex items-center">
-                <input
-                  {...register(`concerns`)}
-                  type="radio"
-                  value="Yes"
-                  className="form-radio"
-                />
-                <span className="ml-2">Yes</span>
-              </label>
+              <input
+                {...register(`concerns`)}
+                type="radio"
+                value="Yes"
+                className="form-radio"
+              />
+              <span className="ml-2">Yes</span>
+            </label>
 
-              <label className="inline-flex items-center">
-                <input
-                  {...register(`concerns`)}
-                  type="radio"
-                  value="No"
-                  className="form-radio"
-                />
-                <span className="ml-2">No</span>
-              </label>
+            <label className="inline-flex items-center">
+              <input
+                {...register(`concerns`)}
+                type="radio"
+                value="No"
+                className="form-radio"
+              />
+              <span className="ml-2">No</span>
+            </label>
 
-              <label className="inline-flex items-center">
-                <input
-                  {...register(`concerns`)}
-                  type="radio"
-                  value="Did_Not_Ask"
-                  className="form-radio"
-                />
-                <span className="ml-2">Did Not Ask</span>
-              </label>
+            <label className="inline-flex items-center">
+              <input
+                {...register(`concerns`)}
+                type="radio"
+                value="Did_Not_Ask"
+                className="form-radio"
+              />
+              <span className="ml-2">Did Not Ask</span>
+            </label>
           </div>
           {errors.staffName?.message && (
             <span className="label-text-alt text-red-500">
@@ -421,34 +421,24 @@ const HousingSecurityHomeVisit: React.FC = () => {
 
                     <div className="flex flex-col justify-between space-y-3">
                       <p className="font-semibold">Well Child Visits Completed</p>
-                      <textarea
-                        {...register(`wellChildVisitsSpecific.${index}.wellChildVisitsCompleted`)}
-                        className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                      />
-                      <div>
-                        Well-child visits (write in any new visits completed above)
-                        <div className="flex flex-wrap justify-between">
-                          <div className="flex flex-col">
-                            <small >Newborn</small>
-                            <small>3-7 days old</small>
-                            <small>2-4 weeks old</small>
-                            <small>2-3 months old</small>
-                          </div>
-                          <div className="flex flex-col">
-                            <small>4-5 months old</small>
-                            <small>6-7 months old</small>
-                            <small>9-10 months old</small>
-                            <small>12-13 months old</small>
-                          </div>
-                          <div className="flex flex-col">
-                            <small>15-16 months old</small>
-                            <small>18-19 months old</small>
-                            <small>2-2.5 years old</small>
-                            <small>3-3.5 years old</small>
-                            <small>4-4.5 years old</small>
-                          </div>
-                        </div>
+                      <div className="grid grid-cols-3 gap-6">
+                        {[
+                          'Newborn', '3-7 days old', '2-4 weeks old', '2-3 months old', '4-5 months old',
+                          '6-7 months old', '9-10 months old', '12-13 months old', '15-16 months old',
+                          '18-19 months old', '2-2.5 years old', '3-3.5 years old', '4-4.5 years old'
+                        ].map((status, idx) => (
+                          <label key={idx} className="inline-flex items-center">
+                            <input
+                              {...register(`wellChildVisitsSpecific.${index}.wellChildVisitsCompleted`)}
+                              type="checkbox"
+                              value={status}
+                              className="form-radio"
+                            />
+                            <span className="ml-2">{status}</span>
+                          </label>
+                        ))}
                       </div>
+
                       {errors.erVisitSpecific && errors.erVisitSpecific[index]?.visitReason && (
                         <span className="label-text-alt text-red-500">
                           {errors.erVisitSpecific[index]?.visitReason?.message}
