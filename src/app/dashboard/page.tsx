@@ -111,6 +111,14 @@ const Dashboard: React.FC = () => {
                         </a>
                     </div>
 
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Seven</p>
+
+                        <a href={'dashboard/tab-seven/pregnancy-spacing-assesment/new'}>
+                            Pregnancy Spacing Assesment
+                        </a>
+                    </div>
+
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Nine</p>
