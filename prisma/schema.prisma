@@ -858,3 +858,23 @@ model MentalHealthHistory {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
+model IntimatePartnerViolenceForm {
+  id            String   @id @default(uuid())
+  userId        String
+  physicallyHurt    IPVStatus
+  insultOrTalkDown  IPVStatus
+  threatenWithHarm  IPVStatus
+  screamOrCurse     IPVStatus
+  dateCreated    DateTime @default(now())
+  dateModified   DateTime @updatedAt
+}
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
