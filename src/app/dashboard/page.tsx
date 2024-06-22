@@ -117,6 +117,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-seven/pregnancy-spacing-assesment/new'}>
                             Pregnancy Spacing Assesment
                         </a>
+
+                        <a href={'dashboard/tab-seven/ten-bs-postpartum-assesment/new'}>
+                            10 B's Postpartum Assesment
+                        </a>
                     </div>
 
 
