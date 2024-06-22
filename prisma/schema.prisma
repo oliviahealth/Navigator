@@ -47,6 +47,7 @@ model User {
   SubstanceUseHistory                    SubstanceUseHistory[]
   HomeVisits                             HousingSecurityHomeVisitForm[]
   SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
+  PerceivedStressScale                   PerceivedStressScale[]
 }
 
 enum CommunicationMethod {
@@ -794,6 +795,7 @@ model DukeUniversityReligionIndex {
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
 }
+
 model MentalHealthHistory {
   id String @id @default(uuid())
 
@@ -928,12 +930,13 @@ model SmokingTobaccoPregnancy {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
 model SubstanceUseHistory {
-  id                                       String  @id @default(uuid())
-  
-  User                                     User?   @relation(fields: [userId], references: [id])
-  userId                                   String
-  
+  id String @id @default(uuid())
+
+  User   User?  @relation(fields: [userId], references: [id])
+  userId String
+
   alcohol_ever_used                        YesNo
   alcohol_used_during_pregnancy            YesNo?
   alcohol_date_last_used                   DateTime?
@@ -973,15 +976,15 @@ model SubstanceUseHistory {
   other_drugs                              Json[]
   notes                                    String?
 
-  mat_engaged CurrentlyPreviouslyNever
-  date_used_mat String?
-  medications Json
-  mat_clinic_name String?
-  mat_clinic_phone String?
+  mat_engaged                      CurrentlyPreviouslyNever
+  date_used_mat                    String?
+  medications                      Json
+  mat_clinic_name                  String?
+  mat_clinic_phone                 String?
   used_addiction_medicine_services CurrentlyPreviouslyNever
-  date_used_medicine_service String?
-  addiction_medicine_clinic String?
-  addiction_medicine_clinic_phone String?
+  date_used_medicine_service       String?
+  addiction_medicine_clinic        String?
+  addiction_medicine_clinic_phone  String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1006,9 +1009,38 @@ model HousingSecurityHomeVisitForm {
   healthInsurance         YesNo
   concerns                YesNoDidNotAsk
   erVisit                 YesNo
-  erVisitSpecific        Json?
+  erVisitSpecific         Json?
   wellChildVisits         YesNo
   wellChildVisitsSpecific Json?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum PerceivedStressScaleOptions {
+  Never
+  Almost_never
+  Sometimes
+  Fairly_often
+  Very_often
+}
+
+model PerceivedStressScale {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  upsetUnexpectedly         PerceivedStressScaleOptions
+  unableControlImportant    PerceivedStressScaleOptions
+  nervousAndStressed        PerceivedStressScaleOptions
+  handleProblemsConfidently PerceivedStressScaleOptions
+  thingsGoingWay            PerceivedStressScaleOptions
+  copeInability             PerceivedStressScaleOptions
+  controlIrritations        PerceivedStressScaleOptions
+  onTopOfThings             PerceivedStressScaleOptions
+  angeredOutsideControl     PerceivedStressScaleOptions
+  difficultiesPilingUp      PerceivedStressScaleOptions
+  totalScore                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

@@ -9,8 +9,8 @@ const Dashboard: React.FC = () => {
                 <div className="flex flex-row gap-x-8 pt-8">
 
                     <div className="flex flex-col gap-y-4">
-
                         <p className="font-bold text-lg">Tab One</p>
+
                         <a href={'/dashboard/tab-one/enrollment-form/new'}>
                             Enrollment log
                         </a>
@@ -99,6 +99,7 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <div className="flex flex-row gap-x-8 pt-8">
+
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Six</p>
                     </div>
@@ -127,7 +128,6 @@ const Dashboard: React.FC = () => {
                         </a>
                     </div>
 
-
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Nine</p>
 
@@ -142,7 +142,6 @@ const Dashboard: React.FC = () => {
                         <a href={'#'}>
                             Food Security
                         </a>
-                       
                     </div>
                 </div>
             </div>
