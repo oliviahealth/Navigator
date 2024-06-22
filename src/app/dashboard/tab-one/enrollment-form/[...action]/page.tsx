@@ -203,9 +203,7 @@ const EnrollmentLog: React.FC = () => {
 
         if (!user) throw new Error("Missing user");
 
-        const response = await readEnrollmentForm(submissionId, user.id);
-
-        const validResponse = EnrollmentFormResponseSchema.parse(response);
+        const validResponse = await readEnrollmentForm(submissionId, user.id);
 
         const formattedData = {
           ...validResponse,

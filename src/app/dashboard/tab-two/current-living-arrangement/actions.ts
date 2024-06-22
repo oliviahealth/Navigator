@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { ICurrentLivingArrangementInputs, ICurrentLivingArrangementResponse } from "./definitions";
+import { CurrentLivingArrangementResponseSchema, ICurrentLivingArrangementInputs } from "./definitions";
 
 /**
  * Creates a new current living arrangement form in the db.
@@ -21,7 +21,7 @@ export const createCurrentLivingArrangements = async (currentLivingArrangementIn
         },
     });
 
-    return response;
+    return CurrentLivingArrangementResponseSchema.parse(response);
 };
 
 /**
@@ -41,7 +41,7 @@ export const readCurrentLivingArrangement = async (currentLivingArrangementId: s
         },
     })
 
-    return response
+    return CurrentLivingArrangementResponseSchema.parse(response);
 }
 
 /**
@@ -67,7 +67,7 @@ export const updateCurrentLivingArrangements = async (currentLivingArrangementIn
         }
     })
 
-    return response;
+    return CurrentLivingArrangementResponseSchema.parse(response);
 }
 
 /**
@@ -84,5 +84,6 @@ export const deleteCurrentLivingArrangements = async (submissionId: string, user
             userId: userId
         }
     });
-    return response;
+    
+    return CurrentLivingArrangementResponseSchema.parse(response);
 };

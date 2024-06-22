@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParentalMedicalHistoryInputs, IParentalMedicalHistoryResponse } from "./definitions";
+import { IParentalMedicalHistoryInputs, ParentalMedicalHistoryResponseSchema } from "./definitions";
 
 /**
  * Creates a new Parental Medical History in the db.
@@ -33,7 +33,7 @@ export const createParentalMedicalHistory = async (parentalMedicalHistoryInput: 
         },
     });
 
-    return response;
+    return ParentalMedicalHistoryResponseSchema.parse(response);
 };
 
 /**
@@ -53,7 +53,7 @@ export const readParentalMedicalHistory = async (parentalMedicalHistoryId: strin
         },
     })
 
-    return response
+    return ParentalMedicalHistoryResponseSchema.parse(response);
 }
 
 /**
@@ -92,7 +92,7 @@ export const updateParentalMedicalHistory = async (parentalMedicalHistoryInput: 
         }
     })
 
-    return response;
+    return ParentalMedicalHistoryResponseSchema.parse(response);
 }
 
 /**
@@ -108,5 +108,6 @@ export const deleteParentalMedicalHistory = async (submissionId: string, userId:
             userId: userId
         }
     });
-    return response;
+    
+    return ParentalMedicalHistoryResponseSchema.parse(response);
 };

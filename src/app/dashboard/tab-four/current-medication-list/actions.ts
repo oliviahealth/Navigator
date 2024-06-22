@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
-import { ICurrentMedicationListInputs, ICurrentMedicationListFormResponse } from './definitions';
+import { CurrentMedicationListResponseSchema, ICurrentMedicationListInputs } from './definitions';
 
 export const createCurrentMedicationListRecord = async (currentMedicationListInput: ICurrentMedicationListInputs, userId: string) => {
     const { currentMedicationList, notes } = currentMedicationListInput;
@@ -14,7 +14,7 @@ export const createCurrentMedicationListRecord = async (currentMedicationListInp
         },
     });
 
-    return response;
+    return CurrentMedicationListResponseSchema.parse(response);
 };
 
 export const readCurrentMedicationListRecord = async (currentMedicationListId: string, userId: string) => {
@@ -25,7 +25,7 @@ export const readCurrentMedicationListRecord = async (currentMedicationListId: s
         },
     });
 
-    return response;
+    return CurrentMedicationListResponseSchema.parse(response);
 };
 
 export const updateCurrentMedicationListRecord = async (currentMedicationListInput: ICurrentMedicationListInputs, id: string, userId: string) => {
@@ -42,7 +42,8 @@ export const updateCurrentMedicationListRecord = async (currentMedicationListInp
         },
     });
 
-    return response;
+    return CurrentMedicationListResponseSchema.parse(response);
+
 };
 
 export const deleteCurrentMedicationListRecord = async (currentMedicationListId: string, userId: string) => {
@@ -53,5 +54,5 @@ export const deleteCurrentMedicationListRecord = async (currentMedicationListId:
         },
     });
 
-    return response;
+    return CurrentMedicationListResponseSchema.parse(response);
 };
