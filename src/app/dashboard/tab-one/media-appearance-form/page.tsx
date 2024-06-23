@@ -103,7 +103,6 @@ const MediaReleaseForm: React.FC = () => {
     }
 
     alert("Media Release form submitted successfully");
-    console.log(data);
   };
   return (
     // Wizard to display text with back/continue buttons

@@ -73,8 +73,6 @@ const CurrentMedicationListRecord: React.FC = () => {
         fetchAndPopulatePastSubmissionData();
     }, []);
 
-    console.log(errors);
-
     const submit = async (data: ICurrentMedicationListInputs) => {
         try {
             CurrentMedicationListInputsSchema.parse(data);

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { signOut } from 'next-auth/react';
 import Link from 'next/link'
 
 import { signoutUser } from "@/app/actions";
@@ -20,6 +21,8 @@ const Navbar: React.FC = () => {
         signoutUser();
         setUser(null);
 
+        signOut({ callbackUrl: '/sign-in' });
+        
         window.location.href = '/sign-in';
     }
 

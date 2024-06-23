@@ -54,15 +54,24 @@ const SignupPage: React.FC = () => {
         <p className="text-sm">Create your account now</p>
       </div>
 
-      <button className="bg-red-500" onClick={handleGoogleSignIn}>
-        <p>Sign In With Google</p>
-      </button>
+      <div className="flex items-center dark:bg-gray-800 my-4" onClick={handleGoogleSignIn}>
+        <button className="px-4 py-2 border flex justify-center gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150 w-full">
+          <img className="w-5 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
+          <span>Sign Up With Google</span>
+        </button>
+      </div>
+
+      <div className="flex items-center mt-5">
+        <div className="flex-grow border-t border-gray-300"></div>
+        <span className="mx-4 text-gray-500">or</span>
+        <div className="flex-grow border-t border-gray-300"></div>
+      </div>
 
       <form
         onSubmit={handleSignup((data) => signupUser(data))}
-        className="form-control w-full py-4"
+        className="form-control w-full"
       >
-        <div className="my-1">
+        <div>
           <label className="label">
             <span className="label-text text-black font-medium">Name</span>
           </label>

@@ -64,8 +64,6 @@ const PregnancySpacingAssesmentRecord: React.FC = () => {
         fetchAndPopulatePastSubmissionData();
     }, []);
 
-    console.log(errors);
-
     const submit = async (data: IPregnancySpacingAssesmentInputs) => {
         try {
             PregnancySpacingAssesmentInputsSchema.parse(data);

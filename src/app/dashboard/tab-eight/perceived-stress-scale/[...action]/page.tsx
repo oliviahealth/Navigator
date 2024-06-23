@@ -132,7 +132,6 @@ const PerceivedStressScale: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IPerceivedStressScaleInputs) => {
-        console.log(data)
         try {
             let response;
 

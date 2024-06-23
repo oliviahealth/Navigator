@@ -65,7 +65,6 @@ const NutritionHistory: React.FC<{ formData: INutritionHistoryAndAssessmentInput
         if (!checked) {
             if (value === 'Vitamin_supplement') {
                 setValue("vitaminSupplementsType", null);
-                console.log("vitamins set to null")
             }
             if (value === 'Herbal_supplement') {
                 setValue("herbalSupplementsType", null);
