@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 
 import { createUser } from "./actions";
 import { ISignupFormData, SignupSchema } from "./definitions";
@@ -22,6 +23,10 @@ const SignupPage: React.FC = () => {
     handleSubmit: handleSignup,
     formState: { errors, isSubmitting },
   } = useForm<ISignupFormData>({ resolver: zodResolver(SignupSchema) });
+
+  const handleGoogleSignIn = () => {
+    signIn("google", { callbackUrl: "/dashboard" });
+  };
 
   const signupUser = async (data: ISignupFormData) => {
     try {
@@ -48,6 +53,10 @@ const SignupPage: React.FC = () => {
         <p className="font-semibold text-2xl">Get Started</p>
         <p className="text-sm">Create your account now</p>
       </div>
+
+      <button className="bg-red-500" onClick={handleGoogleSignIn}>
+        <p>Sign In With Google</p>
+      </button>
 
       <form
         onSubmit={handleSignup((data) => signupUser(data))}

@@ -158,14 +158,20 @@ CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFT
 CREATE TYPE "YesNoDidNotAsk" AS ENUM ('Yes', 'No', 'Did_Not_Ask');
 
 -- CreateEnum
-CREATE TYPE "PerceivedStressScaleOptions" AS ENUM ('Never', 'Almost_never', 'Sometimes', 'Fairly_often', 'Often');
+CREATE TYPE "PerceivedStressScaleOptions" AS ENUM ('Never', 'Almost_never', 'Sometimes', 'Fairly_often', 'Very_often');
+
+-- CreateEnum
+CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half', 'Everyday');
+
+-- CreateEnum
+CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
 
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -730,6 +736,64 @@ CREATE TABLE "PerceivedStressScale" (
     CONSTRAINT "PerceivedStressScale_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "GeneralizedAnxietyDisorder" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "feelingNervous" "GADAnswers" NOT NULL,
+    "unableToControlWorrying" "GADAnswers" NOT NULL,
+    "worryingTooMuch" "GADAnswers" NOT NULL,
+    "troubleRelaxing" "GADAnswers" NOT NULL,
+    "restlessness" "GADAnswers" NOT NULL,
+    "easilyAnnoyed" "GADAnswers" NOT NULL,
+    "feelingAfraid" "GADAnswers" NOT NULL,
+    "problemsDifficulty" "Difficulty" NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "GeneralizedAnxietyDisorder_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PregnancySpacingAssesment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "hadPregnanciesLessThan12MoApart" TEXT NOT NULL,
+    "discussFamilyPlanningInterest" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PregnancySpacingAssesment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "physicalExamBaby" "YesNo" NOT NULL,
+    "feedingBaby" "YesNo" NOT NULL,
+    "growthAndWeightGainBaby" "YesNo" NOT NULL,
+    "assessSupplyLatchMilkTransferPainBreasts" "YesNo" NOT NULL,
+    "referLactationConsultantBreasts" "YesNo" NOT NULL,
+    "educationCollectionStorageMilkBreasts" "YesNo" NOT NULL,
+    "mastisisSignsBreasts" "YesNo" NOT NULL,
+    "constipationTreatementBowels" "YesNo" NOT NULL,
+    "urinaryIncontinenceBladder" "YesNo" NOT NULL,
+    "painBelly" "YesNo" NOT NULL,
+    "perinealPainBotton" "YesNo" NOT NULL,
+    "hemorrhoidsBottom" "YesNo" NOT NULL,
+    "finishedBleeding" "YesNo" NOT NULL,
+    "screenBabyBluePostpartumDepression" "YesNo" NOT NULL,
+    "EPDStool" "YesNo" NOT NULL,
+    "birthControl" "YesNo" NOT NULL,
+    "bloodwork" "YesNo" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -798,3 +862,12 @@ ALTER TABLE "HousingSecurityHomeVisitForm" ADD CONSTRAINT "HousingSecurityHomeVi
 
 -- AddForeignKey
 ALTER TABLE "PerceivedStressScale" ADD CONSTRAINT "PerceivedStressScale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GeneralizedAnxietyDisorder" ADD CONSTRAINT "GeneralizedAnxietyDisorder_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
