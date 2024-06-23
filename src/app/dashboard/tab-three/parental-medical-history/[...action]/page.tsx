@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 
 import {
     deliveryModeEnum,
-    ParentalMedicalHistoryResponseSchema,
     IParentalMedicalHistoryInputs,
     ParentalMedicalHistoryInputsSchema
 } from "../definitions";
@@ -39,7 +38,6 @@ const ParentalMedicalHistory: React.FC = () => {
         }
     };
 
-
     const {
         register,
         handleSubmit,
@@ -49,23 +47,23 @@ const ParentalMedicalHistory: React.FC = () => {
     } = useForm<IParentalMedicalHistoryInputs>({
         resolver: zodResolver(ParentalMedicalHistoryInputsSchema),
     });
-
-
+    
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
-
             try {
                 if (verb !== 'edit') {
                     return;
                 }
-                
+
                 if (!user) {
-                    throw new Error('User not found');
+                    throw new Error("User not found");
                 }
 
-                const response = await readParentalMedicalHistory(submissionId, user.id);
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
 
-                const validResponse = ParentalMedicalHistoryResponseSchema.parse(response);
+                const validResponse = await readParentalMedicalHistory(submissionId, user.id);
 
                 const formattedResponse = {
                     ...validResponse,
@@ -76,24 +74,20 @@ const ParentalMedicalHistory: React.FC = () => {
 
                 reset(formattedResponse);
 
-                const initialShowPostpartumLocationDate = response.attendedPostpartumVisit === 'Yes';
-                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+                setShowPostpartumLocationDate(validResponse.attendedPostpartumVisit === 'Yes');
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard')
-
-                return;
+                router.push('/dashboard');
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
-
-        if(user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IParentalMedicalHistoryInputs) => {
-        console.log(data);
         try {
             let response;
 
@@ -106,8 +100,6 @@ const ParentalMedicalHistory: React.FC = () => {
             } else {
                 response = await updateParentalMedicalHistory(data, submissionId, user.id)
             }
-
-            ParentalMedicalHistoryResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

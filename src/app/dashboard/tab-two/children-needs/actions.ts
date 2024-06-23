@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IChildrenNeedsFormInputs, IChildrenNeedsFormResponse } from "./definitions";
+import { ChildrenNeedsFormResponseSchema, IChildrenNeedsFormInputs } from "./definitions";
 
 /**
  * Creates a new Children Needs Form in the db.
@@ -41,7 +41,7 @@ export const readChildrenNeedsForm = async (childrenNeedsFormId: string, userId:
         },
     })
 
-    return response
+    return ChildrenNeedsFormResponseSchema.parse(response);
 }
 
 /**
@@ -67,7 +67,7 @@ export const updateChildrenNeedsForm = async (childrenNeedsFormInput: IChildrenN
         }
     })
 
-    return response;
+    return ChildrenNeedsFormResponseSchema.parse(response);
 }
 
 /**
@@ -84,5 +84,6 @@ export const deleteChildrenNeedsForm = async (submissionId: string, userId: stri
             userId: userId
         }
     });
-    return response;
+
+    return ChildrenNeedsFormResponseSchema.parse(response);
 };

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IReferralsAndServicesInputs, IReferralsAndServicesResponse } from "./definitions";
+import { IReferralsAndServicesInputs, ReferralsAndServicesResponseSchema } from "./definitions";
 
 /**
  * Creates a new Referrals And Services Form in the db.
@@ -21,7 +21,7 @@ export const createReferralsAndServices = async (referralsAndServicesInput: IRef
         },
     });
 
-    return response;
+    return ReferralsAndServicesResponseSchema.parse(response);
 };
 
 /**
@@ -41,7 +41,7 @@ export const readReferralsAndServices = async (referralsAndServicesId: string, u
         },
     })
 
-    return response
+    return ReferralsAndServicesResponseSchema.parse(response);
 }
 
 /**
@@ -68,7 +68,7 @@ export const updateReferralsAndServices = async (referralsAndServicesInput: IRef
         }
     })
 
-    return response;
+    return ReferralsAndServicesResponseSchema.parse(response);
 }
 
 /**
@@ -85,5 +85,6 @@ export const deleteReferralsAndServices = async (submissionId: string, userId: s
             userId: userId
         }
     });
-    return response;
+    
+    return ReferralsAndServicesResponseSchema.parse(response);
 };

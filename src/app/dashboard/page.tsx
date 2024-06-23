@@ -23,7 +23,7 @@ const Dashboard: React.FC = () => {
                             Communication Log
                         </a>
 
-                        <a href={'/dashboard/tab-one/appointment-log'}>
+                        <a href={'/dashboard/tab-one/appointment-log/new'}>
                             Appointment Log
                         </a>
                     </div>
@@ -86,6 +86,16 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Five</p>
+
+                        <a href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
+                            Smoking and Tobacco Use During Pregnancy
+                        </a>
+
+                        <a href={'dashboard/tab-five/substance-use-history/new'}>
+                            Substance Use History
+                        </a>
+                        
                         <p className="font-bold text-lg">Tab Eight</p>
 
                         <a href={'dashboard/tab-eight/mental-health-history/new'}>
@@ -95,6 +105,32 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eight/generalized-anxiety-disorder/new'}>
                             GAD-7
                         </a>
+                        
+                        <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
+                            Duke University Religion Index
+                        </a>
+
+                        <a href={'dashboard/tab-eight/edinburg-postnatal-depression-scale/new'}>
+                            Edinburg Postnatal Depression Scale
+                        </a>
+                    </div>
+
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Nine</p>
+
+                        <a href={'dashboard/tab-nine/housing-security-home-visit-form/new'}>
+                            Housing Security Home Visit Form
+                        </a>
+
+                        <a href={'#'}>
+                            Household Housing Safety Profile
+                        </a>
+
+                        <a href={'#'}>
+                            Food Security
+                        </a>
+                       
                     </div>
                 </div>
             </div>
