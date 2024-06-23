@@ -25,7 +25,10 @@ export const TenBsPostpartumAssesmentInputsSchema = z.object({
 export type ITenBsPostpartumAssesmentInputs = z.infer<typeof TenBsPostpartumAssesmentInputsSchema>;
 
 export const TenBsPostpartumAssesmentResponseSchema = TenBsPostpartumAssesmentInputsSchema.extend({
-    id: z.string()
+    id: z.string(),
+    userId: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
 });
 
 export type ITenBsPostpartumAssesmentFormResponse = z.infer<typeof TenBsPostpartumAssesmentResponseSchema>;

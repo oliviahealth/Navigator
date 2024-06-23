@@ -1054,4 +1054,7 @@ model TenBsPostpartumAppointmentAssesment {
   EPDStool                                 YesNo
   birthControl                             YesNo
   bloodwork                                YesNo
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
