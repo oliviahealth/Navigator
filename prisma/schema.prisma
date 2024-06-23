@@ -49,6 +49,8 @@ model User {
   SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
   PerceivedStressScale                   PerceivedStressScale[]
   GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
+  PregnancySpacingAssesment              PregnancySpacingAssesment[]
+  TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
 }
 
 enum CommunicationMethod {
@@ -1073,6 +1075,47 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model PregnancySpacingAssesment {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  hadPregnanciesLessThan12MoApart String
+  discussFamilyPlanningInterest   String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model TenBsPostpartumAppointmentAssesment {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  physicalExamBaby                         YesNo
+  feedingBaby                              YesNo
+  growthAndWeightGainBaby                  YesNo
+  assessSupplyLatchMilkTransferPainBreasts YesNo
+  referLactationConsultantBreasts          YesNo
+  educationCollectionStorageMilkBreasts    YesNo
+  mastisisSignsBreasts                     YesNo
+  constipationTreatementBowels             YesNo
+  urinaryIncontinenceBladder               YesNo
+  painBelly                                YesNo
+  perinealPainBotton                       YesNo
+  hemorrhoidsBottom                        YesNo
+  finishedBleeding                         YesNo
+  screenBabyBluePostpartumDepression       YesNo
+  EPDStool                                 YesNo
+  birthControl                             YesNo
+  bloodwork                                YesNo
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

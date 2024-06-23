@@ -106,6 +106,14 @@ const Dashboard: React.FC = () => {
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Seven</p>
+
+                        <a href={'dashboard/tab-seven/pregnancy-spacing-assesment/new'}>
+                            Pregnancy Spacing Assesment
+                        </a>
+
+                        <a href={'dashboard/tab-seven/ten-bs-postpartum-assesment/new'}>
+                            10 B's Postpartum Assesment
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
@@ -118,7 +126,7 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eight/generalized-anxiety-disorder/new'}>
                             GAD-7
                         </a>
-                        
+
                         <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
                             Duke University Religion Index
                         </a>

@@ -1,7 +1,10 @@
-'use server';
+"use server";
 
 import { prisma } from "@/lib/prisma";
-import { CurrentLivingArrangementResponseSchema, ICurrentLivingArrangementInputs } from "./definitions";
+import {
+  CurrentLivingArrangementResponseSchema,
+  ICurrentLivingArrangementInputs,
+} from "./definitions";
 
 /**
  * Creates a new current living arrangement form in the db.
@@ -11,17 +14,20 @@ import { CurrentLivingArrangementResponseSchema, ICurrentLivingArrangementInputs
  * @throws {Error} If there's an issue creating the current living arrangement form.
  * @remarks This function takes current living arrangement form data and saves them to the database using Prisma.
  */
-export const createCurrentLivingArrangements = async (currentLivingArrangementInputs: ICurrentLivingArrangementInputs, userId: string) => {
-    const { ...data } = currentLivingArrangementInputs;
+export const createCurrentLivingArrangements = async (
+  currentLivingArrangementInputs: ICurrentLivingArrangementInputs,
+  userId: string
+) => {
+  const { ...data } = currentLivingArrangementInputs;
 
-    const response = await prisma.currentLivingArrangement.create({
-        data: {
-            userId,
-            ...data
-        },
-    });
+  const response = await prisma.currentLivingArrangement.create({
+    data: {
+      userId,
+      ...data,
+    },
+  });
 
-    return CurrentLivingArrangementResponseSchema.parse(response);
+  return CurrentLivingArrangementResponseSchema.parse(response);
 };
 
 /**
@@ -33,16 +39,19 @@ export const createCurrentLivingArrangements = async (currentLivingArrangementIn
  * @throws {Error} If there's an issue retrieving the current living arrangement form.
  * @remarks This function retrieves a current living arrangement form from the database using Prisma based on the provided ID and the user ID.
  */
-export const readCurrentLivingArrangement = async (currentLivingArrangementId: string, userId: string) => {
-    const response = await prisma.currentLivingArrangement.findUniqueOrThrow({
-        where: {
-            userId,
-            id: currentLivingArrangementId
-        },
-    })
+export const readCurrentLivingArrangement = async (
+  currentLivingArrangementId: string,
+  userId: string
+) => {
+  const response = await prisma.currentLivingArrangement.findUniqueOrThrow({
+    where: {
+      userId,
+      id: currentLivingArrangementId,
+    },
+  });
 
-    return CurrentLivingArrangementResponseSchema.parse(response);
-}
+  return CurrentLivingArrangementResponseSchema.parse(response);
+};
 
 /**
  * Updates a current living arrangement form in the database with new current living arrangement form.
@@ -54,21 +63,25 @@ export const readCurrentLivingArrangement = async (currentLivingArrangementId: s
  * @remarks This function updates a current living arrangement form in the database using Prisma. It replaces the existing
  * form with the form provided in the input.
  */
-export const updateCurrentLivingArrangements = async (currentLivingArrangementInputs: ICurrentLivingArrangementInputs, id: string, userId: string) => {
-    const { ...data } = currentLivingArrangementInputs;
+export const updateCurrentLivingArrangements = async (
+  currentLivingArrangementInputs: ICurrentLivingArrangementInputs,
+  id: string,
+  userId: string
+) => {
+  const { ...data } = currentLivingArrangementInputs;
 
-    const response = await prisma.currentLivingArrangement.update({
-        where: {
-            id,
-            userId
-        },
-        data: {
-            ...data
-        }
-    })
+  const response = await prisma.currentLivingArrangement.update({
+    where: {
+      id,
+      userId,
+    },
+    data: {
+      ...data,
+    },
+  });
 
-    return CurrentLivingArrangementResponseSchema.parse(response);
-}
+  return CurrentLivingArrangementResponseSchema.parse(response);
+};
 
 /**
  * Deletes a current living arrangement form from the database.
@@ -77,13 +90,16 @@ export const updateCurrentLivingArrangements = async (currentLivingArrangementIn
  * @returns {Promise<ICurrentLivingArrangementResponse>}
  * @remarks To be used by the dashboard
  */
-export const deleteCurrentLivingArrangements = async (submissionId: string, userId: string) => {
-    const response = await prisma.currentLivingArrangement.deleteMany({
-        where: {
-            id: submissionId,
-            userId: userId
-        }
-    });
-    
-    return CurrentLivingArrangementResponseSchema.parse(response);
+export const deleteCurrentLivingArrangements = async (
+  submissionId: string,
+  userId: string
+) => {
+  const response = await prisma.currentLivingArrangement.deleteMany({
+    where: {
+      id: submissionId,
+      userId: userId,
+    },
+  });
+
+  return CurrentLivingArrangementResponseSchema.parse(response);
 };
