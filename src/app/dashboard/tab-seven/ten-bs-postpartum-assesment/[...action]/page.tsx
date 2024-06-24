@@ -70,8 +70,6 @@ const TenBsPostpartumAssesmentRecord: React.FC = () => {
     fetchAndPopulatePastSubmissionData();
   }, []);
 
-  console.log(errors);
-
   const submit = async (data: ITenBsPostpartumAssesmentInputs) => {
     try {
       TenBsPostpartumAssesmentInputsSchema.parse(data);
