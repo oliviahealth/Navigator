@@ -11,10 +11,10 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="flex">
           <img
-            className="w-6 hidden md:block"
+            className="w-8 hidden md:block"
             src="./images/meatballs.svg"
           ></img>
-          <img className="h-6 md:hidden block" src="./images/kebab.svg"></img>
+          <img className="h-8 md:hidden block" src="./images/kebab.svg"></img>
         </div>
       </div>
       <div className="flex flex-col overflow-y-auto">
