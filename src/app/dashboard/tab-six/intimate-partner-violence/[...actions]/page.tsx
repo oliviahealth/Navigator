@@ -62,7 +62,7 @@ const IPVForm: React.FC = () => {
       
       IntimatePartnerViolenceFormInputsSchema.parse(response);
     } catch (error) {
-      console.error(error);
+      console.error(error); // for debugging
       setErrorMessage(`Error: ${error instanceof Error ? error.message : "Something went wrong! Please try again later"}`);
       router.push('/dashboard');
       return;
