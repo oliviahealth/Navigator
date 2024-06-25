@@ -166,6 +166,9 @@ CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half'
 -- CreateEnum
 CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
 
+-- CreateEnum
+CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_early_steps', 'Refer_to_agency', 'No_further_action');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -794,6 +797,35 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
     CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "ASQ3" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "childName" TEXT NOT NULL,
+    "questionnaireUsed" TEXT NOT NULL,
+    "ageAdjusted" "YesNo" NOT NULL,
+    "communicationScore" TEXT NOT NULL,
+    "communicationScoreNotRecorded" "YesNo" NOT NULL,
+    "grossMotorScore" TEXT NOT NULL,
+    "grossMotorScoreNotRecorded" "YesNo" NOT NULL,
+    "fineMotorScore" TEXT NOT NULL,
+    "fineMotorScoreNotRecorded" "YesNo" NOT NULL,
+    "problemSolvingScore" TEXT NOT NULL,
+    "problemSolvingScoreNotRecorded" "YesNo" NOT NULL,
+    "personalSocialScore" TEXT NOT NULL,
+    "personalSocialScoreNotRecorded" "YesNo" NOT NULL,
+    "followUpAction" "FollowUpAction"[],
+    "describeActivitiesProvided" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ASQ3_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -871,3 +903,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 
 -- AddForeignKey
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
