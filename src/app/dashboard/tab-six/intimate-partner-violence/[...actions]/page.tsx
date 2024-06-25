@@ -16,17 +16,14 @@ import {
   updateIPVFormEntry,
 } from "../actions";
 
-
 const IPVForm: React.FC = () => {
   const router = useRouter();
   const params = useParams();
-  
+
   console.log(params); // for debugging
 
-  
   const action = params.actions?.[0];
-  
-  
+
   const verb = action;
   const submissionId = params.actions?.[1];
 
@@ -46,64 +43,67 @@ const IPVForm: React.FC = () => {
   const onSubmit = async (data: IIntimatePartnerViolenceFormInputs) => {
     try {
       if (!user) {
-        throw new Error('User not found');
+        throw new Error("User not found");
       }
-  
+
       let response;
-  
-      if (verb === 'new') {
+
+      if (verb === "new") {
         response = await createIPVFormEntry(data, user.id);
-      } else if (verb === 'edit' && submissionId) {
+      } else if (verb === "edit" && submissionId) {
         response = await updateIPVFormEntry(data, submissionId, user.id);
       } else {
-        throw new Error('Invalid action or missing submissionId');
+        throw new Error("Invalid action or missing submissionId");
       }
-  
-      
+
       IntimatePartnerViolenceFormInputsSchema.parse(response);
     } catch (error) {
       console.error(error); // for debugging
-      setErrorMessage(`Error: ${error instanceof Error ? error.message : "Something went wrong! Please try again later"}`);
-      router.push('/dashboard');
+      setErrorMessage(
+        `Error: ${
+          error instanceof Error
+            ? error.message
+            : "Something went wrong! Please try again later"
+        }`
+      );
+      router.push("/dashboard");
       return;
     }
-  
-    setSuccessMessage('IPV Form submitted successfully!');
-    router.push('/dashboard');
-  };
 
+    setSuccessMessage("IPV Form submitted successfully!");
+    router.push("/dashboard");
+  };
 
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (verb !== 'edit') {
+        if (verb !== "edit") {
           return;
         }
-  
+
         if (!user) {
-          throw new Error('User not found');
+          throw new Error("User not found");
         }
-  
+
         if (!submissionId) {
-          throw new Error('Missing submissionId when fetching past submission');
+          throw new Error("Missing submissionId when fetching past submission");
         }
-  
+
         const response = await readIPVFormEntry(submissionId, user.id);
-  
-        
+
         IntimatePartnerViolenceFormInputsSchema.parse(response);
       } catch (error) {
         console.error(error);
-        setErrorMessage('Something went wrong! Please try again later');
-        router.push('/dashboard');
+        setErrorMessage("Something went wrong! Please try again later");
+        router.push("/dashboard");
         return;
       }
     };
-  
+
     if (!user) return;
-  
+
     fetchAndPopulatePastSubmissionData();
-  }, [user, verb, submissionId, reset, router, setErrorMessage]); 
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
   return (
     <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
       <form
@@ -121,25 +121,30 @@ const IPVForm: React.FC = () => {
           How often does your partner:
         </p>
         <div className="py-2 space-y-4">
-          <div className="flex flex-col justify-between">
-            <label htmlFor="physicallyHurt" className="font-semibold pb-2 pt-2">
-              1. Physically Hurt
-            </label>
-            <select
-              {...register("physicallyHurt")}
-              className="border border-gray-300 px-4 py-2 rounded-md w-full"
-            >
-              {IPVStatusEnum.options.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            {errors.physicallyHurt && (
-              <span className="label-text-alt text-red-500">
-                {errors.physicallyHurt.message}
-              </span>
-            )}
+          <div className="py-2 space-y-4">
+            <div className="flex flex-col justify-between">
+              <label
+                htmlFor="physicallyHurt"
+                className="font-semibold pb-2 pt-2"
+              >
+                1. Physically Hurt
+              </label>
+              <select
+                {...register("physicallyHurt")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              >
+                {IPVStatusEnum.options.map((option, index) => (
+                  <option key={option} value={option}>
+                    {`${option} (${index + 1})`}
+                  </option>
+                ))}
+              </select>
+              {errors.physicallyHurt && (
+                <span className="label-text-alt text-red-500">
+                  {errors.physicallyHurt.message}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex flex-col justify-between">
             <label
@@ -152,16 +157,16 @@ const IPVForm: React.FC = () => {
               {...register("insultOrTalkDown")}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
             >
-              {IPVStatusEnum.options.map((option) => (
+              {IPVStatusEnum.options.map((option, index) => (
                 <option key={option} value={option}>
-                  {option}
+                  {`${option} (${index + 1})`}
                 </option>
               ))}
             </select>
             {errors.insultOrTalkDown && (
               <span className="label-text-alt text-red-500">
                 {errors.insultOrTalkDown.message}
-              </span>
+              </span> 
             )}
           </div>
 
@@ -176,9 +181,9 @@ const IPVForm: React.FC = () => {
               {...register("threatenWithHarm")}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
             >
-              {IPVStatusEnum.options.map((option) => (
+              {IPVStatusEnum.options.map((option, index) => (
                 <option key={option} value={option}>
-                  {option}
+                  {`${option} (${index + 1})`}
                 </option>
               ))}
             </select>
@@ -197,9 +202,9 @@ const IPVForm: React.FC = () => {
               {...register("screamOrCurse")}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
             >
-              {IPVStatusEnum.options.map((option) => (
+              {IPVStatusEnum.options.map((option, index) => (
                 <option key={option} value={option}>
-                  {option}
+                  {`${option} (${index + 1})`}
                 </option>
               ))}
             </select>

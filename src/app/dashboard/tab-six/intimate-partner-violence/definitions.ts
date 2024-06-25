@@ -2,22 +2,22 @@ import { z } from "zod";
 import { IPVStatus } from "@prisma/client";
 
 export const IPVStatusEnum = z.enum([
-  "Never (1)",
-  "Rarely (2)",
-  "Sometimes (3)",
-  "Fairly (4)",
-  "Often (5)",
-  "Frequently (6)"
+  "Never",
+  "Rarely",
+  "Sometimes",
+  "Fairly",
+  "Often",
+  "Frequently"
 ]);
 
 export const mapFormValueToIPVStatus = (value: string): IPVStatus => {
   const statusMap: Record<string, IPVStatus> = {
-    "Never (1)": IPVStatus.Never,
-    "Rarely (2)": IPVStatus.Rarely,
-    "Sometimes (3)": IPVStatus.Sometimes,
-    "Fairly (4)": IPVStatus.Fairly,
-    "Often (5)": IPVStatus.Often,
-    "Frequently (6)": IPVStatus.Frequently,
+    "Never": IPVStatus.Never,
+    "Rarely": IPVStatus.Rarely,
+    "Sometimes": IPVStatus.Sometimes,
+    "Fairly": IPVStatus.Fairly,
+    "Often": IPVStatus.Often,
+    "Frequently": IPVStatus.Frequently,
   };
   return statusMap[value];
 };
