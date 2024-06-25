@@ -859,6 +859,16 @@ model MentalHealthHistory {
   dateModified DateTime @updatedAt
 }
 
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
+
 model IntimatePartnerViolenceForm {
   id            String   @id @default(uuid())
   userId        String
@@ -868,13 +878,4 @@ model IntimatePartnerViolenceForm {
   screamOrCurse     IPVStatus
   dateCreated    DateTime @default(now())
   dateModified   DateTime @updatedAt
-}
-
-enum IPVStatus {
-  Never
-  Rarely
-  Sometimes
-  Fairly
-  Often
-  Frequently
 }

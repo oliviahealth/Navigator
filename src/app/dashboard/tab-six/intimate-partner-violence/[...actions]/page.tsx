@@ -15,14 +15,20 @@ import {
   readIPVFormEntry,
   updateIPVFormEntry,
 } from "../actions";
-import { DeliveryMode } from "@prisma/client";
+
 
 const IPVForm: React.FC = () => {
   const router = useRouter();
-  const { action } = useParams();
+  const params = useParams();
+  
+  console.log(params); // for debugging
 
-  const verb = Array.isArray(action) ? action[0] : action;
-  const submissionId = Array.isArray(action) ? action[1] : undefined;
+  
+  const action = params.actions?.[0];
+  
+  
+  const verb = action;
+  const submissionId = params.actions?.[1];
 
   const user = useAppStore((state) => state.user);
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
@@ -31,7 +37,7 @@ const IPVForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     reset,
   } = useForm<IIntimatePartnerViolenceFormInputs>({
     resolver: zodResolver(IntimatePartnerViolenceFormInputsSchema),
@@ -40,89 +46,64 @@ const IPVForm: React.FC = () => {
   const onSubmit = async (data: IIntimatePartnerViolenceFormInputs) => {
     try {
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
-
+  
       let response;
-      if (verb === "new") {
+  
+      if (verb === 'new') {
         response = await createIPVFormEntry(data, user.id);
-      } else if (submissionId) {
+      } else if (verb === 'edit' && submissionId) {
         response = await updateIPVFormEntry(data, submissionId, user.id);
       } else {
-        throw new Error("submissionId is undefined");
+        throw new Error('Invalid action or missing submissionId');
       }
-
-      setSuccessMessage("IPV Form submitted successfully!");
-      router.push("/dashboard");
+  
+      
+      IntimatePartnerViolenceFormInputsSchema.parse(response);
     } catch (error) {
       console.error(error);
-      setErrorMessage("Something went wrong! Please try again later");
-      router.push("/dashboard");
+      setErrorMessage(`Error: ${error instanceof Error ? error.message : "Something went wrong! Please try again later"}`);
+      router.push('/dashboard');
+      return;
     }
+  
+    setSuccessMessage('IPV Form submitted successfully!');
+    router.push('/dashboard');
   };
 
-  const mapIPVStatusToString = (status: string): string => {
-    const statusMap: Record<string, string> = {
-      Never: "Never (1)",
-      Rarely: "Rarely (2)",
-      Sometimes: "Sometimes (3)",
-      Fairly: "Fairly (4)",
-      Often: "Often (5)",
-      Frequently: "Frequently (6)",
-    };
-    return statusMap[status] || status;
-  };
-
-  const transformResponse = (response: Record<string, any>) => {
-    const transformedResponse: Record<string, any> = { ...response };
-
-    const fieldsToTransform = [
-      "physicallyHurt",
-      "insultOrTalkDown",
-      "threatenWithHarm",
-      "screamOrCurse",
-      "feltUnsafe",
-      "insultedOrTalkedDown",
-      "threatenedHarm",
-      "forcedSexualActivity",
-    ];
-
-    for (const field of fieldsToTransform) {
-      if (field in response) {
-        transformedResponse[field] = mapIPVStatusToString(response[field]);
-      }
-    }
-
-    return transformedResponse;
-  };
 
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
-      if (verb !== "edit" || !submissionId) {
-        return;
-      }
-
       try {
-        if (!user) {
-          throw new Error("User not found");
+        if (verb !== 'edit') {
+          return;
         }
-
+  
+        if (!user) {
+          throw new Error('User not found');
+        }
+  
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
+  
         const response = await readIPVFormEntry(submissionId, user.id);
-        const transformedResponse = transformResponse(response);
-
-        reset(transformedResponse);
+  
+        
+        IntimatePartnerViolenceFormInputsSchema.parse(response);
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-        router.push("/dashboard");
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard');
+        return;
       }
     };
-
+  
     if (!user) return;
-
+  
     fetchAndPopulatePastSubmissionData();
-  }, [user, verb, submissionId, reset, router, setErrorMessage]);
-
+  }, [user, verb, submissionId, reset, router, setErrorMessage]); 
   return (
     <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
       <form
