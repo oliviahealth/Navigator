@@ -11,7 +11,8 @@ import {
     FollowUpActionEnum,
     IASQ3Inputs,
     YesNoEnum,
-    labelMapping
+    labelMapping,
+    months
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -87,21 +88,6 @@ const ASQ3: React.FC = () => {
     const [selectedFollowUpAction, setSelectedFollowUpAction] = useState('');
     const followUpAction = watch("followUpAction", []);
     const [showDescribeActivitesProvided, setShowDescribeActivitesProvided] = useState<boolean>(false);
-    // useEffect(() => {
-    //     if (Array.isArray(followUpAction)) {
-    //         const includesNone = followUpAction.includes("No_further_action");
-    //         if (includesNone) {
-    //             setValue("followUpAction", ["No_further_action"]);
-    //             setSelectedFollowUpAction("No_further_action");
-    //             setShowDescribeActivitesProvided(false);
-    //         } else if (followUpAction.length === 0) {
-    //             setSelectedFollowUpAction("");
-    //         } else {
-    //             const includesProvideSupport = followUpAction.includes("Provide_support");
-    //             setShowDescribeActivitesProvided(includesProvideSupport);
-    //         }
-    //     }
-    // }, [followUpAction, setValue]);
     useEffect(() => {
         if (Array.isArray(followUpAction)) {
             const includesNone = followUpAction.includes("No_further_action");
@@ -120,19 +106,6 @@ const ASQ3: React.FC = () => {
         }
     }, [followUpAction, setValue]);
 
-    function arraysEqual(arr1: any, arr2: any) {
-        // Check if the arrays are the same length
-        if (arr1.length !== arr2.length) return false;
-
-        // Check each element in the arrays
-        for (let i = 0; i < arr1.length; i++) {
-            if (arr1[i] !== arr2[i]) return false;
-        }
-
-        // If all elements are equal, return true
-        return true;
-    }
-
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
@@ -149,7 +122,16 @@ const ASQ3: React.FC = () => {
                 }
 
                 const response = await readASQ3(submissionId, user.id);
-                reset(response);
+                const formattedData = {
+                    ...response,
+                    dateCompleted: new Date(response.dateCompleted).toISOString().split('T')[0], // Format as YYYY-MM-DD
+                };
+                reset(formattedData);
+                setShowCommunicationScore(formattedData.communicationScoreNotRecorded === "No");
+                setShowGrossMotorScore(formattedData.grossMotorScoreNotRecorded === "No");
+                setShowFineMotorScore(formattedData.fineMotorScoreNotRecorded === "No");
+                setShowProblemSolvingScore(formattedData.problemSolvingScoreNotRecorded === "No");
+                setShowPersonalSocialScore(formattedData.personalSocialScoreNotRecorded === "No");
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -186,7 +168,6 @@ const ASQ3: React.FC = () => {
         router.push('/dashboard')
     };
 
-    const months = [2, 4, 6, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 27, 30, 33, 36, 42, 48, 54, 60];
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">

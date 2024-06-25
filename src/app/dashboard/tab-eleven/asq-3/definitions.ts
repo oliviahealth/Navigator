@@ -20,6 +20,8 @@ export const labelMapping = {
     }
 };
 
+export const months = [2, 4, 6, 8, 9, 10, 12, 14, 16, 18, 20, 22, 24, 27, 30, 33, 36, 42, 48, 54, 60];
+
 export const ASQ3InputsSchema = z.object({
     participantName: z.string().min(1, "Participant name required."),
     caseId: z.string().min(1, "Case ID required."),
