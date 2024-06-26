@@ -51,6 +51,7 @@ model User {
   GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
   PregnancySpacingAssesment              PregnancySpacingAssesment[]
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
+  BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
 }
 
 enum CommunicationMethod {
@@ -884,7 +885,7 @@ enum SelfHarmThoughts {
   Never
 }
 
-enum Timeframe {
+enum EPDS_Timeframe {
   Prenatal
   Postnatal
 }
@@ -909,7 +910,7 @@ model EdinburgPostnatalDepressionScale {
   caseId             String
   dateCompleted      DateTime
   staffName          String
-  timeframe          Timeframe
+  timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
 }
@@ -1048,6 +1049,7 @@ model PerceivedStressScale {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
 enum GADAnswers {
   Not_at_all
   Several_days
@@ -1063,9 +1065,9 @@ enum Difficulty {
 }
 
 model GeneralizedAnxietyDisorder {
-  id String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                      String     @id @default(uuid())
+  User                    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String
   feelingNervous          GADAnswers
   unableToControlWorrying GADAnswers
   worryingTooMuch         GADAnswers
@@ -1075,8 +1077,8 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
+  dateCreated             DateTime   @default(now())
+  dateModified            DateTime   @updatedAt
 }
 
 model PregnancySpacingAssesment {
@@ -1115,6 +1117,53 @@ model TenBsPostpartumAppointmentAssesment {
   EPDStool                                 YesNo
   birthControl                             YesNo
   bloodwork                                YesNo
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum BriefChildWellnessUpdateTimeframe {
+  Enrollment
+  Update
+}
+
+enum HealthInsurance {
+  Medicaid_or_Kidcare
+  Private
+  Tricare
+  None
+  Other
+}
+
+enum MedicalCare {
+  Doctor_office
+  Hospital_emergency_room
+  Hospital_clinic
+  Qualified_health_center
+  Retail_or_Minute_clinic
+  None
+  Other
+}
+
+enum ReadingFrequency {
+  Some_days
+  Everyday
+}
+
+model BriefChildWellnessUpdate {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  childName            String
+  dateCompleted        DateTime
+  timeframe            BriefChildWellnessUpdateTimeframe
+  healthInsurance      HealthInsurance
+  otherHealthInsurance String?
+  medicalCare          MedicalCare
+  otherMedicalCare     String?
+  hasDentalCare        YesNo
+  readingFrequency     ReadingFrequency
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

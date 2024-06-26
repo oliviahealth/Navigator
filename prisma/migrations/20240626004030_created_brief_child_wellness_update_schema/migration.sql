@@ -149,7 +149,7 @@ CREATE TYPE "Crying" AS ENUM ('Yes_mostly', 'Yes_often', 'Occasionally', 'Never'
 CREATE TYPE "SelfHarmThoughts" AS ENUM ('Yes_often', 'Sometimes', 'Hardly_ever', 'Never');
 
 -- CreateEnum
-CREATE TYPE "Timeframe" AS ENUM ('Prenatal', 'Postnatal');
+CREATE TYPE "EPDS_Timeframe" AS ENUM ('Prenatal', 'Postnatal');
 
 -- CreateEnum
 CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
@@ -165,6 +165,18 @@ CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half'
 
 -- CreateEnum
 CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
+
+-- CreateEnum
+CREATE TYPE "BriefChildWellnessUpdateTimeframe" AS ENUM ('Enrollment', 'Update');
+
+-- CreateEnum
+CREATE TYPE "HealthInsurance" AS ENUM ('Medicaid_or_Kidcare', 'Private', 'Tricare', 'None', 'Other');
+
+-- CreateEnum
+CREATE TYPE "MedicalCare" AS ENUM ('Doctor_office', 'Hospital_emergency_room', 'Hospital_clinic', 'Qualified_health_center', 'Retail_or_Minute_clinic', 'None', 'Other');
+
+-- CreateEnum
+CREATE TYPE "ReadingFrequency" AS ENUM ('Some_days', 'Everyday');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -620,7 +632,7 @@ CREATE TABLE "EdinburgPostnatalDepressionScale" (
     "caseId" TEXT NOT NULL,
     "dateCompleted" TIMESTAMP(3) NOT NULL,
     "staffName" TEXT NOT NULL,
-    "timeframe" "Timeframe" NOT NULL,
+    "timeframe" "EPDS_Timeframe" NOT NULL,
     "totalScore" TEXT NOT NULL,
     "notes" TEXT,
 
@@ -794,6 +806,23 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
     CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "BriefChildWellnessUpdate" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "childName" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "timeframe" "BriefChildWellnessUpdateTimeframe" NOT NULL,
+    "healthInsurance" "HealthInsurance" NOT NULL,
+    "medicalCare" "MedicalCare" NOT NULL,
+    "hasDentalCare" "YesNo" NOT NULL,
+    "readingFrequency" "ReadingFrequency" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BriefChildWellnessUpdate_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -871,3 +900,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 
 -- AddForeignKey
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -155,6 +155,14 @@ const Dashboard: React.FC = () => {
                             Food Security
                         </a>
                     </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Eleven</p>
+
+                        <a href={'dashboard/tab-eleven/brief-child-wellness-update/new'}>
+                            Brief Child Wellness Update
+                        </a>
+                    </div>
                 </div>
             </div>
         </div >
