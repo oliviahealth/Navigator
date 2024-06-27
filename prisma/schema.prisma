@@ -882,22 +882,23 @@ model IntimatePartnerViolenceForm {
 }
 
 model SocialSupportForm {
-  id                        String   @id @default(uuid())
-  userId                    String
-  specialPersonInNeed       ResponseAnswers
-  specialPersonJoysSorrows  ResponseAnswers
-  familyHelp                ResponseAnswers
-  emotionalHelp             ResponseAnswers
-  specialPersonForComfort   ResponseAnswers
-  friendsHelp               ResponseAnswers
-  canCountOnFriends         ResponseAnswers
-  talkToFamilyAboutProblems ResponseAnswers
-  friendsJoysSorrows        ResponseAnswers
+  id                          String          @id @default(uuid())
+  userId                      String
+  specialPersonInNeed         ResponseAnswers
+  specialPersonJoysSorrows    ResponseAnswers
+  familyHelp                  ResponseAnswers
+  emotionalHelp               ResponseAnswers
+  specialPersonForComfort     ResponseAnswers
+  friendsHelp                 ResponseAnswers
+  canCountOnFriends           ResponseAnswers
+  talkToFamilyAboutProblems   ResponseAnswers
+  friendsJoysSorrows          ResponseAnswers
   specialPersonToTalkFeelings ResponseAnswers
-  familyHelpsDecisions      ResponseAnswers
-  talkToFriendsAboutProblems ResponseAnswers
-  dateCreated               DateTime @default(now())
-  dateModified              DateTime @updatedAt
+  familyHelpsDecisions        ResponseAnswers
+  talkToFriendsAboutProblems  ResponseAnswers
+  comments                    String?         // Optional comments field
+  dateCreated                 DateTime        @default(now())
+  dateModified                DateTime        @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 

@@ -9,16 +9,15 @@ export const ResponseAnswersEnum = z.enum([
     "Very_strongly_agree",
 ]);
 
-
 export const labelMapping = {
     responseAnswers: {
       Very_strongly_disagree: {
         en: "Very Strongly Disagree",
-        es: "Muy Fuertemente en Desacuerdo"
+        es: "Totalmente en Desacuerdo"
       },
       Strongly_disagree: {
         en: "Strongly Disagree",
-        es: "Fuertemente en Desacuerdo"
+        es: "Muy de Desacuerdo"
       },
       Disagree: {
         en: "Disagree",
@@ -30,11 +29,11 @@ export const labelMapping = {
       },
       Strongly_agree: {
         en: "Strongly Agree",
-        es: "Fuertemente de Acuerdo"
+        es: "Muy de Acuerdo"
       },
       Very_strongly_agree: {
         en: "Very Strongly Agree",
-        es: "Muy Fuertemente de Acuerdo"
+        es: "Totalmente de Acuerdo"
       }
     }
   };
@@ -53,6 +52,7 @@ export const SocialSupportFormInputsSchema = z.object({
     familyHelpsDecisions: ResponseAnswersEnum,
     talkToFriendsAboutProblems: ResponseAnswersEnum,
     comments: z.string().optional()
+
 });
 
 export type ISocialSupportFormInputs = z.infer<typeof SocialSupportFormInputsSchema>;

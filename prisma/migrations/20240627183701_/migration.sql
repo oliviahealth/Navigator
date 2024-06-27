@@ -640,6 +640,7 @@ CREATE TABLE "SocialSupportForm" (
     "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
     "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
     "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
+    "comments" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
