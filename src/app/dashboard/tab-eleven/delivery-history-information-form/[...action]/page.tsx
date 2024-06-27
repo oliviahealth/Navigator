@@ -221,13 +221,14 @@ const DeliveryHistoryInformationForm: React.FC = () => {
                         Complete this form for each delivery that occurs after Participant enrollment, regardless of outcome or whether the child will be enrolled in the program. In the case of multiple births, complete a table for each delivery and enter a separate TouchPoint for each table.
                     </div>
 
+                    <p className="font-semibold text-xl">Deliveries</p>
                     {fields.map((field, index) => {
                         return (
                             <div key={field.id} className="space-y-8">
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-center">
                                         <p className="font-semibold text-lg">Delivery #{index + 1}</p>
-                                        {fields.length > 1 && (
+                                        {fields.length > 0 && (
                                             <button
                                                 type="button"
                                                 onClick={() => remove(index)}
