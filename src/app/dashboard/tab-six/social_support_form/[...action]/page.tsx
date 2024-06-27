@@ -43,55 +43,55 @@ const SocialSupportForm: React.FC = () => {
 
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
-        try {
-            if (verb !== 'edit') {
-                return;
-            }
-
-            if (!user) {
-                throw new Error("User not found");
-            }
-
-            if (!submissionId) {
-                throw new Error('Missing submissionId when fetching past submission');
-            }
-
-            const response = await readSocialSupportForm(submissionId, user.id);
-            reset(response);
-        } catch (error) {
-            console.error(error);
-            setErrorMessage('Something went wrong! Please try again later');
-            router.push('/dashboard');
+      try {
+        if (verb !== "edit") {
+          return;
         }
-    };
-
-    if (user && verb === 'edit' && submissionId) {
-        fetchAndPopulatePastSubmissionData();
-    }
-}, [user, verb, submissionId, reset, router, setErrorMessage]);
-
-const submit = async (data: ISocialSupportFormInputs) => {
-    try {
-        let response;
 
         if (!user) {
-            throw new Error("User missing");
+          throw new Error("User not found");
         }
 
-        if (verb === 'new') {
-            response = await createSocialSupportForm(data, user.id);
-        } else {
-            response = await updateSocialSupportForm(data, submissionId, user.id)
+        if (!submissionId) {
+          throw new Error("Missing submissionId when fetching past submission");
         }
-    } catch (error) {
+
+        const response = await readSocialSupportForm(submissionId, user.id);
+        reset(response);
+      } catch (error) {
         console.error(error);
-        setErrorMessage('Something went wrong! Please try again later');
-        return;
+        setErrorMessage("Something went wrong! Please try again later");
+        router.push("/dashboard");
+      }
+    };
+
+    if (user && verb === "edit" && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
+
+  const submit = async (data: ISocialSupportFormInputs) => {
+    try {
+      let response;
+
+      if (!user) {
+        throw new Error("User missing");
+      }
+
+      if (verb === "new") {
+        response = await createSocialSupportForm(data, user.id);
+      } else {
+        response = await updateSocialSupportForm(data, submissionId, user.id);
+      }
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong! Please try again later");
+      return;
     }
 
-    setSuccessMessage('Social Support Form submitted successfully!')
-    router.push('/dashboard')
-};
+    setSuccessMessage("Social Support Form submitted successfully!");
+    router.push("/dashboard");
+  };
 
   const questions = [
     {
@@ -182,38 +182,39 @@ const submit = async (data: ISocialSupportFormInputs) => {
 
   return (
     <div className="w-full h-full flex justify-center p-2 mt-4 text-base">
-    <form
-      onSubmit={handleSubmit((data) => submit(data))}
-      className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
-    >
-      <div className="pt-6">
-        <p className="font-semibold text-2xl">
-          {verb === "new"
-            ? language === "en"
-              ? "New"
-              : "Nuevo"
-            : language === "en"
-            ? "Edit"
-            : "Editar"}
-          {language === "en"
-            ? " Social Support Form"
-            : " Formulario de Apoyo Social"}
-        </p>
-        
-        <button
-          type="button"
-          onClick={() => setLanguage(language === "en" ? "es" : "en")}
-          className="text-blue-500 mt-4"
-        >
-          {language === "en" ? "Cambiar a Español" : "Switch to English"}
-        </button>
-      </div>
+      <form
+        onSubmit={handleSubmit((data) => submit(data))}
+        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+      >
+        <div className="pt-6">
+          <p className="font-semibold text-2xl">
+            {verb === "new"
+              ? language === "en"
+                ? "New"
+                : "Nuevo"
+              : language === "en"
+              ? "Edit"
+              : "Editar"}
+            {language === "en"
+              ? " Social Support Form"
+              : " Formulario de Apoyo Social"}
+          </p>
 
+          <button
+            type="button"
+            onClick={() => setLanguage(language === "en" ? "es" : "en")}
+            className="text-blue-500 mt-4"
+          >
+            {language === "en" ? "Cambiar a Español" : "Switch to English"}
+          </button>
+        </div>
         <div className="space-y-16 pt-6">
           <div className="space-y-4">
-            {questions.map(({ key, question }) => (
+            {questions.map(({ key, question }, index) => (
               <div key={key} className="space-y-3">
-                <p className="font-semibold">{question[language]}</p>
+                <p className="font-semibold">{`${index + 1}. ${
+                  question[language]
+                }`}</p>
                 <div className="space-y-2">
                   {ResponseAnswersEnum.options.map((option) => (
                     <label key={option} className="flex items-center">
@@ -238,9 +239,55 @@ const submit = async (data: ISocialSupportFormInputs) => {
             ))}
           </div>
         </div>
-        
+        <div className="space-y-4 mt-10" style={{ marginTop: '50px' }}>
+          <p className="font-semibold">
+            {language === "en"
+              ? 'Please identify that "special person":'
+              : 'Por favor identifique esa "persona en especial"'}
+          </p>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {language === "en" ? "Initials:" : "Iniciales:"}
+            </label>
+            <input
+              {...register("specialPersonInitials")}
+              type="text"
+              className="w-full border rounded p-2"
+              placeholder={language === "en" ? "Initials" : "Iniciales"}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              {language === "en" ? "Relationship:" : "Relación:"}
+            </label>
+            <select
+              {...register("specialPersonRelationship")}
+              className="w-full border rounded p-2"
+            >
+              <option value="spouse_partner">
+                {language === "en" ? "Spouse/Partner" : "Esposo(a)/pareja"}
+              </option>
+              <option value="boyfriend_girlfriend">
+                {language === "en" ? "Boyfriend/Girlfriend" : "Novio/novia"}
+              </option>
+              <option value="friend">
+                {language === "en" ? "Friend" : "Amigo(a)"}
+              </option>
+              <option value="professional">
+                {language === "en"
+                  ? "Professional (e.g., teacher, doctor, counselor, pastor)"
+                  : "Profesional (e.g., maestro(a), doctor/médico, consejero(a), pastor)"}
+              </option>
+              <option value="other_family_member">
+                {language === "en"
+                  ? "Other family member"
+                  : "Otro miembro de la familia"}
+              </option>
+            </select>
+          </div>
+        </div>
 
-        <div className="space-y-4 mt-16">
+        <div className="space-y-4 mt-16" style={{ marginTop: '50px' }}>
           <p className="font-semibold">
             {language === "en"
               ? "Additional Comments"

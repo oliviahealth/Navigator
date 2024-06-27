@@ -896,6 +896,8 @@ model SocialSupportForm {
   specialPersonToTalkFeelings ResponseAnswers
   familyHelpsDecisions        ResponseAnswers
   talkToFriendsAboutProblems  ResponseAnswers
+  specialPersonInitials       String?
+  specialPersonRelationship   String?
   comments                    String?         // Optional comments field
   dateCreated                 DateTime        @default(now())
   dateModified                DateTime        @updatedAt

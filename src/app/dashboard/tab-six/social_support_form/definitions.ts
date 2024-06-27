@@ -9,6 +9,14 @@ export const ResponseAnswersEnum = z.enum([
     "Very_strongly_agree",
 ]);
 
+export enum SpecialPersonRelationshipEnum {
+    Spouse_Partner = "spouse_partner",
+    Boyfriend_Girlfriend = "boyfriend_girlfriend",
+    Friend = "friend",
+    Professional = "professional",
+    Other_Family_Member = "other_family_member"
+}
+
 export const labelMapping = {
     responseAnswers: {
       Very_strongly_disagree: {
@@ -51,6 +59,8 @@ export const SocialSupportFormInputsSchema = z.object({
     specialPersonToTalkFeelings: ResponseAnswersEnum,
     familyHelpsDecisions: ResponseAnswersEnum,
     talkToFriendsAboutProblems: ResponseAnswersEnum,
+    specialPersonInitials: z.string(),
+    specialPersonRelationship: z.nativeEnum(SpecialPersonRelationshipEnum),
     comments: z.string().optional()
 
 });
