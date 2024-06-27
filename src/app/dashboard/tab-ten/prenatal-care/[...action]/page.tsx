@@ -48,10 +48,7 @@ const PrenatalCareRecord: React.FC = () => {
           throw new Error("Missing user");
         }
 
-        const validResponse = await readPrenatalCareRecord(
-          submissionId,
-          user.id
-        );
+        const validResponse = await readPrenatalCareRecord(submissionId, user.id);
 
         reset(validResponse);
       } catch (error) {
@@ -103,7 +100,41 @@ const PrenatalCareRecord: React.FC = () => {
         <p className="font-medium">Ask these questions:</p>
 
         <p className="font-medium">If currently pregnant, do you attend regular visits with your OBcare provider?</p>
-        <input type="text" />
+        <div className="space-x-12">
+            {["Yes", "No"].map((status, idx) => (
+              <label key={idx} className="inline-flex items-center">
+                <input
+                  {...register('attendRegularVisitsWithOBCare')}
+                  type="radio"
+                  value={status}
+                  className="form-radio"
+                />
+                <span className="ml-2">{status}</span>
+              </label>
+            ))}
+          </div>
+        
+        <p className="font-medium">When did you start your prenatal care?</p>
+        <input
+          {...register('prenatalCareStartDate')}
+          className="border border-gray-300 px-4 py-2 rounded-md w-full"
+          type="date"
+        />
+
+        <p className="font-medium">Provide the contact information for your prenatal care in the Care Provider section.</p>
+
+        <p className="font-medium">How far do you have to drive to receive prenatal care?</p>
+        <input
+          {...register('drivingDistanceForPrenatalCare')}
+          className="border border-gray-300 px-4 py-2 rounded-md w-full"
+          type="text"
+        />
+
+        <p className="font-medium">Have you missed any prenatal appointments? If so, why?</p>
+        <textarea
+          {...register('haveMissedAppointments')}
+          className="border border-gray-300 px-4 py-2 rounded-md w-full"
+        />
 
         <div className="flex justify-center mt-8">
           <button
