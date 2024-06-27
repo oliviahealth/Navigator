@@ -220,6 +220,8 @@ const DukeUniversityReligionIndex: React.FC = () => {
                     </div>
                 </div>
 
+                
+
                 <div className="flex justify-center py-4">
                     <button
                         type="submit"

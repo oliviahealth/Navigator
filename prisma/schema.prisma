@@ -43,6 +43,7 @@ model User {
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
+  socialSupportForm                      SocialSupportForm[]
 }
 
 enum CommunicationMethod {
@@ -844,6 +845,7 @@ model DukeUniversityReligionIndex {
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
 }
+
 model MentalHealthHistory {
   id String @id @default(uuid())
 
@@ -859,7 +861,6 @@ model MentalHealthHistory {
   dateModified DateTime @updatedAt
 }
 
-
 enum IPVStatus {
   Never
   Rarely
@@ -870,12 +871,44 @@ enum IPVStatus {
 }
 
 model IntimatePartnerViolenceForm {
-  id            String   @id @default(uuid())
-  userId        String
-  physicallyHurt    IPVStatus
-  insultOrTalkDown  IPVStatus
-  threatenWithHarm  IPVStatus
-  screamOrCurse     IPVStatus
-  dateCreated    DateTime @default(now())
-  dateModified   DateTime @updatedAt
+  id               String    @id @default(uuid())
+  userId           String
+  physicallyHurt   IPVStatus
+  insultOrTalkDown IPVStatus
+  threatenWithHarm IPVStatus
+  screamOrCurse    IPVStatus
+  dateCreated      DateTime  @default(now())
+  dateModified     DateTime  @updatedAt
+}
+
+model SocialSupportForm {
+  id                        String   @id @default(uuid())
+  userId                    String
+  specialPersonInNeed       ResponseAnswers
+  specialPersonJoysSorrows  ResponseAnswers
+  familyHelp                ResponseAnswers
+  emotionalHelp             ResponseAnswers
+  specialPersonForComfort   ResponseAnswers
+  friendsHelp               ResponseAnswers
+  canCountOnFriends         ResponseAnswers
+  talkToFamilyAboutProblems ResponseAnswers
+  friendsJoysSorrows        ResponseAnswers
+  specialPersonToTalkFeelings ResponseAnswers
+  familyHelpsDecisions      ResponseAnswers
+  talkToFriendsAboutProblems ResponseAnswers
+  dateCreated               DateTime @default(now())
+  dateModified              DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, id])
+}
+
+enum ResponseAnswers {
+  Very_strongly_disagree
+  Strongly_disagree
+  Disagree
+  Neither_agree_nor_disagree
+  Strongly_agree
+  Very_strongly_agree
 }

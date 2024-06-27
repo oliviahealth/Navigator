@@ -121,6 +121,9 @@ CREATE TYPE "TruthLevel" AS ENUM ('Definitely_not_true', 'Somewhat_not_true', 'N
 -- CreateEnum
 CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
 
+-- CreateEnum
+CREATE TYPE "ResponseAnswers" AS ENUM ('Very_strongly_disagree', 'Strongly_disagree', 'Disagree', 'Neither_agree_nor_disagree', 'Strongly_agree', 'Very_strongly_agree');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -621,8 +624,33 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
     CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "SocialSupportForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
+    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
+    "familyHelp" "ResponseAnswers" NOT NULL,
+    "emotionalHelp" "ResponseAnswers" NOT NULL,
+    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
+    "friendsHelp" "ResponseAnswers" NOT NULL,
+    "canCountOnFriends" "ResponseAnswers" NOT NULL,
+    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
+    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
+    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
+    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
+    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "SocialSupportForm_userId_id_key" ON "SocialSupportForm"("userId", "id");
 
 -- AddForeignKey
 ALTER TABLE "CommunicationEntry" ADD CONSTRAINT "CommunicationEntry_communicationLogId_fkey" FOREIGN KEY ("communicationLogId") REFERENCES "CommunicationLog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -680,3 +708,6 @@ ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligion
 
 -- AddForeignKey
 ALTER TABLE "MentalHealthHistory" ADD CONSTRAINT "MentalHealthHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
