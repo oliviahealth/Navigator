@@ -621,8 +621,28 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
     CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "IPVDisclosureScreeningTool" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "dateTaken" TIMESTAMP(3) NOT NULL,
+    "ipvScreeningDate" TIMESTAMP(3),
+    "screeningToolUsed" TEXT NOT NULL,
+    "totalScore" INTEGER NOT NULL,
+    "ipvDisclosure" BOOLEAN NOT NULL,
+    "ipvDisclosureDate" TIMESTAMP(3),
+    "notes" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "IPVDisclosureScreeningTool_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE INDEX "IPVDisclosureScreeningTool_userId_idx" ON "IPVDisclosureScreeningTool"("userId");
 
 -- AddForeignKey
 ALTER TABLE "CommunicationEntry" ADD CONSTRAINT "CommunicationEntry_communicationLogId_fkey" FOREIGN KEY ("communicationLogId") REFERENCES "CommunicationLog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -680,3 +700,6 @@ ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligion
 
 -- AddForeignKey
 ALTER TABLE "MentalHealthHistory" ADD CONSTRAINT "MentalHealthHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "IPVDisclosureScreeningTool" ADD CONSTRAINT "IPVDisclosureScreeningTool_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

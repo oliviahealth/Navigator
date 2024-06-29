@@ -43,6 +43,7 @@ model User {
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
+  IPVDisclosureScreeningTool             IPVDisclosureScreeningTool[]
 }
 
 enum CommunicationMethod {
@@ -878,4 +879,22 @@ model IntimatePartnerViolenceForm {
   screamOrCurse     IPVStatus
   dateCreated    DateTime @default(now())
   dateModified   DateTime @updatedAt
+}
+
+model IPVDisclosureScreeningTool {
+  id                String   @id @default(cuid())
+  userId            String
+  dateTaken         DateTime
+  ipvScreeningDate  DateTime?
+  screeningToolUsed String
+  totalScore        Int
+  ipvDisclosure     Boolean
+  ipvDisclosureDate DateTime?
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
