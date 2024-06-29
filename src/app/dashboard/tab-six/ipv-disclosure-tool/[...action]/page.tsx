@@ -1,78 +1,50 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+
 import {
-  IPVDisclosureScreeningToolSchema,
-  IIPVDisclosureScreeningTool,
-  ScreeningToolEnum,
+  YesNoEnum,
+  IPVScreeningResponseSchema,
+  IIPVScreeningInputs,
+  IPVScreeningInputsSchema,
 } from "../definitions";
+
 import useAppStore from "@/lib/useAppStore";
 import {
-  createIPVDisclosureScreeningTool,
-  readIPVDisclosureScreeningTool,
-  updateIPVDisclosureScreeningTool,
+  createIPVScreening,
+  readIPVScreening,
+  updateIPVScreening,
 } from "../actions";
 
-const IPVDisclosureScreeningToolForm: React.FC = () => {
+const IPVScreening: React.FC = () => {
   const router = useRouter();
-  const params = useParams();
+  const { action } = useParams();
 
-  const action = params.actions?.[0];
-  const submissionId = params.actions?.[1];
+  const verb = action[0];
+  const submissionId = action[1];
 
   const user = useAppStore((state) => state.user);
+
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
   const setErrorMessage = useAppStore((state) => state.setErrorMessage);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     reset,
-  } = useForm<IIPVDisclosureScreeningTool>({
-    resolver: zodResolver(IPVDisclosureScreeningToolSchema),
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm<IIPVScreeningInputs>({
+    resolver: zodResolver(IPVScreeningInputsSchema),
   });
-
-  const onSubmit = async (data: IIPVDisclosureScreeningTool) => {
-    try {
-      if (!user) {
-        throw new Error("User not found");
-      }
-
-      let response;
-
-      if (action === "new") {
-        response = await createIPVDisclosureScreeningTool(data, user.id);
-      } else if (action === "edit" && submissionId) {
-        response = await updateIPVDisclosureScreeningTool(data, submissionId, user.id);
-      } else {
-        throw new Error("Invalid action or missing submissionId");
-      }
-
-      IPVDisclosureScreeningToolSchema.parse(response);
-    } catch (error) {
-      setErrorMessage(
-        `Error: ${
-          error instanceof Error
-            ? error.message
-            : "Something went wrong! Please try again later"
-        }`
-      );
-      router.push("/dashboard");
-      return;
-    }
-
-    setSuccessMessage("IPV Disclosure Screening Tool Form submitted successfully!");
-    router.push("/dashboard");
-  };
 
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (action !== "edit") {
+        if (verb !== "edit") {
           return;
         }
 
@@ -84,10 +56,28 @@ const IPVDisclosureScreeningToolForm: React.FC = () => {
           throw new Error("Missing submissionId when fetching past submission");
         }
 
-        const response = await readIPVDisclosureScreeningTool(submissionId, user.id);
+        const response = await readIPVScreening(submissionId, user.id);
 
-        IPVDisclosureScreeningToolSchema.parse(response);
-        reset(response);
+        const validResponse = IPVScreeningResponseSchema.parse(response);
+
+        const formattedResponse = {
+          ...validResponse,
+          dateTaken: new Date(validResponse.dateTaken)
+            .toISOString()
+            .slice(0, 10),
+          ipvScreeningDate: validResponse.ipvScreeningDate
+            ? new Date(validResponse.ipvScreeningDate)
+                .toISOString()
+                .slice(0, 10)
+            : null,
+          ipvDisclosureDate: validResponse.ipvDisclosureDate
+            ? new Date(validResponse.ipvDisclosureDate)
+                .toISOString()
+                .slice(0, 10)
+            : null,
+        };
+
+        reset(formattedResponse);
       } catch (error) {
         console.error(error);
         setErrorMessage("Something went wrong! Please try again later");
@@ -95,102 +85,173 @@ const IPVDisclosureScreeningToolForm: React.FC = () => {
       }
     };
 
-    if (user) {
+    if (user && verb === "edit" && submissionId) {
       fetchAndPopulatePastSubmissionData();
     }
-  }, [user, action, submissionId, reset, router, setErrorMessage]);
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
+
+  const submit = async (data: IIPVScreeningInputs) => {
+    try {
+      let response;
+
+      if (!user) {
+        throw new Error("User missing");
+      }
+
+      if (verb === "new") {
+        response = await createIPVScreening(data, user.id);
+      } else {
+        response = await updateIPVScreening(data, submissionId, user.id);
+      }
+
+      IPVScreeningResponseSchema.parse(response);
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Something went wrong! Please try again later");
+      return;
+    }
+
+    setSuccessMessage("IPV Screening submitted successfully!");
+    router.push("/dashboard");
+  };
 
   return (
     <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-4 [&>p]:pt-6 [&>p]:pb-1 [&>input, &>select]:px-4 pb-8">
-        <p className="font-semibold text-2xl text-center">IPV Disclosure Screening Tool</p>
-
-        <div className="flex flex-col justify-between">
-          <label htmlFor="dateTaken" className="font-semibold pb-2 pt-4">Date Taken</label>
-          <input
-            type="date"
-            {...register("dateTaken", { valueAsDate: true })}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.dateTaken && <span className="text-red-500">{errors.dateTaken.message}</span>}
+      <form
+        onSubmit={handleSubmit((data) => submit(data))}
+        className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
+      >
+        <div className="pt-6">
+          <p className="font-semibold text-2xl">
+            IPV Disclosure Screening Tool
+          </p>
         </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="ipvScreeningDate" className="font-semibold pb-2 pt-4">IPV Screening Date</label>
-          <input
-            type="date"
-            {...register("ipvScreeningDate", { valueAsDate: true })}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.ipvScreeningDate && <span className="text-red-500">{errors.ipvScreeningDate.message}</span>}
-        </div>
+        <div className="space-y-8 pt-8">
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <p className="font-semibold">Date Taken</p>
+              <input
+                {...register("dateTaken")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                type="date"
+              />
+              {errors.dateTaken && (
+                <span className="label-text-alt text-red-500">
+                  {errors.dateTaken.message}
+                </span>
+              )}
+            </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="screeningToolUsed" className="font-semibold pb-2 pt-4">Screening Tool Used</label>
-          <select
-            {...register("screeningToolUsed")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          >
-            {ScreeningToolEnum.options.map((option) => (
-              <option key={option} value={option}>{option}</option>
-            ))}
-          </select>
-          {errors.screeningToolUsed && <span className="text-red-500">{errors.screeningToolUsed.message}</span>}
-        </div>
+            <div className="space-y-3">
+              <p className="font-semibold">IPV Screening Date</p>
+              <input
+                {...register("ipvScreeningDate")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                type="date"
+              />
+              {errors.ipvScreeningDate && (
+                <span className="label-text-alt text-red-500">
+                  {errors.ipvScreeningDate.message}
+                </span>
+              )}
+            </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="totalScore" className="font-semibold pb-2 pt-4">Total Score</label>
-          <input
-            type="number"
-            {...register("totalScore", { valueAsNumber: true })}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.totalScore && <span className="text-red-500">{errors.totalScore.message}</span>}
-        </div>
+            <div className="space-y-3">
+              <p className="font-semibold">Screening Tool Used</p>
+              <input
+                {...register("screeningToolUsed")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.screeningToolUsed && (
+                <span className="label-text-alt text-red-500">
+                  {errors.screeningToolUsed.message}
+                </span>
+              )}
+            </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="ipvDisclosure" className="font-semibold pb-2 pt-4">IPV Disclosure</label>
-          <select
-            {...register("ipvDisclosure")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-          {errors.ipvDisclosure && <span className="text-red-500">{errors.ipvDisclosure.message}</span>}
-        </div>
+            <div className="space-y-3">
+              <p className="font-semibold">Total Score</p>
+              <input
+                {...register("totalScore")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                type="number"
+              />
+              {errors.totalScore && (
+                <span className="label-text-alt text-red-500">
+                  {errors.totalScore.message}
+                </span>
+              )}
+            </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="ipvDisclosureDate" className="font-semibold pb-2 pt-4">IPV Disclosure Date</label>
-          <input
-            type="date"
-            {...register("ipvDisclosureDate", { valueAsDate: true })}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-          />
-          {errors.ipvDisclosureDate && <span className="text-red-500">{errors.ipvDisclosureDate.message}</span>}
-        </div>
+            <div className="space-y-3">
+              <p className="font-semibold">IPV Disclosure</p>
+              <div className="flex flex-col space-y-3">
+                <div className="flex items-center gap-x-12">
+                  {YesNoEnum.options.map((status) => (
+                    <label key={status} className="inline-flex items-center">
+                      <input
+                        {...register("ipvDisclosure")}
+                        type="radio"
+                        value={status}
+                        className="form-radio"
+                      />
+                      <span className="ml-2">{status}</span>
+                    </label>
+                  ))}
+                </div>
+                {errors.ipvDisclosure && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.ipvDisclosure.message}
+                  </span>
+                )}
+              </div>
+            </div>
 
-        <div className="flex flex-col justify-between">
-          <label htmlFor="notes" className="font-semibold pb-2 pt-4">Notes</label>
-          <textarea
-            {...register("notes")}
-            className="border border-gray-300 px-4 py-2 rounded-md w-full"
-            rows={4}
-          />
-          {errors.notes && <span className="text-red-500">{errors.notes.message}</span>}
-        </div>
+            <div className="space-y-3">
+              <p className="font-semibold">IPV Disclosure Date</p>
+              <input
+                {...register("ipvDisclosureDate")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                type="date"
+              />
+              {errors.ipvDisclosureDate && (
+                <span className="label-text-alt text-red-500">
+                  {errors.ipvDisclosureDate.message}
+                </span>
+              )}
+            </div>
 
-        <div className="flex justify-center mt-8">
-          <button
-            type="submit"
-            className="font-semibold bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md"
-          >
-            Submit
-          </button>
+            <div className="space-y-3">
+              <p className="font-semibold">Notes</p>
+              <textarea
+                {...register("notes")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                placeholder="Optional comments"
+              />
+              {errors.notes && (
+                <span className="label-text-alt text-red-500">
+                  {errors.notes.message}
+                </span>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-center py-4">
+            <button
+              type="submit"
+              className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
+            >
+              {isSubmitting && (
+                <span className="loading loading-spinner loading-sm"></span>
+              )}
+              Save
+            </button>
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default IPVDisclosureScreeningToolForm;
+export default IPVScreening;

@@ -43,7 +43,7 @@ model User {
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
-  IPVDisclosureScreeningTool             IPVDisclosureScreeningTool[]
+  IPVScreening                           IPVScreening[]
 }
 
 enum CommunicationMethod {
@@ -881,18 +881,18 @@ model IntimatePartnerViolenceForm {
   dateModified   DateTime @updatedAt
 }
 
-model IPVDisclosureScreeningTool {
-  id                String   @id @default(cuid())
+model IPVScreening {
+  id                String    @id @default(cuid())
   userId            String
   dateTaken         DateTime
   ipvScreeningDate  DateTime?
-  screeningToolUsed String
-  totalScore        Int
-  ipvDisclosure     Boolean
+  screeningToolUsed String?
+  totalScore        String?
+  ipvDisclosure     String?
   ipvDisclosureDate DateTime?
   notes             String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  dateCreated       DateTime  @default(now())
+  dateModified      DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 

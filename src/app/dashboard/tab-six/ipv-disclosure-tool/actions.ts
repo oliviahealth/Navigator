@@ -1,59 +1,78 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IIPVDisclosureScreeningTool } from "./definitions";
+import { IIPVScreeningInputs, IIPVScreeningResponse } from "./definitions";
 
-export const createIPVDisclosureScreeningTool = async (formData: IIPVDisclosureScreeningTool, userId: string) => {
-  try {
-    const response = await prisma.iPVDisclosureScreeningTool.create({
-      data: {
-        ...formData,
-        userId,
-      }
+export const createIPVScreening = async (ipvScreeningInput: IIPVScreeningInputs, userId: string) => {
+    const {
+        dateTaken,
+        ipvScreeningDate,
+        ipvDisclosureDate,
+        ...rest
+    } = ipvScreeningInput;
+
+    const dateTakenAsDate = new Date(dateTaken);
+    const ipvScreeningDateAsDate = ipvScreeningDate ? new Date(ipvScreeningDate) : null;
+    const ipvDisclosureDateAsDate = ipvDisclosureDate ? new Date(ipvDisclosureDate) : null;
+
+    const response = await prisma.iPVScreening.create({
+        data: {
+            userId,
+            dateTaken: dateTakenAsDate,
+            ipvScreeningDate: ipvScreeningDateAsDate,
+            ipvDisclosureDate: ipvDisclosureDateAsDate,
+            ...rest,
+        },
+    });
+
+    return response;
+};
+
+export const readIPVScreening = async (ipvScreeningId: string, userId: string) => {
+    const response = await prisma.iPVScreening.findUniqueOrThrow({
+        where: {
+            userId,
+            id: ipvScreeningId
+        },
+    });
+
+    return response;
+};
+
+export const updateIPVScreening = async (ipvScreeningInput: IIPVScreeningInputs, id: string, userId: string) => {
+    const {
+        dateTaken,
+        ipvScreeningDate,
+        ipvDisclosureDate,
+        ...rest
+    } = ipvScreeningInput;
+
+    const dateTakenAsDate = new Date(dateTaken);
+    const ipvScreeningDateAsDate = ipvScreeningDate ? new Date(ipvScreeningDate) : null;
+    const ipvDisclosureDateAsDate = ipvDisclosureDate ? new Date(ipvDisclosureDate) : null;
+
+    const response = await prisma.iPVScreening.update({
+        where: {
+            id,
+            userId
+        },
+        data: {
+            dateTaken: dateTakenAsDate,
+            ipvScreeningDate: ipvScreeningDateAsDate,
+            ipvDisclosureDate: ipvDisclosureDateAsDate,
+            ...rest,
+        }
+    });
+
+    return response;
+};
+
+export const deleteIPVScreening = async (submissionId: string, userId: string) => {
+    const response = await prisma.iPVScreening.deleteMany({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
     });
     return response;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to create IPV Disclosure Screening Tool entry: ${error.message}`);
-    } else {
-      throw new Error('Failed to create IPV Disclosure Screening Tool entry due to an unexpected error');
-    }
-  }
-}
-
-export const readIPVDisclosureScreeningTool = async (formId: string, userId: string) => {
-  try {
-    const response = await prisma.ipvDisclosureScreeningTool.findUniqueOrThrow({
-      where: {
-        id: formId,
-        userId: userId
-      },
-    });
-    return response;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to retrieve IPV Disclosure Screening Tool entry: ${error.message}`);
-    } else {
-      throw new Error('Failed to retrieve IPV Disclosure Screening Tool entry due to an unexpected error');
-    }
-  }
-}
-
-export const updateIPVDisclosureScreeningTool = async (formData: IIPVDisclosureScreeningTool, formId: string, userId: string) => {
-  try {
-    const response = await prisma.ipvDisclosureScreeningTool.update({
-      where: {
-        id: formId,
-        userId: userId,
-      },
-      data: formData,
-    });
-    return response;
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Failed to update IPV Disclosure Screening Tool entry: ${error.message}`);
-    } else {
-      throw new Error('Failed to update IPV Disclosure Screening Tool entry due to an unexpected error');
-    }
-  }
-}
+};
