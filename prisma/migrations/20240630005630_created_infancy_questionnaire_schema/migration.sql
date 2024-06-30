@@ -166,6 +166,15 @@ CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half'
 -- CreateEnum
 CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
 
+-- CreateEnum
+CREATE TYPE "InfancyQuestionnaireTimeframe" AS ENUM ('Birth_to_one_month', 'Two_to_three_months', 'Six_to_seven_months', 'Ten_to_eleven_months');
+
+-- CreateEnum
+CREATE TYPE "Frequency" AS ENUM ('Some_days', 'Everyday');
+
+-- CreateEnum
+CREATE TYPE "Yes" AS ENUM ('Yes');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -794,6 +803,33 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
     CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "InfancyQuestionnaire" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "childName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "timeframe" "InfancyQuestionnaireTimeframe" NOT NULL,
+    "sleepOnBack" "YesNo" NOT NULL,
+    "sleepAlone" "YesNo" NOT NULL,
+    "sleepWithoutSoftBedding" "YesNo" NOT NULL,
+    "storytellingFrequency" "Frequency" NOT NULL,
+    "isBiologicalMother" "YesNo" NOT NULL,
+    "attendedPostpartumVisit" "YesNo",
+    "postpartumVisitDate" TIMESTAMP(3),
+    "hadBreastMilk" "YesNo",
+    "breastMilkAtTwoMonths" "YesNo",
+    "breastMilkAtSixMonths" "YesNo",
+    "motherCouldNotBreastfeed" "Yes",
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "InfancyQuestionnaire_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -871,3 +907,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 
 -- AddForeignKey
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "InfancyQuestionnaire" ADD CONSTRAINT "InfancyQuestionnaire_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
