@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -34,7 +34,6 @@ const InfancyQuestionnaire: React.FC = () => {
         reset,
         setValue,
         watch,
-        resetField,
         formState: { errors, isSubmitting },
     } = useForm<IInfancyQuestionnaireInputs>({
         resolver: zodResolver(InfancyQuestionnaireInputsSchema),
@@ -638,7 +637,6 @@ const InfancyQuestionnaire: React.FC = () => {
             </form >
         </div >
     )
-
 }
 
 export default InfancyQuestionnaire;
