@@ -166,6 +166,9 @@ CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half'
 -- CreateEnum
 CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
 
+-- CreateEnum
+CREATE TYPE "HealthInsurance" AS ENUM ('Medicaid_or_Kidcare', 'Private', 'Tricare', 'None', 'Other');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -794,6 +797,32 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
     CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "TargetChildRecord" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "childName" TEXT NOT NULL,
+    "childDateOfBirth" TIMESTAMP(3) NOT NULL,
+    "childEnrollmentDate" TIMESTAMP(3) NOT NULL,
+    "childSSN" TEXT,
+    "gestationalAgeAtBirth" TEXT NOT NULL,
+    "childGender" "Gender" NOT NULL,
+    "childEthnicity" "Ethnicity" NOT NULL,
+    "childRace" "Race"[],
+    "isBiologicalMother" "YesNo" NOT NULL,
+    "wellChildVisitsCompleted" TEXT[],
+    "healthInsurance" "HealthInsurance" NOT NULL,
+    "otherHealthInsurance" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TargetChildRecord_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -871,3 +900,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 
 -- AddForeignKey
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TargetChildRecord" ADD CONSTRAINT "TargetChildRecord_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

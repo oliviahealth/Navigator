@@ -51,6 +51,7 @@ model User {
   GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
   PregnancySpacingAssesment              PregnancySpacingAssesment[]
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
+  TargetChildRecord                      TargetChildRecord[]
 }
 
 enum CommunicationMethod {
@@ -1048,6 +1049,7 @@ model PerceivedStressScale {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
+
 enum GADAnswers {
   Not_at_all
   Several_days
@@ -1063,9 +1065,9 @@ enum Difficulty {
 }
 
 model GeneralizedAnxietyDisorder {
-  id String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                      String     @id @default(uuid())
+  User                    User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                  String
   feelingNervous          GADAnswers
   unableToControlWorrying GADAnswers
   worryingTooMuch         GADAnswers
@@ -1075,8 +1077,8 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
+  dateCreated             DateTime   @default(now())
+  dateModified            DateTime   @updatedAt
 }
 
 model PregnancySpacingAssesment {
@@ -1115,6 +1117,40 @@ model TenBsPostpartumAppointmentAssesment {
   EPDStool                                 YesNo
   birthControl                             YesNo
   bloodwork                                YesNo
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum HealthInsurance {
+  Medicaid_or_Kidcare
+  Private
+  Tricare
+  None
+  Other
+}
+
+model TargetChildRecord {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName          String
+  caseId                   String
+  dateCompleted            DateTime
+  staffName                String
+  childName                String
+  childDateOfBirth         DateTime
+  childEnrollmentDate      DateTime
+  childSSN                 String?
+  gestationalAgeAtBirth    String
+  childGender              Gender
+  childEthnicity           Ethnicity
+  childRace                Race[]
+  isBiologicalMother       YesNo
+  wellChildVisitsCompleted String[]
+  healthInsurance          HealthInsurance
+  otherHealthInsurance     String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
