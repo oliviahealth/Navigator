@@ -1149,7 +1149,7 @@ model TargetChildRecord {
   childRace                Race[]
   isBiologicalMother       YesNo
   wellChildVisitsCompleted String[]
-  healthInsurance          HealthInsurance
+  healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
 
   dateCreated  DateTime @default(now())

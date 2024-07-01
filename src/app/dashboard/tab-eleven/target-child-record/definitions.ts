@@ -103,7 +103,7 @@ export const TargetChildRecordInputsSchema = z.object({
     childRace: z.array(RaceEnum),
     isBiologicalMother: YesNoEnum,
     wellChildVisitsCompleted: z.array(WellChildVisitsEnum),
-    healthInsurance: HealthInsuranceEnum,
+    healthInsurance: HealthInsuranceEnum.nullable(),
     otherHealthInsurance: z.string().nullable()
 });
 export type ITargetChildRecordInputs = z.infer<typeof TargetChildRecordInputsSchema>;
