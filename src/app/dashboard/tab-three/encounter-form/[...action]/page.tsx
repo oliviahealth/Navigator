@@ -20,7 +20,6 @@ import {
     ParentConcernsEnum,
     YesNoEnum,
     ReasonsEnum,
-    EncounterFormResponseSchema,
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -477,8 +476,7 @@ const EncounterForm: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readEncounterForm(submissionId, user.id);
-                const validResponse = EncounterFormResponseSchema.parse(response);
+                const validResponse = await readEncounterForm(submissionId, user.id);
 
                 reset(validResponse);
 
@@ -521,8 +519,6 @@ const EncounterForm: React.FC = () => {
             } else {
                 response = await updateEncounterForm(encounterFormData, submissionId, user.id)
             }
-
-            EncounterFormResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

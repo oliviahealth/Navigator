@@ -14,7 +14,7 @@ export const signin = async(signinFormData: ISigninFormData) => {
         where: { email }
     });
 
-    if(!user) {
+    if(!user || !user.password) {
         throw new Error('Invalid username or password: User not found');
     }
 

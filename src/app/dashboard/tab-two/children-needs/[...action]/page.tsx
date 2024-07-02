@@ -7,7 +7,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 
 import {
     ChildrenNeedsFormInputsSchema,
-    ChildrenNeedsFormResponseSchema,
     IChildrenNeedsFormInputs,
     StatusEnum
 } from "../definitions";
@@ -71,10 +70,9 @@ const ChildrenNeedsForm: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readChildrenNeedsForm(submissionId, user.id);
-                const validResponse = ChildrenNeedsFormResponseSchema.parse(response);
-                reset(validResponse);
+                const validResponse = await readChildrenNeedsForm(submissionId, user.id);
 
+                reset(validResponse);
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -101,8 +99,6 @@ const ChildrenNeedsForm: React.FC = () => {
             } else {
                 response = await updateChildrenNeedsForm(data, submissionId, user.id)
             }
-
-            ChildrenNeedsFormResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

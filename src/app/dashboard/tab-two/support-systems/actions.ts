@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { ISupportSystemInputs, ISupportSystemsResponse } from "./definitions";
+import { ISupportSystemInputs, SupportSystemsResponseSchema } from "./definitions";
 
 /**
  * Creates a new Support Systems Record in the db.
@@ -21,7 +21,7 @@ export const createSupportSystems = async (SupportSystemsInput: ISupportSystemIn
         },
     });
 
-    return response;
+    return SupportSystemsResponseSchema.parse(response);
 };
 
 /**
@@ -41,7 +41,7 @@ export const readSupportSystems = async (SupportSystemsId: string, userId: strin
         },
     })
 
-    return response
+    return SupportSystemsResponseSchema.parse(response);
 }
 
 /**
@@ -67,7 +67,7 @@ export const updateSupportSystems = async (SupportSystemsInput: ISupportSystemIn
         }
     })
 
-    return response;
+    return SupportSystemsResponseSchema.parse(response);
 }
 
 /**
@@ -84,5 +84,6 @@ export const deleteSupportSystems = async (submissionId: string, userId: string)
             userId: userId
         }
     });
-    return response;
+    
+    return SupportSystemsResponseSchema.parse(response);
 };

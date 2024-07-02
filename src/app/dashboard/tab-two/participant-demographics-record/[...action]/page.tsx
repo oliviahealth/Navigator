@@ -15,7 +15,6 @@ import {
     EthnicityEnum,
     LgbtqiPlusEnum,
     labelMapping,
-    ParticipantDemographicsFormResponseSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -57,8 +56,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readParticipantDemographicsRecord(submissionId, user.id);
-                const validResponse = ParticipantDemographicsFormResponseSchema.parse(response);
+                const validResponse = await readParticipantDemographicsRecord(submissionId, user.id);
 
                 const formattedData = {
                     ...validResponse,
@@ -96,8 +94,6 @@ const ParticipantDemographicsRecord: React.FC = () => {
             } else {
                 response = await updateParticipantDemographicsRecord(ParticipantDemographicsRecordData, submissionId, user.id)
             }
-
-            ParticipantDemographicsFormResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
