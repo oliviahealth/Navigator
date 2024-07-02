@@ -14,12 +14,13 @@ import {
     TargetChildRecordInputsSchema,
     WellChildVisitsEnum,
     YesNoEnum,
-    decryptSSN,
     labelMapping
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
 import { createTargetChildRecord, readTargetChildRecord, updateTargetChildRecord } from "../actions";
+
+import { decryptSSN } from "../encryption";
 
 const TargetChildRecord: React.FC = () => {
     const router = useRouter();

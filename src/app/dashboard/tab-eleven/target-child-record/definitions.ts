@@ -1,20 +1,4 @@
-const crypto = require('crypto');
 import { z } from "zod";
-const encryptionKey = process.env.NEXT_PUBLIC_SSN_ENCRYPTION_KEY;
-
-export const encryptSSN = (ssn: string) => {
-    const cipher = crypto.createCipher('aes-256-cbc', encryptionKey);
-    let encryptedSSN = cipher.update(ssn, 'utf8', 'hex');
-    encryptedSSN += cipher.final('hex');
-    return encryptedSSN;
-}
-
-export const decryptSSN = (encryptedSSN: string) => {
-    const decipher = crypto.createDecipher('aes-256-cbc', encryptionKey);
-    let decryptedSSN = decipher.update(encryptedSSN, 'hex', 'utf8');
-    decryptedSSN += decipher.final('utf8');
-    return decryptedSSN;
-}
 
 export const YesNoEnum = z.enum([
     "Yes",
