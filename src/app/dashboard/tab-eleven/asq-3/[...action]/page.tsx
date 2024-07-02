@@ -122,10 +122,12 @@ const ASQ3: React.FC = () => {
                 }
 
                 const response = await readASQ3(submissionId, user.id);
+
                 const formattedData = {
                     ...response,
                     dateCompleted: new Date(response.dateCompleted).toISOString().split('T')[0], // Format as YYYY-MM-DD
                 };
+                
                 reset(formattedData);
                 setShowCommunicationScore(formattedData.communicationScoreNotRecorded === "No");
                 setShowGrossMotorScore(formattedData.grossMotorScoreNotRecorded === "No");
@@ -145,7 +147,6 @@ const ASQ3: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IASQ3Inputs) => {
-        console.log(data);
         try {
             let response;
 
@@ -213,7 +214,7 @@ const ASQ3: React.FC = () => {
                         <div className="space-y-3">
                             <p className="font-semibold">Date Completed</p>
                             <input
-                                {...register("dateCompleted")}
+                                {...register("dateCompleted", { valueAsDate: true })}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                 type="date"
                             />
@@ -310,7 +311,7 @@ const ASQ3: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-lg font-bold">Communication</p>
+                            <p className="text-lg font-bold">Communication Score</p>
                             <div className="space-y-3">
                                 <p className="font-semibold"> Is child currently receiving services in this area? </p>
                                 <div className="flex flex-col space-y-3">
@@ -354,7 +355,7 @@ const ASQ3: React.FC = () => {
                         </div>
 
                         <div className="space-y-4">
-                            <p className="text-lg font-bold">Gross Motor</p>
+                            <p className="text-lg font-bold">Gross Motor Score</p>
                             <div className="space-y-3">
                                 <p className="font-semibold"> Is child currently receiving services in this area? </p>
                                 <div className="flex flex-col space-y-3">

@@ -17,7 +17,6 @@ export const createASQ3 = async (asq3Input: IASQ3Inputs, userId: string) => {
         data: {
             userId,
             ...asq3Input,
-            dateCompleted: new Date(asq3Input.dateCompleted),
         },
     });
 
@@ -64,7 +63,6 @@ export const updateASQ3 = async (asq3Input: IASQ3Inputs, id: string, userId: str
         data: {
             userId,
             ...asq3Input,
-            dateCompleted: new Date(asq3Input.dateCompleted),
         }
     })
 
