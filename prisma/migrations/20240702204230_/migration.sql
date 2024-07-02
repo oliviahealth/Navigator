@@ -172,6 +172,21 @@ CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_e
 -- CreateEnum
 CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
 
+-- CreateEnum
+CREATE TYPE "TimeframeHousing" AS ENUM ('Enrollment', 'Update');
+
+-- CreateEnum
+CREATE TYPE "InsuranceType" AS ENUM ('MedicaidOrTexasKidcare', 'PrivateInsurance', 'TriCare', 'NoInsurance', 'OtherInsurance');
+
+-- CreateEnum
+CREATE TYPE "EducationLevel" AS ENUM ('HSDiplomaGED', 'SomeCollegeTraining', 'TechnicalTrainingCertification', 'AssociateDegree', 'BachelorDegreeOrHigher');
+
+-- CreateEnum
+CREATE TYPE "EmploymentStatus" AS ENUM ('EmployedFullTime', 'EmployedPartTime', 'NotEmployedCurrently');
+
+-- CreateEnum
+CREATE TYPE "HousingStatus" AS ENUM ('OwnsOrSharesOwnHome', 'RentsOrSharesRentedHome', 'LivesInPublicHousing', 'LivesWithParentFamilyMember', 'SomeOtherArrangement', 'SharingHousing', 'LivesInShelter');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -841,6 +856,37 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HouseholdHousingSafetyProfile" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "timeframe" TEXT[],
+    "insuranceType" TEXT NOT NULL,
+    "otherInsurance" TEXT,
+    "highSchoolDiploma" TEXT NOT NULL,
+    "highestEducation" TEXT,
+    "currentlyEnrolled" TEXT NOT NULL,
+    "middleHighSchoolGED" BOOLEAN,
+    "employmentStatus" TEXT NOT NULL,
+    "usesTobacco" TEXT NOT NULL,
+    "tobaccoCessationServices" TEXT,
+    "currentlyPregnant" TEXT,
+    "wantPregnant" TEXT,
+    "yearlyHouseholdIncome" DOUBLE PRECISION,
+    "incomeUndeterminedReason" TEXT,
+    "otherIncomeUndeterminedReason" TEXT,
+    "dependentsCount" INTEGER NOT NULL,
+    "housingStatus" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "HouseholdHousingSafetyProfile_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

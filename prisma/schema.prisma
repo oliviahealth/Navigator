@@ -1182,3 +1182,70 @@ model IntimatePartnerViolenceForm {
   dateCreated    DateTime @default(now())
   dateModified   DateTime @updatedAt
 }
+
+enum TimeframeHousing {
+  Enrollment
+  Update
+}
+
+enum InsuranceType {
+  MedicaidOrTexasKidcare
+  PrivateInsurance
+  TriCare
+  NoInsurance
+  OtherInsurance
+}
+
+enum EducationLevel {
+  HSDiplomaGED
+  SomeCollegeTraining
+  TechnicalTrainingCertification
+  AssociateDegree
+  BachelorDegreeOrHigher
+}
+
+enum EmploymentStatus {
+  EmployedFullTime
+  EmployedPartTime
+  NotEmployedCurrently
+}
+
+enum HousingStatus {
+  OwnsOrSharesOwnHome
+  RentsOrSharesRentedHome
+  LivesInPublicHousing
+  LivesWithParentFamilyMember
+  SomeOtherArrangement
+  SharingHousing
+  LivesInShelter
+}
+
+
+model HouseholdHousingSafetyProfile {
+  id                          String   @id @default(cuid())
+  userId                      String
+  participantName             String
+  caseId                      String
+  dateCompleted               DateTime
+  staffName                   String
+  timeframe                   String[]
+  insuranceType               String
+  otherInsurance              String?
+  highSchoolDiploma           String
+  highestEducation            String?
+  currentlyEnrolled           String
+  middleHighSchoolGED         Boolean?
+  employmentStatus            String
+  usesTobacco                 String
+  tobaccoCessationServices    String?
+  currentlyPregnant           String?
+  wantPregnant                String?
+  yearlyHouseholdIncome       Float?
+  incomeUndeterminedReason    String?
+  otherIncomeUndeterminedReason String?
+  dependentsCount             Int
+  housingStatus               String
+  dateCreated                 DateTime @default(now())
+  dateModified                DateTime @updatedAt
+
+}
