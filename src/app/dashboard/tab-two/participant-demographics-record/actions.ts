@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantDemographicsFormInputs } from "./definitions";
+import { IParticipantDemographicsFormInputs, ParticipantDemographicsFormResponseSchema } from "./definitions";
 
 /**
  * Creates a new Participant Demographics Record in the db.
@@ -31,7 +31,7 @@ export const createParticipantDemographicsRecord = async (participantDemographic
         },
     });
 
-    return response;
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 };
 
 /**
@@ -51,7 +51,7 @@ export const readParticipantDemographicsRecord = async (participantDemographicsR
         },
     })
 
-    return response
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 }
 
 /**
@@ -88,7 +88,7 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
         }
     })
 
-    return response;
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 }
 
 /**
@@ -105,5 +105,6 @@ export const deleteParticipantDemographicsRecord = async (submissionId: string, 
             userId: userId
         }
     });
-    return response;
+    
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 };

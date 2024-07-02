@@ -192,7 +192,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             if (verb === 'new') {
                 response = await createParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, user.id);
             } else {
-                response = await updateParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, submissionId);
+                response = await updateParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, submissionId, user.id);
             }
 
             ParticipantRecordForOthersInvolvedResponseSchema.parse(response);

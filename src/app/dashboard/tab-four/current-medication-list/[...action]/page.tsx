@@ -5,7 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useFieldArray } from 'react-hook-form';
 
-import { ICurrentMedicationListInputs, CurrentMedicationListResponseSchema, CurrentMedicationListInputsSchema } from '../definitions';
+import { ICurrentMedicationListInputs, CurrentMedicationListInputsSchema } from '../definitions';
 import useAppStore from '@/lib/useAppStore';
 import {
     createCurrentMedicationListRecord,
@@ -58,9 +58,7 @@ const CurrentMedicationListRecord: React.FC = () => {
                     throw new Error('Missing user');
                 }
 
-                const response = await readCurrentMedicationListRecord(submissionId, user.id);
-
-                const validResponse = CurrentMedicationListResponseSchema.parse(response);
+                const validResponse = await readCurrentMedicationListRecord(submissionId, user.id);
 
                 reset(validResponse);
             } catch (error) {
@@ -74,8 +72,6 @@ const CurrentMedicationListRecord: React.FC = () => {
 
         fetchAndPopulatePastSubmissionData();
     }, []);
-
-    console.log(errors);
 
     const submit = async (data: ICurrentMedicationListInputs) => {
         try {
@@ -91,8 +87,6 @@ const CurrentMedicationListRecord: React.FC = () => {
             } else {
                 response = await updateCurrentMedicationListRecord(data, submissionId, user.id);
             }
-
-            CurrentMedicationListResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

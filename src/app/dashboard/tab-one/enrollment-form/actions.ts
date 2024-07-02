@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IEnrollmentFormInputs } from "./definitions";
+import { EnrollmentFormResponseSchema, IEnrollmentFormInputs } from "./definitions";
 
 export const createEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, userId: string) => {
     const { clientAge, ...rest } = enrollmentFormInput;
@@ -17,7 +17,7 @@ export const createEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormI
         }
     });
 
-    return response;
+    return EnrollmentFormResponseSchema.parse(response);
 }
 
 export const readEnrollmentForm = async (enrollmentFormId: string, userId: string) => {
@@ -28,7 +28,7 @@ export const readEnrollmentForm = async (enrollmentFormId: string, userId: strin
         }
     });
 
-    return response;
+    return EnrollmentFormResponseSchema.parse(response);
 }
 
 export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, enrollmentFormId: string, userId: string) => {
@@ -45,5 +45,5 @@ export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormI
         }
     });
 
-    return response;
+    return EnrollmentFormResponseSchema.parse(response);
 }

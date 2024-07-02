@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IEncounterFormInputs } from "./definitions";
+import { EncounterFormResponseSchema, IEncounterFormInputs } from "./definitions";
 
 /**
  * Creates a new Encounter Form in the db.
@@ -21,7 +21,7 @@ export const createEncounterForm = async (encounterFormInput: IEncounterFormInpu
         },
     });
 
-    return response;
+    return EncounterFormResponseSchema.parse(response);
 };
 
 /**
@@ -41,7 +41,7 @@ export const readEncounterForm = async (encounterFormId: string, userId: string)
         },
     })
 
-    return response
+    return EncounterFormResponseSchema.parse(response);
 }
 
 /**
@@ -67,7 +67,7 @@ export const updateEncounterForm = async (encounterFormInput: IEncounterFormInpu
         }
     })
 
-    return response;
+    return EncounterFormResponseSchema.parse(response);
 }
 
 /**
@@ -84,5 +84,6 @@ export const deleteEncounterForm = async (submissionId: string, userId: string) 
             userId: userId
         }
     });
-    return response;
+    
+    return EncounterFormResponseSchema.parse(response);
 };

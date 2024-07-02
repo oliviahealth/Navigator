@@ -41,7 +41,7 @@ CREATE TYPE "Sex" AS ENUM ('Female', 'Male');
 CREATE TYPE "ChildLivingWith" AS ENUM ('Mother', 'Father', 'Grandparents', 'Siblings', 'Foster_Family', 'Other');
 
 -- CreateEnum
-CREATE TYPE "childProtectiveService" AS ENUM ('Currently', 'Previously', 'Never');
+CREATE TYPE "CurrentlyPreviouslyNever" AS ENUM ('Currently', 'Previously', 'Never');
 
 -- CreateEnum
 CREATE TYPE "ChildrenNeedsStatus" AS ENUM ('Yes', 'No', 'Pending');
@@ -119,6 +119,57 @@ CREATE TYPE "TimeSpentReligiously" AS ENUM ('Rarely_or_never', 'Once_a_month', '
 CREATE TYPE "TruthLevel" AS ENUM ('Definitely_not_true', 'Somewhat_not_true', 'Neutral', 'Somewhat_true', 'Definitely_true');
 
 -- CreateEnum
+CREATE TYPE "Laugh" AS ENUM ('As_much_as_always', 'Not_quite_so_much', 'Definitely_not_so_much', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Enjoyment" AS ENUM ('As_much_as_ever', 'Rather_less', 'Definitely_less', 'Hardly');
+
+-- CreateEnum
+CREATE TYPE "SelfBlame" AS ENUM ('Yes_mostly', 'Yes_some', 'Not_often', 'Never');
+
+-- CreateEnum
+CREATE TYPE "Anxiety" AS ENUM ('Not_at_all', 'Hardly_ever', 'Yes_sometimes', 'Yes_often');
+
+-- CreateEnum
+CREATE TYPE "Scared" AS ENUM ('Yes_a_lot', 'Yes_sometimes', 'Not_much', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "CopeInability" AS ENUM ('Yes_mostly_have_not', 'Yes_sometimes_have_not', 'No_mostly_have', 'No_always_have');
+
+-- CreateEnum
+CREATE TYPE "DifficultySleeping" AS ENUM ('Yes_mostly', 'Yes_sometimes', 'Not_often', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Sadness" AS ENUM ('Yes_mostly', 'Yes_often', 'Not_often', 'Not_at_all');
+
+-- CreateEnum
+CREATE TYPE "Crying" AS ENUM ('Yes_mostly', 'Yes_often', 'Occasionally', 'Never');
+
+-- CreateEnum
+CREATE TYPE "SelfHarmThoughts" AS ENUM ('Yes_often', 'Sometimes', 'Hardly_ever', 'Never');
+
+-- CreateEnum
+CREATE TYPE "Timeframe" AS ENUM ('Prenatal', 'Postnatal');
+
+-- CreateEnum
+CREATE TYPE "SmokingStatus" AS ENUM ('NEVER', 'NOT_BEFORE_AND_NOT_NOW', 'NOT_AFTER_AND_NOT_NOW', 'NOT_DURING_AND_NOT_NOW', 'NOT_DURING_AND_NOW');
+
+-- CreateEnum
+CREATE TYPE "YesNoDidNotAsk" AS ENUM ('Yes', 'No', 'Did_Not_Ask');
+
+-- CreateEnum
+CREATE TYPE "PerceivedStressScaleOptions" AS ENUM ('Never', 'Almost_never', 'Sometimes', 'Fairly_often', 'Very_often');
+
+-- CreateEnum
+CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half', 'Everyday');
+
+-- CreateEnum
+CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
+
+-- CreateEnum
+CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_early_steps', 'Refer_to_agency', 'No_further_action');
+
+-- CreateEnum
 CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
 
 -- CreateTable
@@ -126,7 +177,7 @@ CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -134,23 +185,10 @@ CREATE TABLE "User" (
 );
 
 -- CreateTable
-CREATE TABLE "CommunicationEntry" (
-    "id" TEXT NOT NULL,
-    "communicationLogId" TEXT NOT NULL,
-    "dateTime" TIMESTAMP(3) NOT NULL,
-    "method" "CommunicationMethod" NOT NULL,
-    "organizationPerson" TEXT NOT NULL,
-    "purpose" TEXT NOT NULL,
-    "notes" TEXT,
-    "followUpNeeded" "YesNo" NOT NULL,
-
-    CONSTRAINT "CommunicationEntry_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "CommunicationLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "communicationEntries" JSONB,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -245,47 +283,10 @@ CREATE TABLE "ParticipantDemographicsForm" (
 );
 
 -- CreateTable
-CREATE TABLE "ParticipantRecordForOthersInvolvedEntry" (
-    "id" TEXT NOT NULL,
-    "participantRecordForOthersInvolvedFormId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "dateOfBirth" TIMESTAMP(3) NOT NULL,
-    "currentLivingArrangement" "LivingArrangements" NOT NULL,
-    "streetAddress" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-    "state" TEXT NOT NULL,
-    "zipCode" TEXT NOT NULL,
-    "county" TEXT NOT NULL,
-    "primaryPhoneNumber" TEXT NOT NULL,
-    "emergencyContact" TEXT NOT NULL,
-    "emergencyContactPhone" TEXT NOT NULL,
-    "emergencyContactRelationship" TEXT NOT NULL,
-    "maritalStatus" "ParticipantRecordForOthersInvolvedMaritalStatus" NOT NULL,
-    "insurancePlan" TEXT NOT NULL,
-    "effectiveDate" TIMESTAMP(3) NOT NULL,
-    "subscriberId" TEXT NOT NULL,
-    "groupId" TEXT NOT NULL,
-    "gestationalAge" TEXT NOT NULL,
-    "dueDate" TIMESTAMP(3) NOT NULL,
-    "deliveryDate" TIMESTAMP(3) NOT NULL,
-    "plannedModeDelivery" "DeliveryMode" NOT NULL,
-    "actualModeDelivery" "DeliveryMode" NOT NULL,
-    "attendedPostpartumVisit" TEXT NOT NULL,
-    "postpartumVisitLocation" TEXT,
-    "postpartumVisitDate" TIMESTAMP(3),
-    "totalNumPregnancies" TEXT NOT NULL,
-    "numLiveBirths" TEXT NOT NULL,
-    "numChildrenWithMother" TEXT NOT NULL,
-    "priorComplications" TEXT,
-    "ongoingMedicalProblems" TEXT NOT NULL,
-
-    CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "ParticipantRecordForOthersInvolvedForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "participantRecordForOthersInvolvedEntries" JSONB NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -324,7 +325,7 @@ CREATE TABLE "ChildDemographicsRecord" (
     "difficultiesServicesReceived" TEXT NOT NULL,
     "lactationConsultant" "YesNo" NOT NULL,
     "legalSystemInvolvement" "YesNo" NOT NULL,
-    "childProtectiveService" "childProtectiveService" NOT NULL,
+    "childProtectiveService" "CurrentlyPreviouslyNever" NOT NULL,
     "caseworker" TEXT,
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
@@ -608,6 +609,227 @@ CREATE TABLE "MentalHealthHistory" (
 );
 
 -- CreateTable
+CREATE TABLE "EdinburgPostnatalDepressionScale" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "laugh" "Laugh" NOT NULL,
+    "enjoyment" "Enjoyment" NOT NULL,
+    "selfBlame" "SelfBlame" NOT NULL,
+    "anxiety" "Anxiety" NOT NULL,
+    "scared" "Scared" NOT NULL,
+    "copeInability" "CopeInability" NOT NULL,
+    "difficultySleeping" "DifficultySleeping" NOT NULL,
+    "sadness" "Sadness" NOT NULL,
+    "crying" "Crying" NOT NULL,
+    "selfHarmThoughts" "SelfHarmThoughts" NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "timeframe" "Timeframe" NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "notes" TEXT,
+
+    CONSTRAINT "EdinburgPostnatalDepressionScale_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SmokingTobaccoPregnancy" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "smokingStatus" "SmokingStatus" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SmokingTobaccoPregnancy_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SubstanceUseHistory" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "alcohol_ever_used" "YesNo" NOT NULL,
+    "alcohol_used_during_pregnancy" "YesNo",
+    "alcohol_date_last_used" TIMESTAMP(3),
+    "alcohol_notes" TEXT,
+    "benzodiazepines_ever_used" "YesNo" NOT NULL,
+    "benzodiazepines_used_during_pregnancy" "YesNo",
+    "benzodiazepines_date_last_used" TIMESTAMP(3),
+    "benzodiazepines_notes" TEXT,
+    "cocaine_ever_used" "YesNo" NOT NULL,
+    "cocaine_used_during_pregnancy" "YesNo",
+    "cocaine_date_last_used" TIMESTAMP(3),
+    "cocaine_notes" TEXT,
+    "heroin_ever_used" "YesNo" NOT NULL,
+    "heroin_used_during_pregnancy" "YesNo",
+    "heroin_date_last_used" TIMESTAMP(3),
+    "heroin_notes" TEXT,
+    "kush_ever_used" "YesNo" NOT NULL,
+    "kush_used_during_pregnancy" "YesNo",
+    "kush_date_last_used" TIMESTAMP(3),
+    "kush_notes" TEXT,
+    "marijuana_ever_used" "YesNo" NOT NULL,
+    "marijuana_used_during_pregnancy" "YesNo",
+    "marijuana_date_last_used" TIMESTAMP(3),
+    "marijuana_notes" TEXT,
+    "methamphetamine_ever_used" "YesNo" NOT NULL,
+    "methamphetamine_used_during_pregnancy" "YesNo",
+    "methamphetamine_date_last_used" TIMESTAMP(3),
+    "methamphetamine_notes" TEXT,
+    "prescription_drugs_ever_used" "YesNo" NOT NULL,
+    "prescription_drugs_used_during_pregnancy" "YesNo",
+    "prescription_drugs_date_last_used" TIMESTAMP(3),
+    "prescription_drugs_notes" TEXT,
+    "tobacco_ever_used" "YesNo" NOT NULL,
+    "tobacco_used_during_pregnancy" "YesNo",
+    "tobacco_date_last_used" TIMESTAMP(3),
+    "tobacco_notes" TEXT,
+    "other_drugs" JSONB[],
+    "notes" TEXT,
+    "mat_engaged" "CurrentlyPreviouslyNever" NOT NULL,
+    "date_used_mat" TEXT,
+    "medications" JSONB NOT NULL,
+    "mat_clinic_name" TEXT,
+    "mat_clinic_phone" TEXT,
+    "used_addiction_medicine_services" "CurrentlyPreviouslyNever" NOT NULL,
+    "date_used_medicine_service" TEXT,
+    "addiction_medicine_clinic" TEXT,
+    "addiction_medicine_clinic_phone" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SubstanceUseHistory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HousingSecurityHomeVisitForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "dateOfVisit" TIMESTAMP(3) NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "healthInsurance" "YesNo" NOT NULL,
+    "concerns" "YesNoDidNotAsk" NOT NULL,
+    "erVisit" "YesNo" NOT NULL,
+    "erVisitSpecific" JSONB,
+    "wellChildVisits" "YesNo" NOT NULL,
+    "wellChildVisitsSpecific" JSONB,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "HousingSecurityHomeVisitForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PerceivedStressScale" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "upsetUnexpectedly" "PerceivedStressScaleOptions" NOT NULL,
+    "unableControlImportant" "PerceivedStressScaleOptions" NOT NULL,
+    "nervousAndStressed" "PerceivedStressScaleOptions" NOT NULL,
+    "handleProblemsConfidently" "PerceivedStressScaleOptions" NOT NULL,
+    "thingsGoingWay" "PerceivedStressScaleOptions" NOT NULL,
+    "copeInability" "PerceivedStressScaleOptions" NOT NULL,
+    "controlIrritations" "PerceivedStressScaleOptions" NOT NULL,
+    "onTopOfThings" "PerceivedStressScaleOptions" NOT NULL,
+    "angeredOutsideControl" "PerceivedStressScaleOptions" NOT NULL,
+    "difficultiesPilingUp" "PerceivedStressScaleOptions" NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PerceivedStressScale_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "GeneralizedAnxietyDisorder" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "feelingNervous" "GADAnswers" NOT NULL,
+    "unableToControlWorrying" "GADAnswers" NOT NULL,
+    "worryingTooMuch" "GADAnswers" NOT NULL,
+    "troubleRelaxing" "GADAnswers" NOT NULL,
+    "restlessness" "GADAnswers" NOT NULL,
+    "easilyAnnoyed" "GADAnswers" NOT NULL,
+    "feelingAfraid" "GADAnswers" NOT NULL,
+    "problemsDifficulty" "Difficulty" NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "GeneralizedAnxietyDisorder_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PregnancySpacingAssesment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "hadPregnanciesLessThan12MoApart" TEXT NOT NULL,
+    "discussFamilyPlanningInterest" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PregnancySpacingAssesment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "physicalExamBaby" "YesNo" NOT NULL,
+    "feedingBaby" "YesNo" NOT NULL,
+    "growthAndWeightGainBaby" "YesNo" NOT NULL,
+    "assessSupplyLatchMilkTransferPainBreasts" "YesNo" NOT NULL,
+    "referLactationConsultantBreasts" "YesNo" NOT NULL,
+    "educationCollectionStorageMilkBreasts" "YesNo" NOT NULL,
+    "mastisisSignsBreasts" "YesNo" NOT NULL,
+    "constipationTreatementBowels" "YesNo" NOT NULL,
+    "urinaryIncontinenceBladder" "YesNo" NOT NULL,
+    "painBelly" "YesNo" NOT NULL,
+    "perinealPainBotton" "YesNo" NOT NULL,
+    "hemorrhoidsBottom" "YesNo" NOT NULL,
+    "finishedBleeding" "YesNo" NOT NULL,
+    "screenBabyBluePostpartumDepression" "YesNo" NOT NULL,
+    "EPDStool" "YesNo" NOT NULL,
+    "birthControl" "YesNo" NOT NULL,
+    "bloodwork" "YesNo" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ASQ3" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "childName" TEXT NOT NULL,
+    "questionnaireUsed" TEXT NOT NULL,
+    "ageAdjusted" "YesNo" NOT NULL,
+    "communicationScore" TEXT,
+    "communicationScoreNotRecorded" "YesNo" NOT NULL,
+    "grossMotorScore" TEXT,
+    "grossMotorScoreNotRecorded" "YesNo" NOT NULL,
+    "fineMotorScore" TEXT,
+    "fineMotorScoreNotRecorded" "YesNo" NOT NULL,
+    "problemSolvingScore" TEXT,
+    "problemSolvingScoreNotRecorded" "YesNo" NOT NULL,
+    "personalSocialScore" TEXT,
+    "personalSocialScoreNotRecorded" "YesNo" NOT NULL,
+    "followUpAction" "FollowUpAction"[],
+    "describeActivitiesProvided" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ASQ3_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "IntimatePartnerViolenceForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -625,9 +847,6 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- AddForeignKey
-ALTER TABLE "CommunicationEntry" ADD CONSTRAINT "CommunicationEntry_communicationLogId_fkey" FOREIGN KEY ("communicationLogId") REFERENCES "CommunicationLog"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "CommunicationLog" ADD CONSTRAINT "CommunicationLog_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -641,9 +860,6 @@ ALTER TABLE "MediaAppearanceForm" ADD CONSTRAINT "MediaAppearanceForm_userId_fke
 
 -- AddForeignKey
 ALTER TABLE "ParticipantDemographicsForm" ADD CONSTRAINT "ParticipantDemographicsForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ParticipantRecordForOthersInvolvedEntry" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedEntry_participantRecordF_fkey" FOREIGN KEY ("participantRecordForOthersInvolvedFormId") REFERENCES "ParticipantRecordForOthersInvolvedForm"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ParticipantRecordForOthersInvolvedForm" ADD CONSTRAINT "ParticipantRecordForOthersInvolvedForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -680,3 +896,33 @@ ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligion
 
 -- AddForeignKey
 ALTER TABLE "MentalHealthHistory" ADD CONSTRAINT "MentalHealthHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EdinburgPostnatalDepressionScale" ADD CONSTRAINT "EdinburgPostnatalDepressionScale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SmokingTobaccoPregnancy" ADD CONSTRAINT "SmokingTobaccoPregnancy_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SubstanceUseHistory" ADD CONSTRAINT "SubstanceUseHistory_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HousingSecurityHomeVisitForm" ADD CONSTRAINT "HousingSecurityHomeVisitForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PerceivedStressScale" ADD CONSTRAINT "PerceivedStressScale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "GeneralizedAnxietyDisorder" ADD CONSTRAINT "GeneralizedAnxietyDisorder_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "IntimatePartnerViolenceForm" ADD CONSTRAINT "IntimatePartnerViolenceForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

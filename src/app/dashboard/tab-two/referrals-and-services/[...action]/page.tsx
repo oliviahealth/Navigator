@@ -8,7 +8,6 @@ import { FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import {
     ReferralsAndServicesInputsSchema,
     IReferralsAndServicesInputs,
-    ReferralsAndServicesResponseSchema,
     displayNames
 } from "../definitions";
 
@@ -154,9 +153,7 @@ const ReferralsAndServices: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readReferralsAndServices(submissionId, user.id);
-
-                const validResponse = ReferralsAndServicesResponseSchema.parse(response);
+                const validResponse = await readReferralsAndServices(submissionId, user.id);
 
                 reset(validResponse);
             } catch (error) {
@@ -187,8 +184,6 @@ const ReferralsAndServices: React.FC = () => {
             } else {
                 response = await updateReferralsAndServices(data, submissionId, user.id)
             }
-
-            ReferralsAndServicesResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

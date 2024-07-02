@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { z } from "zod";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import useAppStore from "@/lib/useAppStore";
-import { MediaApperanceFormInputSchema, IMediaAppearanceFormInput, MediaAppearanceFormResponseSchema } from "../definitions";
+import { MediaApperanceFormInputSchema, IMediaAppearanceFormInput } from "../definitions";
 import { createMediaApperanceForm, updateMediaAppearanceForm } from "../actions";
 
 
@@ -103,8 +102,6 @@ const MediaAppearanceForm: React.FC = () => {
       } else {
         response = await updateMediaAppearanceForm(data, submissionId, user.id);
       }
-
-      MediaAppearanceFormResponseSchema.parse(response);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
