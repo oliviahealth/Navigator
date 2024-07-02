@@ -876,6 +876,7 @@ model IntimatePartnerViolenceForm {
   insultOrTalkDown  IPVStatus
   threatenWithHarm  IPVStatus
   screamOrCurse     IPVStatus
+  
   dateCreated    DateTime @default(now())
   dateModified   DateTime @updatedAt
 }
