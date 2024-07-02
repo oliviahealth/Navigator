@@ -102,6 +102,10 @@ const Dashboard: React.FC = () => {
 
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Six</p>
+
+                        <a href={'dashboard/tab-six/intimate-partner-violence/new'}>
+                            Intimate Partner Violence
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">

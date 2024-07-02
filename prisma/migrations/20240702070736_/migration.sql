@@ -169,6 +169,9 @@ CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely')
 -- CreateEnum
 CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_early_steps', 'Refer_to_agency', 'No_further_action');
 
+-- CreateEnum
+CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -826,6 +829,20 @@ CREATE TABLE "ASQ3" (
     CONSTRAINT "ASQ3_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "IntimatePartnerViolenceForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "physicallyHurt" "IPVStatus" NOT NULL,
+    "insultOrTalkDown" "IPVStatus" NOT NULL,
+    "threatenWithHarm" "IPVStatus" NOT NULL,
+    "screamOrCurse" "IPVStatus" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -906,3 +923,6 @@ ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartu
 
 -- AddForeignKey
 ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "IntimatePartnerViolenceForm" ADD CONSTRAINT "IntimatePartnerViolenceForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -52,6 +52,7 @@ model User {
   PregnancySpacingAssesment              PregnancySpacingAssesment[]
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
   ASQ3                                   ASQ3[]
+  IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
 }
 
 enum CommunicationMethod {
@@ -1157,4 +1158,27 @@ model ASQ3 {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
+}
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
+
+model IntimatePartnerViolenceForm {
+  id            String   @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  physicallyHurt    IPVStatus
+  insultOrTalkDown  IPVStatus
+  threatenWithHarm  IPVStatus
+  screamOrCurse     IPVStatus
+  
+  dateCreated    DateTime @default(now())
+  dateModified   DateTime @updatedAt
 }
