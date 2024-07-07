@@ -54,6 +54,7 @@ model User {
   ASQ3                                   ASQ3[]
   IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
   BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
+  DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
 }
 
 enum CommunicationMethod {
@@ -1225,6 +1226,21 @@ model BriefChildWellnessUpdate {
   otherMedicalCare     String?
   hasDentalCare        YesNo
   readingFrequency     ReadingFrequency
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model DeliveryHistoryInformationForm {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName String
+  caseId          String
+  dateCompleted   DateTime
+  staffName       String
+  deliveries      Json[]
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
