@@ -97,7 +97,6 @@ const BriefChildWellnessUpdate: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IBriefChildWellnessUpdateInputs) => {
-        console.log(data);
         try {
             let response;
 
