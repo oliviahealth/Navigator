@@ -53,6 +53,7 @@ model User {
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
   ASQ3                                   ASQ3[]
   IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
+  BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
 }
 
 enum CommunicationMethod {
@@ -886,7 +887,7 @@ enum SelfHarmThoughts {
   Never
 }
 
-enum Timeframe {
+enum EPDS_Timeframe {
   Prenatal
   Postnatal
 }
@@ -911,7 +912,7 @@ model EdinburgPostnatalDepressionScale {
   caseId             String
   dateCompleted      DateTime
   staffName          String
-  timeframe          Timeframe
+  timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
 }
@@ -1181,4 +1182,49 @@ model IntimatePartnerViolenceForm {
   
   dateCreated    DateTime @default(now())
   dateModified   DateTime @updatedAt
+}
+
+enum BriefChildWellnessUpdateTimeframe {
+  Enrollment
+  Update
+}
+
+enum HealthInsurance {
+  Medicaid_or_Kidcare
+  Private
+  Tricare
+  None
+  Other
+}
+
+enum MedicalCare {
+  Doctor_office
+  Hospital_emergency_room
+  Hospital_clinic
+  Qualified_health_center
+  Retail_or_Minute_clinic
+  None
+  Other
+}
+
+enum ReadingFrequency {
+  Some_days
+  Everyday
+}
+
+model BriefChildWellnessUpdate {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  childName            String
+  dateCompleted        DateTime
+  timeframe            BriefChildWellnessUpdateTimeframe
+  healthInsurance      HealthInsurance
+  otherHealthInsurance String?
+  medicalCare          MedicalCare
+  otherMedicalCare     String?
+  hasDentalCare        YesNo
+  readingFrequency     ReadingFrequency
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
