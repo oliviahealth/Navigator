@@ -51,6 +51,9 @@ model User {
   GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
   PregnancySpacingAssesment              PregnancySpacingAssesment[]
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
+  ASQ3                                   ASQ3[]
+  IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
+  BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
   DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
 }
 
@@ -885,7 +888,7 @@ enum SelfHarmThoughts {
   Never
 }
 
-enum Timeframe {
+enum EPDS_Timeframe {
   Prenatal
   Postnatal
 }
@@ -910,7 +913,7 @@ model EdinburgPostnatalDepressionScale {
   caseId             String
   dateCompleted      DateTime
   staffName          String
-  timeframe          Timeframe
+  timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
 }
@@ -1118,6 +1121,111 @@ model TenBsPostpartumAppointmentAssesment {
   birthControl                             YesNo
   bloodwork                                YesNo
 
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum FollowUpAction {
+  Provide_support
+  Rescreen
+  Refer_to_early_steps
+  Refer_to_agency
+  No_further_action
+}
+
+model ASQ3 {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName                String
+  caseId                         String
+  dateCompleted                  DateTime
+  staffName                      String
+  childName                      String
+  questionnaireUsed              String
+  ageAdjusted                    YesNo
+  communicationScore             String?
+  communicationScoreNotRecorded  YesNo
+  grossMotorScore                String?
+  grossMotorScoreNotRecorded     YesNo
+  fineMotorScore                 String?
+  fineMotorScoreNotRecorded      YesNo
+  problemSolvingScore            String?
+  problemSolvingScoreNotRecorded YesNo
+  personalSocialScore            String?
+  personalSocialScoreNotRecorded YesNo
+  followUpAction                 FollowUpAction[]
+  describeActivitiesProvided     String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
+
+model IntimatePartnerViolenceForm {
+  id            String   @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  physicallyHurt    IPVStatus
+  insultOrTalkDown  IPVStatus
+  threatenWithHarm  IPVStatus
+  screamOrCurse     IPVStatus
+  
+  dateCreated    DateTime @default(now())
+  dateModified   DateTime @updatedAt
+}
+
+enum BriefChildWellnessUpdateTimeframe {
+  Enrollment
+  Update
+}
+
+enum HealthInsurance {
+  Medicaid_or_Kidcare
+  Private
+  Tricare
+  None
+  Other
+}
+
+enum MedicalCare {
+  Doctor_office
+  Hospital_emergency_room
+  Hospital_clinic
+  Qualified_health_center
+  Retail_or_Minute_clinic
+  None
+  Other
+}
+
+enum ReadingFrequency {
+  Some_days
+  Everyday
+}
+
+model BriefChildWellnessUpdate {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  childName            String
+  dateCompleted        DateTime
+  timeframe            BriefChildWellnessUpdateTimeframe
+  healthInsurance      HealthInsurance
+  otherHealthInsurance String?
+  medicalCare          MedicalCare
+  otherMedicalCare     String?
+  hasDentalCare        YesNo
+  readingFrequency     ReadingFrequency
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

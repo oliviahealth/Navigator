@@ -814,9 +814,6 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
 );
 
 -- CreateTable
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-CREATE TABLE "DeliveryHistoryInformationForm" (
-========
 <<<<<<<< HEAD:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
 CREATE TABLE "BriefChildWellnessUpdate" (
     "id" TEXT NOT NULL,
@@ -834,20 +831,12 @@ CREATE TABLE "BriefChildWellnessUpdate" (
     CONSTRAINT "BriefChildWellnessUpdate_pkey" PRIMARY KEY ("id")
 ========
 CREATE TABLE "ASQ3" (
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "participantName" TEXT NOT NULL,
     "caseId" TEXT NOT NULL,
     "dateCompleted" TIMESTAMP(3) NOT NULL,
     "staffName" TEXT NOT NULL,
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-    "deliveries" JSONB[],
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "DeliveryHistoryInformationForm_pkey" PRIMARY KEY ("id")
-========
     "childName" TEXT NOT NULL,
     "questionnaireUsed" TEXT NOT NULL,
     "ageAdjusted" "YesNo" NOT NULL,
@@ -882,7 +871,6 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
 
     CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
 >>>>>>>> main:prisma/migrations/20240702070736_/migration.sql
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
 );
 
 -- CreateIndex
@@ -964,9 +952,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-========
 <<<<<<<< HEAD:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
 ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 ========
@@ -975,4 +960,3 @@ ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFE
 -- AddForeignKey
 ALTER TABLE "IntimatePartnerViolenceForm" ADD CONSTRAINT "IntimatePartnerViolenceForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 >>>>>>>> main:prisma/migrations/20240702070736_/migration.sql
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
