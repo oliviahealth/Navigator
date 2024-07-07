@@ -1,12 +1,12 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IMediaAppearanceFormInput } from "./definitions";
+import { IMediaAppearanceFormInput, MediaAppearanceFormResponseSchema } from "./definitions";
 
 export const createMediaApperanceForm = async (mediaApperanceFormInput: IMediaAppearanceFormInput, userId: string) => {
     const { participantAge, ...rest } = mediaApperanceFormInput;
 
-    const reponse = await prisma.mediaAppearanceForm.create({
+    const response = await prisma.mediaAppearanceForm.create({
         data: {
             userId,
             ...rest,
@@ -15,7 +15,7 @@ export const createMediaApperanceForm = async (mediaApperanceFormInput: IMediaAp
         }
     });
 
-    return reponse;
+    return MediaAppearanceFormResponseSchema.parse(response);
 }
 
 export const readMediaAppearanceForm = async (mediaAppearanceFormId: string, userId: string) => {
@@ -26,7 +26,7 @@ export const readMediaAppearanceForm = async (mediaAppearanceFormId: string, use
         }
     });
 
-    return response;
+    return MediaAppearanceFormResponseSchema.parse(response);
 }
 
 export const updateMediaAppearanceForm = async (mediaAppearanceFormInput: IMediaAppearanceFormInput, mediaAppearanceFormId: string, userId: string) => {
@@ -39,5 +39,5 @@ export const updateMediaAppearanceForm = async (mediaAppearanceFormInput: IMedia
         }
     });
 
-    return response;
+    return MediaAppearanceFormResponseSchema.parse(response);
 }
