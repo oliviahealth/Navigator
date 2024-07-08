@@ -172,6 +172,7 @@ const IPVScreening: React.FC = () => {
 
             <div className="space-y-3">
               <p className="font-semibold">Total Score</p>
+              <small>If the score indicates a positive screen, offer the Participant a referral to the certified DV Center and record it in OLIVIA-NAVIGATOR, even if the Participant declines the referral</small>
               <input
                 {...register("totalScore")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
@@ -185,7 +186,7 @@ const IPVScreening: React.FC = () => {
             </div>
 
             <div className="space-y-3">
-              <p className="font-semibold">IPV Disclosure</p>
+              <p className="font-semibold">Participant was not screened but disclosed current IPV</p>
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center gap-x-12">
                   {YesNoEnum.options.map((status) => (
