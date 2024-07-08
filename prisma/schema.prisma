@@ -53,6 +53,7 @@ model User {
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
   ASQ3                                   ASQ3[]
   IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
+  NewAssessmentForm                      NewAssessmentForm[]
 }
 
 enum CommunicationMethod {
@@ -1248,4 +1249,21 @@ model HouseholdHousingSafetyProfile {
   dateCreated                 DateTime @default(now())
   dateModified                DateTime @updatedAt
 
+}
+
+model NewAssessmentForm {
+  id                      String   @id @default(cuid())
+  userId                  String
+  assessmentDate          String
+  siteId                  String
+  participantId           Int
+  relation                String
+  formCompletionStatus    String   
+  phase                   String
+  segment                 String
+  formCompletionLanguage  String
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }

@@ -889,6 +889,24 @@ CREATE TABLE "HouseholdHousingSafetyProfile" (
     CONSTRAINT "HouseholdHousingSafetyProfile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "NewAssessmentForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assessmentDate" TEXT NOT NULL,
+    "siteId" TEXT NOT NULL,
+    "participantId" INTEGER NOT NULL,
+    "relation" TEXT NOT NULL,
+    "formCompletionStatus" TEXT NOT NULL,
+    "phase" TEXT NOT NULL,
+    "segment" TEXT NOT NULL,
+    "formCompletionLanguage" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "NewAssessmentForm_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -972,3 +990,6 @@ ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFE
 
 -- AddForeignKey
 ALTER TABLE "IntimatePartnerViolenceForm" ADD CONSTRAINT "IntimatePartnerViolenceForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "NewAssessmentForm" ADD CONSTRAINT "NewAssessmentForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
