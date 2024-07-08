@@ -106,6 +106,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-six/intimate-partner-violence/new'}>
                             Intimate Partner Violence
                         </a>
+
+                        <a href={'dashboard/tab-six/ipv-disclosure-tool/new'}>
+                            Intimate Partner Violence Disclosure Screening tool
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">

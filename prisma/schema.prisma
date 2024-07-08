@@ -56,6 +56,7 @@ model User {
   BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
   DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
   socialSupportForm                      SocialSupportForm[]
+  IPVScreening                           IPVScreening[]
 }
 
 enum CommunicationMethod {
@@ -1281,3 +1282,19 @@ model SocialSupportForm {
   
 }
 
+model IPVScreening {
+  id                String    @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId            String
+  
+  dateTaken         DateTime
+  ipvScreeningDate  DateTime
+  screeningToolUsed String
+  totalScore        String
+  ipvDisclosure     YesNo
+  ipvDisclosureDate DateTime
+  notes             String?
+
+  dateCreated       DateTime  @default(now())
+  dateModified      DateTime  @updatedAt
+}

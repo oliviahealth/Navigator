@@ -167,7 +167,12 @@ CREATE TYPE "GADAnswers" AS ENUM ('Not_at_all', 'Several_days', 'More_than_half'
 CREATE TYPE "Difficulty" AS ENUM ('Not_at_all', 'Somewhat', 'Very', 'Extremely');
 
 -- CreateEnum
-<<<<<<<< HEAD:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
+CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_early_steps', 'Refer_to_agency', 'No_further_action');
+
+-- CreateEnum
+CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
+
+-- CreateEnum
 CREATE TYPE "BriefChildWellnessUpdateTimeframe" AS ENUM ('Enrollment', 'Update');
 
 -- CreateEnum
@@ -178,12 +183,9 @@ CREATE TYPE "MedicalCare" AS ENUM ('Doctor_office', 'Hospital_emergency_room', '
 
 -- CreateEnum
 CREATE TYPE "ReadingFrequency" AS ENUM ('Some_days', 'Everyday');
-========
-CREATE TYPE "FollowUpAction" AS ENUM ('Provide_support', 'Rescreen', 'Refer_to_early_steps', 'Refer_to_agency', 'No_further_action');
 
 -- CreateEnum
-CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Often', 'Frequently');
->>>>>>>> main:prisma/migrations/20240702070736_/migration.sql
+CREATE TYPE "ResponseAnswers" AS ENUM ('Very_strongly_disagree', 'Strongly_disagree', 'Disagree', 'Neither_agree_nor_disagree', 'Strongly_agree', 'Very_strongly_agree');
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -814,40 +816,13 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
 );
 
 -- CreateTable
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-CREATE TABLE "DeliveryHistoryInformationForm" (
-========
-<<<<<<<< HEAD:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
-CREATE TABLE "BriefChildWellnessUpdate" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "childName" TEXT NOT NULL,
-    "dateCompleted" TIMESTAMP(3) NOT NULL,
-    "timeframe" "BriefChildWellnessUpdateTimeframe" NOT NULL,
-    "healthInsurance" "HealthInsurance" NOT NULL,
-    "medicalCare" "MedicalCare" NOT NULL,
-    "hasDentalCare" "YesNo" NOT NULL,
-    "readingFrequency" "ReadingFrequency" NOT NULL,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "BriefChildWellnessUpdate_pkey" PRIMARY KEY ("id")
-========
 CREATE TABLE "ASQ3" (
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "participantName" TEXT NOT NULL,
     "caseId" TEXT NOT NULL,
     "dateCompleted" TIMESTAMP(3) NOT NULL,
     "staffName" TEXT NOT NULL,
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-    "deliveries" JSONB[],
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "DeliveryHistoryInformationForm_pkey" PRIMARY KEY ("id")
-========
     "childName" TEXT NOT NULL,
     "questionnaireUsed" TEXT NOT NULL,
     "ageAdjusted" "YesNo" NOT NULL,
@@ -881,8 +856,82 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "IntimatePartnerViolenceForm_pkey" PRIMARY KEY ("id")
->>>>>>>> main:prisma/migrations/20240702070736_/migration.sql
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
+);
+
+-- CreateTable
+CREATE TABLE "BriefChildWellnessUpdate" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "childName" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "timeframe" "BriefChildWellnessUpdateTimeframe" NOT NULL,
+    "healthInsurance" "HealthInsurance" NOT NULL,
+    "otherHealthInsurance" TEXT,
+    "medicalCare" "MedicalCare" NOT NULL,
+    "otherMedicalCare" TEXT,
+    "hasDentalCare" "YesNo" NOT NULL,
+    "readingFrequency" "ReadingFrequency" NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "BriefChildWellnessUpdate_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "DeliveryHistoryInformationForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "deliveries" JSONB[],
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "DeliveryHistoryInformationForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SocialSupportForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
+    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
+    "familyHelp" "ResponseAnswers" NOT NULL,
+    "emotionalHelp" "ResponseAnswers" NOT NULL,
+    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
+    "friendsHelp" "ResponseAnswers" NOT NULL,
+    "canCountOnFriends" "ResponseAnswers" NOT NULL,
+    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
+    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
+    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
+    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
+    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
+    "specialPersonInitials" TEXT,
+    "specialPersonRelationship" TEXT,
+    "comments" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "IPVScreening" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "dateTaken" TIMESTAMP(3) NOT NULL,
+    "ipvScreeningDate" TIMESTAMP(3) NOT NULL,
+    "screeningToolUsed" TEXT NOT NULL,
+    "totalScore" TEXT NOT NULL,
+    "ipvDisclosure" "YesNo" NOT NULL,
+    "ipvDisclosureDate" TIMESTAMP(3) NOT NULL,
+    "notes" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "IPVScreening_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -964,15 +1013,19 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:prisma/migrations/20240626234120_delivery_history_info_schema_created/migration.sql
-ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-========
-<<<<<<<< HEAD:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
-ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-========
 ALTER TABLE "ASQ3" ADD CONSTRAINT "ASQ3_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "IntimatePartnerViolenceForm" ADD CONSTRAINT "IntimatePartnerViolenceForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
->>>>>>>> main:prisma/migrations/20240702070736_/migration.sql
->>>>>>>> main:prisma/migrations/20240626004030_created_brief_child_wellness_update_schema/migration.sql
+
+-- AddForeignKey
+ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "IPVScreening" ADD CONSTRAINT "IPVScreening_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
