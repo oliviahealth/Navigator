@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IChildDemographicsRecordInputs, IChildDemographicsRecordResponse } from "./definitions";
+import { ChildDemographicsRecordResponseSchema, IChildDemographicsRecordInputs } from "./definitions";
 
 /**
  * Creates a new Child Demographics Record in the db.
@@ -31,7 +31,7 @@ export const createChildDemographicsRecord = async (ChildDemographicsRecordInput
         },
     });
 
-    return response;
+    return ChildDemographicsRecordResponseSchema.parse(response);
 };
 
 /**
@@ -51,7 +51,7 @@ export const readChildDemographicsRecord = async (ChildDemographicsRecordId: str
         },
     })
 
-    return response
+    return ChildDemographicsRecordResponseSchema.parse(response);
 }
 
 /**
@@ -88,7 +88,7 @@ export const updateChildDemographicsRecord = async (ChildDemographicsRecordInput
         }
     })
 
-    return response;
+    return ChildDemographicsRecordResponseSchema.parse(response);
 }
 
 /**
@@ -105,5 +105,6 @@ export const deleteChildDemographicsRecord = async (submissionId: string, userId
             userId: userId
         }
     });
-    return response;
+
+    return ChildDemographicsRecordResponseSchema.parse(response);
 };

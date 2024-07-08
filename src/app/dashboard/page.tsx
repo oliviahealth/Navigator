@@ -9,8 +9,8 @@ const Dashboard: React.FC = () => {
                 <div className="flex flex-row gap-x-8 pt-8">
 
                     <div className="flex flex-col gap-y-4">
-
                         <p className="font-bold text-lg">Tab One</p>
+
                         <a href={'/dashboard/tab-one/enrollment-form/new'}>
                             Enrollment log
                         </a>
@@ -86,14 +86,96 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Five</p>
+
+                        <a href={'dashboard/tab-five/smoking-tobacco-pregnancy/new'}>
+                            Smoking and Tobacco Use During Pregnancy
+                        </a>
+
+                        <a href={'dashboard/tab-five/substance-use-history/new'}>
+                            Substance Use History
+                        </a>
+                    </div>
+                </div>
+
+                <div className="flex flex-row gap-x-8 pt-8">
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Six</p>
+
+                        <a href={'dashboard/tab-six/intimate-partner-violence/new'}>
+                            Intimate Partner Violence
+                        </a>
+
+                        <a href={'dashboard/tab-six/ipv-disclosure-tool/new'}>
+                            Intimate Partner Violence Disclosure Screening tool
+                        </a>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Seven</p>
+
+                        <a href={'dashboard/tab-seven/pregnancy-spacing-assesment/new'}>
+                            Pregnancy Spacing Assesment
+                        </a>
+
+                        <a href={'dashboard/tab-seven/ten-bs-postpartum-assesment/new'}>
+                            10 B's Postpartum Assesment
+                        </a>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Eight</p>
+
+                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
+                            Mental Health History
+                        </a>
+
+                        <a href={'dashboard/tab-eight/generalized-anxiety-disorder/new'}>
+                            GAD-7
+                        </a>
 
                         <a href={'dashboard/tab-eight/duke-university-religion-index/new'}>
                             Duke University Religion Index
                         </a>
+
+                        <a href={'dashboard/tab-eight/edinburg-postnatal-depression-scale/new'}>
+                            Edinburg Postnatal Depression Scale
+                        </a>
+
+                        <a href={'dashboard/tab-eight/perceived-stress-scale/new'}>
+                            Perceived Stress Scale
+                        </a>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Nine</p>
+
+                        <a href={'dashboard/tab-nine/housing-security-home-visit-form/new'}>
+                            Housing Security Home Visit Form
+                        </a>
+
+                        <a href={'#'}>
+                            Household Housing Safety Profile
+                        </a>
+
+                        <a href={'#'}>
+                            Food Security
+                        </a>
+                    </div>
+
+                    <div className="flex flex-col gap-y-4">
+                        <p className="font-bold text-lg">Tab Eleven</p>
+
+                        <a href={'dashboard/tab-eleven/delivery-history-information-form/new'}>
+                            Delivery History Information Form
+                        </a>
+                        <a href={'dashboard/tab-eleven/brief-child-wellness-update/new'}>
+                            Brief Child Wellness Update
+                        </a>
                         
-                        <a href={'dashboard/tab-eight/mental-health-history/new'}>
-                            Mental Health History
+                        <a href={'dashboard/tab-eleven/asq-3/new'}>
+                            ASQ-3
                         </a>
                     </div>
                 </div>

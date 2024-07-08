@@ -20,8 +20,6 @@ const IPVForm: React.FC = () => {
   const router = useRouter();
   const params = useParams();
 
-  console.log(params); // for debugging
-
   const action = params.actions?.[0];
 
   const verb = action;
