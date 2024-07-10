@@ -19,18 +19,18 @@ const NewAssessmentForm: React.FC = () => {
   const router = useRouter();
   const params = useParams();
 
-  const action = params.actions?.[0];
+  const action = params.actions?.[0] ?? "new";
 
   const verb = action;
   const submissionId = params.actions?.[1];
 
-  useEffect(() => {
-    console.log("Params:", params);
-    console.log("Action:", params.actions?.[0]);
-    console.log("Submission ID:", params.actions?.[1]);
-  }, [params]);
-  console.log('Verb:', verb, 'Submission ID:', submissionId);
-
+  // debugging
+  // useEffect(() => {
+  //   console.log("Params:", params);
+  //   console.log("Action:", params.actions?.[0]);
+  //   console.log("Submission ID:", params.actions?.[1]);
+  // }, [params]);
+  // console.log('Verb:', verb, 'Submission ID:', submissionId);
 
   const user = useAppStore((state) => state.user);
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
@@ -56,14 +56,19 @@ const NewAssessmentForm: React.FC = () => {
       if (verb === "new") {
         response = await createNewAssessmentFormEntry(data, user.id);
       } else if (verb === "edit" && submissionId) {
-        response = await updateNewAssessmentFormEntry(data, submissionId, user.id);
+        response = await updateNewAssessmentFormEntry(
+          data,
+          submissionId,
+          user.id
+        );
+      } else if (verb === "edit" && !submissionId) {
+        throw new Error("Missing submissionId for edit action");
       } else {
-        throw new Error("Invalid action or missing submissionId");
+        throw new Error(`Invalid action: ${verb}`);
       }
 
       NewAssessmentFormInputsSchema.parse(response);
     } catch (error) {
-      console.error(error); // for debugging
       setErrorMessage(
         `Error: ${
           error instanceof Error
@@ -94,7 +99,10 @@ const NewAssessmentForm: React.FC = () => {
           throw new Error("Missing submissionId when fetching past submission");
         }
 
-        const response = await readNewAssessmentFormEntry(submissionId, user.id);
+        const response = await readNewAssessmentFormEntry(
+          submissionId,
+          user.id
+        );
 
         NewAssessmentFormInputsSchema.parse(response);
       } catch (error) {
@@ -116,9 +124,24 @@ const NewAssessmentForm: React.FC = () => {
         className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-4 [&>p]:pt-6 [&>p]:pb-1 [&>input, &>select]:px-4 pb-8"
       >
         <p className="font-semibold text-2xl text-center">
-          New Assessment Form
+          Multidimensional Scale
         </p>
-
+        <div className="space-y-4">
+          <div className="mt-4 p-4 bg-blue-100 rounded-md">
+            <p className="font-medium text-center">
+              MEASURE OF PERCEIVED ADEQUACY OF SOCIAL SUPPORT FROM THREE SOURCES
+            </p>
+            <p className="text-sm text-center mt-2">
+              The Multidimensional Scale of Perceived Social Support (Zimet et
+              al., 1988) is a 12-item measure of perceived adequacy of social
+              support from three sources: family, friends, & significant other.
+            </p>
+            <p className="text-sm text-center mt-2">
+              It uses a 5-point Likert scale (0 = strongly disagree, 5 =
+              strongly agree).
+            </p>
+          </div>
+        </div>
         <div className="py-2 space-y-4">
           <div className="flex flex-col justify-between">
             <label htmlFor="assessmentDate" className="font-semibold pb-2 pt-2">
@@ -153,22 +176,21 @@ const NewAssessmentForm: React.FC = () => {
             )}
           </div>
 
-          
-<div className="flex flex-col justify-between">
-  <label htmlFor="participantId" className="font-semibold pb-2 pt-2">
-    Participant ID
-  </label>
-  <input
-    type="text"
-    {...register("participantId")}
-    className="border border-gray-300 px-4 py-2 rounded-md w-full"
-  />
-  {errors.participantId && (
-    <span className="label-text-alt text-red-500">
-      {errors.participantId.message}
-    </span>
-  )}
-</div>
+          <div className="flex flex-col justify-between">
+            <label htmlFor="participantId" className="font-semibold pb-2 pt-2">
+              Participant ID
+            </label>
+            <input
+              type="text"
+              {...register("participantId")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.participantId && (
+              <span className="label-text-alt text-red-500">
+                {errors.participantId.message}
+              </span>
+            )}
+          </div>
           <div className="flex flex-col justify-between">
             <label htmlFor="relation" className="font-semibold pb-2 pt-2">
               Relation (01-00 format)
