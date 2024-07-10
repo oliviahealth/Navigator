@@ -794,6 +794,18 @@ CREATE TABLE "TenBsPostpartumAppointmentAssesment" (
     CONSTRAINT "TenBsPostpartumAppointmentAssesment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "PrenatalCare" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "attendRegularVisitsWithOBCare" "YesNo" NOT NULL,
+    "prenatalCareStartDate" TIMESTAMP(3) NOT NULL,
+    "drivingDistanceForPrenatalCare" TEXT NOT NULL,
+    "haveMissedAppointments" TEXT NOT NULL,
+
+    CONSTRAINT "PrenatalCare_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -871,3 +883,6 @@ ALTER TABLE "PregnancySpacingAssesment" ADD CONSTRAINT "PregnancySpacingAssesmen
 
 -- AddForeignKey
 ALTER TABLE "TenBsPostpartumAppointmentAssesment" ADD CONSTRAINT "TenBsPostpartumAppointmentAssesment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PrenatalCare" ADD CONSTRAINT "PrenatalCare_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

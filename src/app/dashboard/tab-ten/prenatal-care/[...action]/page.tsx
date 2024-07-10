@@ -64,6 +64,7 @@ const PrenatalCareRecord: React.FC = () => {
   }, []);
 
   const submit = async (data: IPrenatalCareInputs) => {
+    console.log(data);
     try {
       PrenatalCareInputsSchema.parse(data);
 

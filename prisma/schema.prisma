@@ -1132,7 +1132,4 @@ model PrenatalCare {
   prenatalCareStartDate          DateTime
   drivingDistanceForPrenatalCare String
   haveMissedAppointments         String
-
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
 }

@@ -7,8 +7,8 @@ export const createPrenatalCareRecord = async (prenatalCareInputs: IPrenatalCare
     const { ...data } = prenatalCareInputs;
     const response = await prisma.prenatalCare.create({
         data: {
-            ...data,
-            userId
+            userId,
+            ...data
         }
     });
 
@@ -18,8 +18,8 @@ export const createPrenatalCareRecord = async (prenatalCareInputs: IPrenatalCare
 export const readPrenatalCareRecord = async (prenatalCareId: string, userId: string) => {
     const response = await prisma.prenatalCare.findUniqueOrThrow({
         where: {
-            id: prenatalCareId,
-            userId
+            userId,
+            id: prenatalCareId
         }
     });
 
@@ -44,8 +44,8 @@ export const updatePrenatalCareRecord = async (prenatalCareInputs: IPrenatalCare
 export const deletePrenatalCareRecord = async (prenatalCareId: string, userId: string) => {
     const response = await prisma.prenatalCare.deleteMany({
         where: {
-            id: prenatalCareId,
-            userId
+            userId,
+            id: prenatalCareId
         }
     });
 
