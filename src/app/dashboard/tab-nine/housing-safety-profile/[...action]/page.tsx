@@ -25,7 +25,10 @@ import {
 
 const HouseholdHousingSafetyProfile: React.FC = () => {
   const router = useRouter();
-  const { action } = useParams();
+  const params = useParams();
+
+
+ const action = params.actions?.[0] ?? "new";
 
   const verb = action[0];
   const submissionId = action[1];

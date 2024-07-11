@@ -80,7 +80,7 @@ const NewAssessmentForm: React.FC = () => {
       return;
     }
 
-    setSuccessMessage("New Assessment submitted successfully!");
+    setSuccessMessage("Multidimensional Scale submitted successfully!");
     router.push("/dashboard");
   };
 
