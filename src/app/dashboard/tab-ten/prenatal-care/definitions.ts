@@ -4,7 +4,7 @@ export const YesNoEnum = z.enum(['Yes', 'No']);
 
 export const PrenatalCareInputsSchema = z.object({
     attendRegularVisitsWithOBCare: YesNoEnum,
-    prenatalCareStartDate: z.date(),
+    prenatalCareStartDate: z.union([z.date(), z.string().min(1, "Date required.")]),
     drivingDistanceForPrenatalCare: z.string(),
     haveMissedAppointments: z.string()
 });

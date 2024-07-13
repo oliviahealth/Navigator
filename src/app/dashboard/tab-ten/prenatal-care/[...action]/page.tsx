@@ -64,7 +64,6 @@ const PrenatalCareRecord: React.FC = () => {
   }, []);
 
   const submit = async (data: IPrenatalCareInputs) => {
-    console.log(data);
     try {
       PrenatalCareInputsSchema.parse(data);
 
@@ -117,7 +116,7 @@ const PrenatalCareRecord: React.FC = () => {
         
         <p className="font-medium">When did you start your prenatal care?</p>
         <input
-          {...register('prenatalCareStartDate')}
+          {...register('prenatalCareStartDate', { valueAsDate: true })}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
           type="date"
         />
