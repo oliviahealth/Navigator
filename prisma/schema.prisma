@@ -60,6 +60,7 @@ model User {
   InfancyQuestionnaire                   InfancyQuestionnaire[]
   TargetChildRecord                      TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
+  PrenatalCare                           PrenatalCare[]
 }
 
 enum CommunicationMethod {
@@ -1403,4 +1404,14 @@ model PerceivedMaternalPlanningSelfEfficacyTool {
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
+}
+
+model PrenatalCare {
+  id String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  attendRegularVisitsWithOBCare  YesNo
+  prenatalCareStartDate          DateTime
+  drivingDistanceForPrenatalCare String
+  haveMissedAppointments         String
 }
