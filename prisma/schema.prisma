@@ -57,6 +57,7 @@ model User {
   DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
   socialSupportForm                      SocialSupportForm[]
   IPVScreening                           IPVScreening[]
+  InfancyQuestionnaire                   InfancyQuestionnaire[]
 }
 
 enum CommunicationMethod {
@@ -1297,4 +1298,45 @@ model IPVScreening {
 
   dateCreated       DateTime  @default(now())
   dateModified      DateTime  @updatedAt
+}
+
+enum InfancyQuestionnaireTimeframe {
+  Birth_to_one_month
+  Two_to_three_months
+  Six_to_seven_months
+  Ten_to_eleven_months
+}
+
+enum Frequency {
+  Some_days
+  Everyday
+}
+
+enum Yes {
+  Yes
+}
+
+model InfancyQuestionnaire {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  participantName          String
+  dateCompleted            DateTime
+  childName                String
+  caseId                   String
+  staffName                String
+  timeframe                InfancyQuestionnaireTimeframe
+  sleepOnBack              YesNo
+  sleepAlone               YesNo
+  sleepWithoutSoftBedding  YesNo
+  storytellingFrequency    Frequency
+  isBiologicalMother       YesNo
+  attendedPostpartumVisit  YesNo?
+  postpartumVisitDate      DateTime?
+  hadBreastMilk            YesNo?
+  breastMilkAtTwoMonths    YesNo?
+  breastMilkAtSixMonths    YesNo?
+  motherCouldNotBreastfeed Yes?
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
