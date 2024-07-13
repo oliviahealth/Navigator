@@ -1,7 +1,7 @@
 'use server';
 import { prisma } from "@/lib/prisma";
 import { ITargetChildRecordInputs, ITargetChildRecordResponse, TargetChildRecordResponseSchema } from "./definitions";
-import { encryptSSN } from "./encryption";
+import { encryptSSN } from "../../../../utils/encryption";
 
 /**
  * Creates a new Target Child Record in the db.

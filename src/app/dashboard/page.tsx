@@ -159,7 +159,7 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab Eleven</p>
 
-                        <a href={'dashboard/tab-eleven/target-child-record/new'}>
+                        <a href={'dashboard/tab-eleven/target-child-record/693bca21-a682-41d1-850f-0f85457f84dd/edit'}>
                             Target Child Enrollment & Summary Record
                         </a>
                     </div>
