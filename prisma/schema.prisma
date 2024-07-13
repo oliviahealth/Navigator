@@ -59,6 +59,7 @@ model User {
   IPVScreening                           IPVScreening[]
   InfancyQuestionnaire                   InfancyQuestionnaire[]
   TargetChildRecord                      TargetChildRecord[]
+  PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
 }
 
 enum CommunicationMethod {
@@ -1362,6 +1363,44 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum AgreementLevel {
+  Strongly_disagree
+  Disagree
+  Neutral
+  Agree
+  Strongly_agree
+}
+
+model PerceivedMaternalPlanningSelfEfficacyTool {
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  keepingBabyOccupied       AgreementLevel
+  feedingBaby               AgreementLevel
+  changingBaby              AgreementLevel
+  bathingBaby               AgreementLevel
+  makingBabyHappy           AgreementLevel
+  calmingCryingBaby         AgreementLevel
+  soothingUpsetBaby         AgreementLevel
+  soothingFussyBaby         AgreementLevel
+  soothingCryingBaby        AgreementLevel
+  soothingRestlessBaby      AgreementLevel
+  gettingBabiesAttention    AgreementLevel
+  recognizingTiredness      AgreementLevel
+  havingControlOverBaby     AgreementLevel
+  recognizingSickness       AgreementLevel
+  readingBabysCues          AgreementLevel
+  understandingBabyWants    AgreementLevel
+  knowingDislikedActivities AgreementLevel
+  babyRespondsWell          AgreementLevel
+  goodInteraction           AgreementLevel
+  showingAffection          AgreementLevel
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

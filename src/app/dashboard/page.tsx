@@ -176,9 +176,19 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eleven/delivery-history-information-form/new'}>
                             Delivery History Information Form
                         </a>
+
                         <a href={'dashboard/tab-eleven/brief-child-wellness-update/new'}>
                             Brief Child Wellness Update
                         </a>
+
+                        <a href={'dashboard/tab-eleven/delivery-history-information-form/new'}>
+                            Delivery History Information Form
+                        </a>
+
+                        <a href={'dashboard/tab-eleven/perceived-maternal-parenting-self-efficacy-tool/new'}>
+                            Perceived Maternal Parenting Self Efficacy Tool
+                        </a>
+                        
                         <a href={'dashboard/tab-eleven/asq-3/new'}>
                             ASQ-3
                         </a>
