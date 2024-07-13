@@ -197,7 +197,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                         </div>
 
                         <div className="space-y-3">
-                            <p className="font-semibold">How often do you attend church, synagogue, or other religious meetings?</p>
+                            <p className="font-semibold">I try hard to carry my religion over into other dealings in life.</p>
                             <div className="space-y-2">
                                 {TruthLevelEnum.options.map(option => (
                                     <label key={option} className="flex items-center">
@@ -219,6 +219,8 @@ const DukeUniversityReligionIndex: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+                
 
                 <div className="flex justify-center py-4">
                     <button

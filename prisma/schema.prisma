@@ -51,6 +51,13 @@ model User {
   GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
   PregnancySpacingAssesment              PregnancySpacingAssesment[]
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
+  ASQ3                                   ASQ3[]
+  IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
+  BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
+  DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
+  socialSupportForm                      SocialSupportForm[]
+  IPVScreening                           IPVScreening[]
+  InfancyQuestionnaire                   InfancyQuestionnaire[]
   TargetChildRecord                      TargetChildRecord[]
 }
 
@@ -885,7 +892,7 @@ enum SelfHarmThoughts {
   Never
 }
 
-enum Timeframe {
+enum EPDS_Timeframe {
   Prenatal
   Postnatal
 }
@@ -910,7 +917,7 @@ model EdinburgPostnatalDepressionScale {
   caseId             String
   dateCompleted      DateTime
   staffName          String
-  timeframe          Timeframe
+  timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
 }
@@ -1122,6 +1129,71 @@ model TenBsPostpartumAppointmentAssesment {
   dateModified DateTime @updatedAt
 }
 
+enum FollowUpAction {
+  Provide_support
+  Rescreen
+  Refer_to_early_steps
+  Refer_to_agency
+  No_further_action
+}
+
+model ASQ3 {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  participantName                String
+  caseId                         String
+  dateCompleted                  DateTime
+  staffName                      String
+  childName                      String
+  questionnaireUsed              String
+  ageAdjusted                    YesNo
+  communicationScore             String?
+  communicationScoreNotRecorded  YesNo
+  grossMotorScore                String?
+  grossMotorScoreNotRecorded     YesNo
+  fineMotorScore                 String?
+  fineMotorScoreNotRecorded      YesNo
+  problemSolvingScore            String?
+  problemSolvingScoreNotRecorded YesNo
+  personalSocialScore            String?
+  personalSocialScoreNotRecorded YesNo
+  followUpAction                 FollowUpAction[]
+  describeActivitiesProvided     String?
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum IPVStatus {
+  Never
+  Rarely
+  Sometimes
+  Fairly
+  Often
+  Frequently
+}
+
+model IntimatePartnerViolenceForm {
+  id            String   @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  physicallyHurt    IPVStatus
+  insultOrTalkDown  IPVStatus
+  threatenWithHarm  IPVStatus
+  screamOrCurse     IPVStatus
+  
+  dateCreated    DateTime @default(now())
+  dateModified   DateTime @updatedAt
+}
+
+enum BriefChildWellnessUpdateTimeframe {
+  Enrollment
+  Update
+}
+
 enum HealthInsurance {
   Medicaid_or_Kidcare
   Private
@@ -1130,11 +1202,150 @@ enum HealthInsurance {
   Other
 }
 
-model TargetChildRecord {
+enum MedicalCare {
+  Doctor_office
+  Hospital_emergency_room
+  Hospital_clinic
+  Qualified_health_center
+  Retail_or_Minute_clinic
+  None
+  Other
+}
+
+enum ReadingFrequency {
+  Some_days
+  Everyday
+}
+
+model BriefChildWellnessUpdate {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  childName            String
+  dateCompleted        DateTime
+  timeframe            BriefChildWellnessUpdateTimeframe
+  healthInsurance      HealthInsurance
+  otherHealthInsurance String?
+  medicalCare          MedicalCare
+  otherMedicalCare     String?
+  hasDentalCare        YesNo
+  readingFrequency     ReadingFrequency
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model DeliveryHistoryInformationForm {
   id     String @id @default(uuid())
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
+  participantName String
+  caseId          String
+  dateCompleted   DateTime
+  staffName       String
+  deliveries      Json[]
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum ResponseAnswers {
+  Very_strongly_disagree
+  Strongly_disagree
+  Disagree
+  Neither_agree_nor_disagree
+  Strongly_agree
+  Very_strongly_agree
+}
+
+model SocialSupportForm {
+  id                          String          @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId                      String
+
+  specialPersonInNeed         ResponseAnswers
+  specialPersonJoysSorrows    ResponseAnswers
+  familyHelp                  ResponseAnswers
+  emotionalHelp               ResponseAnswers
+  specialPersonForComfort     ResponseAnswers
+  friendsHelp                 ResponseAnswers
+  canCountOnFriends           ResponseAnswers
+  talkToFamilyAboutProblems   ResponseAnswers
+  friendsJoysSorrows          ResponseAnswers
+  specialPersonToTalkFeelings ResponseAnswers
+  familyHelpsDecisions        ResponseAnswers
+  talkToFriendsAboutProblems  ResponseAnswers
+  specialPersonInitials       String?
+  specialPersonRelationship   String?
+  comments                    String?         // Optional comments field
+  
+  dateCreated                 DateTime        @default(now())
+  dateModified                DateTime        @updatedAt
+  
+}
+
+model IPVScreening {
+  id                String    @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId            String
+  
+  dateTaken         DateTime
+  ipvScreeningDate  DateTime
+  screeningToolUsed String
+  totalScore        String
+  ipvDisclosure     YesNo
+  ipvDisclosureDate DateTime
+  notes             String?
+
+  dateCreated       DateTime  @default(now())
+  dateModified      DateTime  @updatedAt
+}
+
+enum InfancyQuestionnaireTimeframe {
+  Birth_to_one_month
+  Two_to_three_months
+  Six_to_seven_months
+  Ten_to_eleven_months
+}
+
+enum Frequency {
+  Some_days
+  Everyday
+}
+
+enum Yes {
+  Yes
+}
+
+model InfancyQuestionnaire {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  participantName          String
+  dateCompleted            DateTime
+  childName                String
+  caseId                   String
+  staffName                String
+  timeframe                InfancyQuestionnaireTimeframe
+  sleepOnBack              YesNo
+  sleepAlone               YesNo
+  sleepWithoutSoftBedding  YesNo
+  storytellingFrequency    Frequency
+  isBiologicalMother       YesNo
+  attendedPostpartumVisit  YesNo?
+  postpartumVisitDate      DateTime?
+  hadBreastMilk            YesNo?
+  breastMilkAtTwoMonths    YesNo?
+  breastMilkAtSixMonths    YesNo?
+  motherCouldNotBreastfeed Yes?
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model TargetChildRecord {
+  id     String @id @default(uuid())
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
   participantName          String
   caseId                   String
   dateCompleted            DateTime
@@ -1151,7 +1362,6 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
-
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
