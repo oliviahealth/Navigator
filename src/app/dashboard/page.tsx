@@ -159,7 +159,7 @@ const Dashboard: React.FC = () => {
                             Household Housing Safety Profile
                         </a>
 
-                        <a href={'#'}>
+                        <a href={'dashboard/tab-nine/food-security/new'}>
                             Food Security
                         </a>
                     </div>
