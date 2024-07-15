@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 
 import { signin } from "./actions";
 import { SigninSchema, ISigninFormData } from "./definitions";
@@ -16,7 +17,6 @@ const SignInPage: React.FC = () => {
   const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
   const setUser = useAppStore(state => state.setUser);
-  const setAccessToken = useAppStore(state => state.setAccessToken);
 
   const {
     register,
@@ -24,12 +24,15 @@ const SignInPage: React.FC = () => {
     formState: { errors, isSubmitting }
   } = useForm<ISigninFormData>({ resolver: zodResolver(SigninSchema) });
 
+  const handleGoogleSignIn = () => {
+    signIn("google", { callbackUrl: "/dashboard" });
+  };
+
   const signinUser = async (data: ISigninFormData) => {
     try {
-      const { user, token } = await signin(data);
+      const { user } = await signin(data);
 
       setUser(user);
-      setAccessToken(token);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
@@ -47,11 +50,24 @@ const SignInPage: React.FC = () => {
         <p className="text-sm">Sign in to your account</p>
       </div>
 
+      <div className="flex items-center dark:bg-gray-800 my-4" onClick={handleGoogleSignIn}>
+        <button className="px-4 py-2 border flex justify-center gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150 w-full">
+          <img className="w-5 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
+          <span>Sign In With Google</span>
+        </button>
+      </div>
+
+      <div className="flex items-center mt-5">
+        <div className="flex-grow border-t border-gray-300"></div>
+        <span className="mx-4 text-gray-500">or</span>
+        <div className="flex-grow border-t border-gray-300"></div>
+      </div>
+
       <form
         onSubmit={handleSignin((data) => signinUser(data))}
         className="form-control w-full"
       >
-        <div className="my-1">
+        <div>
           <label className="label">
             <span className="label-text text-black font-medium">Email</span>
           </label>

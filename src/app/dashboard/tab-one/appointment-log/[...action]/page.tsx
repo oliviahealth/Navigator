@@ -1,29 +1,37 @@
 "use client";
 
 import React from "react";
-import { z } from "zod";
+import { useRouter, useParams } from 'next/navigation';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 
-const AppointmentEntrySchema = z.object({
-    dateTime: z.string().min(1, "Date/Time is required"),
-    who: z.string().min(1, "Who is required"),
-    location: z.string().min(1, "Location is required"),
-    notes: z.string().nullable()
-});
-export type IAppointmentEntrySchema = z.infer<typeof AppointmentEntrySchema>;
+// Import necessary schemas and types
+import {
+    IAppointmentLogInputs,
+    AppointmentLogInputsSchema,
+    IAppointmentEntry,
+} from "../definitions";
+import { createAppointmentLog, updateAppointmentLog } from "../actions";
 
-const AppointmentLogInputsSchema = z.object({
-    appointmentEntries: z.array(AppointmentEntrySchema)
-});
-export type IAppointmentLogInputs = z.infer<typeof AppointmentLogInputsSchema>;
+import useAppStore from "@/lib/useAppStore";
 
 const AppointmentLog: React.FC = () => {
+    const router = useRouter();
+    const { action } = useParams();
+
+    const verb = action[0]; 
+    const submissionId = action[1]; 
+    const user = useAppStore(state => state.user);
+
+    const setSuccessMessage = useAppStore(state => state.setSuccessMessage);
+    const setErrorMessage = useAppStore(state => state.setErrorMessage);
+
     const {
         register,
         control,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
+        reset
     } = useForm<IAppointmentLogInputs>({
         resolver: zodResolver(AppointmentLogInputsSchema),
         defaultValues: {
@@ -32,7 +40,7 @@ const AppointmentLog: React.FC = () => {
                     dateTime: "",
                     who: "",
                     location: "",
-                    notes: ""
+                    notes: "",
                 },
             ],
         },
@@ -43,13 +51,44 @@ const AppointmentLog: React.FC = () => {
         name: "appointmentEntries",
     });
 
-    const addNewAppointmentEntry = () => append({ dateTime: "", who: "", location: "", notes: "" });
+    const addNewAppointmentEntry = () => {
+        append({
+            dateTime: "",
+            who: "",
+            location: "",
+            notes: "",
+        });
+    };
 
-    const submit = (data: IAppointmentLogInputs) => {
-        alert("Appointment Log submitted successfully");
+    const submit = async (data: { appointmentEntries: IAppointmentEntry[] }) => {
+        try {
+            if (!user) {
+                throw new Error('User not found');
+            }
 
-        console.log(data);
-    }
+            const { appointmentEntries } = data;
+
+            let response;
+
+            if (verb === 'new') {
+                response = await createAppointmentLog(appointmentEntries, user.id);
+            } else {
+                
+                response = await updateAppointmentLog(appointmentEntries, submissionId, "userIdValue");
+            }
+
+        } catch (error) {
+            console.error(error);
+            setErrorMessage('Something went wrong! Please try again later');
+
+            router.push('/dashboard');
+
+            return;
+        }
+
+        setSuccessMessage('Appointment Log submitted successfully!');
+        router.push('/dashboard');
+    };
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
@@ -61,7 +100,7 @@ const AppointmentLog: React.FC = () => {
                         <div className="flex justify-between">
                             <p className="text-lg font-semibold pt-8">Appointment Entry {index + 1}</p>
 
-                            {index > 0 && <button
+                            {fields.length > 1 && <button
                                 type="button"
                                 onClick={() => remove(index)}
                                 className="font-semibold text-red-600 px-4 py-2 mt-6 rounded-md whitespace-nowrap"
@@ -140,8 +179,9 @@ const AppointmentLog: React.FC = () => {
 
                 <button
                     type="submit"
-                    className="font-semibold w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto"
+                    className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                 >
+                    {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
                     Save
                 </button>
             </form>

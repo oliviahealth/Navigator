@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter, useParams } from 'next/navigation'
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import {
     ICommunicationLogInputs,
     CommunicationLogInputsSchema,
     ICommunicationEntry,
-    CommunicationLogResponseSchema,
 } from "../definitions";
 import { createCommunicationLog, readCommunicationLog, updateCommunicationLog } from "../actions";
 
@@ -88,21 +87,19 @@ const CommunicationLog: React.FC = () => {
             if (verb === 'new') {
                 response = await createCommunicationLog(communicationEntries, user.id);
             } else {
-                response = await updateCommunicationLog(communicationEntries, submissionId);
+                response = await updateCommunicationLog(communicationEntries, submissionId, user.id);
             }
-
-            CommunicationLogResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard')
 
             return;
         }
 
         setSuccessMessage('Communication Log submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard')
     };
 
     // If this is an update submission, fetch the past submission data using the submissionId from the url
@@ -112,12 +109,12 @@ const CommunicationLog: React.FC = () => {
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+
+                if (!user) {
+                    throw new Error('User not found');
                 }
 
                 if (!submissionId) {
@@ -125,8 +122,6 @@ const CommunicationLog: React.FC = () => {
                 }
 
                 const response = await readCommunicationLog(submissionId, user.id);
-
-                CommunicationLogResponseSchema.parse(response);
 
                 const formattedEntries = response.communicationEntries.map(entry => ({
                     ...entry,
@@ -138,18 +133,16 @@ const CommunicationLog: React.FC = () => {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
 
-                router.push('/');
+                router.push('/dashboard');
 
                 return;
             }
         }
 
+        if(!user) return;
+
         fetchAndPopulatePastSubmissionData()
     }, [])
-
-    if (!user) {
-        return <h1>Unauthorized</h1>
-    }
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
@@ -167,7 +160,7 @@ const CommunicationLog: React.FC = () => {
                                     Communication Entry {index + 1}
                                 </p>
 
-                                {index > 0 && (
+                                {fields.length > 1 && (
                                     <button
                                         type="button"
                                         onClick={() => remove(index)}

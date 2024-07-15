@@ -1,21 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
+import { signOut } from 'next-auth/react';
 import Link from 'next/link'
-import { useRouter } from "next/navigation";
 
+import { signoutUser } from "@/app/actions";
 import useAppStore from "@/lib/useAppStore";
 
 const Navbar: React.FC = () => {
-    const router = useRouter();
-
     const user = useAppStore((state) => state.user);
     const setUser = useAppStore(state => state.setUser);
-
-    const accessToken = useAppStore(state => state.accessToken);
-    const setAccessToken = useAppStore(state => state.setAccessToken);
-
-    const setErrorMessage = useAppStore(state => state.setErrorMessage);
 
     const [isOpen, setOpen] = useState(false);
 
@@ -23,35 +17,26 @@ const Navbar: React.FC = () => {
         setOpen(!isOpen);
     };
 
-    const signoutUser = () => {
-        try {
-            if (!accessToken) {
-                throw new Error("User not found");
-            }
+    const signout = () => {
+        signoutUser();
+        setUser(null);
 
-            sessionStorage.removeItem('access_token');
-            setUser(null);
-            setAccessToken(null);
-            
-        } catch (error) {
-            console.error(error);
-            setErrorMessage("Something went wrong! Please try again later");
-        }
-
-        router.push('/');
+        signOut({ callbackUrl: '/sign-in' });
+        
+        window.location.href = '/sign-in';
     }
 
     return (
         <div className="flex min-h-[4.5rem] w-full items-center text-black border-b z-10 shadow-sm">
             <div className="xl:container xl:px-2 flex w-full px-5 mx-auto items-center justify-between">
                 <div>
-                    <Link href={'/'}>
+                    <a href={'/'}>
                         <img
                             className="h-[3rem]"
                             alt="Olivia Health Plan of Safecare logo"
                             src="/images/logo.svg"
                         />
-                    </Link>
+                    </a>
                 </div>
 
                 <div>
@@ -76,14 +61,14 @@ const Navbar: React.FC = () => {
                     <div
                         className={`${isOpen ? 'block bg-white border shadow mt-4 mr-1' : 'hidden'} absolute rounded-xl md:shadow-none md:bg-none md:border-0 md:relative right-0 md:mt-0 p-4 md:p-0 md:flex space-y-6 md:space-y-0 md:space-x-4 text-sm md:text-base`}
                     >
-                        <Link href={'/dashboard'} className="block md:flex button">
+                        {user && (<a href={'/dashboard'} className="block md:flex button">
                             Dashboard
-                        </Link>
+                        </a>)}
 
-                        {(user && accessToken) ? (
+                        {user ? (
                             <button
                                 className="block md:flex button md:button-filled md:rounded-full gap-x-2"
-                                onClick={signoutUser}
+                                onClick={signout}
                             >
                                 Sign Out
                             </button>

@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantDemographicsFormInputs, IParticipantDemographicsFormResponse } from "./definitions";
+import { IParticipantDemographicsFormInputs, ParticipantDemographicsFormResponseSchema } from "./definitions";
 
 /**
  * Creates a new Participant Demographics Record in the db.
@@ -31,14 +31,14 @@ export const createParticipantDemographicsRecord = async (participantDemographic
         },
     });
 
-    return response;
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 };
 
 /**
  * Retrieves a participant demographics record from the database based on its ID and the user ID.
  * @param {string} participantDemographicsRecordId - The ID of the Participant Demographics Record to retrieve
  * @param {string} userId - The ID of the user request the Participant Demographics Record.
- * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved Partricipant Demographics Record,
+ * @returns {Promise<IParticipantDemographicsFormResponse | null>} A promise resolving to the retrieved Participant Demographics Record,
  * or null if no entry is found
  * @throws {Error} If there's an issue retrieving the Participant Demographics Record.
  * @remarks This function retrieves a Participant Demographics Record from the database using Prisma based on the provided ID and the user ID.
@@ -51,7 +51,7 @@ export const readParticipantDemographicsRecord = async (participantDemographicsR
         },
     })
 
-    return response
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 }
 
 /**
@@ -88,14 +88,14 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
         }
     })
 
-    return response;
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 }
 
 /**
  * Deletes a Participant Demographics Record from the database.
  * @param submissionId - The ID of the Participant Demographics Record to delete.
  * @param userId - The ID of the user requesting to delete the record.
- * @returns {Promise<ICommunicationLogResponse>}
+ * @returns {Promise<IParticipantDemographicsFormResponse>}
  * @remarks To be used by the dashboard
  */
 export const deleteParticipantDemographicsRecord = async (submissionId: string, userId: string) => {
@@ -105,5 +105,6 @@ export const deleteParticipantDemographicsRecord = async (submissionId: string, 
             userId: userId
         }
     });
-    return response;
+    
+    return ParticipantDemographicsFormResponseSchema.parse(response);
 };
