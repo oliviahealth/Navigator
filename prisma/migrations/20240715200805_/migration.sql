@@ -124,6 +124,12 @@ CREATE TYPE "IPVStatus" AS ENUM ('Never', 'Rarely', 'Sometimes', 'Fairly', 'Ofte
 -- CreateEnum
 CREATE TYPE "ResponseAnswers" AS ENUM ('Very_strongly_disagree', 'Strongly_disagree', 'Disagree', 'Neither_agree_nor_disagree', 'Strongly_agree', 'Very_strongly_agree');
 
+-- CreateEnum
+CREATE TYPE "Phase" AS ENUM ('Baseline', 'Post_Randomization');
+
+-- CreateEnum
+CREATE TYPE "Language" AS ENUM ('English', 'Spanish', 'Both');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -628,6 +634,14 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
 CREATE TABLE "SocialSupportForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "assessmentDate" TEXT NOT NULL,
+    "siteId" TEXT NOT NULL,
+    "participantId" TEXT NOT NULL,
+    "relation" TEXT NOT NULL,
+    "formCompletionStatus" TEXT NOT NULL,
+    "phase" "Phase" NOT NULL,
+    "segment" TEXT NOT NULL,
+    "formCompletionLanguage" "Language" NOT NULL,
     "specialPersonInNeed" "ResponseAnswers" NOT NULL,
     "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
     "familyHelp" "ResponseAnswers" NOT NULL,

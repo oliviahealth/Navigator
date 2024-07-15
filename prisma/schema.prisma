@@ -43,7 +43,7 @@ model User {
   NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
   DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
   MentalHealthHistory                    MentalHealthHistory[]
-  socialSupportForm                      SocialSupportForm[]
+  SocialSupportForm                      SocialSupportForm[]
 }
 
 enum CommunicationMethod {
@@ -884,6 +884,18 @@ model IntimatePartnerViolenceForm {
 model SocialSupportForm {
   id                          String          @id @default(uuid())
   userId                      String
+  
+  // Multidimensional Scale fields
+  assessmentDate              String
+  siteId                      String
+  participantId               String
+  relation                    String
+  formCompletionStatus        String
+  phase                       Phase
+  segment                     String
+  formCompletionLanguage      Language
+
+  // Social Support Form fields
   specialPersonInNeed         ResponseAnswers
   specialPersonJoysSorrows    ResponseAnswers
   familyHelp                  ResponseAnswers
@@ -898,10 +910,10 @@ model SocialSupportForm {
   talkToFriendsAboutProblems  ResponseAnswers
   specialPersonInitials       String?
   specialPersonRelationship   String?
-  comments                    String?         // Optional comments field
+  comments                    String?
+
   dateCreated                 DateTime        @default(now())
   dateModified                DateTime        @updatedAt
-
   user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, id])
@@ -914,4 +926,15 @@ enum ResponseAnswers {
   Neither_agree_nor_disagree
   Strongly_agree
   Very_strongly_agree
+}
+
+enum Phase {
+  Baseline
+  Post_Randomization
+}
+
+enum Language {
+  English
+  Spanish
+  Both
 }

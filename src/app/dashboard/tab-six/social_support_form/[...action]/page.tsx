@@ -78,21 +78,25 @@ const SocialSupportForm: React.FC = () => {
         throw new Error("User missing");
       }
 
+      console.log("User:", user);
+      console.log("Verb:", verb);
+
       if (verb === "new") {
+        console.log("Attempting to create new form");
         response = await createSocialSupportForm(data, user.id);
       } else {
+        console.log("Attempting to update form");
         response = await updateSocialSupportForm(data, submissionId, user.id);
       }
+
+      console.log("Form submitted successfully:", response);
+      setSuccessMessage("Social Support Form submitted successfully!");
+      router.push("/dashboard");
     } catch (error) {
-      console.error(error);
+      console.error("Error submitting form:", error);
       setErrorMessage("Something went wrong! Please try again later");
-      return;
     }
-
-    setSuccessMessage("Social Support Form submitted successfully!");
-    router.push("/dashboard");
   };
-
   const questions = [
     {
       key: "specialPersonInNeed",
@@ -186,6 +190,218 @@ const SocialSupportForm: React.FC = () => {
         onSubmit={handleSubmit((data) => submit(data))}
         className="w-[40rem] md:w-[30rem] m-5 md:m-0 space-y-2 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4"
       >
+        <p className="font-semibold text-2xl text-center">
+          Multidimensional Scale
+        </p>
+        <div className="space-y-4">
+          <div className="mt-4 p-4 bg-blue-100 rounded-md">
+            <p className="font-medium text-center">
+              MEASURE OF PERCEIVED ADEQUACY OF SOCIAL SUPPORT FROM THREE SOURCES
+            </p>
+            <p className="text-sm text-center mt-2">
+              The Multidimensional Scale of Perceived Social Support (Zimet et
+              al., 1988) is a 12-item measure of perceived adequacy of social
+              support from three sources: family, friends, & significant other.
+            </p>
+            <p className="text-sm text-center mt-2">
+              It uses a 5-point Likert scale (0 = strongly disagree, 5 =
+              strongly agree).
+            </p>
+          </div>
+        </div>
+        <div className="py-2 space-y-4">
+          {/* Assessment Date */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="assessmentDate" className="font-semibold pb-2 pt-2">
+              Assessment Date (mm/dd/yyyy)
+            </label>
+            <input
+              type="date"
+              {...register("assessmentDate")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.assessmentDate && (
+              <span className="label-text-alt text-red-500">
+                {errors.assessmentDate.message}
+              </span>
+            )}
+          </div>
+
+          {/* Site ID */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="siteId" className="font-semibold pb-2 pt-2">
+              Site ID (01-00 format)
+            </label>
+            <input
+              type="text"
+              {...register("siteId")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              placeholder="01-00"
+            />
+            {errors.siteId && (
+              <span className="label-text-alt text-red-500">
+                {errors.siteId.message}
+              </span>
+            )}
+          </div>
+
+          {/* Participant ID */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="participantId" className="font-semibold pb-2 pt-2">
+              Participant ID
+            </label>
+            <input
+              type="text"
+              {...register("participantId")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.participantId && (
+              <span className="label-text-alt text-red-500">
+                {errors.participantId.message}
+              </span>
+            )}
+          </div>
+
+          {/* Relation */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="relation" className="font-semibold pb-2 pt-2">
+              Relation (01-00 format)
+            </label>
+            <input
+              type="text"
+              {...register("relation")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              placeholder="01-00"
+            />
+            {errors.relation && (
+              <span className="label-text-alt text-red-500">
+                {errors.relation.message}
+              </span>
+            )}
+          </div>
+
+          {/* Form Completion Status */}
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="formCompletionStatus"
+              className="font-semibold pb-2 pt-2"
+            >
+              Form Completion Status
+            </label>
+            <div className="flex items-center">
+              <select
+                {...register("formCompletionStatus")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              >
+                <option value="">Select status</option>
+                <option value="1">1 = Form completed as required</option>
+                <option value="2">2 = Participant refused</option>
+                <option value="4">4 = Not enough time at the visit</option>
+                <option value="5">5 = Participant did not attend visit</option>
+              </select>
+            </div>
+            {errors.formCompletionStatus && (
+              <span className="label-text-alt text-red-500">
+                {errors.formCompletionStatus.message}
+              </span>
+            )}
+          </div>
+
+          {/* Phase */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="phase" className="font-semibold pb-2 pt-2">
+              Phase
+            </label>
+            <div className="flex">
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  {...register("phase")}
+                  value="Baseline"
+                  className="mr-2"
+                />
+                Baseline
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  {...register("phase")}
+                  value="Post Randomization"
+                  className="mr-2"
+                />
+                Post Randomization
+              </label>
+            </div>
+            {errors.phase && (
+              <span className="label-text-alt text-red-500">
+                {errors.phase.message}
+              </span>
+            )}
+          </div>
+
+          {/* Segment */}
+          <div className="flex flex-col justify-between">
+            <label htmlFor="segment" className="font-semibold pb-2 pt-2">
+              Segment (2 digit number)
+            </label>
+            <input
+              type="text"
+              {...register("segment")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              placeholder="00"
+            />
+            {errors.segment && (
+              <span className="label-text-alt text-red-500">
+                {errors.segment.message}
+              </span>
+            )}
+          </div>
+
+          {/* Form Completion Language */}
+          <div className="flex flex-col justify-between">
+            <label
+              htmlFor="formCompletionLanguage"
+              className="font-semibold pb-2 pt-2"
+            >
+              Form Completion Language
+            </label>
+            <div className="flex">
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  {...register("formCompletionLanguage")}
+                  value="English"
+                  className="mr-2"
+                />
+                English
+              </label>
+              <label className="mr-4">
+                <input
+                  type="radio"
+                  {...register("formCompletionLanguage")}
+                  value="Spanish"
+                  className="mr-2"
+                />
+                Spanish
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  {...register("formCompletionLanguage")}
+                  value="Both"
+                  className="mr-2"
+                />
+                Both
+              </label>
+            </div>
+            {errors.formCompletionLanguage && (
+              <span className="label-text-alt text-red-500">
+                {errors.formCompletionLanguage.message}
+              </span>
+            )}
+          </div>
+        </div>
+
         <div className="pt-6">
           <p className="font-semibold text-2xl">
             {verb === "new"
@@ -209,37 +425,35 @@ const SocialSupportForm: React.FC = () => {
           </button>
         </div>
         <div className="space-y-16 pt-6">
-          <div className="space-y-4">
+          <div className="flex flex-col justify-between space-y-4 pt-6">
             {questions.map(({ key, question }, index) => (
-              <div key={key} className="space-y-3">
-                <p className="font-semibold">{`${index + 1}. ${
-                  question[language]
-                }`}</p>
-                <div className="space-y-2">
-                  {ResponseAnswersEnum.options.map((option) => (
-                    <label key={option} className="flex items-center">
-                      <input
-                        {...register(key as keyof ISocialSupportFormInputs)}
-                        type="radio"
-                        value={option}
-                        className="form-radio"
-                      />
-                      <span className="ml-2">
+              <div key={key} className="flex flex-col space-y-3">
+                <label htmlFor={key} className="font-semibold pb-2 pt-2">
+                  {`${index + 1}. ${question[language]}`}
+                </label>
+                <div className="flex items-center space-x-2">
+                  <select
+                    {...register(key as keyof ISocialSupportFormInputs)}
+                    className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                  >
+                    <option value="">Select response</option>
+                    {ResponseAnswersEnum.options.map((option) => (
+                      <option key={option} value={option}>
                         {labelMapping.responseAnswers[option][language]}
-                      </span>
-                    </label>
-                  ))}
-                  {errors[key as keyof ISocialSupportFormInputs] && (
-                    <span className="label-text-alt text-red-500">
-                      {errors[key as keyof ISocialSupportFormInputs]?.message}
-                    </span>
-                  )}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+                {errors[key as keyof ISocialSupportFormInputs] && (
+                  <span className="label-text-alt text-red-500">
+                    {errors[key as keyof ISocialSupportFormInputs]?.message}
+                  </span>
+                )}
               </div>
             ))}
           </div>
         </div>
-        <div className="space-y-4 mt-10" style={{ marginTop: '50px' }}>
+        <div className="space-y-4 mt-10" style={{ marginTop: "50px" }}>
           <p className="font-semibold">
             {language === "en"
               ? 'Please identify that "special person":'
@@ -287,7 +501,7 @@ const SocialSupportForm: React.FC = () => {
           </div>
         </div>
 
-        <div className="space-y-4 mt-16" style={{ marginTop: '50px' }}>
+        <div className="space-y-4 mt-16" style={{ marginTop: "50px" }}>
           <p className="font-semibold">
             {language === "en"
               ? "Additional Comments"
