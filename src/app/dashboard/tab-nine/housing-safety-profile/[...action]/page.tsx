@@ -75,9 +75,7 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
       return;
     }
 
-    setSuccessMessage(
-      "Household Housing Safety Profile submitted successfully!"
-    );
+    setSuccessMessage("Household Housing Safety Profile submitted successfully!");
     router.push("/dashboard");
   };
 

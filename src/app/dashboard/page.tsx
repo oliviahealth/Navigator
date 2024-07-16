@@ -151,7 +151,7 @@ const Dashboard: React.FC = () => {
                             Housing Security Home Visit Form
                         </a>
 
-                        <a href={'#'}>
+                        <a href={'dashboard/tab-nine/housing-safety-profile/new'}>
                             Household Housing Safety Profile
                         </a>
 
