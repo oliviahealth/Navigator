@@ -10,8 +10,8 @@ export const createMediaApperanceForm = async (mediaApperanceFormInput: IMediaAp
         data: {
             userId,
             ...rest,
-            participantDate: new Date(mediaApperanceFormInput.participantDate).toISOString(),
-            guardianDate: mediaApperanceFormInput.guardianDate ? new Date(mediaApperanceFormInput.guardianDate).toISOString() : null
+            // participantDate: new Date(mediaApperanceFormInput.participantDate).toISOString(),
+            // guardianDate: mediaApperanceFormInput.guardianDate ? new Date(mediaApperanceFormInput.guardianDate).toISOString() : null
         }
     });
 

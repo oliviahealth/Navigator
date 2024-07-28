@@ -74,20 +74,18 @@ const CommunicationLog: React.FC = () => {
     // Send the data to the db depending on weather this is a new submission or updating a submission
     // Parse the response to ensure it is compliant with what we expect
     // Redirect to dashboard
-    const submit = async (data: { communicationEntries: ICommunicationEntry[] }) => {
+    const submit = async (data: ICommunicationLogInputs) => {
         try {
             if (!user) {
                 throw new Error('User not found');
             }
 
-            const { communicationEntries } = data;
-
             let response;
 
             if (verb === 'new') {
-                response = await createCommunicationLog(communicationEntries, user.id);
+                response = await createCommunicationLog(data, user.id);
             } else {
-                response = await updateCommunicationLog(communicationEntries, submissionId, user.id);
+                response = await updateCommunicationLog(data, submissionId, user.id);
             }
         } catch (error) {
             console.error(error);
@@ -114,7 +112,7 @@ const CommunicationLog: React.FC = () => {
                 }
 
                 if (!user) {
-                    throw new Error('User not found');
+                    throw new Error("User not found");
                 }
 
                 if (!submissionId) {
@@ -128,21 +126,22 @@ const CommunicationLog: React.FC = () => {
                     dateTime: new Date(entry.dateTime).toISOString().slice(0, 16),
                 }));
 
-                reset({ communicationEntries: formattedEntries });
+                reset({
+                    communicationEntries: formattedEntries,
+                    label: response.label,
+                    staffNotes: response.staffNotes,
+                });
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
                 router.push('/dashboard');
-
-                return;
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
-
-        if(!user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
@@ -310,6 +309,35 @@ const CommunicationLog: React.FC = () => {
                     >
                         + Add Communication Entry
                     </button>
+                </div>
+
+                <div>
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea
+                            {...register("label")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.label && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.label.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea
+                            {...register("staffNotes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.staffNotes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.staffNotes.message}
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <button

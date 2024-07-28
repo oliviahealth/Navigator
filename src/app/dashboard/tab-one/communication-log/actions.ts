@@ -1,24 +1,25 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { CommunicationLogResponseSchema, ICommunicationEntry } from "./definitions";
+import { CommunicationLogResponseSchema, ICommunicationLogInputs } from "./definitions";
 
 /**
  * Creates a new communication log entry in the database.
- * @param {ICommunicationEntry[]} communicationLogInput - An array of communication log entries to be created.
+ * @param {ICommunicationLogInputs} communicationLogInput - An array of communication log entries to be created.
  * @param {string} userId - The ID of the user creating the communication log entries.
  * @returns {Promise<ICommunicationLogResponse>} A promise resolving to the created communication log entry.
  * @throws {Error} If there's an issue creating the communication log entry.
  * @remarks This function takes an array of communication log entries and a user ID, creates formatted entries,
  * and saves them to the database using Prisma.
  */
-export const createCommunicationLog = async (communicationLogInput: ICommunicationEntry[], userId: string) => {
+export const createCommunicationLog = async (communicationLogInput: ICommunicationLogInputs, userId: string) => {
     // Create communication log entry in the database
+    // const { communicationEntries, ...data } = communicationLogInput
     const response = await prisma.communicationLog.create({
         data: {
             userId,
-            communicationEntries: communicationLogInput
-        },        
+            ...communicationLogInput,
+        },
     });
 
     return CommunicationLogResponseSchema.parse(response);
@@ -48,14 +49,14 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
 
 /**
  * Updates a communication log entry in the database with new communication log entries.
- * @param {ICommunicationEntry[]} communicationLogInput - An array of updated communication log entries.
+ * @param {ICommunicationLogInputs} communicationLogInput - An array of updated communication log entries.
  * @param {string} communicationLogId - The ID of the communication log entry to update.
  * @returns {Promise<ICommunicationLogResponse>} A promise resolving to the updated communication log entry.
  * @throws {Error} If there's an issue updating the communication log entry.
  * @remarks This function updates a communication log entry in the database using Prisma. It replaces the existing
  * communication entries associated with the log entry with the updated entries provided in the input array.
  */
-export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string, userId: string) => {    
+export const updateCommunicationLog = async (communicationLogInput: ICommunicationLogInputs, communicationLogId: string, userId: string) => {
     // Update communication log entry in the database
     const response = await prisma.communicationLog.update({
         where: {
@@ -63,7 +64,7 @@ export const updateCommunicationLog = async (communicationLogInput: ICommunicati
             userId
         },
         data: {
-            communicationEntries: communicationLogInput
+            ...communicationLogInput
         },
     });
 

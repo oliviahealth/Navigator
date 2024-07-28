@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 
 import useAppStore from "@/lib/useAppStore";
 import { MediaApperanceFormInputSchema, IMediaAppearanceFormInput } from "../definitions";
-import { createMediaApperanceForm, updateMediaAppearanceForm } from "../actions";
+import { createMediaApperanceForm, readMediaAppearanceForm, updateMediaAppearanceForm } from "../actions";
 
 
 const MediaAppearanceForm: React.FC = () => {
@@ -77,6 +77,7 @@ const MediaAppearanceForm: React.FC = () => {
     handleSubmit,
     watch,
     unregister,
+    reset,
     formState: { errors },
   } = useForm<IMediaAppearanceFormInput>({
     resolver: zodResolver(MediaApperanceFormInputSchema),
@@ -89,6 +90,43 @@ const MediaAppearanceForm: React.FC = () => {
     }
   }, [watch("participantAge"), unregister]);
 
+  useEffect(() => {
+    const fetchAndPopulatePastSubmissionData = async () => {
+      try {
+        if (verb !== "edit") return;
+        else console.log("reached here");
+
+        if (!submissionId)
+          throw new Error(
+            "Missing submissionId when fetching past submissions"
+          );
+        else console.log("reached here");
+
+        if (!user) throw new Error("Missing user");
+
+        else console.log("reached here");
+
+        const validResponse = await readMediaAppearanceForm(submissionId, user.id);
+
+        const formattedData = {
+          ...validResponse,
+          participantDate: new Date(validResponse.participantDate).toISOString().split("T")[0],
+        };
+        reset(formattedData);
+      } catch (error) {
+        console.error(error);
+        setErrorMessage("Something went wrong! Please try again later");
+
+        router.push("/");
+        return;
+      }
+    };
+
+    if (!user) return;
+
+    fetchAndPopulatePastSubmissionData();
+  }, []);
+
   const submit = async (data: IMediaAppearanceFormInput) => {
     try {
       if (!user) {
@@ -98,7 +136,7 @@ const MediaAppearanceForm: React.FC = () => {
       let response;
 
       if (verb === "new") {
-        response = await createMediaApperanceForm({...data, guardianDate: data.guardianName ? data.participantDate : null}, user.id);
+        response = await createMediaApperanceForm({ ...data, guardianDate: data.guardianName ? data.participantDate : null }, user.id);
       } else {
         response = await updateMediaAppearanceForm(data, submissionId, user.id);
       }
@@ -111,7 +149,7 @@ const MediaAppearanceForm: React.FC = () => {
       return;
     }
 
-    setSuccessMessage('Enrollment form submitted successfully');
+    setSuccessMessage('Media Appearance Form submitted successfully');
     router.push('/dashboard');
   };
 
@@ -214,7 +252,7 @@ const MediaAppearanceForm: React.FC = () => {
 
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("participantDate")}
+            {...register("participantDate", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
