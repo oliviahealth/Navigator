@@ -13,6 +13,10 @@
     src: url('/fonts/Oswald-VariableFont_wght.ttf') format('truetype');
   }
 
+  :root {
+    --maroon: 93 27 42;
+  }
+
   body {
     @apply font-OpenSans;
   }
@@ -50,7 +54,7 @@
 
 @layer components {
   .button {
-    @apply text-black md:px-6 md:py-2 px-1 py-1 transition-colors ease-in-out duration-300 hover:text-[#732F2F];
+    @apply text-black md:px-6 md:py-2 px-1 py-1 transition-colors ease-in-out duration-300 hover:text-red-800;
   }
 
   .button-colored {
@@ -58,7 +62,7 @@
   }
 
   .button-filled {
-    @apply bg-[#5D1B2A] text-white hover:text-white py-0 px-3 md:px-6 md:py-2 transition-colors ease-in-out duration-300 hover:bg-[#703636];
+    @apply bg-maroon text-white hover:text-white py-0 px-3 md:px-6 md:py-2 transition-colors ease-in-out duration-300 hover:bg-maroon/90;
   }
 
   .selectable {

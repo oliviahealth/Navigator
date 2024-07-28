@@ -25,7 +25,7 @@ const SignupPage: React.FC = () => {
   } = useForm<ISignupFormData>({ resolver: zodResolver(SignupSchema) });
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+    signIn("google", { callbackUrl: "/dashboard/logs-and-forms" });
   };
 
   const signupUser = async (data: ISignupFormData) => {
@@ -44,7 +44,7 @@ const SignupPage: React.FC = () => {
       return;
     }
 
-    router.push('/dashboard');
+    router.push('/dashboard/logs-and-forms');
   }
 
   return (
@@ -78,7 +78,7 @@ const SignupPage: React.FC = () => {
           <input
             {...register('name')}
             type="text"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.name && (
             <span className="label-text-alt text-red-500">
@@ -94,7 +94,7 @@ const SignupPage: React.FC = () => {
           <input
             {...register('email')}
             type="email"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.email && (
             <span className="label-text-alt text-red-500">
@@ -110,7 +110,7 @@ const SignupPage: React.FC = () => {
           <input
             {...register('password')}
             type="password"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.password && (
             <span className="label-text-alt text-red-500">
@@ -128,7 +128,7 @@ const SignupPage: React.FC = () => {
           <input
             {...register('confirmPassword')}
             type="password"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.confirmPassword && (
             <span className="label-text-alt text-red-500">

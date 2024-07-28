@@ -1,25 +1,38 @@
+"use client"
+
 import React from "react";
+import { useRouter, usePathname } from 'next/navigation';
 
-interface LeftSidebarProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-}
+const LeftSidebar: React.FC = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const tabs = [
+    { label: "Logs and Consent Forms", path: "/dashboard/logs-and-forms" },
+    { label: "Demographics", path: "/dashboard/demographics" },
+    { label: "Medical and Nutrition History", path: "/dashboard/medical-and-nutrition-history" },
+    { label: "Medications", path: "/dashboard/medications" },
+    { label: "Substance Use Assessments", path: "/dashboard/substance-use-assessments" },
+    { label: "Interpersonal Relations Assessments", path: "/dashboard/interpersonal-relations-assessments" },
+    { label: "Physical Assessments", path: "/dashboard/physical-assessments" },
+    { label: "Mental Health Assessments", path: "/dashboard/mental-health-assessments" },
+    { label: "Home Safety Assessments", path: "/dashboard/home-safety-assessments" },
+    { label: "Prenatal Care", path: "/dashboard/prenatal-care" },
+    { label: "Child Records", path: "/dashboard/child-records" },
+  ];
 
-const LeftSidebar: React.FC<LeftSidebarProps> = ({ activeTab, setActiveTab }) => {
-  const tabs = ["tab 1", "tab 2", "tab 3"];
 
   return (
     <div className="w-full h-full my-5 px-5">
-      {tabs.map((tab) => (
+      {tabs.map(({ label, path }) => (
         <button
-          key={tab}
-          className={`w-full mb-4 py-1 rounded-md flex items-center ${
-            activeTab === tab ? "bg-red-800 text-white" : "hover:bg-red-800 hover:text-white"
+          key={label}
+          className={`group w-full mb-3 p-2 gap-1 rounded-md flex items-center font-medium ${
+            pathname === path ? "bg-maroon text-white" : ""
           }`}
-          onClick={() => setActiveTab(tab)}
+          onClick={() => router.push(path)}
         >
-          <img className="w-4 h-4" src="./images/kebab.svg"></img>
-          <div className="flex-grow text-left">{tab}</div>
+          <img className={`w-4 h-4 ${pathname === path ? "" : "invert"}`} src="/images/placeholder.svg"></img>
+          <div className="flex-grow text-left truncate">{label}</div>
         </button>
       ))}
     </div>
