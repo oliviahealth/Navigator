@@ -1,9 +1,11 @@
-const TabOne: React.FC = () => {
+import Accordion from "@/components/dashboard/Accordion";
+
+const Tab: React.FC = () => {
   return (
-    <div className="flex bg-red-100">
-      Hello Tab One!
+    <div className="flex flex-col">
+      <Accordion title="Form name">Tab</Accordion>
     </div>
   );
 };
 
-export default TabOne;
+export default Tab;
