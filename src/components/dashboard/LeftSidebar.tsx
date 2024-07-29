@@ -26,12 +26,12 @@ const LeftSidebar: React.FC = () => {
       {tabs.map(({ label, path }) => (
         <button
           key={label}
-          className={`group w-full mb-3 p-2 gap-1 rounded-md flex items-center font-medium ${
-            pathname === path ? "bg-maroon text-white" : ""
+          className={`group w-full mb-3 p-2 gap-1 rounded-md flex items-center font-medium duration-300 transition-colors ${
+            pathname === path ? "bg-maroon text-white" : "hover:bg-maroon/90 hover:text-white"
           }`}
           onClick={() => router.push(path)}
         >
-          <img className={`w-4 h-4 ${pathname === path ? "" : "invert"}`} src="/images/placeholder.svg"></img>
+          <img className={`w-4 h-4 duration-300 transition-all group-hover:invert ${pathname === path ? "invert" : ""}`} src="/images/placeholder.svg"></img>
           <div className="flex-grow text-left truncate">{label}</div>
         </button>
       ))}
