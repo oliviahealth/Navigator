@@ -3,21 +3,22 @@
 import React from "react";
 import Link from "next/link";
 
-const Submissions: React.FC = () => {
+const Submission: React.FC = () => {
+  // add functions to handle delete and selector onChange
   return (
     <div className="flex flex-row relative mt-2 mb-1 space-x-4 items-center">
           <>
             <select
               className="border-2 border-neutral-300 hover:border-neutral-400 pl-4 pr-12 py-2 rounded-full"
             >
-              {/* should have <option> here */}
+              {/* should have <option> here to cycle through each submission */}
               Submission{' '}
               {/* Time */}
               CST
             </select>
             <Link
               className="group flex flex-row font-semibold items-center text-sm gap-[2px]"
-              // should link to selected submission
+              // link to selected submission
               href={'/'}
             >
               <svg
@@ -47,7 +48,7 @@ const Submissions: React.FC = () => {
             </Link>
             <button
               className="group flex flex-row font-semibold items-center text-sm gap-[2px]"
-              // delete submission
+              // delete selected submission
               onClick={() => null}
             >
               <svg
@@ -94,4 +95,4 @@ const Submissions: React.FC = () => {
   );
 };
 
-export default Submissions;
+export default Submission;

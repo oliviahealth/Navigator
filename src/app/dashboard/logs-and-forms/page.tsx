@@ -1,12 +1,12 @@
 import Accordion from "@/components/dashboard/Accordion";
-import Submissions from "@/components/dashboard/Submissions";
+import Submission from "@/components/dashboard/Submission";
 
 const Tab: React.FC = () => {
   return (
     <div className="flex flex-col">
       <Accordion title="Form name">
         Tab content
-        <Submissions></Submissions>
+        <Submission></Submission>
       </Accordion>
     </div>
   );
