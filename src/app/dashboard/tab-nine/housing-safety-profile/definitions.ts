@@ -33,7 +33,7 @@ export const HouseholdHousingSafetyProfileInputsSchema = z.object({
   currentlyPregnant: YesNoEnum.optional().nullable(),
   wantPregnant: YesNoEnum.optional().nullable(),
   yearlyHouseholdIncome: z.number().optional().nullable(),
-  incomeUndeterminedReason: z.enum(["Key family member would not share", "Participant is in foster care", "Other"]).optional().nullable(),
+  incomeUndeterminedReason: z.string().nullable(),
   otherIncomeUndeterminedReason: z.string().optional().nullable(),
   dependentsCount: z.number().int().min(1, "Number of dependents must be at least 1"),
   housingStatus: HousingStatusEnum
