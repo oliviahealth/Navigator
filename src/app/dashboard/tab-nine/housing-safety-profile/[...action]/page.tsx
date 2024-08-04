@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -49,6 +49,11 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
   const watchUsesTobacco = watch("usesTobacco");
   const watchCurrentlyPregnant = watch("currentlyPregnant");
   const watchInsuranceType = watch("insuranceType");
+
+  useEffect(() => {
+    setValue("yearlyHouseholdIncome", null);
+    setValue("incomeUndeterminedReason", null);
+  }, [])
 
   const submit = async (data: IHouseholdHousingSafetyProfileInputs) => {
     try {
