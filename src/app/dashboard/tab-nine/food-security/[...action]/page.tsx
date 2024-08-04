@@ -92,9 +92,9 @@ const FoodSecurityRecord: React.FC = () => {
     };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto p-4 w-full h-full flex flex-col items-center">
             <h1 className="text-2xl font-bold mb-4">Food Security Questionnaire</h1>
-            <form onSubmit={handleSubmit(submit)} className="space-y-6">
+            <form onSubmit={handleSubmit(submit)} className="space-y-6 w-[40rem] md:w-[30rem] m-5 md:m-0 [&>p]:pt-6 [&>p]:pb-1 [&>input]:px-4">
                 <div>
                     <label className="block mb-2">
                         1. In the past four weeks, did you worry that your household would not have enough food?
