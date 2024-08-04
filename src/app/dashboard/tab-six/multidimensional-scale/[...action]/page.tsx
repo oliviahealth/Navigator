@@ -5,17 +5,17 @@ import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  NewAssessmentFormInputsSchema,
-  INewAssessmentFormInputs,
+  MultidimensionalScaleInputsSchema,
+  MultidimensionalScaleInputs,
 } from "../definitions";
 import useAppStore from "@/lib/useAppStore";
 import {
-  createNewAssessmentFormEntry,
-  readNewAssessmentFormEntry,
-  updateNewAssessmentFormEntry,
+  createNewMultidimensionalScaleEntry,
+  readMultidimensionalScaleEntry,
+  updateMultidimensionalScaleEntry,
 } from "../actions";
 
-const NewAssessmentForm: React.FC = () => {
+const MultidimensionalScale: React.FC = () => {
   const router = useRouter();
   const params = useParams();
 
@@ -23,14 +23,6 @@ const NewAssessmentForm: React.FC = () => {
 
   const verb = action;
   const submissionId = params.actions?.[1];
-
-  // debugging
-  // useEffect(() => {
-  //   console.log("Params:", params);
-  //   console.log("Action:", params.actions?.[0]);
-  //   console.log("Submission ID:", params.actions?.[1]);
-  // }, [params]);
-  // console.log('Verb:', verb, 'Submission ID:', submissionId);
 
   const user = useAppStore((state) => state.user);
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
@@ -41,11 +33,11 @@ const NewAssessmentForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<INewAssessmentFormInputs>({
-    resolver: zodResolver(NewAssessmentFormInputsSchema),
+  } = useForm<MultidimensionalScaleInputs>({
+    resolver: zodResolver(MultidimensionalScaleInputsSchema),
   });
 
-  const onSubmit = async (data: INewAssessmentFormInputs) => {
+  const onSubmit = async (data: MultidimensionalScaleInputs) => {
     try {
       if (!user) {
         throw new Error("User not found");
@@ -54,9 +46,9 @@ const NewAssessmentForm: React.FC = () => {
       let response;
 
       if (verb === "new") {
-        response = await createNewAssessmentFormEntry(data, user.id);
+        response = await createNewMultidimensionalScaleEntry(data, user.id);
       } else if (verb === "edit" && submissionId) {
-        response = await updateNewAssessmentFormEntry(
+        response = await updateMultidimensionalScaleEntry(
           data,
           submissionId,
           user.id
@@ -67,7 +59,7 @@ const NewAssessmentForm: React.FC = () => {
         throw new Error(`Invalid action: ${verb}`);
       }
 
-      NewAssessmentFormInputsSchema.parse(response);
+      MultidimensionalScaleInputsSchema.parse(response);
     } catch (error) {
       setErrorMessage(
         `Error: ${
@@ -99,12 +91,12 @@ const NewAssessmentForm: React.FC = () => {
           throw new Error("Missing submissionId when fetching past submission");
         }
 
-        const response = await readNewAssessmentFormEntry(
+        const response = await readMultidimensionalScaleEntry(
           submissionId,
           user.id
         );
 
-        NewAssessmentFormInputsSchema.parse(response);
+        MultidimensionalScaleInputsSchema.parse(response);
       } catch (error) {
         console.error(error);
         setErrorMessage("Something went wrong! Please try again later");
@@ -339,4 +331,4 @@ const NewAssessmentForm: React.FC = () => {
   );
 };
 
-export default NewAssessmentForm;
+export default MultidimensionalScale;

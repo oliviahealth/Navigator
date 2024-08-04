@@ -53,7 +53,7 @@ model User {
   TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
   ASQ3                                   ASQ3[]
   IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
-  NewAssessmentForm                      NewAssessmentForm[]
+  MultidimensionalScale                   MultidimensionalScale[]
 }
 
 enum CommunicationMethod {
@@ -1251,7 +1251,7 @@ model HouseholdHousingSafetyProfile {
 
 }
 
-model NewAssessmentForm {
+model MultidimensionalScale {
   id                      String   @id @default(cuid())
   userId                  String
   assessmentDate          String

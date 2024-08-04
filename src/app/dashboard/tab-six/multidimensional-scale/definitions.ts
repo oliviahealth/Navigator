@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const NewAssessmentFormInputsSchema = z.object({
+export const MultidimensionalScaleInputsSchema = z.object({
   assessmentDate: z.string(),
   siteId: z.string().regex(/^\d{2}-\d{2}$/, "Site ID must be in 01-00 format"),
   // not sure what format ID is in so left it for both
@@ -15,12 +15,12 @@ export const NewAssessmentFormInputsSchema = z.object({
   formCompletionLanguage: z.enum(["English", "Spanish", "Both"]),
 });
 
-export type INewAssessmentFormInputs = z.infer<typeof NewAssessmentFormInputsSchema>;
+export type MultidimensionalScaleInputs = z.infer<typeof MultidimensionalScaleInputsSchema>;
 
-export const NewAssessmentFormResponseSchema = NewAssessmentFormInputsSchema.extend({
+export const MultidimensionalScaleResponseSchema = MultidimensionalScaleInputsSchema.extend({
   id: z.string(),
   userId: z.string(),
   participantId: z.number(), 
 });
 
-export type INewAssessmentFormResponse = z.infer<typeof NewAssessmentFormResponseSchema>;
+export type MultidimensionalScaleResponse = z.infer<typeof MultidimensionalScaleResponseSchema>;
