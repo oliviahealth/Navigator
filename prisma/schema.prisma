@@ -61,6 +61,7 @@ model User {
   TargetChildRecord                      TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
   PrenatalCare                           PrenatalCare[]
+  MultidimensionalScale                   MultidimensionalScale[]
 }
 
 enum CommunicationMethod {
@@ -1340,6 +1341,7 @@ model InfancyQuestionnaire {
   breastMilkAtTwoMonths    YesNo?
   breastMilkAtSixMonths    YesNo?
   motherCouldNotBreastfeed Yes?
+  
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1364,6 +1366,7 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1410,8 +1413,30 @@ model PrenatalCare {
   id String @id @default(uuid())
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
+
   attendRegularVisitsWithOBCare  YesNo
   prenatalCareStartDate          DateTime
   drivingDistanceForPrenatalCare String
   haveMissedAppointments         String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model MultidimensionalScale {
+  id                      String   @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+  userId                  String
+
+  assessmentDate          String
+  siteId                  String
+  participantId           Int
+  relation                String
+  formCompletionStatus    String   
+  phase                   String
+  segment                 String
+  formCompletionLanguage  String
+
+  dateCreated               DateTime @default(now())
+  dateModified               DateTime @updatedAt
 }
