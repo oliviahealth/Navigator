@@ -48,6 +48,17 @@ export const readAppointmentLog = async (appointmentLogId: string, userId: strin
     return AppointmentLogResponseSchema.parse(response);
 }
 
+export const readAllAppointmentLogs = async (userId: string): Promise<IAppointmentLogResponse[] | null> => {
+    // Retrieve all appointment log entries for the given user from the database
+    const response = await prisma.appointmentLog.findMany({
+        where: {
+            userId,
+        },
+    });
+
+    return response.map(log => AppointmentLogResponseSchema.parse(log));
+}
+
 export const updateAppointmentLog = async (appointmentLogInput: IAppointmentEntry[], appointmentLogId: string, userId: string) => {
     // Format appointment log entries
     const formattedAppointmentEntries = appointmentLogInput.map(appointmentEntry => ({
@@ -69,3 +80,13 @@ export const updateAppointmentLog = async (appointmentLogInput: IAppointmentEntr
 
     return AppointmentLogResponseSchema.parse(response);
 }
+
+export const deleteAppointmentLog = async (submissionId: string, userId: string) => {
+    const response = await prisma.appointmentLog.delete({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
+    });
+    return response;
+};

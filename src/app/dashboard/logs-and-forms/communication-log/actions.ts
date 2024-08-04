@@ -18,7 +18,7 @@ export const createCommunicationLog = async (communicationLogInput: ICommunicati
         data: {
             userId,
             communicationEntries: communicationLogInput
-        },        
+        },
     });
 
     return CommunicationLogResponseSchema.parse(response);
@@ -46,6 +46,17 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
     return CommunicationLogResponseSchema.parse(response);
 }
 
+export const readAllCommunicationLogs = async (userId: string) => {
+    // Retrieve communication log entry from the database
+    const response = await prisma.communicationLog.findMany({
+        where: {
+            userId,
+        },
+    });
+
+    return response.map(log => CommunicationLogResponseSchema.parse(log));
+}
+
 /**
  * Updates a communication log entry in the database with new communication log entries.
  * @param {ICommunicationEntry[]} communicationLogInput - An array of updated communication log entries.
@@ -55,7 +66,7 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
  * @remarks This function updates a communication log entry in the database using Prisma. It replaces the existing
  * communication entries associated with the log entry with the updated entries provided in the input array.
  */
-export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string, userId: string) => {    
+export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string, userId: string) => {
     // Update communication log entry in the database
     const response = await prisma.communicationLog.update({
         where: {
@@ -69,3 +80,13 @@ export const updateCommunicationLog = async (communicationLogInput: ICommunicati
 
     return CommunicationLogResponseSchema.parse(response);
 }
+
+export const deleteCommunicationLog = async (submissionId: string, userId: string) => {
+    const response = await prisma.communicationLog.delete({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
+    });
+    return response;
+};

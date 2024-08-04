@@ -1,6 +1,14 @@
 import { z } from "zod";
 
 // Define the schema of each row in the communication log
+export const communicationLoglabelMapping: Record<any, string> = {
+    Phone: "Phone",
+    Mail: "Mail",
+    In_Person: "In Person",
+    Video_Call: "Video Call",
+    Other: "Other"
+}
+
 const CommunicationEntrySchema = z.object({
     dateTime: z.union([z.date(), z.string().min(1, "Date/Time is required")]),
     method: z.enum(['Phone', 'Mail', 'In_Person', 'Video_Call', 'Other']).nullable().refine(val => val, { message: "Method is required" }),

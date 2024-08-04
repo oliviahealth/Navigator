@@ -255,13 +255,13 @@ const EnrollmentLog: React.FC = () => {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
 
-      router.push("/dashboard");
+      router.push("/dashboard/logs-and-forms");
 
       return;
     }
 
     setSuccessMessage("Enrollment Form submitted successfully!");
-    router.push("/dashboard");
+    router.push("/dashboard/logs-and-forms");
   };
 
   useEffect(() => {

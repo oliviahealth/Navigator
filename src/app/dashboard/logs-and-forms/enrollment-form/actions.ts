@@ -31,6 +31,16 @@ export const readEnrollmentForm = async (enrollmentFormId: string, userId: strin
     return EnrollmentFormResponseSchema.parse(response);
 }
 
+export const readAllEnrollmentForms = async (userId: string) => {
+    const response = await prisma.enrollmentForm.findMany({
+        where: {
+            userId,
+        },
+    });
+    // return response;
+    return response.map(log => EnrollmentFormResponseSchema.parse(log));
+}
+
 export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, enrollmentFormId: string, userId: string) => {
     const { clientAge, ...rest } = enrollmentFormInput;
 
@@ -47,3 +57,13 @@ export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormI
 
     return EnrollmentFormResponseSchema.parse(response);
 }
+
+export const deleteEnrollmentForm = async (submissionId: string, userId: string) => {
+    const response = await prisma.enrollmentForm.delete({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
+    });
+    return response;
+};

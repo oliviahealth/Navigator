@@ -29,6 +29,15 @@ export const readMediaAppearanceForm = async (mediaAppearanceFormId: string, use
     return MediaAppearanceFormResponseSchema.parse(response);
 }
 
+export const readAllMediaAppearanceForms = async (userId: string) => {
+    const response = await prisma.mediaAppearanceForm.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => MediaAppearanceFormResponseSchema.parse(form));
+}
+
 export const updateMediaAppearanceForm = async (mediaAppearanceFormInput: IMediaAppearanceFormInput, mediaAppearanceFormId: string, userId: string) => {
     const { participantAge, ...rest } = mediaAppearanceFormInput;
 
@@ -41,3 +50,13 @@ export const updateMediaAppearanceForm = async (mediaAppearanceFormInput: IMedia
 
     return MediaAppearanceFormResponseSchema.parse(response);
 }
+
+export const deleteMediaAppearanceForm = async (submissionId: string, userId: string) => {
+    const response = await prisma.mediaAppearanceForm.delete({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
+    });
+    return response;
+};

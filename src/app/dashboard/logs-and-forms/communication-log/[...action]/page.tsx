@@ -71,6 +71,45 @@ const CommunicationLog: React.FC = () => {
         });
     };
 
+    useEffect(() => {
+        const fetchAndPopulatePastSubmissionData = async () => {
+            try {
+                if (verb !== 'edit') {
+                    return;
+                }
+
+                if (!user) {
+                    throw new Error("User not found");
+                }
+
+                if (!submissionId) {
+                    throw new Error('Missing submissionId when fetching past submission');
+                }
+
+                const response = await readCommunicationLog(submissionId, user.id);
+
+                const formattedEntries = response?.communicationEntries.map(entry => ({
+                    ...entry,
+                    dateTime: new Date(entry.dateTime).toISOString().slice(0, 16),
+                }));
+
+                reset({
+                    communicationEntries: formattedEntries,
+                    // label: response?.label,
+                    // staffNotes: response?.staffNotes,
+                });
+            } catch (error) {
+                console.error(error);
+                setErrorMessage('Something went wrong! Please try again later');
+                router.push('/dashboard/logs-and-forms');
+            }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
+        }
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
+
     // Send the data to the db depending on weather this is a new submission or updating a submission
     // Parse the response to ensure it is compliant with what we expect
     // Redirect to dashboard
@@ -93,13 +132,13 @@ const CommunicationLog: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard')
+            router.push('/dashboard/logs-and-forms')
 
             return;
         }
 
         setSuccessMessage('Communication Log submitted successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/logs-and-forms')
     };
 
     // If this is an update submission, fetch the past submission data using the submissionId from the url
@@ -139,7 +178,7 @@ const CommunicationLog: React.FC = () => {
             }
         }
 
-        if(!user) return;
+        if (!user) return;
 
         fetchAndPopulatePastSubmissionData()
     }, [])
