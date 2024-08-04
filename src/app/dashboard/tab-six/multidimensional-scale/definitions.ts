@@ -20,7 +20,9 @@ export type MultidimensionalScaleInputs = z.infer<typeof MultidimensionalScaleIn
 export const MultidimensionalScaleResponseSchema = MultidimensionalScaleInputsSchema.extend({
   id: z.string(),
   userId: z.string(),
-  participantId: z.number(), 
+  participantId: z.number(),
+  dateCreated: z.date(),
+  dateModified: z.date()
 });
 
 export type MultidimensionalScaleResponse = z.infer<typeof MultidimensionalScaleResponseSchema>;
