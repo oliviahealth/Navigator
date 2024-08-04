@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -25,10 +25,7 @@ import {
 
 const HouseholdHousingSafetyProfile: React.FC = () => {
   const router = useRouter();
-  const params = useParams();
-
-
- const action = params.actions?.[0] ?? "new";
+  const { action } = useParams();
 
   const verb = action[0];
   const submissionId = action[1];
@@ -52,6 +49,11 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
   const watchUsesTobacco = watch("usesTobacco");
   const watchCurrentlyPregnant = watch("currentlyPregnant");
   const watchInsuranceType = watch("insuranceType");
+
+  useEffect(() => {
+    setValue("yearlyHouseholdIncome", null);
+    setValue("incomeUndeterminedReason", null);
+  }, [])
 
   const submit = async (data: IHouseholdHousingSafetyProfileInputs) => {
     try {
@@ -78,9 +80,7 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
       return;
     }
 
-    setSuccessMessage(
-      "Household Housing Safety Profile submitted successfully!"
-    );
+    setSuccessMessage("Household Housing Safety Profile submitted successfully!");
     router.push("/dashboard");
   };
 

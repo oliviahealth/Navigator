@@ -1,5 +1,3 @@
-// definitions.ts
-
 import { z } from "zod";
 
 export const TimeframeEnum = z.enum(["Enrollment", "Update"]);
@@ -14,7 +12,7 @@ export const HousingStatusEnum = z.enum([
   "Lives with parent/family member",
   "Some other arrangement",
   "Sharing housing",
-  "Lives in a shelter",
+  "Lives in a shelter"
 ]);
 
 export const HouseholdHousingSafetyProfileInputsSchema = z.object({
@@ -24,21 +22,21 @@ export const HouseholdHousingSafetyProfileInputsSchema = z.object({
   staffName: z.string().min(1, "Staff name is required"),
   timeframe: z.array(TimeframeEnum).min(1, "Timeframe is required"),
   insuranceType: InsuranceTypeEnum,
-  otherInsurance: z.string().optional(),
+  otherInsurance: z.string().optional().nullable(),
   highSchoolDiploma: YesNoEnum,
-  highestEducation: EducationLevelEnum.optional(),
+  highestEducation: EducationLevelEnum.optional().nullable(),
   currentlyEnrolled: YesNoEnum,
-  middleHighSchoolGED: z.boolean().optional(),
+  middleHighSchoolGED: z.boolean().optional().nullable(),
   employmentStatus: EmploymentStatusEnum,
   usesTobacco: YesNoEnum,
-  tobaccoCessationServices: YesNoEnum.optional(),
-  currentlyPregnant: YesNoEnum.optional(),
-  wantPregnant: YesNoEnum.optional(),
-  yearlyHouseholdIncome: z.number().min(0, "Income must be a positive number").optional(),
-  incomeUndeterminedReason: z.enum(["Key family member would not share", "Participant is in foster care", "Other"]).optional(),
-  otherIncomeUndeterminedReason: z.string().optional(),
+  tobaccoCessationServices: YesNoEnum.optional().nullable(),
+  currentlyPregnant: YesNoEnum.optional().nullable(),
+  wantPregnant: YesNoEnum.optional().nullable(),
+  yearlyHouseholdIncome: z.number().optional().nullable(),
+  incomeUndeterminedReason: z.string().nullable(),
+  otherIncomeUndeterminedReason: z.string().optional().nullable(),
   dependentsCount: z.number().int().min(1, "Number of dependents must be at least 1"),
-  housingStatus: HousingStatusEnum,
+  housingStatus: HousingStatusEnum
 });
 
 export type IHouseholdHousingSafetyProfileInputs = z.infer<typeof HouseholdHousingSafetyProfileInputsSchema>;
