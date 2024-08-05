@@ -28,5 +28,10 @@ export const IntimatePartnerViolenceFormInputsSchema = z.object({
   threatenWithHarm: IPVStatusEnum,
   screamOrCurse: IPVStatusEnum
 });
-
 export type IIntimatePartnerViolenceFormInputs = z.infer<typeof IntimatePartnerViolenceFormInputsSchema>;
+
+export const IntimatePartnerViolenceFormResponseSchema = IntimatePartnerViolenceFormInputsSchema.extend({
+  id: z.string(),
+});
+
+export type IIntimatePartnerViolenceFormResponse = z.infer<typeof IntimatePartnerViolenceFormResponseSchema>;

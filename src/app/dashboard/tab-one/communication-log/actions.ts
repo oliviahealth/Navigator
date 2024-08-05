@@ -1,8 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { ICommunicationEntry } from "./definitions";
-import { CommunicationMethod, YesNo } from "@prisma/client";
+import { CommunicationLogResponseSchema, ICommunicationEntry } from "./definitions";
 
 /**
  * Creates a new communication log entry in the database.
@@ -14,28 +13,15 @@ import { CommunicationMethod, YesNo } from "@prisma/client";
  * and saves them to the database using Prisma.
  */
 export const createCommunicationLog = async (communicationLogInput: ICommunicationEntry[], userId: string) => {
-    // Format communication log entries
-    const formattedCommunicationEntries = communicationLogInput.map(communicationEntry => ({
-        ...communicationEntry,
-        dateTime: new Date(communicationEntry.dateTime).toISOString(),
-        method: communicationEntry.method as CommunicationMethod,
-        followUpNeeded: communicationEntry.followUpNeeded as YesNo
-    }));
-
     // Create communication log entry in the database
     const response = await prisma.communicationLog.create({
         data: {
             userId,
-            communicationEntries: {
-                create: formattedCommunicationEntries // Create a new CommunctionEntry record in the db and store the ids in an array
-            },
-        },
-        include: {
-            communicationEntries: true
-        }
+            communicationEntries: communicationLogInput
+        },        
     });
 
-    return response;
+    return CommunicationLogResponseSchema.parse(response);
 }
 
 /**
@@ -55,12 +41,9 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
             userId,
             id: communicationLogId
         },
-        include: {
-            communicationEntries: true,
-        },
     });
 
-    return response;
+    return CommunicationLogResponseSchema.parse(response);
 }
 
 /**
@@ -72,30 +55,17 @@ export const readCommunicationLog = async (communicationLogId: string, userId: s
  * @remarks This function updates a communication log entry in the database using Prisma. It replaces the existing
  * communication entries associated with the log entry with the updated entries provided in the input array.
  */
-export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string) => {    
-    // Format updated communication log entries
-    const formattedCommunicationEntries = communicationLogInput.map(communicationEntry => ({
-        ...communicationEntry,
-        dateTime: new Date(communicationEntry.dateTime).toISOString(),
-        method: communicationEntry.method as CommunicationMethod,
-        followUpNeeded: communicationEntry.followUpNeeded as YesNo,
-    }));
-
+export const updateCommunicationLog = async (communicationLogInput: ICommunicationEntry[], communicationLogId: string, userId: string) => {    
     // Update communication log entry in the database
     const response = await prisma.communicationLog.update({
         where: {
             id: communicationLogId,
+            userId
         },
         data: {
-            communicationEntries: {
-                deleteMany: {}, // Deletes existing entries
-                create: formattedCommunicationEntries // Creates new entries
-            },
+            communicationEntries: communicationLogInput
         },
-        include: {
-            communicationEntries: true
-        }
     });
 
-    return response;
+    return CommunicationLogResponseSchema.parse(response);
 }

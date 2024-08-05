@@ -20,8 +20,6 @@ const IPVForm: React.FC = () => {
   const router = useRouter();
   const params = useParams();
 
-  console.log(params); // for debugging
-
   const action = params.actions?.[0];
 
   const verb = action;
@@ -58,7 +56,7 @@ const IPVForm: React.FC = () => {
 
       IntimatePartnerViolenceFormInputsSchema.parse(response);
     } catch (error) {
-      //console.error(error); // for debugging
+      console.error(error); // for debugging
       setErrorMessage(
         `Error: ${
           error instanceof Error
@@ -224,7 +222,7 @@ const IPVForm: React.FC = () => {
             resource center.
           </p>
         </div>
-        <div className="flex justify-center mt-20">
+        <div className="flex justify-center mt-12">
           <button
             type="submit"
             className="font-semibold bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md"

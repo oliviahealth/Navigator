@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 
 import {
     ChildDemographicsRecordInputsSchema,
-    ChildDemographicsRecordResponseSchema,
     IChildDemographicsRecordInputs,
     YesNoEnum,
     childLivingWithEnum,
@@ -103,8 +102,7 @@ const ChildDemographicsRecord: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readChildDemographicsRecord(submissionId, user.id);
-                const validResponse = ChildDemographicsRecordResponseSchema.parse(response);
+                const validResponse = await readChildDemographicsRecord(submissionId, user.id);
 
                 const formattedData = {
                     ...validResponse,
@@ -149,8 +147,6 @@ const ChildDemographicsRecord: React.FC = () => {
             } else {
                 response = await updateChildDemographicsRecord(ChildDemographicsRecordData, submissionId, user.id)
             }
-
-            ChildDemographicsRecordResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');

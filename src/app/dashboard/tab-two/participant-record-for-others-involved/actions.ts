@@ -1,8 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantRecordForOthersEntry, IParticipantRecordForOthersInvolvedResponse } from "./definitions";
-import { DeliveryMode, LivingArrangements, ParticipantRecordForOthersInvolvedMaritalStatus } from "@prisma/client";
+import { IParticipantRecordForOthersEntry, ParticipantRecordForOthersInvolvedResponseSchema } from "./definitions";
 
 /**
  * Creates a new Participant Record Entry in the database.
@@ -14,35 +13,16 @@ import { DeliveryMode, LivingArrangements, ParticipantRecordForOthersInvolvedMar
  * and saves them to the database using Prisma.
  */
 export const createParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersEntry[], userId: string) => {
-    // Format participant record entries
-    const formattedParticipantRecordEntries = participantRecordFormInput.map(participantRecordEntry => ({
-        ...participantRecordEntry,
-        dateOfBirth: new Date(participantRecordEntry.dateOfBirth).toISOString(),
-        effectiveDate: new Date(participantRecordEntry.effectiveDate).toISOString(),
-        dueDate: new Date(participantRecordEntry.dueDate).toISOString(),
-        deliveryDate: new Date(participantRecordEntry.deliveryDate).toISOString(),
-        postpartumVisitDate: participantRecordEntry.postpartumVisitDate ? new Date(participantRecordEntry.postpartumVisitDate).toISOString() : null,
-        currentLivingArrangement: participantRecordEntry.currentLivingArrangement as LivingArrangements,
-        maritalStatus: participantRecordEntry.maritalStatus as ParticipantRecordForOthersInvolvedMaritalStatus,
-        plannedModeDelivery: participantRecordEntry.plannedModeDelivery as DeliveryMode,
-        actualModeDelivery: participantRecordEntry.actualModeDelivery as DeliveryMode,
-        priorComplications: participantRecordEntry.priorComplications as string
-    }));
-
     // Create participant record entry in the database
     const response = await prisma.participantRecordForOthersInvolvedForm.create({
         data: {
             userId,
-            participantRecordForOthersInvolvedEntries: {
-                create: formattedParticipantRecordEntries
-            },
+            participantRecordForOthersInvolvedEntries: participantRecordFormInput
         },
-        include: {
-            participantRecordForOthersInvolvedEntries: true
-        }
+       
     });
 
-    return response;
+    return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
 }
 
 /**
@@ -61,13 +41,10 @@ export const readParticipantRecordForOthersInvolved = async (participantRecordId
         where: {
             userId,
             id: participantRecordId
-        },
-        include: {
-            participantRecordForOthersInvolvedEntries: true,
-        },
+        }
     });
 
-    return response;
+    return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
 }
 
 /**
@@ -79,64 +56,16 @@ export const readParticipantRecordForOthersInvolved = async (participantRecordId
  * @remarks This function updates a participant record entry in the database using Prisma. It replaces the existing
  * participation record entries associated with the record entry with the updated entries provided in the input array.
  */
-export const updateParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersEntry[], participantRecordId: string) => {
-
-    const formattedParticipantRecordEntries = participantRecordFormInput.map(participantRecordEntry => ({
-        ...participantRecordEntry,
-        dateOfBirth: new Date(participantRecordEntry.dateOfBirth).toISOString(),
-        effectiveDate: new Date(participantRecordEntry.effectiveDate).toISOString(),
-        dueDate: new Date(participantRecordEntry.dueDate).toISOString(),
-        deliveryDate: new Date(participantRecordEntry.deliveryDate).toISOString(),
-        postpartumVisitDate: participantRecordEntry.postpartumVisitDate ? new Date(participantRecordEntry.postpartumVisitDate).toISOString() : null,
-        currentLivingArrangement: participantRecordEntry.currentLivingArrangement as LivingArrangements,
-        maritalStatus: participantRecordEntry.maritalStatus as ParticipantRecordForOthersInvolvedMaritalStatus,
-        plannedModeDelivery: participantRecordEntry.plannedModeDelivery as DeliveryMode,
-        actualModeDelivery: participantRecordEntry.actualModeDelivery as DeliveryMode,
-        priorComplications: participantRecordEntry.priorComplications as string
-    }));
-
+export const updateParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersEntry[], participantRecordId: string, userId: string) => {
     const response = await prisma.participantRecordForOthersInvolvedForm.update({
         where: {
             id: participantRecordId,
+            userId
         },
         data: {
-            participantRecordForOthersInvolvedEntries: {
-                deleteMany: {},
-                create: formattedParticipantRecordEntries
-            },
+            participantRecordForOthersInvolvedEntries: participantRecordFormInput
         },
-        include: {
-            participantRecordForOthersInvolvedEntries: true
-        }
     });
 
-    return response;
+    return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
 }
-
-/**
- * Deletes a Participant Record For Others Involved Form from the database.
- * @param submissionId - The ID of the Participant Record to delete.
- * @param userId - The ID of the user requesting to delete the record.
- * @returns {Promise<IParticipantRecordForOthersInvolvedResponse>}
- * @remarks To be used by the dashboard
- */
-export const deleteParticipantRecordForOthersInvolved = async (submissionId: string, userId: string) => {
-
-    const response = await prisma.$transaction([
-        // Delete related participant record entries first
-        prisma.participantRecordForOthersInvolvedEntry.deleteMany({
-            where: {
-                participantRecordForOthersInvolvedFormId: submissionId,
-            },
-        }),
-        // Delete the participant record form
-        prisma.participantRecordForOthersInvolvedForm.deleteMany({
-            where: {
-                id: submissionId,
-                userId: userId
-            }
-        }),
-    ]);
-    
-    return response;
-};

@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 
 import {
     deliveryModeEnum,
-    ParentalMedicalHistoryResponseSchema,
     IParentalMedicalHistoryInputs,
     ParentalMedicalHistoryInputsSchema
 } from "../definitions";
@@ -64,9 +63,7 @@ const ParentalMedicalHistory: React.FC = () => {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readParentalMedicalHistory(submissionId, user.id);
-
-                const validResponse = ParentalMedicalHistoryResponseSchema.parse(response);
+                const validResponse = await readParentalMedicalHistory(submissionId, user.id);
 
                 const formattedResponse = {
                     ...validResponse,
@@ -77,7 +74,7 @@ const ParentalMedicalHistory: React.FC = () => {
 
                 reset(formattedResponse);
 
-                setShowPostpartumLocationDate(response.attendedPostpartumVisit === 'Yes');
+                setShowPostpartumLocationDate(validResponse.attendedPostpartumVisit === 'Yes');
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
@@ -103,8 +100,6 @@ const ParentalMedicalHistory: React.FC = () => {
             } else {
                 response = await updateParentalMedicalHistory(data, submissionId, user.id)
             }
-
-            ParentalMedicalHistoryResponseSchema.parse(response);
         } catch (error) {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
