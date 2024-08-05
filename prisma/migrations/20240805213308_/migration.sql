@@ -1107,6 +1107,24 @@ CREATE TABLE "HouseholdHousingSafetyProfile" (
     CONSTRAINT "HouseholdHousingSafetyProfile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "FoodSecurity" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "worryHouseholdWithoutFood" TEXT NOT NULL,
+    "howOftenWorryHouseholdWithoutFood" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodResources" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResources" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodVariety" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FoodSecurity_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -1220,3 +1238,6 @@ ALTER TABLE "MultidimensionalScale" ADD CONSTRAINT "MultidimensionalScale_userId
 
 -- AddForeignKey
 ALTER TABLE "HouseholdHousingSafetyProfile" ADD CONSTRAINT "HouseholdHousingSafetyProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FoodSecurity" ADD CONSTRAINT "FoodSecurity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

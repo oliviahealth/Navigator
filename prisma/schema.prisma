@@ -63,6 +63,7 @@ model User {
   PrenatalCare                           PrenatalCare[]
   MultidimensionalScale                  MultidimensionalScale[]
   HouseholdHousingSafetyProfile         HouseholdHousingSafetyProfile[]
+  FoodSecurity                              FoodSecurity[]
 }
 
 enum CommunicationMethod {
@@ -1507,4 +1508,20 @@ model HouseholdHousingSafetyProfile {
   housingStatus               String
   dateCreated                 DateTime @default(now())
   dateModified                DateTime @updatedAt
+}
+
+model FoodSecurity {
+  id                                                                     String @id @default(uuid())
+  User                                                                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                                                                 String
+  worryHouseholdWithoutFood                                              String
+  howOftenWorryHouseholdWithoutFood                                      String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodResources                     String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResources             String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodVariety                       String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety               String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood         String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
