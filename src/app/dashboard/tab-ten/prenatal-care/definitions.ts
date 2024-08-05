@@ -13,7 +13,9 @@ export type IPrenatalCareInputs = z.infer<typeof PrenatalCareInputsSchema>;
 
 export const PrenatalCareResponseSchema = PrenatalCareInputsSchema.extend({
     id: z.string(),
-    userId: z.string()
+    userId: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
 });
 
 export type IPrenatalCareFormResponse = z.infer<typeof PrenatalCareResponseSchema>;
