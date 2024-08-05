@@ -61,7 +61,6 @@ model User {
   TargetChildRecord                      TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
   PrenatalCare                           PrenatalCare[]
-  MultidimensionalScale                  MultidimensionalScale[]
   HouseholdHousingSafetyProfile         HouseholdHousingSafetyProfile[]
   FoodSecurity                              FoodSecurity[]
 }
@@ -1263,32 +1262,6 @@ enum ResponseAnswers {
   Very_strongly_agree
 }
 
-model SocialSupportForm {
-  id                          String          @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId                      String
-
-  specialPersonInNeed         ResponseAnswers
-  specialPersonJoysSorrows    ResponseAnswers
-  familyHelp                  ResponseAnswers
-  emotionalHelp               ResponseAnswers
-  specialPersonForComfort     ResponseAnswers
-  friendsHelp                 ResponseAnswers
-  canCountOnFriends           ResponseAnswers
-  talkToFamilyAboutProblems   ResponseAnswers
-  friendsJoysSorrows          ResponseAnswers
-  specialPersonToTalkFeelings ResponseAnswers
-  familyHelpsDecisions        ResponseAnswers
-  talkToFriendsAboutProblems  ResponseAnswers
-  specialPersonInitials       String?
-  specialPersonRelationship   String?
-  comments                    String?         // Optional comments field
-  
-  dateCreated                 DateTime        @default(now())
-  dateModified                DateTime        @updatedAt
-  
-}
-
 model IPVScreening {
   id                String    @id @default(uuid())
   user User @relation(fields: [userId], references: [id])
@@ -1425,24 +1398,6 @@ model PrenatalCare {
   dateModified DateTime @updatedAt
 }
 
-model MultidimensionalScale {
-  id                      String   @id @default(cuid())
-  user User @relation(fields: [userId], references: [id])
-  userId                  String
-
-  assessmentDate          String
-  siteId                  String
-  participantId           Int
-  relation                String
-  formCompletionStatus    String   
-  phase                   String
-  segment                 String
-  formCompletionLanguage  String
-
-  dateCreated               DateTime @default(now())
-  dateModified               DateTime @updatedAt
-}
-
 enum TimeframeHousing {
   Enrollment
   Update
@@ -1524,4 +1479,39 @@ model FoodSecurity {
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
+}
+
+model SocialSupportForm {
+  id                          String          @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId                      String
+
+  assessmentDate String
+  siteId String
+  participantId String
+  relation String
+  formCompletionStatus String
+  phase String
+  segment String
+  formCompletionLanguage String
+
+  specialPersonInNeed         ResponseAnswers
+  specialPersonJoysSorrows    ResponseAnswers
+  familyHelp                  ResponseAnswers
+  emotionalHelp               ResponseAnswers
+  specialPersonForComfort     ResponseAnswers
+  friendsHelp                 ResponseAnswers
+  canCountOnFriends           ResponseAnswers
+  talkToFamilyAboutProblems   ResponseAnswers
+  friendsJoysSorrows          ResponseAnswers
+  specialPersonToTalkFeelings ResponseAnswers
+  familyHelpsDecisions        ResponseAnswers
+  talkToFriendsAboutProblems  ResponseAnswers
+  specialPersonInitials       String?
+  specialPersonRelationship   String?
+  comments                    String?         // Optional comments field
+  
+  dateCreated                 DateTime        @default(now())
+  dateModified                DateTime        @updatedAt
+  
 }
