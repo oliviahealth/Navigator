@@ -9,7 +9,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 import {
     ICommunicationLogInputs,
     CommunicationLogInputsSchema,
-    ICommunicationEntry,
 } from "../definitions";
 import { createCommunicationLog, readCommunicationLog, updateCommunicationLog } from "../actions";
 

@@ -258,6 +258,8 @@ CREATE TABLE "EnrollmentForm" (
     "guardianDate" TEXT,
     "gcMomsName" TEXT NOT NULL,
     "gcMomsDate" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -273,6 +275,8 @@ CREATE TABLE "MediaAppearanceForm" (
     "participantDate" TIMESTAMP(3) NOT NULL,
     "guardianName" TEXT,
     "guardianDate" TIMESTAMP(3),
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 

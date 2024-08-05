@@ -7,7 +7,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 
 import {
   EnrollmentFormInputsSchema,
-  EnrollmentFormResponseSchema,
   IEnrollmentFormInputs,
 } from "../definitions";
 import {
@@ -194,78 +193,73 @@ const EnrollmentLog: React.FC = () => {
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (verb !== "edit") return;
+        if (verb !== 'edit') {
+          return;
+        }
 
-        if (!submissionId)
-          throw new Error(
-            "Missing submissionId when fetching past submissions"
-          );
+        if (!user) {
+          throw new Error("User not found");
+        }
 
-        if (!user) throw new Error("Missing user");
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
 
         const validResponse = await readEnrollmentForm(submissionId, user.id);
-
         const formattedData = {
           ...validResponse,
           guardianDate: validResponse.guardianDate
             ? new Date(validResponse.guardianDate).toISOString().split("T")[0]
             : undefined,
-          gcMomsDate: new Date(validResponse.gcMomsDate)
-            .toISOString()
-            .split("T")[0],
-          dateOfBirth: new Date(validResponse.dateOfBirth)
-            .toISOString()
-            .split("T")[0],
-          clientDate: new Date(validResponse.clientDate)
-            .toISOString()
-            .split("T")[0],
+          gcMomsDate: new Date(validResponse.gcMomsDate).toISOString().split("T")[0],
+          dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split("T")[0],
+          clientDate: new Date(validResponse.clientDate).toISOString().split("T")[0],
         };
-
         reset(formattedData);
+
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-
-        router.push("/");
-        return;
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard');
       }
     };
 
-    if (!user) return;
-
-    fetchAndPopulatePastSubmissionData();
-  }, []);
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
   const submit = async (data: IEnrollmentFormInputs) => {
     try {
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
 
       let response;
 
-      if (verb === "new") {
+      if (verb === 'new') {
+        console.log("nah")
         response = await createEnrollmentForm(data, user.id);
       } else {
+        console.log("ye")
         response = await updateEnrollmentForm(data, submissionId, user.id);
       }
-
-      EnrollmentFormResponseSchema.parse(response);
     } catch (error) {
       console.error(error);
-      setErrorMessage("Something went wrong! Please try again later");
+      setErrorMessage('Something went wrong! Please try again later');
 
-      router.push("/dashboard");
+      router.push('/dashboard')
 
       return;
     }
 
-    setSuccessMessage("Enrollment Form submitted successfully!");
-    router.push("/dashboard");
+    setSuccessMessage('Enrollment Form submitted successfully!')
+    router.push('/dashboard')
   };
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
+      console.log(errors)
       setErrorMessage("Please ensure all fields have been completed on tabs 6 and 10");
     }
   }, [errors])
@@ -425,7 +419,7 @@ const EnrollmentLog: React.FC = () => {
             )}
             <p className="font-medium pb-2 pt-8">Date of Birth</p>
             <input
-              {...register("dateOfBirth")}
+              {...register("dateOfBirth", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
               type="date"
             />
@@ -563,7 +557,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("clientDate")}
+            {...register("clientDate", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
@@ -588,7 +582,7 @@ const EnrollmentLog: React.FC = () => {
               <p className="font-medium pb-2 pt-8">Legal Guardian Name</p>
               <input
                 {...register("guardianName", {
-                  required: watch("clientAge") < 18,
+                  required: watch("clientAge") < 18
                 })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
               />
@@ -601,7 +595,7 @@ const EnrollmentLog: React.FC = () => {
               <p className="font-medium pb-2 pt-8">Date</p>
               <input
                 {...register("guardianDate", {
-                  required: watch("clientAge") < 18,
+                  required: watch("clientAge") < 18, valueAsDate: true
                 })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
@@ -628,7 +622,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("gcMomsDate")}
+            {...register("gcMomsDate", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />

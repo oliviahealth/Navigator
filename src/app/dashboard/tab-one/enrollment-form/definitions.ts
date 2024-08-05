@@ -31,7 +31,7 @@ export const EnrollmentFormInputsSchema = z.object({
     }),
   clientDate: z.union([z.date(), z.string().min(1, "Date is required")]),
   guardianName: z.string().nullish(),
-  guardianDate: z.union([z.date(), z.string()]).nullish(),
+  guardianDate: z.union([z.date(), z.string()]).nullable(),
   gcMomsName: z.string().min(1, 'GC-MOMS name is required'),
   gcMomsDate: z.union([z.date(), z.string().min(1, "Date is required")]),
   label: z.string().min(1, "Label required."),

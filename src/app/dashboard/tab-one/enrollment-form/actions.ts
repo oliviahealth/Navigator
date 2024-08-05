@@ -34,9 +34,12 @@ export const readEnrollmentForm = async (enrollmentFormId: string, userId: strin
 export const updateEnrollmentForm = async (enrollmentFormInput: IEnrollmentFormInputs, enrollmentFormId: string, userId: string) => {
     const { clientAge, ...rest } = enrollmentFormInput;
 
-    const response = await prisma.enrollmentForm.create({
-        data: {
+    const response = await prisma.enrollmentForm.update({
+        where: {
+            id: enrollmentFormId,
             userId,
+        },
+        data: {
             ...rest,
             guardianDate: rest.guardianDate ? new Date(rest.guardianDate).toISOString() : null,
             gcMomsDate: new Date(rest.gcMomsDate).toISOString(),

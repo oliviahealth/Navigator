@@ -3,15 +3,15 @@
 import { prisma } from "@/lib/prisma";
 import { IMediaAppearanceFormInput, MediaAppearanceFormResponseSchema } from "./definitions";
 
-export const createMediaApperanceForm = async (mediaApperanceFormInput: IMediaAppearanceFormInput, userId: string) => {
-    const { participantAge, ...rest } = mediaApperanceFormInput;
+export const createMediaAppearanceForm = async (mediaAppearanceFormInput: IMediaAppearanceFormInput, userId: string) => {
+    const { participantAge, ...rest } = mediaAppearanceFormInput;
 
     const response = await prisma.mediaAppearanceForm.create({
         data: {
             userId,
             ...rest,
-            // participantDate: new Date(mediaApperanceFormInput.participantDate).toISOString(),
-            // guardianDate: mediaApperanceFormInput.guardianDate ? new Date(mediaApperanceFormInput.guardianDate).toISOString() : null
+            participantDate: new Date(mediaAppearanceFormInput.participantDate).toISOString(),
+            guardianDate: mediaAppearanceFormInput.participantDate ? new Date(mediaAppearanceFormInput.participantDate).toISOString() : null
         }
     });
 
@@ -32,10 +32,15 @@ export const readMediaAppearanceForm = async (mediaAppearanceFormId: string, use
 export const updateMediaAppearanceForm = async (mediaAppearanceFormInput: IMediaAppearanceFormInput, mediaAppearanceFormId: string, userId: string) => {
     const { participantAge, ...rest } = mediaAppearanceFormInput;
 
-    const response = await prisma.mediaAppearanceForm.create({
-        data: {
+    const response = await prisma.mediaAppearanceForm.update({
+        where: {
             userId,
-            ...rest
+            id: mediaAppearanceFormId
+        },
+        data: {
+            ...rest,
+            participantDate: new Date(mediaAppearanceFormInput.participantDate).toISOString(),
+            guardianDate: mediaAppearanceFormInput.participantDate ? new Date(mediaAppearanceFormInput.participantDate).toISOString() : null
         }
     });
 

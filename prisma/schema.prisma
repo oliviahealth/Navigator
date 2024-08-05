@@ -140,6 +140,8 @@ model MediaAppearanceForm {
   participantDate DateTime
   guardianName    String?
   guardianDate    DateTime?
+  label           String
+  staffNotes      String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

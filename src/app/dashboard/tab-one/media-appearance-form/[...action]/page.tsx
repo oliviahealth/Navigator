@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import useAppStore from "@/lib/useAppStore";
-import { MediaApperanceFormInputSchema, IMediaAppearanceFormInput } from "../definitions";
-import { createMediaApperanceForm, readMediaAppearanceForm, updateMediaAppearanceForm } from "../actions";
+import { MediaAppearanceFormInputSchema, IMediaAppearanceFormInput } from "../definitions";
+import { createMediaAppearanceForm, readMediaAppearanceForm, updateMediaAppearanceForm } from "../actions";
 
 
 const MediaAppearanceForm: React.FC = () => {
@@ -80,7 +80,7 @@ const MediaAppearanceForm: React.FC = () => {
     reset,
     formState: { errors },
   } = useForm<IMediaAppearanceFormInput>({
-    resolver: zodResolver(MediaApperanceFormInputSchema),
+    resolver: zodResolver(MediaAppearanceFormInputSchema),
     defaultValues: {},
   });
 
@@ -93,39 +93,38 @@ const MediaAppearanceForm: React.FC = () => {
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (verb !== "edit") return;
-        else console.log("reached here");
+        if (verb !== 'edit') {
+          return;
+        }
 
-        if (!submissionId)
-          throw new Error(
-            "Missing submissionId when fetching past submissions"
-          );
-        else console.log("reached here");
+        if (!user) {
+          throw new Error("User not found");
+        }
 
-        if (!user) throw new Error("Missing user");
-
-        else console.log("reached here");
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
 
         const validResponse = await readMediaAppearanceForm(submissionId, user.id);
-
         const formattedData = {
           ...validResponse,
           participantDate: new Date(validResponse.participantDate).toISOString().split("T")[0],
-        };
+          guardianDate: validResponse.guardianDate
+            ? new Date(validResponse.guardianDate).toISOString().split("T")[0]
+            : undefined,
+        }
         reset(formattedData);
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-
-        router.push("/");
-        return;
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard');
       }
     };
 
-    if (!user) return;
-
-    fetchAndPopulatePastSubmissionData();
-  }, []);
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
   const submit = async (data: IMediaAppearanceFormInput) => {
     try {
@@ -136,7 +135,7 @@ const MediaAppearanceForm: React.FC = () => {
       let response;
 
       if (verb === "new") {
-        response = await createMediaApperanceForm({ ...data, guardianDate: data.guardianName ? data.participantDate : null }, user.id);
+        response = await createMediaAppearanceForm({ ...data, guardianDate: data.guardianName ? data.participantDate : null }, user.id);
       } else {
         response = await updateMediaAppearanceForm(data, submissionId, user.id);
       }
@@ -287,6 +286,33 @@ const MediaAppearanceForm: React.FC = () => {
               )}
             </div>
           )}
+          <div className="pt-6">
+            <hr className="border-t-1 border-gray-400 my-4" />
+            <div>
+              <p className="font-semibold pb-2 pt-8">Submission Label</p>
+              <textarea
+                {...register("label")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.label && (
+                <span className="label-text-alt text-red-500">
+                  {errors.label.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+              <textarea
+                {...register("staffNotes")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.staffNotes && (
+                <span className="label-text-alt text-red-500">
+                  {errors.staffNotes.message}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="mb-2">
             <button
               type="submit"
