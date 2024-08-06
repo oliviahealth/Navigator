@@ -1027,6 +1027,8 @@ model HousingSecurityHomeVisitForm {
   erVisitSpecific         Json?
   wellChildVisits         YesNo
   wellChildVisitsSpecific Json?
+  label                   String
+  staffNotes              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1461,6 +1463,8 @@ model HouseholdHousingSafetyProfile {
   otherIncomeUndeterminedReason String?
   dependentsCount             Int
   housingStatus               String
+  label                       String
+  staffNotes                  String
   dateCreated                 DateTime @default(now())
   dateModified                DateTime @updatedAt
 }
@@ -1477,6 +1481,8 @@ model FoodSecurity {
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety               String?
   pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood         String
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
+  label                                                                  String
+  staffNotes                                                             String
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

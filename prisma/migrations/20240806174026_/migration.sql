@@ -757,6 +757,8 @@ CREATE TABLE "HousingSecurityHomeVisitForm" (
     "erVisitSpecific" JSONB,
     "wellChildVisits" "YesNo" NOT NULL,
     "wellChildVisitsSpecific" JSONB,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -920,31 +922,6 @@ CREATE TABLE "DeliveryHistoryInformationForm" (
 );
 
 -- CreateTable
-CREATE TABLE "SocialSupportForm" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
-    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
-    "familyHelp" "ResponseAnswers" NOT NULL,
-    "emotionalHelp" "ResponseAnswers" NOT NULL,
-    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
-    "friendsHelp" "ResponseAnswers" NOT NULL,
-    "canCountOnFriends" "ResponseAnswers" NOT NULL,
-    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
-    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
-    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
-    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
-    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
-    "specialPersonInitials" TEXT,
-    "specialPersonRelationship" TEXT,
-    "comments" TEXT,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "IPVScreening" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -1059,24 +1036,6 @@ CREATE TABLE "PrenatalCare" (
 );
 
 -- CreateTable
-CREATE TABLE "MultidimensionalScale" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "assessmentDate" TEXT NOT NULL,
-    "siteId" TEXT NOT NULL,
-    "participantId" INTEGER NOT NULL,
-    "relation" TEXT NOT NULL,
-    "formCompletionStatus" TEXT NOT NULL,
-    "phase" TEXT NOT NULL,
-    "segment" TEXT NOT NULL,
-    "formCompletionLanguage" TEXT NOT NULL,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "MultidimensionalScale_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "HouseholdHousingSafetyProfile" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -1101,6 +1060,8 @@ CREATE TABLE "HouseholdHousingSafetyProfile" (
     "otherIncomeUndeterminedReason" TEXT,
     "dependentsCount" INTEGER NOT NULL,
     "housingStatus" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -1119,10 +1080,45 @@ CREATE TABLE "FoodSecurity" (
     "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety" TEXT,
     "pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT NOT NULL,
     "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "FoodSecurity_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SocialSupportForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assessmentDate" TEXT NOT NULL,
+    "siteId" TEXT NOT NULL,
+    "participantId" TEXT NOT NULL,
+    "relation" TEXT NOT NULL,
+    "formCompletionStatus" TEXT NOT NULL,
+    "phase" TEXT NOT NULL,
+    "segment" TEXT NOT NULL,
+    "formCompletionLanguage" TEXT NOT NULL,
+    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
+    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
+    "familyHelp" "ResponseAnswers" NOT NULL,
+    "emotionalHelp" "ResponseAnswers" NOT NULL,
+    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
+    "friendsHelp" "ResponseAnswers" NOT NULL,
+    "canCountOnFriends" "ResponseAnswers" NOT NULL,
+    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
+    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
+    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
+    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
+    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
+    "specialPersonInitials" TEXT,
+    "specialPersonRelationship" TEXT,
+    "comments" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -1216,9 +1212,6 @@ ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_
 ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "IPVScreening" ADD CONSTRAINT "IPVScreening_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1234,10 +1227,10 @@ ALTER TABLE "PerceivedMaternalPlanningSelfEfficacyTool" ADD CONSTRAINT "Perceive
 ALTER TABLE "PrenatalCare" ADD CONSTRAINT "PrenatalCare_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MultidimensionalScale" ADD CONSTRAINT "MultidimensionalScale_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "HouseholdHousingSafetyProfile" ADD CONSTRAINT "HouseholdHousingSafetyProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "FoodSecurity" ADD CONSTRAINT "FoodSecurity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
