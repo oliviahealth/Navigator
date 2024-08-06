@@ -228,6 +228,8 @@ model ParticipantDemographicsForm {
   USArmedForces               YesNo
   reenrollmentWithGap         YesNo
   transferFromAnotherSite     YesNo
+  label                       String
+  staffNotes                  String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -264,6 +266,8 @@ model ParticipantRecordForOthersInvolvedForm {
   userId String
 
   participantRecordForOthersInvolvedEntries Json
+  label                                     String
+  staffNotes                                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -327,6 +331,8 @@ model ChildDemographicsRecord {
   caseworker                   String?
   caseworkerPhoneNumber        String?
   importantInformation         String?
+  label                        String
+  staffNotes                   String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -342,6 +348,8 @@ model SupportSystemsForm {
   strengths            String
   areasForImprovement  String
   goals                String
+  label                String
+  staffNotes           String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -356,6 +364,8 @@ model CurrentLivingArrangement {
   listPeopleLivingWithPatient      Json
   listChildrenNotLivingWithPatient Json
   notes                            String?
+  label                            String
+  staffNotes                       String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -397,6 +407,8 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+  label                        String
+  staffNotes                   String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -449,7 +461,9 @@ model ReferralsAndServices {
   legalAid                            Json
   specialtyCourt                      Json
   legalAssistanceOther                Json[]
-  additionalNotes                     String
+  additionalNotes                     String?
+  label                               String
+  staffNotes                          String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

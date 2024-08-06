@@ -311,6 +311,8 @@ CREATE TABLE "ParticipantDemographicsForm" (
     "USArmedForces" "YesNo" NOT NULL,
     "reenrollmentWithGap" "YesNo" NOT NULL,
     "transferFromAnotherSite" "YesNo" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -322,6 +324,8 @@ CREATE TABLE "ParticipantRecordForOthersInvolvedForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "participantRecordForOthersInvolvedEntries" JSONB NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -364,6 +368,8 @@ CREATE TABLE "ChildDemographicsRecord" (
     "caseworker" TEXT,
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -378,6 +384,8 @@ CREATE TABLE "SupportSystemsForm" (
     "strengths" TEXT NOT NULL,
     "areasForImprovement" TEXT NOT NULL,
     "goals" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -391,6 +399,8 @@ CREATE TABLE "CurrentLivingArrangement" (
     "listPeopleLivingWithPatient" JSONB NOT NULL,
     "listChildrenNotLivingWithPatient" JSONB NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -425,6 +435,8 @@ CREATE TABLE "ChildrenNeedsForm" (
     "specializedMedEquipmentNotes" TEXT,
     "other" JSONB NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -476,7 +488,9 @@ CREATE TABLE "ReferralsAndServices" (
     "legalAid" JSONB NOT NULL,
     "specialtyCourt" JSONB NOT NULL,
     "legalAssistanceOther" JSONB[],
-    "additionalNotes" TEXT NOT NULL,
+    "additionalNotes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 

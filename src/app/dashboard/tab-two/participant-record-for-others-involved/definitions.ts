@@ -45,6 +45,7 @@ export const ParticipantRecordForOthersEntrySchema = z.object({
     emergencyContactRelationship: z.string().min(1, 'Emergency contact relationship is required'),
     maritalStatus: maritalStatusEnum.nullable().refine(val => val, { message: 'Marital status is required' }),
     insurancePlan: z.string().min(1, 'Insurance plan is required'),
+
     effectiveDate: z.union([z.date(), z.string().min(1, "Insurance plan effective date is required")]),
     subscriberId: z.string().min(1, 'Insurance plan subscriber ID is required'),
     groupId: z.string().min(1, 'Insurance plan group ID is required'),
@@ -65,7 +66,9 @@ export const ParticipantRecordForOthersEntrySchema = z.object({
 export type IParticipantRecordForOthersEntry = z.infer<typeof ParticipantRecordForOthersEntrySchema>
 
 export const ParticipantRecordForOthersInvolvedInputsSchema = z.object({
-    participantRecordForOthersInvolvedEntries: z.array(ParticipantRecordForOthersEntrySchema)
+    participantRecordForOthersInvolvedEntries: z.array(ParticipantRecordForOthersEntrySchema),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IParticipantRecordForOthersInvolvedInputs = z.infer<typeof ParticipantRecordForOthersInvolvedInputsSchema>
 

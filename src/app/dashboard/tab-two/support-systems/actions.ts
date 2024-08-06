@@ -12,12 +12,11 @@ import { ISupportSystemInputs, SupportSystemsResponseSchema } from "./definition
  * @remarks This function takes Support Systems record data and saves them to the database using Prisma.
  */
 export const createSupportSystems = async (SupportSystemsInput: ISupportSystemInputs, userId: string) => {
-    const { ...data } = SupportSystemsInput;
 
     const response = await prisma.supportSystemsForm.create({
         data: {
             userId,
-            ...data,
+            ...SupportSystemsInput,
         },
     });
 
@@ -55,7 +54,6 @@ export const readSupportSystems = async (SupportSystemsId: string, userId: strin
  * record with the record provided in the input.
  */
 export const updateSupportSystems = async (SupportSystemsInput: ISupportSystemInputs, id: string, userId: string) => {
-    const { ...data } = SupportSystemsInput;
 
     const response = await prisma.supportSystemsForm.update({
         where: {
@@ -63,7 +61,7 @@ export const updateSupportSystems = async (SupportSystemsInput: ISupportSystemIn
             userId
         },
         data: {
-            ...data
+            ...SupportSystemsInput
         }
     })
 
@@ -78,12 +76,12 @@ export const updateSupportSystems = async (SupportSystemsInput: ISupportSystemIn
  * @remarks To be used by the dashboard
  */
 export const deleteSupportSystems = async (submissionId: string, userId: string) => {
-    const response = await prisma.supportSystemsForm.deleteMany({
+    const response = await prisma.supportSystemsForm.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return SupportSystemsResponseSchema.parse(response);
 };

@@ -12,22 +12,11 @@ import { ChildDemographicsRecordResponseSchema, IChildDemographicsRecordInputs }
  * @remarks This function takes Child demographics record data and saves them to the database using Prisma.
  */
 export const createChildDemographicsRecord = async (ChildDemographicsRecordInput: IChildDemographicsRecordInputs, userId: string) => {
-    const {
-        dateOfBirth,
-        effectiveDate,
-        ...rest
-    } = ChildDemographicsRecordInput;
-
-    // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(dateOfBirth);
-    const effectiveDateAsDate = new Date(effectiveDate);
 
     const response = await prisma.childDemographicsRecord.create({
         data: {
             userId,
-            dateOfBirth: dateOfBirthAsDate,
-            effectiveDate: effectiveDateAsDate,
-            ...rest,
+            ...ChildDemographicsRecordInput
         },
     });
 
@@ -66,25 +55,13 @@ export const readChildDemographicsRecord = async (ChildDemographicsRecordId: str
  */
 export const updateChildDemographicsRecord = async (ChildDemographicsRecordInput: IChildDemographicsRecordInputs, id: string, userId: string) => {
 
-    const {
-        dateOfBirth,
-        effectiveDate,
-        ...rest
-    } = ChildDemographicsRecordInput;
-
-    // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(dateOfBirth);
-    const effectiveDateAsDate = new Date(effectiveDate);
-
     const response = await prisma.childDemographicsRecord.update({
         where: {
             id,
             userId
         },
         data: {
-            dateOfBirth: dateOfBirthAsDate,
-            effectiveDate: effectiveDateAsDate,
-            ...rest,
+            ...ChildDemographicsRecordInput
         }
     })
 
@@ -99,7 +76,7 @@ export const updateChildDemographicsRecord = async (ChildDemographicsRecordInput
  * @remarks To be used by the dashboard
  */
 export const deleteChildDemographicsRecord = async (submissionId: string, userId: string) => {
-    const response = await prisma.childDemographicsRecord.deleteMany({
+    const response = await prisma.childDemographicsRecord.delete({
         where: {
             id: submissionId,
             userId: userId

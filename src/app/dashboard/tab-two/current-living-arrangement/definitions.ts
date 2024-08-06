@@ -1,9 +1,9 @@
-import {z} from "zod";
+import { z } from "zod";
 
 
 const peopleLivingWithPatient = z.object({
     name: z.string().min(1, "Name is required."),
-    dateOfBirth:  z.union([z.date(), z.string().min(1, "Date of birth is required")]),
+    dateOfBirth: z.union([z.date(), z.string().min(1, "Date of birth is required")]),
     relation: z.string().min(1, "Relation is required."),
 });
 
@@ -17,7 +17,9 @@ const childrenNotLivingWithPatient = z.object({
 export const CurrentLivingArrangementInputsSchema = z.object({
     listPeopleLivingWithPatient: z.array(peopleLivingWithPatient),
     listChildrenNotLivingWithPatient: z.array(childrenNotLivingWithPatient),
-    notes: z.string().nullable()
+    notes: z.string().nullable(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type ICurrentLivingArrangementInputs = z.infer<typeof CurrentLivingArrangementInputsSchema>
 
