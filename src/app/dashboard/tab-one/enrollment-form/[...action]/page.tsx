@@ -238,10 +238,8 @@ const EnrollmentLog: React.FC = () => {
       let response;
 
       if (verb === 'new') {
-        console.log("nah")
         response = await createEnrollmentForm(data, user.id);
       } else {
-        console.log("ye")
         response = await updateEnrollmentForm(data, submissionId, user.id);
       }
     } catch (error) {
