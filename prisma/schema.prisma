@@ -494,6 +494,8 @@ model ParentalMedicalHistory {
   living                  String
   priorComplications      String?
   ongoingMedicalProblems  String
+  label                   String
+  staffNotes              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -505,24 +507,12 @@ model EncounterForm {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  participantName String
-  caseId          String
-  monthYear       String
-
+  participantName  String
+  caseId           String
+  monthYear        String
   encounterEntries Json[]
-
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
-}
-
-model CurrentMedicationList {
-  id String @id @default(uuid())
-
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  currentMedicationList Json[]
-  notes                 String?
+  label            String
+  staffNotes       String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -787,7 +777,21 @@ model NutritionHistoryAndAssessment {
   dietsAndSupplements                   DietsAndSupplements[]
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
-  staffNotes                            String?
+  label                                 String
+  staffNotes                            String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
