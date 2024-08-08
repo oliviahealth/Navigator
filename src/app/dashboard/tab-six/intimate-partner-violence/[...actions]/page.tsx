@@ -213,7 +213,6 @@ const IPVForm: React.FC = () => {
             )}
           </div>
         </div>
-
         <div className="mt-8 p-4 bg-gray-100 rounded-lg shadow mb-16">
           <p className="text-lg text-center">
             Scoring: Each item is scored from 1-5. Range between 4-20. A score
@@ -222,6 +221,19 @@ const IPVForm: React.FC = () => {
             resource center.
           </p>
         </div>
+        <div>
+            <hr className="border-t-1 border-gray-400 my-4" />
+            <div>
+                <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+            </div>
+            <div>
+                <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                <textarea {...register("notes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                {errors.notes && (<span className="label-text-alt text-red-500">{errors.notes.message}</span>)}
+            </div>
+          </div>
         <div className="flex justify-center mt-12">
           <button
             type="submit"

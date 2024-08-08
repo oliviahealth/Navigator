@@ -63,6 +63,8 @@ export const SubstanceUseHistoryInputSchema = z.object({
   date_used_medicine_service: z.string().nullish(),
   addiction_medicine_clinic: z.string().nullish(),
   addiction_medicine_clinic_phone: z.string().nullish(),
+  label: z.string(),
+  staffNotes: z.string()
 });
 export type ISubstanceUseHistoryInput = z.infer<typeof SubstanceUseHistoryInputSchema>;
 

@@ -57,7 +57,9 @@ export const DukeUniversityReligionIndexInputsSchema = z.object({
     timeSpentReligiously: TimeSpentReligiouslyEnum,
     divineExperience: TruthLevelEnum,
     beliefLifeInfluence: TruthLevelEnum,
-    religiousIntegrationEffort: TruthLevelEnum
+    religiousIntegrationEffort: TruthLevelEnum,
+    label: z.string(),
+    staffNotes: z.string()
 });
 export type IDukeUniversityReligionIndexInputs = z.infer<typeof DukeUniversityReligionIndexInputsSchema>;
 

@@ -508,6 +508,9 @@ model CurrentMedicationList {
   currentMedicationList Json[]
   notes                 String?
 
+  label String
+  staffNotes String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -813,6 +816,12 @@ model DukeUniversityReligionIndex {
   divineExperience           TruthLevel
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
+
+  label String
+  staffNotes String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model MentalHealthHistory {
@@ -825,6 +834,9 @@ model MentalHealthHistory {
   takingMedication    YesNo
   medicationDetails   String?
   notes               String?
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -928,6 +940,9 @@ model EdinburgPostnatalDepressionScale {
   timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
+
+  label String
+  staffNotes String
 }
 
 enum SmokingStatus {
@@ -945,6 +960,9 @@ model SmokingTobaccoPregnancy {
   userId String
 
   smokingStatus SmokingStatus
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1005,6 +1023,9 @@ model SubstanceUseHistory {
   addiction_medicine_clinic        String?
   addiction_medicine_clinic_phone  String?
 
+  label String
+  staffNotes String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1061,6 +1082,9 @@ model PerceivedStressScale {
   difficultiesPilingUp      PerceivedStressScaleOptions
   totalScore                String
 
+  label String
+  staffNotes String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1092,6 +1116,10 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
+
+  label String
+  staffNotes String
+
   dateCreated             DateTime   @default(now())
   dateModified            DateTime   @updatedAt
 }
@@ -1104,6 +1132,9 @@ model PregnancySpacingAssesment {
 
   hadPregnanciesLessThan12MoApart String
   discussFamilyPlanningInterest   String
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1132,6 +1163,9 @@ model TenBsPostpartumAppointmentAssesment {
   EPDStool                                 YesNo
   birthControl                             YesNo
   bloodwork                                YesNo
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1192,6 +1226,9 @@ model IntimatePartnerViolenceForm {
   insultOrTalkDown IPVStatus
   threatenWithHarm IPVStatus
   screamOrCurse    IPVStatus
+
+  label String
+  notes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1285,7 +1322,10 @@ model SocialSupportForm {
   talkToFriendsAboutProblems  ResponseAnswers
   specialPersonInitials       String?
   specialPersonRelationship   String?
-  comments                    String? // Optional comments field
+  comments                    String?
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1296,13 +1336,16 @@ model IPVScreening {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  dateTaken         DateTime
-  ipvScreeningDate  DateTime
+  dateTaken         String
+  ipvScreeningDate  String
   screeningToolUsed String
   totalScore        String
   ipvDisclosure     YesNo
-  ipvDisclosureDate DateTime
+  ipvDisclosureDate String
   notes             String?
+
+  label      String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

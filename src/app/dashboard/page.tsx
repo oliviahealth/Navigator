@@ -110,6 +110,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-six/ipv-disclosure-tool/new'}>
                             Intimate Partner Violence Disclosure Screening tool
                         </a>
+
+                        <a href={'dashboard/tab-six/social_support_form/new'}>
+                            Social Support Form
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">

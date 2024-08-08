@@ -4,11 +4,13 @@ import { prisma } from "@/lib/prisma";
 import { PregnancySpacingAssesmentResponseSchema, IPregnancySpacingAssesmentInputs } from "./definitions";
 
 export const createPregnancySpacingAssesmentRecord = async (pregnancySpacingAssesmentInput: IPregnancySpacingAssesmentInputs, userId: string) => {
-    const { hadPregnanciesLessThan12MoApart, discussFamilyPlanningInterest } = pregnancySpacingAssesmentInput;
+    const { hadPregnanciesLessThan12MoApart, discussFamilyPlanningInterest, label, staffNotes } = pregnancySpacingAssesmentInput;
     const response = await prisma.pregnancySpacingAssesment.create({
         data: {
             hadPregnanciesLessThan12MoApart,
             discussFamilyPlanningInterest,
+            label,
+            staffNotes,
             userId,
         }
     });
@@ -28,7 +30,7 @@ export const readPregnancySpacingAssesmentRecord = async (pregnancySpacingAssesm
 }
 
 export const updatePregnancySpacingAssesmentRecord = async (pregnancySpacingAssesmentInput: IPregnancySpacingAssesmentInputs, id: string, userId: string) => {
-    const { hadPregnanciesLessThan12MoApart, discussFamilyPlanningInterest } = pregnancySpacingAssesmentInput;
+    const { hadPregnanciesLessThan12MoApart, discussFamilyPlanningInterest, label, staffNotes } = pregnancySpacingAssesmentInput;
     const response = await prisma.pregnancySpacingAssesment.update({
         where: {
             id,
@@ -36,7 +38,9 @@ export const updatePregnancySpacingAssesmentRecord = async (pregnancySpacingAsse
         },
         data: {
             hadPregnanciesLessThan12MoApart,
-            discussFamilyPlanningInterest
+            discussFamilyPlanningInterest,
+            label,
+            staffNotes
         }
     });
 
