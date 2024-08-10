@@ -44,6 +44,16 @@ export const readChildrenNeedsForm = async (childrenNeedsFormId: string, userId:
     return ChildrenNeedsFormResponseSchema.parse(response);
 }
 
+export const readAllChildrenNeedsForm = async (userId: string) => {
+    const response = await prisma.childDemographicsRecord.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => ChildrenNeedsFormResponseSchema.parse(log));
+}
+
 /**
  * Updates a Children Needs Form in the database with new Children Needs Form.
  * @param {IChildrenNeedsFormInputs} childrenNeedsFormInput - An array of updated Children Needs Formies.

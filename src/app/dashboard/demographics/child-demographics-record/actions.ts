@@ -54,6 +54,16 @@ export const readChildDemographicsRecord = async (ChildDemographicsRecordId: str
     return ChildDemographicsRecordResponseSchema.parse(response);
 }
 
+export const readAllChildDemographicsRecord = async (userId: string) => {
+    const response = await prisma.communicationLog.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => ChildDemographicsRecordResponseSchema.parse(log));
+}
+
 /**
  * Updates a Child Demographics Record in the database with new Child Demographics Record.
  * @param {IChildDemographicsRecordInputs} ChildDemographicsRecordInput - An array of updated Child Demographics Recordies.

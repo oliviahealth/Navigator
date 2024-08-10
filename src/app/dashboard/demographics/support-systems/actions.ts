@@ -44,6 +44,16 @@ export const readSupportSystems = async (SupportSystemsId: string, userId: strin
     return SupportSystemsResponseSchema.parse(response);
 }
 
+export const readAllSupportSystems = async (userId: string) => {
+    const response = await prisma.communicationLog.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => SupportSystemsResponseSchema.parse(log));
+}
+
 /**
  * Updates a Support Systems Record in the database with new Support Systems Record.
  * @param {ISupportSystemInputs} SupportSystemsInput - An array of updated Support Systems Recordies.
