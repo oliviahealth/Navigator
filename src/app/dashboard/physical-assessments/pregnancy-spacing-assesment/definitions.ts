@@ -8,7 +8,9 @@ export const PregnancySpacingAssesmentInputsSchema = z.object({
 export type IPregnancySpacingAssesmentInputs = z.infer<typeof PregnancySpacingAssesmentInputsSchema>;
 
 export const PregnancySpacingAssesmentResponseSchema = PregnancySpacingAssesmentInputsSchema.extend({
-    id: z.string()
+    id: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
 });
 
 export type IPregnancySpacingAssesmentFormResponse = z.infer<typeof PregnancySpacingAssesmentResponseSchema>;

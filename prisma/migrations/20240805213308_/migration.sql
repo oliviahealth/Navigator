@@ -199,8 +199,6 @@ CREATE TYPE "Yes" AS ENUM ('Yes');
 -- CreateEnum
 CREATE TYPE "AgreementLevel" AS ENUM ('Strongly_disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly_agree');
 
-<<<<<<<< HEAD:prisma/migrations/20240724223126_m/migration.sql
-========
 -- CreateEnum
 CREATE TYPE "TimeframeHousing" AS ENUM ('Enrollment', 'Update');
 
@@ -216,7 +214,6 @@ CREATE TYPE "EmploymentStatus" AS ENUM ('EmployedFullTime', 'EmployedPartTime', 
 -- CreateEnum
 CREATE TYPE "HousingStatus" AS ENUM ('OwnsOrSharesOwnHome', 'RentsOrSharesRentedHome', 'LivesInPublicHousing', 'LivesWithParentFamilyMember', 'SomeOtherArrangement', 'SharingHousing', 'LivesInShelter');
 
->>>>>>>> main:prisma/migrations/20240805222254_/migration.sql
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -923,7 +920,6 @@ CREATE TABLE "DeliveryHistoryInformationForm" (
 );
 
 -- CreateTable
-<<<<<<<< HEAD:prisma/migrations/20240724223126_m/migration.sql
 CREATE TABLE "SocialSupportForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -949,8 +945,6 @@ CREATE TABLE "SocialSupportForm" (
 );
 
 -- CreateTable
-========
->>>>>>>> main:prisma/migrations/20240805222254_/migration.sql
 CREATE TABLE "IPVScreening" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -1131,31 +1125,6 @@ CREATE TABLE "FoodSecurity" (
     CONSTRAINT "FoodSecurity_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "SocialSupportForm" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
-    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
-    "familyHelp" "ResponseAnswers" NOT NULL,
-    "emotionalHelp" "ResponseAnswers" NOT NULL,
-    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
-    "friendsHelp" "ResponseAnswers" NOT NULL,
-    "canCountOnFriends" "ResponseAnswers" NOT NULL,
-    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
-    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
-    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
-    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
-    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
-    "specialPersonInitials" TEXT,
-    "specialPersonRelationship" TEXT,
-    "comments" TEXT,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -1247,12 +1216,9 @@ ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_
 ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-<<<<<<<< HEAD:prisma/migrations/20240724223126_m/migration.sql
 ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-========
->>>>>>>> main:prisma/migrations/20240805222254_/migration.sql
 ALTER TABLE "IPVScreening" ADD CONSTRAINT "IPVScreening_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1275,6 +1241,3 @@ ALTER TABLE "HouseholdHousingSafetyProfile" ADD CONSTRAINT "HouseholdHousingSafe
 
 -- AddForeignKey
 ALTER TABLE "FoodSecurity" ADD CONSTRAINT "FoodSecurity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
