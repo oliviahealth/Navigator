@@ -1167,6 +1167,8 @@ model ASQ3 {
   personalSocialScoreNotRecorded YesNo
   followUpAction                 FollowUpAction[]
   describeActivitiesProvided     String?
+  label                          String
+  staffNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1236,6 +1238,8 @@ model BriefChildWellnessUpdate {
   otherMedicalCare     String?
   hasDentalCare        YesNo
   readingFrequency     ReadingFrequency
+  label                String
+  staffNotes           String
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1250,6 +1254,8 @@ model DeliveryHistoryInformationForm {
   dateCompleted   DateTime
   staffName       String
   deliveries      Json[]
+  label           String
+  staffNotes      String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1318,6 +1324,8 @@ model InfancyQuestionnaire {
   breastMilkAtTwoMonths    YesNo?
   breastMilkAtSixMonths    YesNo?
   motherCouldNotBreastfeed Yes?
+  label                    String
+  staffNotes               String
   
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1343,6 +1351,8 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
+  label                    String
+  staffNotes               String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1381,6 +1391,8 @@ model PerceivedMaternalPlanningSelfEfficacyTool {
   babyRespondsWell          AgreementLevel
   goodInteraction           AgreementLevel
   showingAffection          AgreementLevel
+  label                     String
+  staffNotes                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

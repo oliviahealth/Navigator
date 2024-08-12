@@ -14,7 +14,9 @@ export const DeliveryHistoryInformationFormInputsSchema = z.object({
             deliveryResultInBirth: YesNoEnum.nullable().refine(val => val !== null, { message: "Required." }),
             enrolledAsTargetChild: YesNoEnum.nullable()
         })
-    )
+    ),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IDeliveryHistoryInformationFormInputs = z.infer<typeof DeliveryHistoryInformationFormInputsSchema>;
 

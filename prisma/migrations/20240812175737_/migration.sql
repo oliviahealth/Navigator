@@ -867,6 +867,8 @@ CREATE TABLE "ASQ3" (
     "personalSocialScoreNotRecorded" "YesNo" NOT NULL,
     "followUpAction" "FollowUpAction"[],
     "describeActivitiesProvided" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -900,6 +902,8 @@ CREATE TABLE "BriefChildWellnessUpdate" (
     "otherMedicalCare" TEXT,
     "hasDentalCare" "YesNo" NOT NULL,
     "readingFrequency" "ReadingFrequency" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -915,6 +919,8 @@ CREATE TABLE "DeliveryHistoryInformationForm" (
     "dateCompleted" TIMESTAMP(3) NOT NULL,
     "staffName" TEXT NOT NULL,
     "deliveries" JSONB[],
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -959,6 +965,8 @@ CREATE TABLE "InfancyQuestionnaire" (
     "breastMilkAtTwoMonths" "YesNo",
     "breastMilkAtSixMonths" "YesNo",
     "motherCouldNotBreastfeed" "Yes",
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -985,6 +993,8 @@ CREATE TABLE "TargetChildRecord" (
     "wellChildVisitsCompleted" TEXT[],
     "healthInsurance" "HealthInsurance",
     "otherHealthInsurance" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -1015,6 +1025,8 @@ CREATE TABLE "PerceivedMaternalPlanningSelfEfficacyTool" (
     "babyRespondsWell" "AgreementLevel" NOT NULL,
     "goodInteraction" "AgreementLevel" NOT NULL,
     "showingAffection" "AgreementLevel" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 

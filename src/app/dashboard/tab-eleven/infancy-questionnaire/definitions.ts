@@ -51,6 +51,8 @@ export const InfancyQuestionnaireInputsSchema = z.object({
     breastMilkAtTwoMonths: YesNoEnum.nullable(),
     breastMilkAtSixMonths: YesNoEnum.nullable(),
     motherCouldNotBreastfeed: YesEnum.nullable(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IInfancyQuestionnaireInputs = z.infer<typeof InfancyQuestionnaireInputsSchema>;
 
