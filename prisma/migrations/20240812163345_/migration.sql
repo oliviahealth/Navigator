@@ -1029,6 +1029,8 @@ CREATE TABLE "PrenatalCare" (
     "prenatalCareStartDate" TIMESTAMP(3) NOT NULL,
     "drivingDistanceForPrenatalCare" TEXT NOT NULL,
     "haveMissedAppointments" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 

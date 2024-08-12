@@ -1395,6 +1395,8 @@ model PrenatalCare {
   prenatalCareStartDate          DateTime
   drivingDistanceForPrenatalCare String
   haveMissedAppointments         String
+  label                          String
+  staffNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
