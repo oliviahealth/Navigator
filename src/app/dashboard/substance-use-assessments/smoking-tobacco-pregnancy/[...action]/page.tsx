@@ -266,6 +266,20 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
               </span>
             )}
 
+                  <div>
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                        {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+                    </div>
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                        {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
+                    </div>
+                 </div>
+
             <button
               type="submit"
               className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"

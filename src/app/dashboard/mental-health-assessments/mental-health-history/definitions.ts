@@ -14,7 +14,8 @@ export const MentalHealthHistoryInputsSchema = z.object({
     takingMedication: YesNoEnum,
     medicationDetails: z.string().nullable(),
     notes: z.string().nullish(),
-    
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IMentalHealthHistoryInputs = z.infer<typeof MentalHealthHistoryInputsSchema>;
 

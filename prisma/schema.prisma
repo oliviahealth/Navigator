@@ -795,6 +795,9 @@ model CurrentMedicationList {
   currentMedicationList Json[]
   notes                 String?
 
+  label                                 String
+  staffNotes                            String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -835,6 +838,12 @@ model DukeUniversityReligionIndex {
   divineExperience           TruthLevel
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
+
+  label String
+  staffNotes String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model MentalHealthHistory {
@@ -847,6 +856,9 @@ model MentalHealthHistory {
   takingMedication    YesNo
   medicationDetails   String?
   notes               String?
+
+  label                                 String
+  staffNotes                            String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -950,6 +962,12 @@ model EdinburgPostnatalDepressionScale {
   timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
+
+  label String
+  staffNotes String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum SmokingStatus {
@@ -1083,6 +1101,9 @@ model PerceivedStressScale {
   difficultiesPilingUp      PerceivedStressScaleOptions
   totalScore                String
 
+  label String
+  staffNotes String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1114,6 +1135,10 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
+  
+  label String
+  staffNotes String
+
   dateCreated             DateTime   @default(now())
   dateModified            DateTime   @updatedAt
 }

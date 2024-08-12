@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
 export const SmokingTobaccoPregnancyInputSchema = z.object({
-  smokingStatus: z.string().nullish()
+  smokingStatus: z.string().nullish(),
+  label: z.string(),
+  staffNotes: z.string()
 });
 
 export type ISmokingTobaccoPregnancyInputs = z.infer<typeof SmokingTobaccoPregnancyInputSchema>;

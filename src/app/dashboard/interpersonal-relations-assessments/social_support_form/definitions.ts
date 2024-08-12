@@ -61,7 +61,9 @@ export const SocialSupportFormInputsSchema = z.object({
     talkToFriendsAboutProblems: ResponseAnswersEnum,
     specialPersonInitials: z.string(),
     specialPersonRelationship: z.nativeEnum(SpecialPersonRelationshipEnum),
-    comments: z.string().optional()
+    comments: z.string().optional(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 
 });
 

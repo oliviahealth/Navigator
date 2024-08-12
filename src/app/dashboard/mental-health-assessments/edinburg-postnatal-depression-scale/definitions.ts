@@ -159,7 +159,9 @@ export const EdinburgPostnatalDepressionScaleInputsSchema = z.object({
     staffName: z.string().min(1, "Staff name required."),
     timeframe: TimeframeEnum,
     totalScore: z.string().min(1, "Total score required."),
-    notes: z.string().nullable()
+    notes: z.string().nullable(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IEdinburgPostnatalDepressionScaleInputs = z.infer<typeof EdinburgPostnatalDepressionScaleInputsSchema>;
 

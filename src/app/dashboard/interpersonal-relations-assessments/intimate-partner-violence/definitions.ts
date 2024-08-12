@@ -26,7 +26,9 @@ export const IntimatePartnerViolenceFormInputsSchema = z.object({
   physicallyHurt: IPVStatusEnum,
   insultOrTalkDown: IPVStatusEnum,
   threatenWithHarm: IPVStatusEnum,
-  screamOrCurse: IPVStatusEnum
+  screamOrCurse: IPVStatusEnum,
+  label: z.string().min(1, "Label required."),
+  notes: z.string().min(1, "Staff notes required.")
 });
 export type IIntimatePartnerViolenceFormInputs = z.infer<typeof IntimatePartnerViolenceFormInputsSchema>;
 

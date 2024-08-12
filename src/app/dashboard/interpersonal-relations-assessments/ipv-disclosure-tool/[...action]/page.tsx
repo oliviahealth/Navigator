@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,7 +35,6 @@ const IPVScreening: React.FC = () => {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<IIPVScreeningInputs>({
     resolver: zodResolver(IPVScreeningInputsSchema),
@@ -65,16 +64,12 @@ const IPVScreening: React.FC = () => {
           dateTaken: new Date(validResponse.dateTaken)
             .toISOString()
             .slice(0, 10),
-          ipvScreeningDate: validResponse.ipvScreeningDate
-            ? new Date(validResponse.ipvScreeningDate)
-                .toISOString()
-                .slice(0, 10)
-            : null,
-          ipvDisclosureDate: validResponse.ipvDisclosureDate
-            ? new Date(validResponse.ipvDisclosureDate)
-                .toISOString()
-                .slice(0, 10)
-            : null,
+          ipvScreeningDate: new Date(validResponse.ipvScreeningDate)
+            .toISOString()
+            .slice(0, 10),
+          ipvDisclosureDate: new Date(validResponse.ipvDisclosureDate)
+            .toISOString()
+            .slice(0, 10),
         };
 
         reset(formattedResponse);
@@ -135,6 +130,7 @@ const IPVScreening: React.FC = () => {
                 {...register("dateTaken")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
+                required
               />
               {errors.dateTaken && (
                 <span className="label-text-alt text-red-500">
@@ -149,6 +145,7 @@ const IPVScreening: React.FC = () => {
                 {...register("ipvScreeningDate")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
+                required
               />
               {errors.ipvScreeningDate && (
                 <span className="label-text-alt text-red-500">
@@ -162,6 +159,7 @@ const IPVScreening: React.FC = () => {
               <input
                 {...register("screeningToolUsed")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                required
               />
               {errors.screeningToolUsed && (
                 <span className="label-text-alt text-red-500">
@@ -176,7 +174,8 @@ const IPVScreening: React.FC = () => {
               <input
                 {...register("totalScore")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                type="number"
+                type="text"
+                required
               />
               {errors.totalScore && (
                 <span className="label-text-alt text-red-500">
@@ -196,6 +195,7 @@ const IPVScreening: React.FC = () => {
                         type="radio"
                         value={status}
                         className="form-radio"
+                        required
                       />
                       <span className="ml-2">{status}</span>
                     </label>
@@ -215,6 +215,7 @@ const IPVScreening: React.FC = () => {
                 {...register("ipvDisclosureDate")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
+                required
               />
               {errors.ipvDisclosureDate && (
                 <span className="label-text-alt text-red-500">
@@ -228,13 +229,26 @@ const IPVScreening: React.FC = () => {
               <textarea
                 {...register("notes")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                placeholder="Optional comments"
+                required
               />
               {errors.notes && (
                 <span className="label-text-alt text-red-500">
                   {errors.notes.message}
                 </span>
               )}
+            </div>
+          </div>
+          <div>
+            <hr className="border-t-1 border-gray-400 my-4" />
+            <div>
+                <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
+                {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+            </div>
+            <div>
+                <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
+                {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
             </div>
           </div>
 

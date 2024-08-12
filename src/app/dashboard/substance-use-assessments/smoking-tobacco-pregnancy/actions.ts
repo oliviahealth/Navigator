@@ -8,7 +8,9 @@ export const createSmokingTobaccoPregnancyRecord = async (input: ISmokingTobacco
   const response = await prisma.smokingTobaccoPregnancy.create({
     data: {
       userId,
-      smokingStatus: input.smokingStatus as SmokingStatus
+      smokingStatus: input.smokingStatus as SmokingStatus, 
+      label: input.label,
+      staffNotes: input.staffNotes
     },
   });
 

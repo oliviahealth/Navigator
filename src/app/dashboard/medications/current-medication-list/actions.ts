@@ -4,13 +4,12 @@ import { prisma } from '@/lib/prisma';
 import { CurrentMedicationListResponseSchema, ICurrentMedicationListInputs } from './definitions';
 
 export const createCurrentMedicationListRecord = async (currentMedicationListInput: ICurrentMedicationListInputs, userId: string) => {
-    const { currentMedicationList, notes } = currentMedicationListInput;
+    const { ...data } = currentMedicationListInput;
 
     const response = await prisma.currentMedicationList.create({
         data: {
             userId,
-            currentMedicationList,
-            notes,
+            ...data
         },
     });
 
