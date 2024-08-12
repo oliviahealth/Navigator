@@ -25,7 +25,7 @@ const SignInPage: React.FC = () => {
   } = useForm<ISigninFormData>({ resolver: zodResolver(SigninSchema) });
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+    signIn("google", { callbackUrl: "/dashboard/logs-and-forms" });
   };
 
   const signinUser = async (data: ISigninFormData) => {
@@ -40,7 +40,7 @@ const SignInPage: React.FC = () => {
       return;
     }
 
-    router.push('/dashboard');
+    router.push('/dashboard/logs-and-forms');
   }
 
   return (
@@ -74,7 +74,7 @@ const SignInPage: React.FC = () => {
           <input
             {...register('email')}
             type="email"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.email && (
             <span className="label-text-alt text-red-500">
@@ -90,7 +90,7 @@ const SignInPage: React.FC = () => {
           <input
             {...register('password')}
             type="password"
-            className="input w-full border-gray-200 focus:border-[#5D1B2A] focus:outline-none"
+            className="input w-full border-gray-200 focus:border-maroon focus:outline-none"
           />
           {errors.password && (
             <span className="label-text-alt text-red-500">
