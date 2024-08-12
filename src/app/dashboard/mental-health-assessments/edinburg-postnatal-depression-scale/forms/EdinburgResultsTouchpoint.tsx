@@ -67,7 +67,7 @@ const EdinburgResultsTouchpoint: React.FC = () => {
                         <p className="font-semibold">Date completed</p>
                         <input
                             type="date"
-                            {...register("dateCompleted")}
+                            {...register("dateCompleted", { valueAsDate: true })}
                             className="w-full dropdown border rounded-md border-gray-300 p-3 font-medium" />
                         {errors.dateCompleted && (
                             <span className="label-text-alt text-red-500">
@@ -160,6 +160,35 @@ const EdinburgResultsTouchpoint: React.FC = () => {
                                 {getErrorMessage(errors.notes)}
                             </span>
                         )}
+                    </div>
+
+                    <div>
+                        <hr className="border-t-1 border-gray-400 my-4" />
+                        <div>
+                            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                            <textarea
+                                {...register("label")}
+                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            />
+                            {errors.label && (
+                                <span className="label-text-alt text-red-500">
+                                    {getErrorMessage(errors.label)}
+                                </span>
+                            )}
+                        </div>
+
+                        <div>
+                            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                            <textarea
+                                {...register("staffNotes")}
+                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            />
+                            {errors.staffNotes && (
+                                <span className="label-text-alt text-red-500">
+                                    {getErrorMessage(errors.staffNotes)}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                 </div>
