@@ -317,6 +317,16 @@ const DeliveryHistoryInformationForm: React.FC = () => {
                             </div>
                         );
                     })}
+
+                    <div className="flex justify-center py-6">
+                        <button
+                            type="button"
+                            onClick={addNewDelivery}
+                            className="text-green-600 bg-green-100 hover:bg-green-200 px-6 py-3 font-semibold rounded-md"
+                        >
+                            + Add New Delivery
+                        </button>
+                    </div>
                 </div>
                 <div>
                     <hr className="border-t-1 border-gray-400 my-4" />
@@ -330,17 +340,6 @@ const DeliveryHistoryInformationForm: React.FC = () => {
                         <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
                         {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
                     </div>
-                </div>
-                    
-
-                <div className="flex justify-center py-6">
-                    <button
-                        type="button"
-                        onClick={addNewDelivery}
-                        className="text-green-600 bg-green-100 hover:bg-green-200 px-6 py-3 font-semibold rounded-md"
-                    >
-                        + Add New Delivery
-                    </button>
                 </div>
 
                 <button
