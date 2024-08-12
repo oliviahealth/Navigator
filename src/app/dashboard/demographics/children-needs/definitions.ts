@@ -36,7 +36,9 @@ export const ChildrenNeedsFormInputsSchema = z.object({
     specializedMedEquipment: StatusEnum.refine(val => val, { message: "Required" }),
     specializedMedEquipmentNotes: z.string().nullable(),
     other: z.array(OtherChildrenNeeds),
-    notes: z.string().nullable()
+    notes: z.string().nullable(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IChildrenNeedsFormInputs = z.infer<typeof ChildrenNeedsFormInputsSchema>
 

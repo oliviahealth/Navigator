@@ -12,12 +12,11 @@ import { EncounterFormResponseSchema, IEncounterFormInputs } from "./definitions
  * @remarks This function takes Encounter Form data and saves them to the database using Prisma.
  */
 export const createEncounterForm = async (encounterFormInput: IEncounterFormInputs, userId: string) => {
-    const { ...data } = encounterFormInput;
 
     const response = await prisma.encounterForm.create({
         data: {
             userId,
-            ...data,
+            ...encounterFormInput,
         },
     });
 
@@ -55,7 +54,6 @@ export const readEncounterForm = async (encounterFormId: string, userId: string)
  * record with the record provided in the input.
  */
 export const updateEncounterForm = async (encounterFormInput: IEncounterFormInputs, id: string, userId: string) => {
-    const { ...data } = encounterFormInput;
 
     const response = await prisma.encounterForm.update({
         where: {
@@ -63,7 +61,7 @@ export const updateEncounterForm = async (encounterFormInput: IEncounterFormInpu
             userId
         },
         data: {
-            ...data
+            ...encounterFormInput
         }
     })
 
@@ -74,16 +72,16 @@ export const updateEncounterForm = async (encounterFormInput: IEncounterFormInpu
  * Deletes a Encounter Form from the database.
  * @param submissionId - The ID of the Encounter Form to delete.
  * @param userId - The ID of the user requesting to delete the record.
- * @returns {Promise<IEncounterFormResponse>}
+ * @returns {Promise<IEncounterFormResponse>}F
  * @remarks To be used by the dashboard
  */
 export const deleteEncounterForm = async (submissionId: string, userId: string) => {
-    const response = await prisma.encounterForm.deleteMany({
+    const response = await prisma.encounterForm.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return EncounterFormResponseSchema.parse(response);
 };

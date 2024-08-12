@@ -47,7 +47,7 @@ const ParentalMedicalHistory: React.FC = () => {
     } = useForm<IParentalMedicalHistoryInputs>({
         resolver: zodResolver(ParentalMedicalHistoryInputsSchema),
     });
-    
+
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
@@ -141,7 +141,7 @@ const ParentalMedicalHistory: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Due Date</p>
                                 <input
-                                    {...register("dueDate")}
+                                    {...register("dueDate", { valueAsDate: true })}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="date"
                                 />
@@ -155,7 +155,7 @@ const ParentalMedicalHistory: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Delivery Date</p>
                                 <input
-                                    {...register("deliveryDate")}
+                                    {...register("deliveryDate", { valueAsDate: true })}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="date"
                                 />
@@ -415,6 +415,35 @@ const ParentalMedicalHistory: React.FC = () => {
                             )}
                         </div>
 
+                    </div>
+
+                    <div className="pt-6">
+                        <hr className="border-t-1 border-gray-400 my-4" />
+                        <div>
+                            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                            <textarea
+                                {...register("label")}
+                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            />
+                            {errors.label && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.label.message}
+                                </span>
+                            )}
+                        </div>
+
+                        <div>
+                            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                            <textarea
+                                {...register("staffNotes")}
+                                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                            />
+                            {errors.staffNotes && (
+                                <span className="label-text-alt text-red-500">
+                                    {errors.staffNotes.message}
+                                </span>
+                            )}
+                        </div>
                     </div>
 
                     <div className="flex justify-center py-4">

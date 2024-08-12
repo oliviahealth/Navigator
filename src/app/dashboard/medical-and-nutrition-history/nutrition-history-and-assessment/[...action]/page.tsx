@@ -67,7 +67,8 @@ const NutritionHistoryAndAssessment: React.FC = () => {
             milkType: null,
             vitaminSupplementsType: null,
             herbalSupplementsType: null,
-            staffNotes: null
+            label: '',
+            staffNotes: ''
         }
     });
 

@@ -20,7 +20,11 @@ const CommunicationEntrySchema = z.object({
 export type ICommunicationEntry = z.infer<typeof CommunicationEntrySchema>;
 
 // Define the overall schema of the communcation log which is an array of objects from above
-export const CommunicationLogInputsSchema = z.object({communicationEntries: z.array(CommunicationEntrySchema)});
+export const CommunicationLogInputsSchema = z.object({
+    communicationEntries: z.array(CommunicationEntrySchema),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
+});
 export type ICommunicationLogInputs = z.infer<typeof CommunicationLogInputsSchema>;
 
 // Response will include everything we submitted to the db plus a few extra details

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const MediaApperanceFormInputSchema = z.object({
+export const MediaAppearanceFormInputSchema = z.object({
     participantName: z.string().min(1, "Participant Name is required"),
     // added participant age as if participant is under 18 years old, legal guardian name is required and will pop up on form
     // tranforms string into integer and checks if it is a number and greater than 1
@@ -20,10 +20,12 @@ export const MediaApperanceFormInputSchema = z.object({
         .min(1, "Legal Guardian Name is required")
         .nullish(),
     guardianDate: z.union([z.date(), z.string().min(1, "Date is required")]).nullish(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
-export type IMediaAppearanceFormInput = z.infer<typeof MediaApperanceFormInputSchema>;
+export type IMediaAppearanceFormInput = z.infer<typeof MediaAppearanceFormInputSchema>;
 
-export const MediaAppearanceFormResponseSchema = MediaApperanceFormInputSchema.omit({ participantAge: true }).extend({
+export const MediaAppearanceFormResponseSchema = MediaAppearanceFormInputSchema.omit({ participantAge: true }).extend({
     id: z.string(),
     userId: z.string(),
     dateCreated: z.date(),

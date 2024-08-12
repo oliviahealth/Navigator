@@ -47,9 +47,9 @@ const ParticipantDemographicsRecord: React.FC = () => {
                 if (verb !== 'edit') {
                     return;
                 }
-                
+
                 if (!user) {
-                    throw new Error('Missing user');
+                    throw new Error("User not found");
                 }
 
                 if (!submissionId) {
@@ -57,29 +57,24 @@ const ParticipantDemographicsRecord: React.FC = () => {
                 }
 
                 const validResponse = await readParticipantDemographicsRecord(submissionId, user.id);
-
                 const formattedData = {
                     ...validResponse,
                     participantDateOfBirth: new Date(validResponse.participantDateOfBirth).toISOString().split('T')[0], // Format as YYYY-MM-DD
                     programStartDate: new Date(validResponse.programStartDate).toISOString().split('T')[0], // Format as YYYY-MM-DD
                 };
-
                 reset(formattedData);
 
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/dashboard')
-
-                return;
+                router.push('/dashboard');
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
-
-        if(!user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (ParticipantDemographicsRecordData: IParticipantDemographicsFormInputs) => {
         try {
@@ -123,7 +118,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                         <div className="space-y-3">
                             <p className="font-semibold">Program Start Date</p>
                             <input
-                                {...register("programStartDate")}
+                                {...register("programStartDate", { valueAsDate: true })}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                 type="date"
                             />
@@ -185,7 +180,7 @@ const ParticipantDemographicsRecord: React.FC = () => {
                             <div className="space-y-3">
                                 <p className="font-semibold">Date of Birth</p>
                                 <input
-                                    {...register("participantDateOfBirth")}
+                                    {...register("participantDateOfBirth", { valueAsDate: true })}
                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                     type="date"
                                 />
@@ -614,6 +609,35 @@ const ParticipantDemographicsRecord: React.FC = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div className="pt-6">
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea
+                            {...register("label")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.label && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.label.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea
+                            {...register("staffNotes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.staffNotes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.staffNotes.message}
+                            </span>
+                        )}
                     </div>
                 </div>
 

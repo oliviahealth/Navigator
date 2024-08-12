@@ -14,16 +14,12 @@ import {
  * @throws {Error} If there's an issue creating the current living arrangement form.
  * @remarks This function takes current living arrangement form data and saves them to the database using Prisma.
  */
-export const createCurrentLivingArrangements = async (
-  currentLivingArrangementInputs: ICurrentLivingArrangementInputs,
-  userId: string
-) => {
-  const { ...data } = currentLivingArrangementInputs;
+export const createCurrentLivingArrangements = async (currentLivingArrangementInputs: ICurrentLivingArrangementInputs, userId: string) => {
 
   const response = await prisma.currentLivingArrangement.create({
     data: {
       userId,
-      ...data,
+      ...currentLivingArrangementInputs,
     },
   });
 
@@ -64,11 +60,7 @@ export const readCurrentLivingArrangement = async (
  * form with the form provided in the input.
  */
 export const updateCurrentLivingArrangements = async (
-  currentLivingArrangementInputs: ICurrentLivingArrangementInputs,
-  id: string,
-  userId: string
-) => {
-  const { ...data } = currentLivingArrangementInputs;
+  currentLivingArrangementInputs: ICurrentLivingArrangementInputs, id: string, userId: string) => {
 
   const response = await prisma.currentLivingArrangement.update({
     where: {
@@ -76,7 +68,7 @@ export const updateCurrentLivingArrangements = async (
       userId,
     },
     data: {
-      ...data,
+      ...currentLivingArrangementInputs,
     },
   });
 
@@ -90,11 +82,8 @@ export const updateCurrentLivingArrangements = async (
  * @returns {Promise<ICurrentLivingArrangementResponse>}
  * @remarks To be used by the dashboard
  */
-export const deleteCurrentLivingArrangements = async (
-  submissionId: string,
-  userId: string
-) => {
-  const response = await prisma.currentLivingArrangement.deleteMany({
+export const deleteCurrentLivingArrangements = async (submissionId: string, userId: string) => {
+  const response = await prisma.currentLivingArrangement.delete({
     where: {
       id: submissionId,
       userId: userId,

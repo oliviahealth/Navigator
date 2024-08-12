@@ -111,6 +111,8 @@ export const ParticipantDemographicsFormInputsSchema = z.object({
     USArmedForces: z.enum(["Yes", "No"]).refine(val => val, { message: "US Armed Forces information is required" }),
     reenrollmentWithGap: z.enum(["Yes", "No"]).refine(val => val, { message: "Reenrollment with gap in service information is required" }),
     transferFromAnotherSite: z.enum(["Yes", "No"]).refine(val => val, { message: "Transfer from another site information is required" }),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 })
 export type IParticipantDemographicsFormInputs = z.infer<typeof ParticipantDemographicsFormInputsSchema>
 

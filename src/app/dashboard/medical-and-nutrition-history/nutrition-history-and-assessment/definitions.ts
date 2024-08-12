@@ -410,7 +410,8 @@ export const NutritionHistoryAndAssessmentInputsSchema = z.object({
     dietsAndSupplements: z.array(DietsAndSupplementsEnum).min(1, "Select at least one option."),
     vitaminSupplementsType: z.string().nullable(),
     herbalSupplementsType: z.string().nullable(),
-    staffNotes: z.string().nullable()
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type INutritionHistoryAndAssessmentInputs = z.infer<typeof NutritionHistoryAndAssessmentInputsSchema>;
 
@@ -508,6 +509,7 @@ export const pages: Array<keyof Partial<INutritionHistoryAndAssessmentInputs>>[]
         "dietsAndSupplements",
         "vitaminSupplementsType",
         "herbalSupplementsType",
+        "label",
         "staffNotes"
     ]
 ];

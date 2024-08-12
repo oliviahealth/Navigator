@@ -12,24 +12,15 @@ import { IParentalMedicalHistoryInputs, ParentalMedicalHistoryResponseSchema } f
  * @remarks This function takes Parental Medical History data and saves them to the database using Prisma.
  */
 export const createParentalMedicalHistory = async (parentalMedicalHistoryInput: IParentalMedicalHistoryInputs, userId: string) => {
-    const {
-        dueDate,
-        deliveryDate,
-        postpartumVisitDate,
-        ...rest
-    } = parentalMedicalHistoryInput;
 
-    const dueDateAsDate = new Date(dueDate);
-    const deliveryDateAsDate = new Date(deliveryDate);
+    const { postpartumVisitDate, ...data } = parentalMedicalHistoryInput;
     const postpartumVisitDateAsDate = postpartumVisitDate ? new Date(postpartumVisitDate) : null;
 
     const response = await prisma.parentalMedicalHistory.create({
         data: {
             userId,
-            dueDate: dueDateAsDate,
-            deliveryDate: deliveryDateAsDate,
             postpartumVisitDate: postpartumVisitDateAsDate,
-            ...rest,
+            ...data
         },
     });
 
@@ -68,15 +59,7 @@ export const readParentalMedicalHistory = async (parentalMedicalHistoryId: strin
  */
 export const updateParentalMedicalHistory = async (parentalMedicalHistoryInput: IParentalMedicalHistoryInputs, id: string, userId: string) => {
 
-    const {
-        dueDate,
-        deliveryDate,
-        postpartumVisitDate,
-        ...rest
-    } = parentalMedicalHistoryInput;
-
-    const dueDateAsDate = new Date(dueDate);
-    const deliveryDateAsDate = new Date(deliveryDate);
+    const { postpartumVisitDate, ...data } = parentalMedicalHistoryInput;
     const postpartumVisitDateAsDate = postpartumVisitDate ? new Date(postpartumVisitDate) : null;
 
     const response = await prisma.parentalMedicalHistory.update({
@@ -85,10 +68,8 @@ export const updateParentalMedicalHistory = async (parentalMedicalHistoryInput: 
             userId
         },
         data: {
-            dueDate: dueDateAsDate,
-            deliveryDate: deliveryDateAsDate,
             postpartumVisitDate: postpartumVisitDateAsDate,
-            ...rest,
+            ...data
         }
     })
 
@@ -102,12 +83,12 @@ export const updateParentalMedicalHistory = async (parentalMedicalHistoryInput: 
  * @returns {Promise<IParentalMedicalHistoryResponse>}
  */
 export const deleteParentalMedicalHistory = async (submissionId: string, userId: string) => {
-    const response = await prisma.parentalMedicalHistory.deleteMany({
+    const response = await prisma.parentalMedicalHistory.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return ParentalMedicalHistoryResponseSchema.parse(response);
 };

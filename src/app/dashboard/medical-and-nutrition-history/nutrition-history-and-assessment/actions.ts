@@ -102,12 +102,12 @@ export const updateNutritionHistoryAndAssessment = async (nutritionHistoryAndAss
  * @remarks To be used by the dashboard
  */
 export const deleteNutritionHistoryAndAssessment = async (submissionId: string, userId: string) => {
-    const response = await prisma.nutritionHistoryAndAssessment.deleteMany({
+    const response = await prisma.nutritionHistoryAndAssessment.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 };
