@@ -12,6 +12,12 @@ const config: Config = {
         OpenSans: ['OpenSans'],
         Oswald: ['Oswald'],
       },
+      colors: {
+        maroon: {
+          DEFAULT: "rgb(var(--maroon))",
+          90: "rgba(var(--maroon) 0.9)"
+        }
+      },
     },
   },
   daisyui: {
