@@ -11,20 +11,20 @@ const Dashboard: React.FC = () => {
                     <div className="flex flex-col gap-y-4">
                         <p className="font-bold text-lg">Tab One</p>
 
-                        <a href={'/dashboard/tab-one/enrollment-form/new'}>
-                            Enrollment log
-                        </a>
-
-                        <a href={'dashboard/tab-one/media-appearance-form/new'}>
-                            Media Appearance Form
-                        </a>
-
                         <a href={'/dashboard/tab-one/communication-log/new'}>
                             Communication Log
                         </a>
 
                         <a href={'/dashboard/tab-one/appointment-log/new'}>
                             Appointment Log
+                        </a>
+
+                        <a href={'/dashboard/tab-one/enrollment-form/new'}>
+                            Enrollment log
+                        </a>
+
+                        <a href={'dashboard/tab-one/media-appearance-form/new'}>
+                            Media Appearance Form
                         </a>
                     </div>
 
@@ -118,6 +118,10 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-six/ipv-disclosure-tool/new'}>
                             Intimate Partner Violence Disclosure Screening tool
                         </a>
+
+                        <a href={'dashboard/tab-six/social_support_form/new'}>
+                            Social Support Form
+                        </a>
                     </div>
 
                     <div className="flex flex-col gap-y-4">
@@ -201,7 +205,7 @@ const Dashboard: React.FC = () => {
                         <a href={'dashboard/tab-eleven/perceived-maternal-parenting-self-efficacy-tool/new'}>
                             Perceived Maternal Parenting Self Efficacy Tool
                         </a>
-                        
+
                         <a href={'dashboard/tab-eleven/asq-3/new'}>
                             ASQ-3
                         </a>
