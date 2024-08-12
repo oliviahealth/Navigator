@@ -53,7 +53,7 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
   useEffect(() => {
     setValue("yearlyHouseholdIncome", null);
     setValue("incomeUndeterminedReason", null);
-  }, [])
+  }, []);
 
   const submit = async (data: IHouseholdHousingSafetyProfileInputs) => {
     try {
@@ -80,7 +80,9 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
       return;
     }
 
-    setSuccessMessage("Household Housing Safety Profile submitted successfully!");
+    setSuccessMessage(
+      "Household Housing Safety Profile submitted successfully!"
+    );
     router.push("/dashboard");
   };
 
@@ -491,6 +493,33 @@ const HouseholdHousingSafetyProfile: React.FC = () => {
                 {errors.housingStatus.message}
               </span>
             )}
+          </div>
+          <div>
+            <hr className="border-t-1 border-gray-400 my-4" />
+            <div>
+              <p className="font-semibold pb-2 pt-8">Submission Label</p>
+              <textarea
+                {...register("label")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.label && (
+                <span className="label-text-alt text-red-500">
+                  {errors.label.message}
+                </span>
+              )}
+            </div>
+            <div>
+              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+              <textarea
+                {...register("staffNotes")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.staffNotes && (
+                <span className="label-text-alt text-red-500">
+                  {errors.staffNotes.message}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex justify-center py-4">
             <button

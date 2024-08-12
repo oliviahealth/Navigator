@@ -1071,6 +1071,8 @@ model HousingSecurityHomeVisitForm {
   erVisitSpecific         Json?
   wellChildVisits         YesNo
   wellChildVisitsSpecific Json?
+  label                   String
+  staffNotes              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1216,6 +1218,8 @@ model ASQ3 {
   personalSocialScoreNotRecorded YesNo
   followUpAction                 FollowUpAction[]
   describeActivitiesProvided     String?
+  label                          String
+  staffNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1285,8 +1289,10 @@ model BriefChildWellnessUpdate {
   otherMedicalCare     String?
   hasDentalCare        YesNo
   readingFrequency     ReadingFrequency
-  dateCreated          DateTime                          @default(now())
-  dateModified         DateTime                          @updatedAt
+  label                String
+  staffNotes           String
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model DeliveryHistoryInformationForm {
@@ -1299,6 +1305,8 @@ model DeliveryHistoryInformationForm {
   dateCompleted   DateTime
   staffName       String
   deliveries      Json[]
+  label           String
+  staffNotes      String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1367,8 +1375,11 @@ model InfancyQuestionnaire {
   breastMilkAtTwoMonths    YesNo?
   breastMilkAtSixMonths    YesNo?
   motherCouldNotBreastfeed Yes?
-  dateCreated              DateTime                      @default(now())
-  dateModified             DateTime                      @updatedAt
+  label                    String
+  staffNotes               String
+  
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model TargetChildRecord {
@@ -1391,8 +1402,11 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
-  dateCreated              DateTime         @default(now())
-  dateModified             DateTime         @updatedAt
+  label                    String
+  staffNotes               String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum AgreementLevel {
@@ -1428,6 +1442,8 @@ model PerceivedMaternalPlanningSelfEfficacyTool {
   babyRespondsWell          AgreementLevel
   goodInteraction           AgreementLevel
   showingAffection          AgreementLevel
+  label                     String
+  staffNotes                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1441,6 +1457,8 @@ model PrenatalCare {
   prenatalCareStartDate          DateTime
   drivingDistanceForPrenatalCare String
   haveMissedAppointments         String
+  label                          String
+  staffNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1509,6 +1527,8 @@ model HouseholdHousingSafetyProfile {
   otherIncomeUndeterminedReason String?
   dependentsCount             Int
   housingStatus               String
+  label                       String
+  staffNotes                  String
   dateCreated                 DateTime @default(now())
   dateModified                DateTime @updatedAt
 }
@@ -1525,6 +1545,8 @@ model FoodSecurity {
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety               String?
   pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood         String
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
+  label                                                                  String
+  staffNotes                                                             String
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

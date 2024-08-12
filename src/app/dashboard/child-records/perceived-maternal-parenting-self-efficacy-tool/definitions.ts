@@ -36,7 +36,9 @@ export const PerceivedMaternalPlanningSelfEfficacyToolInputsSchema = z.object({
     knowingDislikedActivities: AgreementLevelEnum,
     babyRespondsWell: AgreementLevelEnum,
     goodInteraction: AgreementLevelEnum,
-    showingAffection: AgreementLevelEnum
+    showingAffection: AgreementLevelEnum,
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")  
 });
 export type IPerceivedMaternalPlanningSelfEfficacyToolInputs = z.infer<typeof PerceivedMaternalPlanningSelfEfficacyToolInputsSchema>;
 
@@ -44,6 +46,6 @@ export const PerceivedMaternalPlanningSelfEfficacyToolResponseSchema = Perceived
     id: z.string(),
     userId: z.string(),
     dateCreated: z.date(),
-    dateModified: z.date()
+    dateModified: z.date(),
 });
 export type IPerceivedMaternalPlanningSelfEfficacyToolResponse = z.infer<typeof PerceivedMaternalPlanningSelfEfficacyToolResponseSchema>;

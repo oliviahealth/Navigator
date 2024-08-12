@@ -36,7 +36,9 @@ export const HouseholdHousingSafetyProfileInputsSchema = z.object({
   incomeUndeterminedReason: z.string().nullable(),
   otherIncomeUndeterminedReason: z.string().optional().nullable(),
   dependentsCount: z.number().int().min(1, "Number of dependents must be at least 1"),
-  housingStatus: HousingStatusEnum
+  housingStatus: HousingStatusEnum,
+  label: z.string().min(1, "Label required."),
+  staffNotes: z.string().min(1, "Staff notes required.")
 });
 
 export type IHouseholdHousingSafetyProfileInputs = z.infer<typeof HouseholdHousingSafetyProfileInputsSchema>;
