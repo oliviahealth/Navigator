@@ -25,7 +25,7 @@ const SignupPage: React.FC = () => {
   } = useForm<ISignupFormData>({ resolver: zodResolver(SignupSchema) });
 
   const handleGoogleSignIn = () => {
-    signIn("google", { callbackUrl: "/dashboard/logs-and-forms" });
+    signIn("google", { callbackUrl: "/dashboard/logs-and-consent-forms" });
   };
 
   const signupUser = async (data: ISignupFormData) => {
@@ -44,7 +44,7 @@ const SignupPage: React.FC = () => {
       return;
     }
 
-    router.push('/dashboard/logs-and-forms');
+    router.push('/dashboard/logs-and-consent-forms');
   }
 
   return (

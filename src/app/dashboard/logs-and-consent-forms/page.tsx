@@ -2,7 +2,7 @@
 
 import Accordion from "@/components/dashboard/Accordion";
 import Submission from "@/components/dashboard/Submission";
-import { communicationLoglabelMapping } from "../logs-and-forms/communication-log/definitions";
+import { communicationLoglabelMapping } from "../logs-and-consent-forms/communication-log/definitions";
 import useCommunicationLogs from "./communication-log/submissions";
 import useAppointmentLogs from "./appointment-log/submissions";
 import useEnrollmentForms from "./enrollment-form/submissions";
@@ -59,7 +59,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/appointment-log/"
+          link="/dashboard/logs-and-consent-forms/appointment-log/"
           submissions={appointmentLogSubmissions}
           onDelete={handleAppointmentLogDelete}
           onSubmissionSelect={handleAppointmentLogSubmissionSelect}
@@ -88,7 +88,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/communication-log/"
+          link="/dashboard/logs-and-consent-forms/communication-log/"
           submissions={communicationLogSubmissions}
           onDelete={handleCommunicationLogDelete}
           onSubmissionSelect={handleCommunicationLogSubmissionSelect}
@@ -142,7 +142,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/enrollment-form/"
+          link="/dashboard/logs-and-consent-forms/enrollment-form/"
           submissions={enrollmentFormSubmissions!}
           onDelete={handleEnrollmentFormDelete}
           onSubmissionSelect={handleEnrollmentFormSubmissionSelect}
@@ -168,7 +168,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/media-appearance-form/"
+          link="/dashboard/logs-and-consent-forms/media-appearance-form/"
           submissions={mediaAppearanceReleaseSubmissions}
           onDelete={handleMediaAppearanceReleaseDelete}
           onSubmissionSelect={handleMediaAppearanceReleaseSubmissionSelect}

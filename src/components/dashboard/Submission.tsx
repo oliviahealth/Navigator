@@ -47,7 +47,7 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
             <option value="" disabled>Select a submission</option>
             {submissions.map((submission) => (
               <option key={submission.id} value={submission.id}>
-                {submission.id}
+                {submission.label}
               </option>
             ))}
           </select>

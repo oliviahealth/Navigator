@@ -117,7 +117,7 @@ const MediaAppearanceForm: React.FC = () => {
       } catch (error) {
         console.error(error);
         setErrorMessage('Something went wrong! Please try again later');
-        router.push('/dashboard/logs-and-forms');
+        router.push('/dashboard/logs-and-consent-forms');
       }
     };
 
@@ -143,13 +143,13 @@ const MediaAppearanceForm: React.FC = () => {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
 
-      router.push('/dashboard/logs-and-forms');
+      router.push('/dashboard/logs-and-consent-forms');
 
       return;
     }
 
     setSuccessMessage('Media Appearance Form submitted successfully');
-    router.push('/dashboard/logs-and-forms');
+    router.push('/dashboard/logs-and-consent-forms');
   };
 
   return (
