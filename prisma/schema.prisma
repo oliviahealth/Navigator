@@ -1333,6 +1333,8 @@ model IPVScreening {
   ipvDisclosure     YesNo
   ipvDisclosureDate DateTime
   notes             String?
+  label                    String
+  staffNotes               String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

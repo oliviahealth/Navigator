@@ -127,7 +127,7 @@ const IPVScreening: React.FC = () => {
             <div className="space-y-3">
               <p className="font-semibold">Date Taken</p>
               <input
-                {...register("dateTaken")}
+                {...register("dateTaken", { valueAsDate: true })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
                 required
@@ -142,7 +142,7 @@ const IPVScreening: React.FC = () => {
             <div className="space-y-3">
               <p className="font-semibold">IPV Screening Date</p>
               <input
-                {...register("ipvScreeningDate")}
+                {...register("ipvScreeningDate", { valueAsDate: true })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
                 required
@@ -212,7 +212,7 @@ const IPVScreening: React.FC = () => {
             <div className="space-y-3">
               <p className="font-semibold">IPV Disclosure Date</p>
               <input
-                {...register("ipvDisclosureDate")}
+                {...register("ipvDisclosureDate", { valueAsDate: true })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
                 required

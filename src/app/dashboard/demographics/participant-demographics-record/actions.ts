@@ -43,6 +43,16 @@ export const readParticipantDemographicsRecord = async (participantDemographicsR
     return ParticipantDemographicsFormResponseSchema.parse(response);
 }
 
+export const readAllParticipantDemographicsRecord = async (userId: string) => {
+    const response = await prisma.participantDemographicsForm.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => ParticipantDemographicsFormResponseSchema.parse(log));
+}
+
 /**
  * Updates a Participant Demographics Record in the database with new Participant Demographics Record.
  * @param {IParticipantDemographicsFormInputs} participantDemographicsRecordInput - An array of updated Participant Demographics Recordies.
