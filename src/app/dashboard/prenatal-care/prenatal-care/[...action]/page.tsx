@@ -85,13 +85,13 @@ const PrenatalCareRecord: React.FC = () => {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
 
-      router.push("/dashboard");
+      router.push("/dashboard/prenatal-care/");
 
       return;
     }
 
     setSuccessMessage("Prenatal Care Form submitted successfully");
-    router.push("/dashboard");
+    router.push("/dashboard/prenatal-care/");
   };
 
   return (
