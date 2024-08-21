@@ -1,25 +1,25 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantRecordForOthersEntry, ParticipantRecordForOthersInvolvedResponseSchema } from "./definitions";
+import { IParticipantRecordForOthersInvolvedResponse, IParticipantRecordForOthersInvolvedInputs, ParticipantRecordForOthersInvolvedResponseSchema } from "./definitions";
 
 /**
  * Creates a new Participant Record Entry in the database.
- * @param {IParticipantRecordForOthersInvolvedEntry[]} participantRecordFormInput - An array of participant record entries to be created.
+ * @param {IParticipantRecordForOthersInvolvedEntry} participantRecordFormInput - An array of participant record entries to be created.
  * @param {string} userId - The ID of the user creating the participant record entries.
  * @returns {Promise<IParticipantRecordForOthersInvolvedResponse>} A promise resolving to the created participant record entry.
  * @throws {Error} If there's an issue creating the participant record entry.
  * @remarks This function takes an array of participant record entries and a user ID, creates formatted entries,
  * and saves them to the database using Prisma.
  */
-export const createParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersEntry[], userId: string) => {
+export const createParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersInvolvedInputs, userId: string) => {
     // Create participant record entry in the database
     const response = await prisma.participantRecordForOthersInvolvedForm.create({
         data: {
             userId,
-            participantRecordForOthersInvolvedEntries: participantRecordFormInput
+            ...participantRecordFormInput
         },
-       
+
     });
 
     return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
@@ -66,14 +66,14 @@ export const readAllParticipantRecordForOthersInvolved = async (userId: string) 
  * @remarks This function updates a participant record entry in the database using Prisma. It replaces the existing
  * participation record entries associated with the record entry with the updated entries provided in the input array.
  */
-export const updateParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersEntry[], participantRecordId: string, userId: string) => {
+export const updateParticipantRecordForOthersInvolved = async (participantRecordFormInput: IParticipantRecordForOthersInvolvedInputs, participantRecordId: string, userId: string) => {
     const response = await prisma.participantRecordForOthersInvolvedForm.update({
         where: {
             id: participantRecordId,
             userId
         },
         data: {
-            participantRecordForOthersInvolvedEntries: participantRecordFormInput
+            ...participantRecordFormInput
         },
     });
 

@@ -48,7 +48,10 @@ const PrenatalCareRecord: React.FC = () => {
           throw new Error("Missing user");
         }
 
-        const validResponse = await readPrenatalCareRecord(submissionId, user.id);
+        const validResponse = await readPrenatalCareRecord(
+          submissionId,
+          user.id
+        );
 
         reset(validResponse);
       } catch (error) {
@@ -99,42 +102,79 @@ const PrenatalCareRecord: React.FC = () => {
       >
         <p className="font-medium">Ask these questions:</p>
 
-        <p className="font-medium">If currently pregnant, do you attend regular visits with your OBcare provider?</p>
+        <p className="font-medium">
+          If currently pregnant, do you attend regular visits with your OBcare
+          provider?
+        </p>
         <div className="space-x-12">
-            {["Yes", "No"].map((status, idx) => (
-              <label key={idx} className="inline-flex items-center">
-                <input
-                  {...register('attendRegularVisitsWithOBCare')}
-                  type="radio"
-                  value={status}
-                  className="form-radio"
-                />
-                <span className="ml-2">{status}</span>
-              </label>
-            ))}
-          </div>
-        
+          {["Yes", "No"].map((status, idx) => (
+            <label key={idx} className="inline-flex items-center">
+              <input
+                {...register("attendRegularVisitsWithOBCare")}
+                type="radio"
+                value={status}
+                className="form-radio"
+              />
+              <span className="ml-2">{status}</span>
+            </label>
+          ))}
+        </div>
+
         <p className="font-medium">When did you start your prenatal care?</p>
         <input
-          {...register('prenatalCareStartDate', { valueAsDate: true })}
+          {...register("prenatalCareStartDate", { valueAsDate: true })}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
           type="date"
         />
 
-        <p className="font-medium">Provide the contact information for your prenatal care in the Care Provider section.</p>
+        <p className="font-medium">
+          Provide the contact information for your prenatal care in the Care
+          Provider section.
+        </p>
 
-        <p className="font-medium">How far do you have to drive to receive prenatal care?</p>
+        <p className="font-medium">
+          How far do you have to drive to receive prenatal care?
+        </p>
         <input
-          {...register('drivingDistanceForPrenatalCare')}
+          {...register("drivingDistanceForPrenatalCare")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
           type="text"
         />
 
-        <p className="font-medium">Have you missed any prenatal appointments? If so, why?</p>
+        <p className="font-medium">
+          Have you missed any prenatal appointments? If so, why?
+        </p>
         <textarea
-          {...register('haveMissedAppointments')}
+          {...register("haveMissedAppointments")}
           className="border border-gray-300 px-4 py-2 rounded-md w-full"
         />
+        <div>
+          <hr className="border-t-1 border-gray-400 my-4" />
+          <div>
+            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+            <textarea
+              {...register("label")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.label && (
+              <span className="label-text-alt text-red-500">
+                {errors.label.message}
+              </span>
+            )}
+          </div>
+          <div>
+            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+            <textarea
+              {...register("staffNotes")}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
+            />
+            {errors.staffNotes && (
+              <span className="label-text-alt text-red-500">
+                {errors.staffNotes.message}
+              </span>
+            )}
+          </div>
+        </div>
 
         <div className="flex justify-center mt-8">
           <button

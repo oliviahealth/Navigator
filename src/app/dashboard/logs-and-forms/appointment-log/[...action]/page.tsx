@@ -60,21 +60,18 @@ const AppointmentLog: React.FC = () => {
         });
     };
 
-    const submit = async (data: { appointmentEntries: IAppointmentEntry[] }) => {
+    const submit = async (data: IAppointmentLogInputs) => {
         try {
             if (!user) {
                 throw new Error('User not found');
             }
 
-            const { appointmentEntries } = data;
-
             let response;
 
             if (verb === 'new') {
-                response = await createAppointmentLog(appointmentEntries, user.id);
+                response = await createAppointmentLog(data, user.id);
             } else {
-
-                response = await updateAppointmentLog(appointmentEntries, submissionId, "userIdValue");
+                response = await updateAppointmentLog(data, submissionId, user.id);
             }
 
         } catch (error) {
@@ -114,8 +111,8 @@ const AppointmentLog: React.FC = () => {
 
                 reset({
                     appointmentEntries: formattedEntries,
-                    // label: response?.label,
-                    // staffNotes: response?.staffNotes,
+                    label: response?.label,
+                    staffNotes: response?.staffNotes,
                 });
             } catch (error) {
                 console.error(error);
@@ -150,7 +147,7 @@ const AppointmentLog: React.FC = () => {
                         <div className="flex flex-col justify-between ">
                             <p className="font-semibold pb-2 pt-4">Date/Time</p>
                             <input
-                                {...register(`appointmentEntries.${index}.dateTime`)}
+                                {...register(`appointmentEntries.${index}.dateTime`, { valueAsDate: true })}
                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                 type="datetime-local"
                             />
@@ -215,6 +212,34 @@ const AppointmentLog: React.FC = () => {
                     </button>
                 </div>
 
+                <div>
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea
+                            {...register("label")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.label && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.label.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea
+                            {...register("staffNotes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.staffNotes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.staffNotes.message}
+                            </span>
+                        )}
+                    </div>
+                </div>
 
                 <button
                     type="submit"

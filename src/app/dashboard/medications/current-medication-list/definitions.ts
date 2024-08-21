@@ -10,6 +10,8 @@ export const CurrentMedicationListInputsSchema = z.object({
         })
     ),
     notes: z.string().nullish(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type ICurrentMedicationListInputs = z.infer<typeof CurrentMedicationListInputsSchema>;
 

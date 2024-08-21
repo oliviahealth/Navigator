@@ -92,7 +92,7 @@ const Tab: React.FC = () => {
   return (
     <div className="flex flex-col">
       <Accordion title="Child Demographics Record">
-  {selectedChildDemographicRecordSubmission && (
+  {selectedChildDemographicRecordSubmission &&   (
     <div>
       {Array.isArray(selectedChildDemographicRecordSubmission.appointmentEntries) && selectedChildDemographicRecordSubmission.appointmentEntries.length > 0 ? (
         <div className="flex flex-wrap gap-4 mt-2">

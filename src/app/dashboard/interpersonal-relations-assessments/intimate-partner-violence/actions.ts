@@ -23,6 +23,8 @@ export const createIPVFormEntry = async (ipvFormInput: IIntimatePartnerViolenceF
       insultOrTalkDown: mapFormValueToIPVStatus(ipvFormInput.insultOrTalkDown),
       threatenWithHarm: mapFormValueToIPVStatus(ipvFormInput.threatenWithHarm),
       screamOrCurse: mapFormValueToIPVStatus(ipvFormInput.screamOrCurse),
+      label: ipvFormInput.label,
+      notes: ipvFormInput.notes
     }
   });
 
@@ -49,7 +51,7 @@ export const readIPVFormEntry = async (ipvFormId: string, userId: string) => {
     physicallyHurt: mapIPVStatusToFormValue(response.physicallyHurt),
     insultOrTalkDown: mapIPVStatusToFormValue(response.insultOrTalkDown),
     threatenWithHarm: mapIPVStatusToFormValue(response.threatenWithHarm),
-    screamOrCurse: mapIPVStatusToFormValue(response.screamOrCurse),
+    screamOrCurse: mapIPVStatusToFormValue(response.screamOrCurse)
   };
 
   return IntimatePartnerViolenceFormResponseSchema.parse(formattedResponse);

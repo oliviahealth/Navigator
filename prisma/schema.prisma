@@ -26,41 +26,43 @@ model User {
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 
-  CommunicationLog                       CommunicationLog[]
-  AppointmentLog                         AppointmentLog[]
-  EnrollmentForm                         EnrollmentForm[]
-  MediaAppearanceForm                    MediaAppearanceForm[]
-  ParticipantDemographicsForm            ParticipantDemographicsForm[]
-  ParticipantRecordForOthersInvolvedForm ParticipantRecordForOthersInvolvedForm[]
-  ChildDemographicsRecord                ChildDemographicsRecord[]
-  SupportSystemsForm                     SupportSystemsForm[]
-  CurrentLivingArrangement               CurrentLivingArrangement[]
-  ChildrenNeedsForm                      ChildrenNeedsForm[]
-  ReferralsAndServices                   ReferralsAndServices[]
-  ParentalMedicalHistory                 ParentalMedicalHistory[]
-  EncounterForm                          EncounterForm[]
-  CurrentMedicationList                  CurrentMedicationList[]
-  NutritionHistoryAndAssessment          NutritionHistoryAndAssessment[]
-  DukeUniversityReligionIndex            DukeUniversityReligionIndex[]
-  MentalHealthHistory                    MentalHealthHistory[]
-  EdinburgPostnatalDepressionScale       EdinburgPostnatalDepressionScale[]
-  SubstanceUseHistory                    SubstanceUseHistory[]
-  HomeVisits                             HousingSecurityHomeVisitForm[]
-  SmokingTobaccoPregnancy                SmokingTobaccoPregnancy[]
-  PerceivedStressScale                   PerceivedStressScale[]
-  GeneralizedAnxietyDisorder             GeneralizedAnxietyDisorder[]
-  PregnancySpacingAssesment              PregnancySpacingAssesment[]
-  TenBsPostpartumAppointmentAssesment    TenBsPostpartumAppointmentAssesment[]
-  ASQ3                                   ASQ3[]
-  IntimatePartnerViolenceForm            IntimatePartnerViolenceForm[]
-  BriefChildWellnessUpdate               BriefChildWellnessUpdate[]
-  DeliveryHistoryInformationForm         DeliveryHistoryInformationForm[]
-  socialSupportForm                      SocialSupportForm[]
-  IPVScreening                           IPVScreening[]
-  InfancyQuestionnaire                   InfancyQuestionnaire[]
-  TargetChildRecord                      TargetChildRecord[]
+  CommunicationLog                          CommunicationLog[]
+  AppointmentLog                            AppointmentLog[]
+  EnrollmentForm                            EnrollmentForm[]
+  MediaAppearanceForm                       MediaAppearanceForm[]
+  ParticipantDemographicsForm               ParticipantDemographicsForm[]
+  ParticipantRecordForOthersInvolvedForm    ParticipantRecordForOthersInvolvedForm[]
+  ChildDemographicsRecord                   ChildDemographicsRecord[]
+  SupportSystemsForm                        SupportSystemsForm[]
+  CurrentLivingArrangement                  CurrentLivingArrangement[]
+  ChildrenNeedsForm                         ChildrenNeedsForm[]
+  ReferralsAndServices                      ReferralsAndServices[]
+  ParentalMedicalHistory                    ParentalMedicalHistory[]
+  EncounterForm                             EncounterForm[]
+  CurrentMedicationList                     CurrentMedicationList[]
+  NutritionHistoryAndAssessment             NutritionHistoryAndAssessment[]
+  DukeUniversityReligionIndex               DukeUniversityReligionIndex[]
+  MentalHealthHistory                       MentalHealthHistory[]
+  EdinburgPostnatalDepressionScale          EdinburgPostnatalDepressionScale[]
+  SubstanceUseHistory                       SubstanceUseHistory[]
+  HomeVisits                                HousingSecurityHomeVisitForm[]
+  SmokingTobaccoPregnancy                   SmokingTobaccoPregnancy[]
+  PerceivedStressScale                      PerceivedStressScale[]
+  GeneralizedAnxietyDisorder                GeneralizedAnxietyDisorder[]
+  PregnancySpacingAssesment                 PregnancySpacingAssesment[]
+  TenBsPostpartumAppointmentAssesment       TenBsPostpartumAppointmentAssesment[]
+  ASQ3                                      ASQ3[]
+  IntimatePartnerViolenceForm               IntimatePartnerViolenceForm[]
+  BriefChildWellnessUpdate                  BriefChildWellnessUpdate[]
+  DeliveryHistoryInformationForm            DeliveryHistoryInformationForm[]
+  socialSupportForm                         SocialSupportForm[]
+  IPVScreening                              IPVScreening[]
+  InfancyQuestionnaire                      InfancyQuestionnaire[]
+  TargetChildRecord                         TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
   PrenatalCare                           PrenatalCare[]
+  HouseholdHousingSafetyProfile         HouseholdHousingSafetyProfile[]
+  FoodSecurity                              FoodSecurity[]
 }
 
 enum CommunicationMethod {
@@ -78,6 +80,8 @@ model CommunicationLog {
   userId String
 
   communicationEntries Json?
+  label                String
+  staffNotes           String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -90,6 +94,8 @@ model AppointmentLog {
   userId String
 
   appointmentEntries Json[]
+  label              String
+  staffNotes         String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -118,6 +124,8 @@ model EnrollmentForm {
   guardianDate      String?
   gcMomsName        String
   gcMomsDate        String
+  label             String
+  staffNotes        String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -134,6 +142,8 @@ model MediaAppearanceForm {
   participantDate DateTime
   guardianName    String?
   guardianDate    DateTime?
+  label           String
+  staffNotes      String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -220,6 +230,8 @@ model ParticipantDemographicsForm {
   USArmedForces               YesNo
   reenrollmentWithGap         YesNo
   transferFromAnotherSite     YesNo
+  label                       String
+  staffNotes                  String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -256,6 +268,8 @@ model ParticipantRecordForOthersInvolvedForm {
   userId String
 
   participantRecordForOthersInvolvedEntries Json
+  label                                     String
+  staffNotes                                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -319,6 +333,8 @@ model ChildDemographicsRecord {
   caseworker                   String?
   caseworkerPhoneNumber        String?
   importantInformation         String?
+  label                        String
+  staffNotes                   String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -334,6 +350,8 @@ model SupportSystemsForm {
   strengths            String
   areasForImprovement  String
   goals                String
+  label                String
+  staffNotes           String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -348,6 +366,8 @@ model CurrentLivingArrangement {
   listPeopleLivingWithPatient      Json
   listChildrenNotLivingWithPatient Json
   notes                            String?
+  label                            String
+  staffNotes                       String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -389,6 +409,8 @@ model ChildrenNeedsForm {
   specializedMedEquipmentNotes String?
   other                        Json
   notes                        String?
+  label                        String
+  staffNotes                   String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -441,7 +463,9 @@ model ReferralsAndServices {
   legalAid                            Json
   specialtyCourt                      Json
   legalAssistanceOther                Json[]
-  additionalNotes                     String
+  additionalNotes                     String?
+  label                               String
+  staffNotes                          String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -472,6 +496,8 @@ model ParentalMedicalHistory {
   living                  String
   priorComplications      String?
   ongoingMedicalProblems  String
+  label                   String
+  staffNotes              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -483,24 +509,12 @@ model EncounterForm {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  participantName String
-  caseId          String
-  monthYear       String
-
+  participantName  String
+  caseId           String
+  monthYear        String
   encounterEntries Json[]
-
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
-}
-
-model CurrentMedicationList {
-  id String @id @default(uuid())
-
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  currentMedicationList Json[]
-  notes                 String?
+  label            String
+  staffNotes       String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -765,7 +779,24 @@ model NutritionHistoryAndAssessment {
   dietsAndSupplements                   DietsAndSupplements[]
   vitaminSupplementsType                String?
   herbalSupplementsType                 String?
-  staffNotes                            String?
+  label                                 String
+  staffNotes                            String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model CurrentMedicationList {
+  id String @id @default(uuid())
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  currentMedicationList Json[]
+  notes                 String?
+
+  label                                 String
+  staffNotes                            String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -807,6 +838,12 @@ model DukeUniversityReligionIndex {
   divineExperience           TruthLevel
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
+
+  label String
+  staffNotes String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model MentalHealthHistory {
@@ -819,6 +856,9 @@ model MentalHealthHistory {
   takingMedication    YesNo
   medicationDetails   String?
   notes               String?
+
+  label                                 String
+  staffNotes                            String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -922,6 +962,12 @@ model EdinburgPostnatalDepressionScale {
   timeframe          EPDS_Timeframe
   totalScore         String
   notes              String?
+
+  label String
+  staffNotes String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum SmokingStatus {
@@ -1025,6 +1071,8 @@ model HousingSecurityHomeVisitForm {
   erVisitSpecific         Json?
   wellChildVisits         YesNo
   wellChildVisitsSpecific Json?
+  label                   String
+  staffNotes              String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1054,6 +1102,9 @@ model PerceivedStressScale {
   angeredOutsideControl     PerceivedStressScaleOptions
   difficultiesPilingUp      PerceivedStressScaleOptions
   totalScore                String
+
+  label String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1086,6 +1137,10 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
+  
+  label String
+  staffNotes String
+
   dateCreated             DateTime   @default(now())
   dateModified            DateTime   @updatedAt
 }
@@ -1163,6 +1218,8 @@ model ASQ3 {
   personalSocialScoreNotRecorded YesNo
   followUpAction                 FollowUpAction[]
   describeActivitiesProvided     String?
+  label                          String
+  staffNotes                     String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1178,17 +1235,17 @@ enum IPVStatus {
 }
 
 model IntimatePartnerViolenceForm {
-  id            String   @id @default(uuid())
+  id     String @id @default(uuid())
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId        String
+  userId String
 
-  physicallyHurt    IPVStatus
-  insultOrTalkDown  IPVStatus
-  threatenWithHarm  IPVStatus
-  screamOrCurse     IPVStatus
-  
-  dateCreated    DateTime @default(now())
-  dateModified   DateTime @updatedAt
+  physicallyHurt   IPVStatus
+  insultOrTalkDown IPVStatus
+  threatenWithHarm IPVStatus
+  screamOrCurse    IPVStatus
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum BriefChildWellnessUpdateTimeframe {
@@ -1220,9 +1277,9 @@ enum ReadingFrequency {
 }
 
 model BriefChildWellnessUpdate {
-  id     String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                   String                            @id @default(uuid())
+  User                 User                              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId               String
   childName            String
   dateCompleted        DateTime
   timeframe            BriefChildWellnessUpdateTimeframe
@@ -1232,6 +1289,8 @@ model BriefChildWellnessUpdate {
   otherMedicalCare     String?
   hasDentalCare        YesNo
   readingFrequency     ReadingFrequency
+  label                String
+  staffNotes           String
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1246,6 +1305,8 @@ model DeliveryHistoryInformationForm {
   dateCompleted   DateTime
   staffName       String
   deliveries      Json[]
+  label           String
+  staffNotes      String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1260,37 +1321,11 @@ enum ResponseAnswers {
   Very_strongly_agree
 }
 
-model SocialSupportForm {
-  id                          String          @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId                      String
-
-  specialPersonInNeed         ResponseAnswers
-  specialPersonJoysSorrows    ResponseAnswers
-  familyHelp                  ResponseAnswers
-  emotionalHelp               ResponseAnswers
-  specialPersonForComfort     ResponseAnswers
-  friendsHelp                 ResponseAnswers
-  canCountOnFriends           ResponseAnswers
-  talkToFamilyAboutProblems   ResponseAnswers
-  friendsJoysSorrows          ResponseAnswers
-  specialPersonToTalkFeelings ResponseAnswers
-  familyHelpsDecisions        ResponseAnswers
-  talkToFriendsAboutProblems  ResponseAnswers
-  specialPersonInitials       String?
-  specialPersonRelationship   String?
-  comments                    String?         // Optional comments field
-  
-  dateCreated                 DateTime        @default(now())
-  dateModified                DateTime        @updatedAt
-  
-}
-
 model IPVScreening {
-  id                String    @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId            String
-  
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
   dateTaken         DateTime
   ipvScreeningDate  DateTime
   screeningToolUsed String
@@ -1298,9 +1333,11 @@ model IPVScreening {
   ipvDisclosure     YesNo
   ipvDisclosureDate DateTime
   notes             String?
+  label                    String
+  staffNotes               String
 
-  dateCreated       DateTime  @default(now())
-  dateModified      DateTime  @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 enum InfancyQuestionnaireTimeframe {
@@ -1320,9 +1357,9 @@ enum Yes {
 }
 
 model InfancyQuestionnaire {
-  id     String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                       String                        @id @default(uuid())
+  User                     User                          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String
   participantName          String
   dateCompleted            DateTime
   childName                String
@@ -1340,14 +1377,17 @@ model InfancyQuestionnaire {
   breastMilkAtTwoMonths    YesNo?
   breastMilkAtSixMonths    YesNo?
   motherCouldNotBreastfeed Yes?
+  label                    String
+  staffNotes               String
+  
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
 
 model TargetChildRecord {
-  id     String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                       String           @id @default(uuid())
+  User                     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String
   participantName          String
   caseId                   String
   dateCompleted            DateTime
@@ -1364,6 +1404,9 @@ model TargetChildRecord {
   wellChildVisitsCompleted String[]
   healthInsurance          HealthInsurance?
   otherHealthInsurance     String?
+  label                    String
+  staffNotes               String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1401,17 +1444,146 @@ model PerceivedMaternalPlanningSelfEfficacyTool {
   babyRespondsWell          AgreementLevel
   goodInteraction           AgreementLevel
   showingAffection          AgreementLevel
+  label                     String
+  staffNotes                String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
 
 model PrenatalCare {
-  id String @id @default(uuid())
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
+  id                             String   @id @default(uuid())
+  User                           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                         String
   attendRegularVisitsWithOBCare  YesNo
   prenatalCareStartDate          DateTime
   drivingDistanceForPrenatalCare String
   haveMissedAppointments         String
+  label                          String
+  staffNotes                     String
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+enum TimeframeHousing {
+  Enrollment
+  Update
+}
+
+enum InsuranceType {
+  MedicaidOrTexasKidcare
+  PrivateInsurance
+  TriCare
+  NoInsurance
+  OtherInsurance
+}
+
+enum EducationLevel {
+  HSDiplomaGED
+  SomeCollegeTraining
+  TechnicalTrainingCertification
+  AssociateDegree
+  BachelorDegreeOrHigher
+}
+
+enum EmploymentStatus {
+  EmployedFullTime
+  EmployedPartTime
+  NotEmployedCurrently
+}
+
+enum HousingStatus {
+  OwnsOrSharesOwnHome
+  RentsOrSharesRentedHome
+  LivesInPublicHousing
+  LivesWithParentFamilyMember
+  SomeOtherArrangement
+  SharingHousing
+  LivesInShelter
+}
+
+model HouseholdHousingSafetyProfile {
+  id                          String   @id @default(cuid())
+  user User @relation(fields: [userId], references: [id])
+
+  userId                      String
+  participantName             String
+  caseId                      String
+  dateCompleted               DateTime
+  staffName                   String
+  timeframe                   String[]
+  insuranceType               String
+  otherInsurance              String?
+  highSchoolDiploma           String
+  highestEducation            String?
+  currentlyEnrolled           String
+  middleHighSchoolGED         Boolean?
+  employmentStatus            String
+  usesTobacco                 String
+  tobaccoCessationServices    String?
+  currentlyPregnant           String?
+  wantPregnant                String?
+  yearlyHouseholdIncome       Float?
+  incomeUndeterminedReason    String?
+  otherIncomeUndeterminedReason String?
+  dependentsCount             Int
+  housingStatus               String
+  label                       String
+  staffNotes                  String
+  dateCreated                 DateTime @default(now())
+  dateModified                DateTime @updatedAt
+}
+
+model FoodSecurity {
+  id                                                                     String @id @default(uuid())
+  User                                                                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                                                                 String
+  worryHouseholdWithoutFood                                              String
+  howOftenWorryHouseholdWithoutFood                                      String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodResources                     String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResources             String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodVariety                       String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety               String?
+  pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood         String
+  howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
+  label                                                                  String
+  staffNotes                                                             String
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
+}
+
+model SocialSupportForm {
+  id                          String          @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId                      String
+
+  assessmentDate String
+  siteId String
+  participantId String
+  relation String
+  formCompletionStatus String
+  phase String
+  segment String
+  formCompletionLanguage String
+
+  specialPersonInNeed         ResponseAnswers
+  specialPersonJoysSorrows    ResponseAnswers
+  familyHelp                  ResponseAnswers
+  emotionalHelp               ResponseAnswers
+  specialPersonForComfort     ResponseAnswers
+  friendsHelp                 ResponseAnswers
+  canCountOnFriends           ResponseAnswers
+  talkToFamilyAboutProblems   ResponseAnswers
+  friendsJoysSorrows          ResponseAnswers
+  specialPersonToTalkFeelings ResponseAnswers
+  familyHelpsDecisions        ResponseAnswers
+  talkToFriendsAboutProblems  ResponseAnswers
+  specialPersonInitials       String?
+  specialPersonRelationship   String?
+  comments                    String?         // Optional comments field
+  
+  dateCreated                 DateTime        @default(now())
+  dateModified                DateTime        @updatedAt
+  
 }

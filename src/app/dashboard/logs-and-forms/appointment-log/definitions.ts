@@ -10,7 +10,11 @@ const AppointmentEntrySchema = z.object({
 export type IAppointmentEntry = z.infer<typeof AppointmentEntrySchema>;
 
 // Define the overall schema of the appointment log which is an array of objects from above
-export const AppointmentLogInputsSchema = z.object({appointmentEntries: z.array(AppointmentEntrySchema)});
+export const AppointmentLogInputsSchema = z.object({
+    appointmentEntries: z.array(AppointmentEntrySchema),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
+});
 export type IAppointmentLogInputs = z.infer<typeof AppointmentLogInputsSchema>;
 
 // Response will include everything we submitted to the db plus a few extra details

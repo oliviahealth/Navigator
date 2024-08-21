@@ -199,6 +199,21 @@ CREATE TYPE "Yes" AS ENUM ('Yes');
 -- CreateEnum
 CREATE TYPE "AgreementLevel" AS ENUM ('Strongly_disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly_agree');
 
+-- CreateEnum
+CREATE TYPE "TimeframeHousing" AS ENUM ('Enrollment', 'Update');
+
+-- CreateEnum
+CREATE TYPE "InsuranceType" AS ENUM ('MedicaidOrTexasKidcare', 'PrivateInsurance', 'TriCare', 'NoInsurance', 'OtherInsurance');
+
+-- CreateEnum
+CREATE TYPE "EducationLevel" AS ENUM ('HSDiplomaGED', 'SomeCollegeTraining', 'TechnicalTrainingCertification', 'AssociateDegree', 'BachelorDegreeOrHigher');
+
+-- CreateEnum
+CREATE TYPE "EmploymentStatus" AS ENUM ('EmployedFullTime', 'EmployedPartTime', 'NotEmployedCurrently');
+
+-- CreateEnum
+CREATE TYPE "HousingStatus" AS ENUM ('OwnsOrSharesOwnHome', 'RentsOrSharesRentedHome', 'LivesInPublicHousing', 'LivesWithParentFamilyMember', 'SomeOtherArrangement', 'SharingHousing', 'LivesInShelter');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
@@ -216,6 +231,8 @@ CREATE TABLE "CommunicationLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "communicationEntries" JSONB,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -227,6 +244,8 @@ CREATE TABLE "AppointmentLog" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "appointmentEntries" JSONB[],
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -254,6 +273,8 @@ CREATE TABLE "EnrollmentForm" (
     "guardianDate" TEXT,
     "gcMomsName" TEXT NOT NULL,
     "gcMomsDate" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -269,6 +290,8 @@ CREATE TABLE "MediaAppearanceForm" (
     "participantDate" TIMESTAMP(3) NOT NULL,
     "guardianName" TEXT,
     "guardianDate" TIMESTAMP(3),
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -303,6 +326,8 @@ CREATE TABLE "ParticipantDemographicsForm" (
     "USArmedForces" "YesNo" NOT NULL,
     "reenrollmentWithGap" "YesNo" NOT NULL,
     "transferFromAnotherSite" "YesNo" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -314,6 +339,8 @@ CREATE TABLE "ParticipantRecordForOthersInvolvedForm" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "participantRecordForOthersInvolvedEntries" JSONB NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -356,6 +383,8 @@ CREATE TABLE "ChildDemographicsRecord" (
     "caseworker" TEXT,
     "caseworkerPhoneNumber" TEXT,
     "importantInformation" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -370,6 +399,8 @@ CREATE TABLE "SupportSystemsForm" (
     "strengths" TEXT NOT NULL,
     "areasForImprovement" TEXT NOT NULL,
     "goals" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -383,6 +414,8 @@ CREATE TABLE "CurrentLivingArrangement" (
     "listPeopleLivingWithPatient" JSONB NOT NULL,
     "listChildrenNotLivingWithPatient" JSONB NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -417,6 +450,8 @@ CREATE TABLE "ChildrenNeedsForm" (
     "specializedMedEquipmentNotes" TEXT,
     "other" JSONB NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -468,7 +503,9 @@ CREATE TABLE "ReferralsAndServices" (
     "legalAid" JSONB NOT NULL,
     "specialtyCourt" JSONB NOT NULL,
     "legalAssistanceOther" JSONB[],
-    "additionalNotes" TEXT NOT NULL,
+    "additionalNotes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -498,6 +535,8 @@ CREATE TABLE "ParentalMedicalHistory" (
     "living" TEXT NOT NULL,
     "priorComplications" TEXT,
     "ongoingMedicalProblems" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -512,22 +551,12 @@ CREATE TABLE "EncounterForm" (
     "caseId" TEXT NOT NULL,
     "monthYear" TEXT NOT NULL,
     "encounterEntries" JSONB[],
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "EncounterForm_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "CurrentMedicationList" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "currentMedicationList" JSONB[],
-    "notes" TEXT,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -601,11 +630,26 @@ CREATE TABLE "NutritionHistoryAndAssessment" (
     "dietsAndSupplements" "DietsAndSupplements"[],
     "vitaminSupplementsType" TEXT,
     "herbalSupplementsType" TEXT,
-    "staffNotes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "NutritionHistoryAndAssessment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CurrentMedicationList" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "currentMedicationList" JSONB[],
+    "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "CurrentMedicationList_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -617,6 +661,10 @@ CREATE TABLE "DukeUniversityReligionIndex" (
     "divineExperience" "TruthLevel" NOT NULL,
     "beliefLifeInfluence" "TruthLevel" NOT NULL,
     "religiousIntegrationEffort" "TruthLevel" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "DukeUniversityReligionIndex_pkey" PRIMARY KEY ("id")
 );
@@ -629,6 +677,8 @@ CREATE TABLE "MentalHealthHistory" (
     "takingMedication" "YesNo" NOT NULL,
     "medicationDetails" TEXT,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -656,6 +706,10 @@ CREATE TABLE "EdinburgPostnatalDepressionScale" (
     "timeframe" "EPDS_Timeframe" NOT NULL,
     "totalScore" TEXT NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "EdinburgPostnatalDepressionScale_pkey" PRIMARY KEY ("id")
 );
@@ -742,6 +796,8 @@ CREATE TABLE "HousingSecurityHomeVisitForm" (
     "erVisitSpecific" JSONB,
     "wellChildVisits" "YesNo" NOT NULL,
     "wellChildVisitsSpecific" JSONB,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -763,6 +819,8 @@ CREATE TABLE "PerceivedStressScale" (
     "angeredOutsideControl" "PerceivedStressScaleOptions" NOT NULL,
     "difficultiesPilingUp" "PerceivedStressScaleOptions" NOT NULL,
     "totalScore" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -782,6 +840,8 @@ CREATE TABLE "GeneralizedAnxietyDisorder" (
     "feelingAfraid" "GADAnswers" NOT NULL,
     "problemsDifficulty" "Difficulty" NOT NULL,
     "totalScore" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -850,6 +910,8 @@ CREATE TABLE "ASQ3" (
     "personalSocialScoreNotRecorded" "YesNo" NOT NULL,
     "followUpAction" "FollowUpAction"[],
     "describeActivitiesProvided" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -883,6 +945,8 @@ CREATE TABLE "BriefChildWellnessUpdate" (
     "otherMedicalCare" TEXT,
     "hasDentalCare" "YesNo" NOT NULL,
     "readingFrequency" "ReadingFrequency" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -898,35 +962,12 @@ CREATE TABLE "DeliveryHistoryInformationForm" (
     "dateCompleted" TIMESTAMP(3) NOT NULL,
     "staffName" TEXT NOT NULL,
     "deliveries" JSONB[],
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "DeliveryHistoryInformationForm_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "SocialSupportForm" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
-    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
-    "familyHelp" "ResponseAnswers" NOT NULL,
-    "emotionalHelp" "ResponseAnswers" NOT NULL,
-    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
-    "friendsHelp" "ResponseAnswers" NOT NULL,
-    "canCountOnFriends" "ResponseAnswers" NOT NULL,
-    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
-    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
-    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
-    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
-    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
-    "specialPersonInitials" TEXT,
-    "specialPersonRelationship" TEXT,
-    "comments" TEXT,
-    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "dateModified" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -967,6 +1008,8 @@ CREATE TABLE "InfancyQuestionnaire" (
     "breastMilkAtTwoMonths" "YesNo",
     "breastMilkAtSixMonths" "YesNo",
     "motherCouldNotBreastfeed" "Yes",
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -993,6 +1036,8 @@ CREATE TABLE "TargetChildRecord" (
     "wellChildVisitsCompleted" TEXT[],
     "healthInsurance" "HealthInsurance",
     "otherHealthInsurance" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -1023,6 +1068,8 @@ CREATE TABLE "PerceivedMaternalPlanningSelfEfficacyTool" (
     "babyRespondsWell" "AgreementLevel" NOT NULL,
     "goodInteraction" "AgreementLevel" NOT NULL,
     "showingAffection" "AgreementLevel" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -1037,8 +1084,98 @@ CREATE TABLE "PrenatalCare" (
     "prenatalCareStartDate" TIMESTAMP(3) NOT NULL,
     "drivingDistanceForPrenatalCare" TEXT NOT NULL,
     "haveMissedAppointments" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "PrenatalCare_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HouseholdHousingSafetyProfile" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "participantName" TEXT NOT NULL,
+    "caseId" TEXT NOT NULL,
+    "dateCompleted" TIMESTAMP(3) NOT NULL,
+    "staffName" TEXT NOT NULL,
+    "timeframe" TEXT[],
+    "insuranceType" TEXT NOT NULL,
+    "otherInsurance" TEXT,
+    "highSchoolDiploma" TEXT NOT NULL,
+    "highestEducation" TEXT,
+    "currentlyEnrolled" TEXT NOT NULL,
+    "middleHighSchoolGED" BOOLEAN,
+    "employmentStatus" TEXT NOT NULL,
+    "usesTobacco" TEXT NOT NULL,
+    "tobaccoCessationServices" TEXT,
+    "currentlyPregnant" TEXT,
+    "wantPregnant" TEXT,
+    "yearlyHouseholdIncome" DOUBLE PRECISION,
+    "incomeUndeterminedReason" TEXT,
+    "otherIncomeUndeterminedReason" TEXT,
+    "dependentsCount" INTEGER NOT NULL,
+    "housingStatus" TEXT NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "HouseholdHousingSafetyProfile_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "FoodSecurity" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "worryHouseholdWithoutFood" TEXT NOT NULL,
+    "howOftenWorryHouseholdWithoutFood" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodResources" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResources" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodVariety" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodVariety" TEXT,
+    "pastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT NOT NULL,
+    "howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "FoodSecurity_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "SocialSupportForm" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "assessmentDate" TEXT NOT NULL,
+    "siteId" TEXT NOT NULL,
+    "participantId" TEXT NOT NULL,
+    "relation" TEXT NOT NULL,
+    "formCompletionStatus" TEXT NOT NULL,
+    "phase" TEXT NOT NULL,
+    "segment" TEXT NOT NULL,
+    "formCompletionLanguage" TEXT NOT NULL,
+    "specialPersonInNeed" "ResponseAnswers" NOT NULL,
+    "specialPersonJoysSorrows" "ResponseAnswers" NOT NULL,
+    "familyHelp" "ResponseAnswers" NOT NULL,
+    "emotionalHelp" "ResponseAnswers" NOT NULL,
+    "specialPersonForComfort" "ResponseAnswers" NOT NULL,
+    "friendsHelp" "ResponseAnswers" NOT NULL,
+    "canCountOnFriends" "ResponseAnswers" NOT NULL,
+    "talkToFamilyAboutProblems" "ResponseAnswers" NOT NULL,
+    "friendsJoysSorrows" "ResponseAnswers" NOT NULL,
+    "specialPersonToTalkFeelings" "ResponseAnswers" NOT NULL,
+    "familyHelpsDecisions" "ResponseAnswers" NOT NULL,
+    "talkToFriendsAboutProblems" "ResponseAnswers" NOT NULL,
+    "specialPersonInitials" TEXT,
+    "specialPersonRelationship" TEXT,
+    "comments" TEXT,
+    "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "dateModified" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "SocialSupportForm_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -1084,10 +1221,10 @@ ALTER TABLE "ParentalMedicalHistory" ADD CONSTRAINT "ParentalMedicalHistory_user
 ALTER TABLE "EncounterForm" ADD CONSTRAINT "EncounterForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "NutritionHistoryAndAssessment" ADD CONSTRAINT "NutritionHistoryAndAssessment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "CurrentMedicationList" ADD CONSTRAINT "CurrentMedicationList_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "DukeUniversityReligionIndex" ADD CONSTRAINT "DukeUniversityReligionIndex_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -1132,9 +1269,6 @@ ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_
 ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "IPVScreening" ADD CONSTRAINT "IPVScreening_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -1148,3 +1282,12 @@ ALTER TABLE "PerceivedMaternalPlanningSelfEfficacyTool" ADD CONSTRAINT "Perceive
 
 -- AddForeignKey
 ALTER TABLE "PrenatalCare" ADD CONSTRAINT "PrenatalCare_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "HouseholdHousingSafetyProfile" ADD CONSTRAINT "HouseholdHousingSafetyProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "FoodSecurity" ADD CONSTRAINT "FoodSecurity_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "SocialSupportForm" ADD CONSTRAINT "SocialSupportForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

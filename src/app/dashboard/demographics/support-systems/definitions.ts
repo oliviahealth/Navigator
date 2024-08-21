@@ -5,6 +5,8 @@ export const SupportSystemsInputsSchema = z.object({
     strengths: z.string().min(1, "Strengths required."),
     areasForImprovement: z.string().min(1, "Areas for improvement required."),
     goals: z.string().min(1, "Goals required."),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type ISupportSystemInputs = z.infer<typeof SupportSystemsInputsSchema>;
 

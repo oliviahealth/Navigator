@@ -83,8 +83,8 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     plannedModeDelivery: null,
                     actualModeDelivery: null,
                     attendedPostpartumVisit: '',
-                    postpartumVisitLocation: '',
-                    postpartumVisitDate: '',
+                    // postpartumVisitLocation: '',
+                    // postpartumVisitDate: '',
                     totalNumPregnancies: '',
                     numLiveBirths: '',
                     numChildrenWithMother: '',
@@ -131,19 +131,19 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
             numLiveBirths: '',
             numChildrenWithMother: '',
             priorComplications: null,
-            ongoingMedicalProblems: ''
+            ongoingMedicalProblems: '',
         })
     }
 
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {
-                if (!user) {
-                    throw new Error('User not found');
-                }
-
                 if (verb !== 'edit') {
                     return;
+                }
+
+                if (!user) {
+                    throw new Error("User not found");
                 }
 
                 if (!submissionId) {
@@ -151,8 +151,6 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                 }
 
                 const response = await readParticipantRecordForOthersInvolved(submissionId, user.id);
-                ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
-
                 const formattedEntries = response.participantRecordForOthersInvolvedEntries.map(entry => ({
                     ...entry,
                     dateOfBirth: new Date(entry.dateOfBirth).toISOString().split('T')[0],
@@ -161,25 +159,27 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     deliveryDate: new Date(entry.deliveryDate).toISOString().split('T')[0],
                     postpartumVisitDate: entry.postpartumVisitDate ? new Date(entry.postpartumVisitDate).toISOString().split('T')[0] : null,
                 }));
-                reset({ participantRecordForOthersInvolvedEntries: formattedEntries });
+                reset({
+                    participantRecordForOthersInvolvedEntries: formattedEntries,
+                    label: response.label,
+                    staffNotes: response.staffNotes
+                });
 
-                const initialShowPostpartumLocationDate = response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes');
-                setShowPostpartumLocationDate(initialShowPostpartumLocationDate);
+                setShowPostpartumLocationDate(response.participantRecordForOthersInvolvedEntries.map(entry => entry.attendedPostpartumVisit === 'Yes'));
             } catch (error) {
                 console.error(error);
-                
                 setErrorMessage('Something went wrong! Please try again later');
                 router.push('/dashboard');
-                return;
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
-        if(!user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
-
-    const submit = async (data: { participantRecordForOthersInvolvedEntries: IParticipantRecordForOthersEntry[] }) => {
+    const submit = async (data: IParticipantRecordForOthersInvolvedInputs) => {
+        console.log("success")
         try {
             let response;
 
@@ -187,12 +187,10 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                 throw new Error('User not found');
             }
 
-            const { participantRecordForOthersInvolvedEntries } = data;
-
             if (verb === 'new') {
-                response = await createParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, user.id);
+                response = await createParticipantRecordForOthersInvolved(data, user.id);
             } else {
-                response = await updateParticipantRecordForOthersInvolved(participantRecordForOthersInvolvedEntries, submissionId, user.id);
+                response = await updateParticipantRecordForOthersInvolved(data, submissionId, user.id);
             }
 
             ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
@@ -254,7 +252,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                     <div className="space-y-3">
                                         <p className="font-semibold">Date of Birth</p>
                                         <input
-                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.dateOfBirth`)}
+                                            {...register(`participantRecordForOthersInvolvedEntries.${index}.dateOfBirth`, { valueAsDate: true })}
                                             className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                             type="date"
                                         />
@@ -470,7 +468,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                             <div className="flex flex-col flex-grow space-y-3">
                                                 <p className="font-semibold">Effective Date</p>
                                                 <input
-                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.effectiveDate`)}
+                                                    {...register(`participantRecordForOthersInvolvedEntries.${index}.effectiveDate`, { valueAsDate: true })}
                                                     className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                     type="date"
                                                 />
@@ -530,7 +528,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Due Date</p>
                                             <input
-                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.dueDate`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.dueDate`, { valueAsDate: true })}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 type="date"
                                             />
@@ -544,7 +542,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                         <div className="space-y-3">
                                             <p className="font-semibold">Delivery Date</p>
                                             <input
-                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.deliveryDate`)}
+                                                {...register(`participantRecordForOthersInvolvedEntries.${index}.deliveryDate`, { valueAsDate: true })}
                                                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                 type="date"
                                             />
@@ -646,7 +644,7 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                                                 <div className="space-y-3">
                                                     <p className="font-medium">Date Completed</p>
                                                     <input
-                                                        {...register(`participantRecordForOthersInvolvedEntries.${index}.postpartumVisitDate`)}
+                                                        {...register(`participantRecordForOthersInvolvedEntries.${index}.postpartumVisitDate`, { valueAsDate: true })}
                                                         className="border border-gray-300 px-4 py-2 rounded-md w-full"
                                                         type="date"
                                                     />
@@ -743,6 +741,35 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
                     >
                         + Add Communication Entry
                     </button>
+                </div>
+
+                <div className="pt-6">
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea
+                            {...register("label")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.label && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.label.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea
+                            {...register("staffNotes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.staffNotes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.staffNotes.message}
+                            </span>
+                        )}
+                    </div>
                 </div>
 
                 <button

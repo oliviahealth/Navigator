@@ -39,6 +39,8 @@ export const GeneralizedAnxietyDisorderInputsSchema = z.object({
     feelingAfraid: AnswersEnum,
     problemsDifficulty: DifficultyEnum,
     totalScore: z.string(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IGeneralizedAnxietyDisorderInputs = z.infer<typeof GeneralizedAnxietyDisorderInputsSchema>;
 

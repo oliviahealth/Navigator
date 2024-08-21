@@ -12,12 +12,11 @@ import { ChildrenNeedsFormResponseSchema, IChildrenNeedsFormInputs } from "./def
  * @remarks This function takes Children Needs Form data and saves them to the database using Prisma.
  */
 export const createChildrenNeedsForm = async (childrenNeedsInputs: IChildrenNeedsFormInputs, userId: string) => {
-    const { ...data } = childrenNeedsInputs;
 
     const response = await prisma.childrenNeedsForm.create({
         data: {
             userId,
-            ...data,
+            ...childrenNeedsInputs,
         },
     });
 
@@ -45,11 +44,13 @@ export const readChildrenNeedsForm = async (childrenNeedsFormId: string, userId:
 }
 
 export const readAllChildrenNeedsForm = async (userId: string) => {
-    const response = await prisma.childDemographicsRecord.findMany({
+    const response = await prisma.childrenNeedsForm.findMany({
         where: {
             userId
         }
     });
+
+    console.log(response);
 
     return response.map(log => ChildrenNeedsFormResponseSchema.parse(log));
 }
@@ -65,7 +66,6 @@ export const readAllChildrenNeedsForm = async (userId: string) => {
  * record with the record provided in the input.
  */
 export const updateChildrenNeedsForm = async (childrenNeedsFormInput: IChildrenNeedsFormInputs, id: string, userId: string) => {
-    const { ...data } = childrenNeedsFormInput;
 
     const response = await prisma.childrenNeedsForm.update({
         where: {
@@ -73,7 +73,7 @@ export const updateChildrenNeedsForm = async (childrenNeedsFormInput: IChildrenN
             userId
         },
         data: {
-            ...data,
+            ...childrenNeedsFormInput,
         }
     })
 
@@ -88,7 +88,7 @@ export const updateChildrenNeedsForm = async (childrenNeedsFormInput: IChildrenN
  * @remarks To be used by the dashboard
  */
 export const deleteChildrenNeedsForm = async (submissionId: string, userId: string) => {
-    const response = await prisma.childrenNeedsForm.deleteMany({
+    const response = await prisma.childrenNeedsForm.delete({
         where: {
             id: submissionId,
             userId: userId

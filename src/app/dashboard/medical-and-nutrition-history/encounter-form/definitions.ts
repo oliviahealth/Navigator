@@ -29,6 +29,8 @@ export const EncounterFormInputsSchema = z.object({
     caseId: z.string().min(1, "Case ID is required."),
     monthYear: z.string().min(1, "Month/Year required."),
     encounterEntries: z.array(EncounterEntrySchema),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IEncounterFormInputs = z.infer<typeof EncounterFormInputsSchema>;
 

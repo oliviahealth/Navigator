@@ -97,6 +97,8 @@ export const ReferralsAndServicesInputsSchema = z.object({
     specialtyCourt: ServiceSchema,
     legalAssistanceOther: z.array(AdditionalServiceSchema),
     additionalNotes: z.string(),
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IReferralsAndServicesInputs = z.infer<typeof ReferralsAndServicesInputsSchema>;
 

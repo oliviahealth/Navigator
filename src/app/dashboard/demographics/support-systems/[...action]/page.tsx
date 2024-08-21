@@ -41,33 +41,28 @@ const SupportSystems: React.FC = () => {
                 if (verb !== 'edit') {
                     return;
                 }
-                
+
                 if (!user) {
-                    throw new Error('Missing user');
+                    throw new Error("User not found");
                 }
 
                 if (!submissionId) {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                const response = await readSupportSystems(submissionId, user.id);
-
-                const validResponse = SupportSystemsResponseSchema.parse(response);
-
+                const validResponse = await readSupportSystems(submissionId, user.id);
                 reset(validResponse);
-
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
                 router.push('/dashboard');
-                return;
             }
+        };
+
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
         }
-
-        if(!user) return;
-
-        fetchAndPopulatePastSubmissionData()
-    }, [])
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (SupportSystemsData: ISupportSystemInputs) => {
         try {
@@ -162,6 +157,35 @@ const SupportSystems: React.FC = () => {
                                 )}
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div className="pt-6">
+                    <hr className="border-t-1 border-gray-400 my-4" />
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                        <textarea
+                            {...register("label")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.label && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.label.message}
+                            </span>
+                        )}
+                    </div>
+
+                    <div>
+                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                        <textarea
+                            {...register("staffNotes")}
+                            className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                        />
+                        {errors.staffNotes && (
+                            <span className="label-text-alt text-red-500">
+                                {errors.staffNotes.message}
+                            </span>
+                        )}
                     </div>
                 </div>
 

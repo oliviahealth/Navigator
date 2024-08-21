@@ -12,12 +12,11 @@ import { IReferralsAndServicesInputs, ReferralsAndServicesResponseSchema } from 
  * @remarks This function takes Referrals And Services Form data and saves them to the database using Prisma.
  */
 export const createReferralsAndServices = async (referralsAndServicesInput: IReferralsAndServicesInputs, userId: string) => {
-    const { ...data } = referralsAndServicesInput;
 
     const response = await prisma.referralsAndServices.create({
         data: {
             userId,
-            ...data,
+            ...referralsAndServicesInput,
         },
     });
 
@@ -66,15 +65,13 @@ export const readAllReferralsAndServices = async (userId: string) => {
  */
 export const updateReferralsAndServices = async (referralsAndServicesInput: IReferralsAndServicesInputs, id: string, userId: string) => {
 
-    const { ...data } = referralsAndServicesInput;
-
     const response = await prisma.referralsAndServices.update({
         where: {
             id,
             userId
         },
         data: {
-            ...data,
+            ...referralsAndServicesInput,
         }
     })
 
@@ -89,12 +86,12 @@ export const updateReferralsAndServices = async (referralsAndServicesInput: IRef
  * @remarks To be used by the dashboard
  */
 export const deleteReferralsAndServices = async (submissionId: string, userId: string) => {
-    const response = await prisma.referralsAndServices.deleteMany({
+    const response = await prisma.referralsAndServices.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return ReferralsAndServicesResponseSchema.parse(response);
 };

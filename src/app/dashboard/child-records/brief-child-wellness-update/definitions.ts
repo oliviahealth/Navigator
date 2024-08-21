@@ -60,6 +60,8 @@ export const BriefChildWellnessUpdateInputsSchema = z.object({
     otherMedicalCare: z.string().nullable(),
     hasDentalCare: YesNoEnum,
     readingFrequency: ReadingFrequencyEnum,
+    label: z.string().min(1, "Label required."),
+    staffNotes: z.string().min(1, "Staff notes required.")
 });
 export type IBriefChildWellnessUpdateInputs = z.infer<typeof BriefChildWellnessUpdateInputsSchema>;
 

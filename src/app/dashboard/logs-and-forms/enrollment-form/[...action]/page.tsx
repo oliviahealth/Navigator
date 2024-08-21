@@ -7,7 +7,6 @@ import { useFieldArray, useForm } from "react-hook-form";
 
 import {
   EnrollmentFormInputsSchema,
-  EnrollmentFormResponseSchema,
   IEnrollmentFormInputs,
 } from "../definitions";
 import {
@@ -194,66 +193,58 @@ const EnrollmentLog: React.FC = () => {
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (verb !== "edit") return;
+        if (verb !== 'edit') {
+          return;
+        }
 
-        if (!submissionId)
-          throw new Error(
-            "Missing submissionId when fetching past submissions"
-          );
+        if (!user) {
+          throw new Error("User not found");
+        }
 
-        if (!user) throw new Error("Missing user");
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
 
         const validResponse = await readEnrollmentForm(submissionId, user.id);
-
         const formattedData = {
           ...validResponse,
           guardianDate: validResponse.guardianDate
             ? new Date(validResponse.guardianDate).toISOString().split("T")[0]
             : undefined,
-          gcMomsDate: new Date(validResponse.gcMomsDate)
-            .toISOString()
-            .split("T")[0],
-          dateOfBirth: new Date(validResponse.dateOfBirth)
-            .toISOString()
-            .split("T")[0],
-          clientDate: new Date(validResponse.clientDate)
-            .toISOString()
-            .split("T")[0],
+          gcMomsDate: new Date(validResponse.gcMomsDate).toISOString().split("T")[0],
+          dateOfBirth: new Date(validResponse.dateOfBirth).toISOString().split("T")[0],
+          clientDate: new Date(validResponse.clientDate).toISOString().split("T")[0],
         };
-
         reset(formattedData);
+
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-
-        router.push("/");
-        return;
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard');
       }
     };
 
-    if (!user) return;
-
-    fetchAndPopulatePastSubmissionData();
-  }, []);
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
   const submit = async (data: IEnrollmentFormInputs) => {
     try {
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
 
       let response;
 
-      if (verb === "new") {
+      if (verb === 'new') {
         response = await createEnrollmentForm(data, user.id);
       } else {
         response = await updateEnrollmentForm(data, submissionId, user.id);
       }
-
-      EnrollmentFormResponseSchema.parse(response);
     } catch (error) {
       console.error(error);
-      setErrorMessage("Something went wrong! Please try again later");
+      setErrorMessage('Something went wrong! Please try again later');
 
       router.push("/dashboard/logs-and-forms");
 
@@ -266,6 +257,7 @@ const EnrollmentLog: React.FC = () => {
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
+      console.log(errors)
       setErrorMessage("Please ensure all fields have been completed on tabs 6 and 10");
     }
   }, [errors])
@@ -425,7 +417,7 @@ const EnrollmentLog: React.FC = () => {
             )}
             <p className="font-medium pb-2 pt-8">Date of Birth</p>
             <input
-              {...register("dateOfBirth")}
+              {...register("dateOfBirth", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
               type="date"
             />
@@ -563,7 +555,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("clientDate")}
+            {...register("clientDate", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
@@ -588,7 +580,7 @@ const EnrollmentLog: React.FC = () => {
               <p className="font-medium pb-2 pt-8">Legal Guardian Name</p>
               <input
                 {...register("guardianName", {
-                  required: watch("clientAge") < 18,
+                  required: watch("clientAge") < 18
                 })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
               />
@@ -601,7 +593,7 @@ const EnrollmentLog: React.FC = () => {
               <p className="font-medium pb-2 pt-8">Date</p>
               <input
                 {...register("guardianDate", {
-                  required: watch("clientAge") < 18,
+                  required: watch("clientAge") < 18, valueAsDate: true
                 })}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 type="date"
@@ -628,7 +620,7 @@ const EnrollmentLog: React.FC = () => {
           )}
           <p className="font-medium pb-2 pt-8">Date</p>
           <input
-            {...register("gcMomsDate")}
+            {...register("gcMomsDate", { valueAsDate: true })}
             className="border border-gray-300 px-4 py-2 rounded-md w-full"
             type="date"
           />
@@ -637,6 +629,34 @@ const EnrollmentLog: React.FC = () => {
               {errors.gcMomsDate.message}
             </span>
           )}
+          <div className="pt-6">
+            <hr className="border-t-1 border-gray-400 my-4" />
+            <div>
+              <p className="font-semibold pb-2 pt-8">Submission Label</p>
+              <textarea
+                {...register("label")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.label && (
+                <span className="label-text-alt text-red-500">
+                  {errors.label.message}
+                </span>
+              )}
+            </div>
+
+            <div>
+              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+              <textarea
+                {...register("staffNotes")}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
+              />
+              {errors.staffNotes && (
+                <span className="label-text-alt text-red-500">
+                  {errors.staffNotes.message}
+                </span>
+              )}
+            </div>
+          </div>
           <div className="pt-4">
             <button
               type="submit"

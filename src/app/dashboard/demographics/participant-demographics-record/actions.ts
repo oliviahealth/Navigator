@@ -1,7 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
-import { IParticipantDemographicsFormInputs, ParticipantDemographicsFormResponseSchema } from "./definitions";
+import { IParticipantDemographicsFormInputs, ParticipantDemographicsFormResponseSchema, IParticipantDemographicsFormResponse } from "./definitions";
 
 /**
  * Creates a new Participant Demographics Record in the db.
@@ -12,22 +12,11 @@ import { IParticipantDemographicsFormInputs, ParticipantDemographicsFormResponse
  * @remarks This function takes participant demographics record data and saves them to the database using Prisma.
  */
 export const createParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsFormInputs, userId: string) => {
-    const {
-        participantDateOfBirth,
-        programStartDate,
-        ...rest
-    } = participantDemographicsRecordInput;
-
-    // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(participantDateOfBirth);
-    const programStartDateAsDate = new Date(programStartDate);
 
     const response = await prisma.participantDemographicsForm.create({
         data: {
             userId,
-            participantDateOfBirth: dateOfBirthAsDate,
-            programStartDate: programStartDateAsDate,
-            ...rest,
+            ...participantDemographicsRecordInput
         },
     });
 
@@ -76,25 +65,13 @@ export const readAllParticipantDemographicsRecord = async (userId: string) => {
  */
 export const updateParticipantDemographicsRecord = async (participantDemographicsRecordInput: IParticipantDemographicsFormInputs, id: string, userId: string) => {
 
-    const {
-        participantDateOfBirth,
-        programStartDate,
-        ...rest
-    } = participantDemographicsRecordInput;
-
-    // Convert date strings to Date objects
-    const dateOfBirthAsDate = new Date(participantDateOfBirth);
-    const programStartDateAsDate = new Date(programStartDate);
-
     const response = await prisma.participantDemographicsForm.update({
         where: {
             id,
             userId
         },
         data: {
-            participantDateOfBirth: dateOfBirthAsDate,
-            programStartDate: programStartDateAsDate,
-            ...rest,
+            ...participantDemographicsRecordInput
         }
     })
 
@@ -109,12 +86,12 @@ export const updateParticipantDemographicsRecord = async (participantDemographic
  * @remarks To be used by the dashboard
  */
 export const deleteParticipantDemographicsRecord = async (submissionId: string, userId: string) => {
-    const response = await prisma.participantDemographicsForm.deleteMany({
+    const response = await prisma.participantDemographicsForm.delete({
         where: {
             id: submissionId,
             userId: userId
         }
     });
-    
+
     return ParticipantDemographicsFormResponseSchema.parse(response);
 };

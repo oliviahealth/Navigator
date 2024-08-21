@@ -14,6 +14,8 @@ import { DukeUniversityReligionIndexResponseSchema, IDukeUniversityReligionIndex
 export const createDukeUniversityReligionIndex = async (dukeUniversityReligionIndexInput: IDukeUniversityReligionIndexInputs, userId: string) => {
     const { ...data } = dukeUniversityReligionIndexInput;
 
+    console.log(data);
+
     const response = await prisma.dukeUniversityReligionIndex.create({
         data: {
             userId,

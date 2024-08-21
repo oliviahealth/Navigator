@@ -11,6 +11,9 @@ const useChildrenNeedsForm = () => {
         const fetchChildNeedsFormSubmission = async () => {
             if (user) {
                 const response = await readAllChildrenNeedsForm(user.id);
+
+                console.log(response);
+
                 setChildrenNeedsFormSubmission(response || null);
                 if (response && response.length > 0) {
                     setSelectedChildrenNeedsForm(response[0]);
