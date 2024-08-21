@@ -27,6 +27,17 @@ export const readCurrentMedicationListRecord = async (currentMedicationListId: s
     return CurrentMedicationListResponseSchema.parse(response);
 };
 
+export const readAllCurrentMedicationListRecords = async (userId: string) => {
+    const response = await prisma.currentMedicationList.findMany({
+        where: {
+            userId,
+        },
+    });
+
+    return response.map(form => CurrentMedicationListResponseSchema.parse(form));
+};
+
+
 export const updateCurrentMedicationListRecord = async (currentMedicationListInput: ICurrentMedicationListInputs, id: string, userId: string) => {
     const { currentMedicationList, notes } = currentMedicationListInput;
 
