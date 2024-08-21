@@ -126,9 +126,9 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
           </button>
         </>
       ) : (
-        <p>No submissions available.</p>
+        <p className="-mr-3">No submissions available.</p>
       )}
-      <Link href={`${link}new`} className="group flex flex-row font-semibold items-center text-sm text-maroon gap-[2px]">
+      <Link href={`${link}new`} className="text-red-800 font-semibold text-sm -mb-[2px] border-b-2 border-transparent hover:border-red-800 transition duration-100 ease-in">
         New
       </Link>
     </div >
