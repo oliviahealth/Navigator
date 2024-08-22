@@ -49,7 +49,7 @@ export const ASQ3InputsSchema = z.object({
   personalSocialScore: z.string().nullable(),
   personalSocialScoreNotRecorded: YesNoEnum,
   followUpAction: z.array(FollowUpActionEnum),
-  describeActivitiesProvided: z.string().nullable(),
+  describeActivitiesProvided: z.string().nullish(),
   label: z.string().min(1, "Label required."),
   staffNotes: z.string().min(1, "Staff notes required."),
 });

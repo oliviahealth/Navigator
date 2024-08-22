@@ -47,6 +47,16 @@ export const readParticipantRecordForOthersInvolved = async (participantRecordId
     return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
 }
 
+export const readAllParticipantRecordForOthersInvolved = async (userId: string) => {
+    const response = await prisma.participantRecordForOthersInvolvedForm.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => ParticipantRecordForOthersInvolvedResponseSchema.parse(log));
+}
+
 /**
  * Updates a participant record entry in the database with new participant record entries.
  * @param {IParticipantRecordForOthersInvolvedEntry[]} participantRecordFormInput - An array of updated participant record entries.
@@ -65,6 +75,17 @@ export const updateParticipantRecordForOthersInvolved = async (participantRecord
         data: {
             ...participantRecordFormInput
         },
+    });
+
+    return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);
+}
+
+export const deleteParticipantRecordForOthersInvolved = async (submissionId: string, userId: string) => {
+    const response = await prisma.participantRecordForOthersInvolvedForm.deleteMany({
+        where: {
+            id: submissionId,
+            userId: userId
+        }
     });
 
     return ParticipantRecordForOthersInvolvedResponseSchema.parse(response);

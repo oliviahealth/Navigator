@@ -100,7 +100,7 @@ const CommunicationLog: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard/logs-and-forms');
+                router.push('/dashboard/logs-and-consent-forms');
             }
         };
 
@@ -129,13 +129,13 @@ const CommunicationLog: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard/logs-and-forms')
+            router.push('/dashboard/logs-and-consent-forms')
 
             return;
         }
 
         setSuccessMessage('Communication Log submitted successfully!')
-        router.push('/dashboard/logs-and-forms')
+        router.push('/dashboard/logs-and-consent-forms')
     };
 
     // If this is an update submission, fetch the past submission data using the submissionId from the url

@@ -38,7 +38,7 @@ export default async function DashboardLayout({
           <div className="flex flex-col w-full h-full px-20">
             <div className="flex flex-row mx-5 my-5 justify-between items-center md:items-baseline">
               <div className="flex text-3xl md:text-4xl font-semibold">
-                Hello [name]!
+                Hello {user?.name}!
               </div>
               <div className="flex">
                 <img

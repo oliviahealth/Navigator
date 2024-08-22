@@ -49,6 +49,16 @@ export const readCurrentLivingArrangement = async (
   return CurrentLivingArrangementResponseSchema.parse(response);
 };
 
+export const readAllCurrentLivingArrangement = async (userId: string) => {
+  const response = await prisma.currentLivingArrangement.findMany({
+    where: {
+      userId
+    }
+  });
+
+  return response.map(log => CurrentLivingArrangementResponseSchema.parse(log));
+}
+
 /**
  * Updates a current living arrangement form in the database with new current living arrangement form.
  * @param {ICurrentLivingArrangementInputs} currentLivingArrangementInputs - An array of updated current living arrangement formies.
