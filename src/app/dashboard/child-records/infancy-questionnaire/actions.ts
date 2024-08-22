@@ -44,7 +44,14 @@ export const readInfancyQuestionnaire = async (InfancyQuestionnaireId: string, u
 
     return InfancyQuestionnaireResponseSchema.parse(response);
 }
-
+export const readAllInfancyQuestionnaire = async (userId: string) => {
+    const response = await prisma.infancyQuestionnaire.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => InfancyQuestionnaireResponseSchema.parse(form));
+}
 /**
  * Updates a Infancy Questionnaire Record in the database with new Infancy Questionnaire Record.
  * @param {IInfancyQuestionnaireInputs} InfancyQuestionnaireInput - An array of updated Infancy Questionnaire Recordies.

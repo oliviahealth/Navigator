@@ -50,33 +50,32 @@ const CurrentMedicationListRecord: React.FC = () => {
                     return;
                 }
 
+                if (!user) {
+                    throw new Error("User not found");
+                }
+
                 if (!submissionId) {
                     throw new Error('Missing submissionId when fetching past submission');
                 }
 
-                if (!user) {
-                    throw new Error('Missing user');
-                }
-
-                const validResponse = await readCurrentMedicationListRecord(submissionId, user.id);
-
-                reset(validResponse);
+                const response = await readCurrentMedicationListRecord(submissionId, user.id);
+                reset(response);
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-
-                router.push('/');
-                return;
+                router.push('/dashboard/medications');
             }
         };
 
-        fetchAndPopulatePastSubmissionData();
-    }, []);
+        if (user && verb === 'edit' && submissionId) {
+            fetchAndPopulatePastSubmissionData();
+        }
+    }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: ICurrentMedicationListInputs) => {
         try {
             CurrentMedicationListInputsSchema.parse(data);
-            
+
             let response;
             if (!user) {
                 throw new Error('User missing');
@@ -91,19 +90,19 @@ const CurrentMedicationListRecord: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard/medications');
 
             return;
         }
 
         setSuccessMessage('Current Medication List submitted successfully!');
-        router.push('/dashboard');
+        router.push('/dashboard/medications');
     };
 
     const addNewMedication = () => {
         append({ name: '', dose: '', prescriber: '', notes: '' });
     };
-    
+
     return (
         <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
             <form

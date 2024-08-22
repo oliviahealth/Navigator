@@ -44,7 +44,7 @@ export const readSupportSystems = async (SupportSystemsId: string, userId: strin
 }
 
 export const readAllSupportSystems = async (userId: string) => {
-    const response = await prisma.communicationLog.findMany({
+    const response = await prisma.supportSystemsForm.findMany({
         where: {
             userId
         }

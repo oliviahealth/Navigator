@@ -44,6 +44,15 @@ export const readDeliveryHistoryInformationForm = async (deliveryHistoryInformat
     return DeliveryHistoryInformationFormResponseSchema.parse(response);
 }
 
+export const readAllDeliveryHistoryInformationForm = async (userId: string) => {
+    const response = await prisma.deliveryHistoryInformationForm.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => DeliveryHistoryInformationFormResponseSchema.parse(form));
+}
+
 /**
  * Updates a Delivery History Information Form in the database with new Delivery History Information Form.
  * @param {IDeliveryHistoryInformationFormInputs} deliveryHistoryInformationFormInput - An array of updated Delivery History Information Formies.
