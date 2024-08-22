@@ -143,6 +143,16 @@ const SubstanceUseHistory: React.FC = () => {
           ...response,
           date_used_mat: response.date_used_mat ? new Date(response.date_used_mat).toISOString().slice(0, 10) : null,
           date_used_medicine_service: response.date_used_medicine_service ? new Date(response.date_used_medicine_service).toISOString().slice(0, 10) : null,
+          alcohol_date_last_used: response.alcohol_date_last_used ? new Date(response.alcohol_date_last_used).toISOString().slice(0, 10) : null,
+          benzodiazepines_date_last_used: response.benzodiazepines_date_last_used ? new Date(response.benzodiazepines_date_last_used).toISOString().slice(0, 10) : null,
+          cocaine_date_last_used: response.cocaine_date_last_used ? new Date(response.cocaine_date_last_used).toISOString().slice(0, 10) : null,
+          heroin_date_last_used: response.heroin_date_last_used ? new Date(response.heroin_date_last_used).toISOString().slice(0, 10) : null,
+          kush_date_last_used: response.kush_date_last_used ? new Date(response.kush_date_last_used).toISOString().slice(0, 10) : null,
+          marijuana_date_last_used: response.marijuana_date_last_used ? new Date(response.marijuana_date_last_used).toISOString().slice(0, 10) : null,
+          methamphetamine_date_last_used: response.methamphetamine_date_last_used ? new Date(response.methamphetamine_date_last_used).toISOString().slice(0, 10) : null,
+          prescription_drugs_date_last_used: response.prescription_drugs_date_last_used ? new Date(response.prescription_drugs_date_last_used).toISOString().slice(0, 10) : null,
+          tobacco_date_last_used: response.tobacco_date_last_used ? new Date(response.tobacco_date_last_used).toISOString().slice(0, 10) : null,
+
           other_drugs: response.other_drugs ? response.other_drugs.map(drug => ({
             ...drug,
             date_last_used: drug.date_last_used ? new Date(drug.date_last_used).toISOString().slice(0, 10) : undefined,
@@ -157,6 +167,19 @@ const SubstanceUseHistory: React.FC = () => {
 
         setShowAddictionServiceDetails(response.used_addiction_medicine_services !== "Never")
         setShowMatDetails(response.mat_engaged !== "Never")
+
+        const drugVisibilityState: DrugVisibilityState = {
+          alcohol: response.alcohol_ever_used === "Yes",
+          benzodiazepines: response.benzodiazepines_ever_used === "Yes",
+          cocaine: response.cocaine_ever_used === "Yes",
+          heroin: response.heroin_ever_used === "Yes",
+          kush: response.kush_ever_used === "Yes",
+          marijuana: response.marijuana_ever_used === "Yes",
+          methamphetamine: response.methamphetamine_ever_used === "Yes",
+          prescription_drugs: response.prescription_drugs_ever_used === "Yes",
+          tobacco: response.tobacco_ever_used === "Yes",
+        };
+        setShowDrugDate(drugVisibilityState);
 
       } catch (error) {
         console.error(error);

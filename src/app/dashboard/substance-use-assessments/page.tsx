@@ -157,55 +157,67 @@ const Tab: React.FC = () => {
               </div>
             </div>
 
-            <div className="bento-inner">
-              <h2 className="font-bold text-lg">Additional Drugs</h2>
-              <div className="flex grid-cols gap-4">
-                {selectedSubstanceUseHistorySubmission.other_drugs.map((entry: any, index: number) => (
-                  <div key={index} className="bento-inner">
-                    <p><strong>Additional Drug Used:</strong> {entry.drug_used}</p>
-                    <p><strong>Used During Pregnancy:</strong> {entry.used_during_pregnancy}</p>
-                    <p><strong>Last Used:</strong> {new Date(entry.date_last_used).toLocaleDateString()}</p>
-                    <p><strong>Notes:</strong> {entry.notes || 'N/A'}</p>
-                  </div>
-                ))}
+            {selectedSubstanceUseHistorySubmission.other_drugs.length > 0 && (
+              <div className="bento-inner">
+                <h2 className="font-bold text-lg">Additional Drugs</h2>
+                <div className="flex grid-cols gap-4">
+                  {selectedSubstanceUseHistorySubmission.other_drugs.map((entry: any, index: number) => (
+                    <div key={index} className="bento-inner">
+                      <p><strong>Additional Drug Used:</strong> {entry.drug_used}</p>
+                      <p><strong>Used During Pregnancy:</strong> {entry.used_during_pregnancy}</p>
+                      <p><strong>Last Used:</strong> {new Date(entry.date_last_used).toLocaleDateString()}</p>
+                      <p><strong>Notes:</strong> {entry.notes || 'N/A'}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="grid grid-cols-2 gap-4">
               <div className="bento-inner">
                 <h2 className="font-bold text-lg">Medication Assisted Treatment</h2>
                 <p><strong>MAT Engaged:</strong> {selectedSubstanceUseHistorySubmission.mat_engaged}</p>
-                <p><strong>Date of Last Use: </strong> {selectedSubstanceUseHistorySubmission.mat_engaged !== "Never" ? new Date(selectedSubstanceUseHistorySubmission.date_used_mat).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Clinic Name: </strong> {selectedSubstanceUseHistorySubmission.mat_clinic_name || "N/A"}</p>
-                <p><strong>Clinic Phone: </strong> {selectedSubstanceUseHistorySubmission.mat_clinic_phone || "N/A"}</p>
+                {selectedSubstanceUseHistorySubmission.mat_engaged === "Yes" && (
+                  <>
+                    <p><strong>Date of Last Use: </strong> {selectedSubstanceUseHistorySubmission.mat_engaged !== "Never" ? new Date(selectedSubstanceUseHistorySubmission.date_used_mat).toLocaleDateString() : "N/A"}</p>
+                    <p><strong>Clinic Name: </strong> {selectedSubstanceUseHistorySubmission.mat_clinic_name || "N/A"}</p>
+                    <p><strong>Clinic Phone: </strong> {selectedSubstanceUseHistorySubmission.mat_clinic_phone || "N/A"}</p>
+                  </>
+                )}
               </div>
 
               <div className="bento-inner">
                 <h2 className="font-bold text-lg">Addiction Medicine Services</h2>
                 <p><strong>Ever Used:</strong> {selectedSubstanceUseHistorySubmission.used_addiction_medicine_services}</p>
-                <p><strong>Date of Last Appointment: </strong> {selectedSubstanceUseHistorySubmission.used_addiction_medicine_services !== "Never" ? new Date(selectedSubstanceUseHistorySubmission.date_used_medicine_service).toLocaleDateString() : "N/A"}</p>
-                <p><strong>Clinic Name: </strong> {selectedSubstanceUseHistorySubmission.addiction_medicine_clinic || "N/A"}</p>
-                <p><strong>Clinic Phone: </strong> {selectedSubstanceUseHistorySubmission.addiction_medicine_clinic_phone || "N/A"}</p>
+                {selectedSubstanceUseHistorySubmission.mat_engaged === "Yes" && (
+                  <>
+                    <p><strong>Date of Last Appointment: </strong> {selectedSubstanceUseHistorySubmission.used_addiction_medicine_services !== "Never" ? new Date(selectedSubstanceUseHistorySubmission.date_used_medicine_service).toLocaleDateString() : "N/A"}</p>
+                    <p><strong>Clinic Name: </strong> {selectedSubstanceUseHistorySubmission.addiction_medicine_clinic || "N/A"}</p>
+                    <p><strong>Clinic Phone: </strong> {selectedSubstanceUseHistorySubmission.addiction_medicine_clinic_phone || "N/A"}</p>
+                  </>
+                )}
               </div>
             </div>
 
-            <div className="bento-inner">
-              <h2 className="font-bold text-lg">Medications</h2>
-              <div className="flex grid-cols gap-4">
-                {selectedSubstanceUseHistorySubmission.medications.map((entry: any, index: number) => (
-                  <div key={index} className="bento-inner">
-                    <p><strong>Medication:</strong> {entry.medication}</p>
-                    <p><strong>Dose:</strong> {entry.dose}</p>
-                    <p><strong>Date:</strong> {new Date(entry.date).toLocaleDateString()}</p>
-                  </div>
-                ))}
+            {selectedSubstanceUseHistorySubmission.medications.length > 0 && (
+              <div className="bento-inner">
+                <h2 className="font-bold text-lg">Medications</h2>
+                <div className="flex grid-cols gap-4">
+                  {selectedSubstanceUseHistorySubmission.medications.map((entry: any, index: number) => (
+                    <div key={index} className="bento-inner">
+                      <p><strong>Medication:</strong> {entry.medication}</p>
+                      <p><strong>Dose:</strong> {entry.dose}</p>
+                      <p><strong>Date:</strong> {new Date(entry.date).toLocaleDateString()}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="flex grid-cols gap-4">
               <div className="bento-inner">
                 <h2 className="font-bold text-lg">Additional Notes</h2>
-                <p>{selectedSubstanceUseHistorySubmission.notes}</p>
+                <p>{selectedSubstanceUseHistorySubmission.notes || "N/A"}</p>
               </div>
 
               <div className="bento-inner">
