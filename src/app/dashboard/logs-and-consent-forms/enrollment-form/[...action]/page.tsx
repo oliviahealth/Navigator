@@ -246,13 +246,13 @@ const EnrollmentLog: React.FC = () => {
       console.error(error);
       setErrorMessage('Something went wrong! Please try again later');
 
-      router.push("/dashboard/logs-and-forms");
+      router.push("/dashboard/logs-and-consent-forms");
 
       return;
     }
 
     setSuccessMessage("Enrollment Form submitted successfully!");
-    router.push("/dashboard/logs-and-forms");
+    router.push("/dashboard/logs-and-consent-forms");
   };
 
   useEffect(() => {
@@ -590,7 +590,7 @@ const EnrollmentLog: React.FC = () => {
                 </span>
               )}
 
-              <p className="font-medium pb-2 pt-8">Date</p>
+              <p className="font-medium pb-2 pt-8">Guardian Date</p>
               <input
                 {...register("guardianDate", {
                   required: watch("clientAge") < 18, valueAsDate: true

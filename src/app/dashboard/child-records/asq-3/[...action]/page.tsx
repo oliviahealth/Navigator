@@ -106,6 +106,8 @@ const ASQ3: React.FC = () => {
         }
     }, [followUpAction, setValue]);
 
+    console.log(errors);
+
     useEffect(() => {
         const fetchAndPopulatePastSubmissionData = async () => {
             try {

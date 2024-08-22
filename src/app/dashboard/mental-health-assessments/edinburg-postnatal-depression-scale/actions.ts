@@ -12,15 +12,15 @@ import { IEdinburgPostnatalDepressionScaleInputs, IEdinburgPostnatalDepressionSc
  * @remarks This function takes Edinburg Postnatal Depression Scale Record data and saves them to the database using Prisma.
  */
 export const createEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDepressionScaleInput: IEdinburgPostnatalDepressionScaleInputs, userId: string) => {
-    const { dateCompleted, ...data } = EdinburgPostnatalDepressionScaleInput;
+    // const { dateCompleted, ...data } = EdinburgPostnatalDepressionScaleInput;
 
-    const dateCompletedAsDate = new Date(dateCompleted);
+    // const dateCompletedAsDate = new Date(dateCompleted);
 
     const response = await prisma.edinburgPostnatalDepressionScale.create({
         data: {
             userId,
-            dateCompleted: dateCompletedAsDate,
-            ...data
+            // dateCompleted: dateCompletedAsDate,
+            ...EdinburgPostnatalDepressionScaleInput
         },
     });
 
@@ -58,9 +58,9 @@ export const readEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDepr
  * record with the record provided in the input.
  */
 export const updateEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDepressionScaleInput: IEdinburgPostnatalDepressionScaleInputs, id: string, userId: string) => {
-    const { dateCompleted, ...data } = EdinburgPostnatalDepressionScaleInput;
+    // const { dateCompleted, ...data } = EdinburgPostnatalDepressionScaleInput;
 
-    const dateCompletedAsDate = new Date(dateCompleted);
+    // const dateCompletedAsDate = new Date(dateCompleted);
 
     const response = await prisma.edinburgPostnatalDepressionScale.update({
         where: {
@@ -68,7 +68,7 @@ export const updateEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDe
             userId
         },
         data: {
-            ...data
+            ...EdinburgPostnatalDepressionScaleInput
         }
     })
 
