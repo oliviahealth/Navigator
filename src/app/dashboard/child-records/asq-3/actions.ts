@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { ASQ3ResponseSchema, IASQ3Inputs, IASQ3Response, } from "./definitions";
+import ASQ3 from "./[...action]/page";
 
 /**
  * Creates a new ASQ-3 Record in the db.
@@ -41,6 +42,15 @@ export const readASQ3 = async (asq3Id: string, userId: string) => {
     })
 
     return ASQ3ResponseSchema.parse(response);
+}
+
+export const readAllASQ3 = async (userId: string) => {
+    const response = await prisma.aSQ3.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => ASQ3ResponseSchema.parse(form));
 }
 
 /**

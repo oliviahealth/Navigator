@@ -116,7 +116,7 @@ const BriefChildWellnessUpdate: React.FC = () => {
         }
 
         setSuccessMessage('Brief Child Wellness Update submitted successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/child-records')
     };
 
     return (

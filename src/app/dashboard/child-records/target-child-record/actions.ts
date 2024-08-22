@@ -46,6 +46,16 @@ export const readTargetChildRecord = async (submissionId: string, userId: string
     return TargetChildRecordResponseSchema.parse(response);
 };
 
+export const readAllTargetChildRecord = async (userId: string) => {
+    const response = await prisma.targetChildRecord.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => TargetChildRecordResponseSchema.parse(form));
+}
+
+
 /**
  * Updates a Target Child Record in the database with new data.
  * @param {ITargetChildRecordInput} targetChildRecordInput - The updated Target Child Record data.
