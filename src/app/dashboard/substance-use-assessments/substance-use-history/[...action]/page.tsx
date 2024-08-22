@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   createSubstanceUseHistory,
+  readSubstanceUseHistory,
   updateSubstanceUseHistory,
 } from "../actions";
 import {
@@ -69,6 +70,7 @@ const SubstanceUseHistory: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
+    reset,
   } = useForm<ISubstanceUseHistoryInput>({
     resolver: zodResolver(SubstanceUseHistoryInputSchema),
     defaultValues: {
@@ -77,7 +79,7 @@ const SubstanceUseHistory: React.FC = () => {
         {
           medication: "",
           dose: "",
-          dates: null,
+          date: null,
         },
       ],
     },
@@ -106,9 +108,9 @@ const SubstanceUseHistory: React.FC = () => {
     if (value !== "Never") {
       setValue("date_used_mat", null);
       setValue("mat_clinic_name", null);
-      setValue("mat_clinic_phone", null); 
+      setValue("mat_clinic_phone", null);
     } else {
-      setValue('medications', null);  
+      setValue('medications', []);
     }
   };
 
@@ -120,6 +122,39 @@ const SubstanceUseHistory: React.FC = () => {
       setValue("addiction_medicine_clinic_phone", null);
     }
   };
+
+  useEffect(() => {
+    const fetchAndPopulatePastSubmissionData = async () => {
+      try {
+        if (verb !== 'edit') {
+          return;
+        }
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
+
+        const response = await readSubstanceUseHistory(submissionId, user.id);
+        reset(response)
+
+        setShowAddictionServiceDetails(response.used_addiction_medicine_services !== "Never")
+        setShowMatDetails(response.mat_engaged !== "Never")
+
+      } catch (error) {
+        console.error(error);
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard/substance-use-assessments');
+      }
+    };
+
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
   const submit = async (data: ISubstanceUseHistoryInput) => {
     try {
@@ -138,13 +173,13 @@ const SubstanceUseHistory: React.FC = () => {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
 
-      router.push("/dashboard");
+      router.push("/dashboard/substance-use-assessments");
 
       return;
     }
 
     setSuccessMessage("Substance Use History submitted successfully!");
-    router.push("/dashboard");
+    router.push("/dashboard/substance-use-assessments");
   };
 
   const addNewSubstance = () => {
@@ -397,9 +432,9 @@ const SubstanceUseHistory: React.FC = () => {
           <div className="space-y-4 pt-4">
             <p className="font-medium">Date Last Used</p>
             <input
-              {...register("date_used_mat")}
+              {...register("date_used_mat", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
-              type="string"
+              type="date"
             />
             {errors.date_used_mat && (
               <span className="label-text-alt text-red-500">
@@ -467,14 +502,15 @@ const SubstanceUseHistory: React.FC = () => {
                   </span>
                 )}
 
-                <p className="font-medium">Dates</p>
+                <p className="font-medium">Date</p>
                 <input
-                  {...register(`medications.${index}.dates`)}
+                  {...register(`medications.${index}.date`, { valueAsDate: true })}
                   className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                  type="date"
                 />
-                {errors.medications && errors.medications[index]?.dose && (
+                {errors.medications && errors.medications[index]?.date && (
                   <span className="label-text-alt text-red-500">
-                    {errors.medications[index]?.dose?.message}
+                    {errors.medications[index]?.date?.message}
                   </span>
                 )}
               </div>
@@ -517,9 +553,9 @@ const SubstanceUseHistory: React.FC = () => {
           <div className="space-y-4 pt-4">
             <p className="font-medium">Date Last Used</p>
             <input
-              {...register("date_used_medicine_service")}
+              {...register("date_used_medicine_service", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
-              type="string"
+              type="date"
             />
             {errors.date_used_medicine_service && (
               <span className="label-text-alt text-red-500">
@@ -554,14 +590,14 @@ const SubstanceUseHistory: React.FC = () => {
         <div>
           <hr className="border-t-1 border-gray-400 my-4" />
           <div>
-              <p className="font-semibold pb-2 pt-8">Submission Label</p>
-              <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-              {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+            <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
           </div>
           <div>
-              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
-              <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-              {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
+            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+            <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
           </div>
         </div>
 

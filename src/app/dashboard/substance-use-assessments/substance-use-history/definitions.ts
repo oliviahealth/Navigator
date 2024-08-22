@@ -2,6 +2,12 @@ import { z } from 'zod';
 
 export const YesNoEnum = z.enum(["Yes", "No"]);
 
+export const CurrentlyPreviouslyNeverEnum = z.enum([
+  "Currently",
+  "Previously",
+  "Never"
+]);
+
 export const AdditionalDrugSchema = z.object({
   drug_used: z.string().min(1, 'Substance name required'),
   used_during_pregnancy: YesNoEnum.nullish().refine(val => val, { message: 'Required' }),
@@ -12,7 +18,7 @@ export const AdditionalDrugSchema = z.object({
 const MedicationSchema = z.object({
   medication: z.string().min(1, 'Medication required'),
   dose: z.string().min(1, 'Dose required'),
-  dates: z.string().nullish()
+  date: z.union([z.date(), z.string().min(1, "Date last used is required")]).nullish(),
 });
 
 export const SubstanceUseHistoryInputSchema = z.object({
@@ -54,13 +60,13 @@ export const SubstanceUseHistoryInputSchema = z.object({
   tobacco_notes: z.string().nullish(),
   other_drugs: z.array(AdditionalDrugSchema),
   notes: z.string().nullable(),
-  mat_engaged: z.string().min(1, 'MAT engaged required'),
-  date_used_mat: z.string().nullish(),
-  medications: z.array(MedicationSchema).nullish(),
+  mat_engaged: CurrentlyPreviouslyNeverEnum,
+  date_used_mat: z.union([z.date(), z.string().min(1, "Date last used is required")]).nullish(),
+  medications: z.array(MedicationSchema),
   mat_clinic_name: z.string().nullish(),
   mat_clinic_phone: z.string().nullish(),
-  used_addiction_medicine_services: z.string().min(1, 'This field is required'),
-  date_used_medicine_service: z.string().nullish(),
+  used_addiction_medicine_services: CurrentlyPreviouslyNeverEnum,
+  date_used_medicine_service: z.union([z.date(), z.string().min(1, "Date last used is required")]).nullish(),
   addiction_medicine_clinic: z.string().nullish(),
   addiction_medicine_clinic_phone: z.string().nullish(),
   label: z.string(),
