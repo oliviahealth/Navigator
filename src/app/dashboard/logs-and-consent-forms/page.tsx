@@ -43,9 +43,9 @@ const Tab: React.FC = () => {
         {selectedAppointmentLogSubmission && (
           <div>
             {Array.isArray(selectedAppointmentLogSubmission.appointmentEntries) && selectedAppointmentLogSubmission.appointmentEntries.length > 0 ? (
-              <div className="flex flex-wrap gap-4 mt-2">
+              <div className="bento-outer">
                 {selectedAppointmentLogSubmission.appointmentEntries.map((entry: any, index: number) => (
-                  <div key={index} className="border p-2 rounded-md flex-1 min-w-[200px]">
+                  <div key={index} className="bento-inner">
                     <p><strong>Date/Time:</strong> {new Date(entry.dateTime).toLocaleString()}</p>
                     <p><strong>Who:</strong> {entry.who}</p>
                     <p><strong>Location:</strong> {entry.location}</p>
