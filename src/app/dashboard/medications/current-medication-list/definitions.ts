@@ -17,6 +17,9 @@ export type ICurrentMedicationListInputs = z.infer<typeof CurrentMedicationListI
 
 export const CurrentMedicationListResponseSchema = CurrentMedicationListInputsSchema.extend({
     id: z.string(),
+    userId: z.string(),
+    dateCreated: z.date(),
+    dateModified: z.date()
 });
 
 export type ICurrentMedicationListFormResponse = z.infer<typeof CurrentMedicationListResponseSchema>;

@@ -14,7 +14,6 @@ import { ChildrenNeedsFormInputsSchema, OtherChildrenNeeds, IChildrenNeedsFormIn
 import { z } from "zod";
 import { CurrentLivingArrangementInputsSchema } from "./current-living-arrangement/definitions";
 import { 
-  IParticipantDemographicsFormResponse, 
   labelMapping, 
   EthnicityEnum, 
   RaceEnum, 
@@ -30,8 +29,6 @@ type PregnancyStatusType = z.infer<typeof PregnancyStatusAtEnrollmentEnum>;
 type MaritalStatusType = z.infer<typeof MaritalStatusEnum>;
 type LgbtqiPlusType = z.infer<typeof LgbtqiPlusEnum>;
 type InsuranceType = z.infer<typeof InsuranceEnum>;
-
-
 
 const Tab: React.FC = () => {
   const {
@@ -92,51 +89,43 @@ const Tab: React.FC = () => {
   return (
     <div className="flex flex-col">
       <Accordion title="Child Demographics Record">
-  {selectedChildDemographicRecordSubmission &&   (
-    <div>
-      {Array.isArray(selectedChildDemographicRecordSubmission.appointmentEntries) && selectedChildDemographicRecordSubmission.appointmentEntries.length > 0 ? (
-        <div className="flex flex-wrap gap-4 mt-2">
-          {selectedChildDemographicRecordSubmission.appointmentEntries.map((entry: any, index: number) => (
-            <div key={index} className="border p-2 rounded-md flex-1 min-w-[200px]">
-              <p><strong>Child's Name:</strong> {entry.childName}</p>
-              <p><strong>Date of Birth:</strong> {new Date(entry.dateOfBirth).toLocaleDateString()}</p>
-              <p><strong>Sex:</strong> {entry.sex}</p>
-              <p><strong>Child Living With:</strong> {entry.childLivingWith.join(", ")}</p>
-              {entry.childLivingWithOther && <p><strong>Other Living Arrangement:</strong> {selectedChildDemographicRecordSubmission.childLivingWithOther}</p>}
-              <p><strong>Parent 1 Name:</strong> {entry.parentOneName}</p>
-              <p><strong>Parent 1 Involved:</strong> {entry.parentOneInvolvedInLife}</p>
-              <p><strong>Parent 2 Name:</strong> {entry.parentTwoName}</p>
-              <p><strong>Parent 2 Involved:</strong> {entry.parentTwoInvolvedInLife}</p>
-              <p><strong>Insurance Plan:</strong> {entry.insurancePlan}</p>
-              <p><strong>Effective Date:</strong> {new Date(entry.effectiveDate).toLocaleDateString()}</p>
-              <p><strong>Subscriber ID:</strong> {entry.subscriberId}</p>
-              <p><strong>Group ID:</strong> {entry.groupId}</p>
-              <p><strong>Primary Care Provider:</strong> {entry.primaryCareProvider}</p>
-              <p><strong>Provider Phone:</strong> {entry.primaryCareProviderPhone}</p>
-              <p><strong>Birth Weight:</strong> {entry.birthWeight}</p>
-              <p><strong>Gestational Age at Birth:</strong> {entry.gestationalAgeAtBirth}</p>
-              <p><strong>NICU Stay:</strong> {entry.nicuStay}</p>
-              {entry.nicuStayLength && <p><strong>NICU Stay Length:</strong> {entry.nicuStayLength}</p>}
-              <p><strong>Prenatal Drug Exposure:</strong> {entry.prenatalDrugExposure}</p>
-              {selectedChildDemographicRecordSubmission.prenatalDrug && <p><strong>Prenatal Drug:</strong> {entry.prenatalDrug}</p>}
-              <p><strong>Medical Complications at Birth:</strong> {entry.medicalComplicationsAtBirth}</p>
-              <p><strong>Ongoing Medical Issues:</strong> {entry.ongoingMedicalIssues}</p>
-              <p><strong>Ongoing Medications:</strong> {entry.ongoingMedications}</p>
-              <p><strong>Health Concerns:</strong> {entry.healthConcerns}</p>
-              <p><strong>Difficulties/Services Received:</strong> {entry.difficultiesServicesReceived}</p>
-              <p><strong>Lactation Consultant:</strong> {entry.lactationConsultant}</p>
-              <p><strong>Legal System Involvement:</strong> {entry.legalSystemInvolvement}</p>
-              <p><strong>Child Protective Service:</strong> {entry.childProtectiveService}</p>
-              {selectedChildDemographicRecordSubmission.caseworker && <p><strong>Caseworker:</strong> {entry.caseworker}</p>}
-              {selectedChildDemographicRecordSubmission.caseworkerPhoneNumber && <p><strong>Caseworker Phone:</strong> {entry.caseworkerPhoneNumber}</p>}
-              {selectedChildDemographicRecordSubmission.importantInformation && <p><strong>Important Information:</strong> {entry.importantInformation}</p>}
+        {selectedChildDemographicRecordSubmission &&   (
+          <div className="flex flex-wrap gap-4 mt-2">
+            <div className="border p-2 rounded-md flex-1 min-w-[200px]">
+              <p><strong>Child's Name:</strong> {selectedChildDemographicRecordSubmission.childName}</p>
+              <p><strong>Date of Birth:</strong> {new Date(selectedChildDemographicRecordSubmission.dateOfBirth).toLocaleDateString()}</p>
+              <p><strong>Sex:</strong> {selectedChildDemographicRecordSubmission.sex}</p>
+              <p><strong>Child Living With:</strong> {selectedChildDemographicRecordSubmission.childLivingWith.join(", ")}</p>
+              {selectedChildDemographicRecordSubmission.childLivingWithOther && <p><strong>Other Living Arrangement:</strong> {selectedChildDemographicRecordSubmission.childLivingWithOther}</p>}
+              <p><strong>Parent 1 Name:</strong> {selectedChildDemographicRecordSubmission.parentOneName}</p>
+              <p><strong>Parent 1 Involved:</strong> {selectedChildDemographicRecordSubmission.parentOneInvolvedInLife}</p>
+              <p><strong>Parent 2 Name:</strong> {selectedChildDemographicRecordSubmission.parentTwoName}</p>
+              <p><strong>Parent 2 Involved:</strong> {selectedChildDemographicRecordSubmission.parentTwoInvolvedInLife}</p>
+              <p><strong>Insurance Plan:</strong> {selectedChildDemographicRecordSubmission.insurancePlan}</p>
+              <p><strong>Effective Date:</strong> {new Date(selectedChildDemographicRecordSubmission.effectiveDate).toLocaleDateString()}</p>
+              <p><strong>Subscriber ID:</strong> {selectedChildDemographicRecordSubmission.subscriberId}</p>
+              <p><strong>Group ID:</strong> {selectedChildDemographicRecordSubmission.groupId}</p>
+              <p><strong>Primary Care Provider:</strong> {selectedChildDemographicRecordSubmission.primaryCareProvider}</p>
+              <p><strong>Provider Phone:</strong> {selectedChildDemographicRecordSubmission.primaryCareProviderPhone}</p>
+              <p><strong>Birth Weight:</strong> {selectedChildDemographicRecordSubmission.birthWeight}</p>
+              <p><strong>Gestational Age at Birth:</strong> {selectedChildDemographicRecordSubmission.gestationalAgeAtBirth}</p>
+              <p><strong>NICU Stay:</strong> {selectedChildDemographicRecordSubmission.nicuStay}</p>
+              {selectedChildDemographicRecordSubmission.nicuStayLength && <p><strong>NICU Stay Length:</strong> {selectedChildDemographicRecordSubmission.nicuStayLength}</p>}
+              <p><strong>Prenatal Drug Exposure:</strong> {selectedChildDemographicRecordSubmission.prenatalDrugExposure}</p>
+              {selectedChildDemographicRecordSubmission.prenatalDrug && <p><strong>Prenatal Drug:</strong> {selectedChildDemographicRecordSubmission.prenatalDrug}</p>}
+              <p><strong>Medical Complications at Birth:</strong> {selectedChildDemographicRecordSubmission.medicalComplicationsAtBirth}</p>
+              <p><strong>Ongoing Medical Issues:</strong> {selectedChildDemographicRecordSubmission.ongoingMedicalIssues}</p>
+              <p><strong>Ongoing Medications:</strong> {selectedChildDemographicRecordSubmission.ongoingMedications}</p>
+              <p><strong>Health Concerns:</strong> {selectedChildDemographicRecordSubmission.healthConcerns}</p>
+              <p><strong>Difficulties/Services Received:</strong> {selectedChildDemographicRecordSubmission.difficultiesServicesReceived}</p>
+              <p><strong>Lactation Consultant:</strong> {selectedChildDemographicRecordSubmission.lactationConsultant}</p>
+              <p><strong>Legal System Involvement:</strong> {selectedChildDemographicRecordSubmission.legalSystemInvolvement}</p>
+              <p><strong>Child Protective Service:</strong> {selectedChildDemographicRecordSubmission.childProtectiveService}</p>
+              {selectedChildDemographicRecordSubmission.caseworker && <p><strong>Caseworker:</strong> {selectedChildDemographicRecordSubmission.caseworker}</p>}
+              {selectedChildDemographicRecordSubmission.caseworkerPhoneNumber && <p><strong>Caseworker Phone:</strong> {selectedChildDemographicRecordSubmission.caseworkerPhoneNumber}</p>}
+              {selectedChildDemographicRecordSubmission.importantInformation && <p><strong>Important Information:</strong> {selectedChildDemographicRecordSubmission.importantInformation}</p>}
             </div>
-          ))}
         </div>
-      ) : (
-        <p>No Child Demographics Record entries available.</p>
-      )}
-    </div>
   )}
   <Submission
     link="/dashboard/demographics/child-demographics-record/"
@@ -194,32 +183,24 @@ const Tab: React.FC = () => {
 <Accordion title="Current Living Arrangement">
   {selectedCurrentLivingArrangementSubmission && (
     <div className="flex flex-wrap gap-4 mt-2">
-      {selectedCurrentLivingArrangementSubmission.listPeopleLivingWithPatient.length > 0 && (
         <div className="border p-2 rounded-md flex-1 min-w-[200px]">
           <h3 className="font-bold">People Living with Patient</h3>
-          {selectedCurrentLivingArrangementSubmission.listPeopleLivingWithPatient.map((person: z.infer<typeof CurrentLivingArrangementInputsSchema>['listPeopleLivingWithPatient'][number], index: number) => (
-            <div key={index} className="mt-2">
-              <p><strong>Name:</strong> {person.name}</p>
-              <p><strong>Date of Birth:</strong> {new Date(person.dateOfBirth).toLocaleDateString()}</p>
-              <p><strong>Relation:</strong> {person.relation}</p>
+            <div className="mt-2">
+              <p><strong>Name:</strong> {selectedCurrentLivingArrangementSubmission.name}</p>
+              <p><strong>Date of Birth:</strong> {new Date(selectedCurrentLivingArrangementSubmission.dateOfBirth).toLocaleDateString()}</p>
+              <p><strong>Relation:</strong> {selectedCurrentLivingArrangementSubmission.relation}</p>
             </div>
-          ))}
         </div>
-      )}
 
-      {selectedCurrentLivingArrangementSubmission.listChildrenNotLivingWithPatient.length > 0 && (
         <div className="border p-2 rounded-md flex-1 min-w-[200px]">
           <h3 className="font-bold">Children Not Living with Patient</h3>
-          {selectedCurrentLivingArrangementSubmission.listChildrenNotLivingWithPatient.map((child: z.infer<typeof CurrentLivingArrangementInputsSchema>['listChildrenNotLivingWithPatient'][number], index: number) => (
-            <div key={index} className="mt-2">
-              <p><strong>Name:</strong> {child.name}</p>
-              <p><strong>Date of Birth:</strong> {new Date(child.dateOfBirth).toLocaleDateString()}</p>
-              <p><strong>Caregiver:</strong> {child.caregiver}</p>
-              <p><strong>Caregiver Contact:</strong> {child.caregiverContact}</p>
+            <div className="mt-2">
+              <p><strong>Name:</strong> {selectedCurrentLivingArrangementSubmission.name}</p>
+              <p><strong>Date of Birth:</strong> {new Date(selectedCurrentLivingArrangementSubmission.dateOfBirth).toLocaleDateString()}</p>
+              <p><strong>Caregiver:</strong> {selectedCurrentLivingArrangementSubmission.caregiver}</p>
+              <p><strong>Caregiver Contact:</strong> {selectedCurrentLivingArrangementSubmission.caregiverContact}</p>
             </div>
-          ))}
         </div>
-      )}
 
       {selectedCurrentLivingArrangementSubmission.notes && (
         <div className="border p-2 rounded-md flex-1 min-w-[200px]">
@@ -285,43 +266,45 @@ const Tab: React.FC = () => {
   />
 </Accordion>
 
-      <Accordion title="Participant Record For Others Involved">
-  {selectedParticipantRecordForOthersInvolved && (
+  <Accordion title="Participant Record For Others Involved">
+   {selectedParticipantRecordForOthersInvolved && (
     <div>
-      {Array.isArray(selectedParticipantRecordForOthersInvolved.communicationEntries) && selectedParticipantRecordForOthersInvolved.communicationEntries.length > 0 ? (
+      {Array.isArray(selectedParticipantRecordForOthersInvolved.participantRecordForOthersInvolvedEntries) && selectedParticipantRecordForOthersInvolved.participantRecordForOthersInvolvedEntries.length > 0 ? (
         <div className="flex flex-wrap gap-4 mt-2">
-            <div className="border p-2 rounded-md flex-1 min-w-[200px]">
-              <p><strong>Name:</strong> {selectedParticipantRecordForOthersInvolved.name}</p>
-              <p><strong>Date of Birth:</strong> {new Date(selectedParticipantRecordForOthersInvolved.dateOfBirth).toLocaleDateString()}</p>
-              <p><strong>Current Living Arrangement:</strong> {selectedParticipantRecordForOthersInvolved.currentLivingArrangement}</p>
-              <p><strong>Street Address:</strong> {selectedParticipantRecordForOthersInvolved.streetAddress}</p>
-              <p><strong>City:</strong> {selectedParticipantRecordForOthersInvolved.city}</p>
-              <p><strong>State:</strong> {selectedParticipantRecordForOthersInvolved.state}</p>
-              <p><strong>Zip Code:</strong> {selectedParticipantRecordForOthersInvolved.zipCode}</p>
-              <p><strong>County:</strong> {selectedParticipantRecordForOthersInvolved.county}</p>
-              <p><strong>Primary Phone Number:</strong> {selectedParticipantRecordForOthersInvolved.primaryPhoneNumber}</p>
-              <p><strong>Emergency Contact:</strong> {selectedParticipantRecordForOthersInvolved.emergencyContact}</p>
-              <p><strong>Emergency Contact Phone:</strong> {selectedParticipantRecordForOthersInvolved.emergencyContactPhone}</p>
-              <p><strong>Emergency Contact Relationship:</strong> {selectedParticipantRecordForOthersInvolved.emergencyContactRelationship}</p>
-              <p><strong>Marital Status:</strong> {selectedParticipantRecordForOthersInvolved.maritalStatus}</p>
-              <p><strong>Insurance Plan:</strong> {selectedParticipantRecordForOthersInvolved.insurancePlan}</p>
-              <p><strong>Effective Date:</strong> {new Date(selectedParticipantRecordForOthersInvolved.effectiveDate).toLocaleDateString()}</p>
-              <p><strong>Subscriber ID:</strong> {selectedParticipantRecordForOthersInvolved.subscriberId}</p>
-              <p><strong>Group ID:</strong> {selectedParticipantRecordForOthersInvolved.groupId}</p>
-              <p><strong>Gestational Age:</strong> {selectedParticipantRecordForOthersInvolved.gestationalAge}</p>
-              <p><strong>Due Date:</strong> {new Date(selectedParticipantRecordForOthersInvolved.dueDate).toLocaleDateString()}</p>
-              <p><strong>Delivery Date:</strong> {new Date(selectedParticipantRecordForOthersInvolved.deliveryDate).toLocaleDateString()}</p>
-              <p><strong>Planned Mode of Delivery:</strong> {selectedParticipantRecordForOthersInvolved.plannedModeDelivery}</p>
-              <p><strong>Actual Mode of Delivery:</strong> {selectedParticipantRecordForOthersInvolved.actualModeDelivery}</p>
-              <p><strong>Attended Postpartum Visit:</strong> {selectedParticipantRecordForOthersInvolved.attendedPostpartumVisit}</p>
-              {selectedParticipantRecordForOthersInvolved.postpartumVisitLocation && <p><strong>Postpartum Visit Location:</strong> {selectedParticipantRecordForOthersInvolved.postpartumVisitLocation}</p>}
-              {selectedParticipantRecordForOthersInvolved.postpartumVisitDate && <p><strong>Postpartum Visit Date:</strong> {new Date(selectedParticipantRecordForOthersInvolved.postpartumVisitDate).toLocaleDateString()}</p>}
-              <p><strong>Total Number of Pregnancies:</strong> {selectedParticipantRecordForOthersInvolved.totalNumPregnancies}</p>
-              <p><strong>Number of Live Births:</strong> {selectedParticipantRecordForOthersInvolved.numLiveBirths}</p>
-              <p><strong>Number of Children With Mother:</strong> {selectedParticipantRecordForOthersInvolved.numChildrenWithMother}</p>
-              {selectedParticipantRecordForOthersInvolved.priorComplications && <p><strong>Prior Complications:</strong> {selectedParticipantRecordForOthersInvolved.priorComplications}</p>}
-              <p><strong>Ongoing Medical Problems:</strong> {selectedParticipantRecordForOthersInvolved.ongoingMedicalProblems}</p>
-            </div>
+          {selectedParticipantRecordForOthersInvolved.participantRecordForOthersInvolvedEntries.map((entry: any, index: number) => (
+            <div key={index} className="border p-2 rounded-md flex-1 min-w-[200px]">
+            <p><strong>Name:</strong> {entry.name}</p>
+            <p><strong>Date of Birth:</strong> {new Date(entry.dateOfBirth).toLocaleDateString()}</p>
+            <p><strong>Current Living Arrangement:</strong> {entry.currentLivingArrangement}</p>
+            <p><strong>Street Address:</strong> {entry.streetAddress}</p>
+            <p><strong>City:</strong> {entry.city}</p>
+            <p><strong>State:</strong> {entry.state}</p>
+            <p><strong>Zip Code:</strong> {entry.zipCode}</p>
+            <p><strong>County:</strong> {entry.county}</p>
+            <p><strong>Primary Phone Number:</strong> {entry.primaryPhoneNumber}</p>
+            <p><strong>Emergency Contact:</strong> {entry.emergencyContact}</p>
+            <p><strong>Emergency Contact Phone:</strong> {entry.emergencyContactPhone}</p>
+            <p><strong>Emergency Contact Relationship:</strong> {entry.emergencyContactRelationship}</p>
+            <p><strong>Marital Status:</strong> {entry.maritalStatus}</p>
+            <p><strong>Insurance Plan:</strong> {entry.insurancePlan}</p>
+            <p><strong>Effective Date:</strong> {new Date(entry.effectiveDate).toLocaleDateString()}</p>
+            <p><strong>Subscriber ID:</strong> {entry.subscriberId}</p>
+            <p><strong>Group ID:</strong> {entry.groupId}</p>
+            <p><strong>Gestational Age:</strong> {entry.gestationalAge}</p>
+            <p><strong>Due Date:</strong> {new Date(entry.dueDate).toLocaleDateString()}</p>
+            <p><strong>Delivery Date:</strong> {new Date(entry.deliveryDate).toLocaleDateString()}</p>
+            <p><strong>Planned Mode of Delivery:</strong> {entry.plannedModeDelivery}</p>
+            <p><strong>Actual Mode of Delivery:</strong> {entry.actualModeDelivery}</p>
+            <p><strong>Attended Postpartum Visit:</strong> {entry.attendedPostpartumVisit}</p>
+            {entry.postpartumVisitLocation && <p><strong>Postpartum Visit Location:</strong> {entry.postpartumVisitLocation}</p>}
+            {entry.postpartumVisitDate && <p><strong>Postpartum Visit Date:</strong> {new Date(entry.postpartumVisitDate).toLocaleDateString()}</p>}
+            <p><strong>Total Number of Pregnancies:</strong> {entry.totalNumPregnancies}</p>
+            <p><strong>Number of Live Births:</strong> {entry.numLiveBirths}</p>
+            <p><strong>Number of Children With Mother:</strong> {entry.numChildrenWithMother}</p>
+            {entry.priorComplications && <p><strong>Prior Complications:</strong> {entry.priorComplications}</p>}
+            <p><strong>Ongoing Medical Problems:</strong> {entry.ongoingMedicalProblems}</p>
+          </div>
+          ))}
         </div>
       ) : (
         <p>No Participant Record For Others Involved</p>
@@ -388,20 +371,14 @@ const Tab: React.FC = () => {
 
       <Accordion title="Support Systems">
         {selectedSupportSystemSubmission && (
-          <div>
-            {Array.isArray(selectedSupportSystemSubmission.communicationEntries) && selectedSupportSystemSubmission.communicationEntries.length > 0 ? (
-              <div className="flex flex-wrap gap-4 mt-2">
-                  <div className="border p-2 rounded-md flex-1 min-w-[200px]">
-                    <p><strong>Current Support System:</strong> {selectedSupportSystemSubmission.currentSupportSystem}</p>
-                    <p><strong>Strengths:</strong> {selectedSupportSystemSubmission.strengths}</p>
-                    <p><strong>Areas For Improvement:</strong> {selectedSupportSystemSubmission.areasForImprovement}</p>
-                    <p><strong>Goals:</strong> {selectedSupportSystemSubmission.goals}</p>
-                  </div>
-              </div>
-            ) : (
-              <p>No Support Systems Found</p>
-            )}
-          </div>
+           <div className="flex flex-wrap gap-4 mt-2">
+               <div className="border p-2 rounded-md flex-1 min-w-[200px]">
+                 <p><strong>Current Support System:</strong> {selectedSupportSystemSubmission.currentSupportSystem}</p>
+                 <p><strong>Strengths:</strong> {selectedSupportSystemSubmission.strengths}</p>
+                 <p><strong>Areas For Improvement:</strong> {selectedSupportSystemSubmission.areasForImprovement}</p>
+                 <p><strong>Goals:</strong> {selectedSupportSystemSubmission.goals}</p>
+               </div>
+           </div>
         )}
         <Submission
           link="/dashboard/demographics/support-systems/"
