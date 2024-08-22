@@ -55,7 +55,7 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
           </select>
           <Link
             className="group flex flex-row font-semibold items-center text-sm gap-[2px]"
-            href={`${link}edit/${submissions.find((sub) => sub.id === (document.querySelector("select") as HTMLSelectElement)?.value)?.id || ''}`}
+            href={`${link}edit/${selectedSubmission?.id || ''}`}
           >
             <svg
               className="w-4 h-4"

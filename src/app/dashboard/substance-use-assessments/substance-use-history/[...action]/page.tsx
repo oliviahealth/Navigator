@@ -139,7 +139,21 @@ const SubstanceUseHistory: React.FC = () => {
         }
 
         const response = await readSubstanceUseHistory(submissionId, user.id);
-        reset(response)
+        const formattedResponse = {
+          ...response,
+          date_used_mat: response.date_used_mat ? new Date(response.date_used_mat).toISOString().slice(0, 10) : null,
+          date_used_medicine_service: response.date_used_medicine_service ? new Date(response.date_used_medicine_service).toISOString().slice(0, 10) : null,
+          other_drugs: response.other_drugs ? response.other_drugs.map(drug => ({
+            ...drug,
+            date_last_used: drug.date_last_used ? new Date(drug.date_last_used).toISOString().slice(0, 10) : undefined,
+          })) : [],
+          medications: response.medications ? response.medications.map(med => ({
+            ...med,
+            date: med.date ? new Date(med.date).toISOString().slice(0, 10) : undefined,
+          })) : []
+        }
+
+        reset(formattedResponse)
 
         setShowAddictionServiceDetails(response.used_addiction_medicine_services !== "Never")
         setShowMatDetails(response.mat_engaged !== "Never")
