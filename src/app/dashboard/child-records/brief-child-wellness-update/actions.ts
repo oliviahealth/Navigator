@@ -44,6 +44,15 @@ export const readBriefChildWellnessUpdate = async (BriefChildWellnessUpdateId: s
     return BriefChildWellnessUpdateResponseSchema.parse(response);
 }
 
+export const readAllBriefChildWellnessUpdate = async (userId: string) => {
+    const response = await prisma.briefChildWellnessUpdate.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => BriefChildWellnessUpdateResponseSchema.parse(form));
+}
+
 /**
  * Updates a Brief Child Wellness Update in the database with new Brief Child Wellness Update.
  * @param {IBriefChildWellnessUpdateInputs} BriefChildWellnessUpdateInput - An array of updated Brief Child Wellness Updateies.

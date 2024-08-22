@@ -43,6 +43,16 @@ export const readPerceivedMaternalPlanningSelfEfficacyTool = async (PerceivedMat
     return PerceivedMaternalPlanningSelfEfficacyToolResponseSchema.parse(response);
 }
 
+export const readAllPerceivedMaternalPlanningSelfEfficacyTool = async (userId: string) => {
+    const response = await prisma.perceivedMaternalPlanningSelfEfficacyTool.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => PerceivedMaternalPlanningSelfEfficacyToolResponseSchema.parse(form));
+}
+
+
 /**
  * Updates a Perceived Maternal Planning Self Efficacy Tool in the database with new Perceived Maternal Planning Self Efficacy Tool.
  * @param {IPerceivedMaternalPlanningSelfEfficacyToolInputs} PerceivedMaternalPlanningSelfEfficacyToolInput - An array of updated Perceived Maternal Planning Self Efficacy Toolies.

@@ -597,7 +597,7 @@ const ASQ3: React.FC = () => {
                         className="flex items-center justify-center gap-x-2 w-full bg-[#AFAFAFAF] text-black px-20 py-2 rounded-md m-auto font-semibold"
                     >
                         {isSubmitting && <span className="loading loading-spinner loading-sm"></span>}
-                        Save
+                        Submit
                     </button>
                 </div>
             </form >

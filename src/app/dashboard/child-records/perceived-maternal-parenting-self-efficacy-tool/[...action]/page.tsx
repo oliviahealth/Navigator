@@ -60,7 +60,7 @@ const PerceivedMaternalPlanningSelfEfficacyTool: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard/child-records');
             }
         };
 
@@ -89,7 +89,7 @@ const PerceivedMaternalPlanningSelfEfficacyTool: React.FC = () => {
         }
 
         setSuccessMessage('Perceived Maternal Planning Self Efficacy Tool submitted successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/child-records')
     };
 
     return (

@@ -108,7 +108,7 @@ const DeliveryHistoryInformationForm: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard/child-records/');
             }
         };
 
@@ -136,13 +136,13 @@ const DeliveryHistoryInformationForm: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard');
+            router.push('/dashboard/child-records/');
 
             return;
         }
 
         setSuccessMessage('Delivery History Information Form submitted successfully!');
-        router.push('/dashboard');
+        router.push('/dashboard/child-records');
     };
 
     return (
