@@ -16,7 +16,7 @@ const Tab: React.FC = () => {
     <div className="flex flex-col">
       <Accordion title="Prenatal Care Records">
         {selectedPrenatalCareRecordSubmission && (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid  gap-4 bento-outer">
              <div className="bento-inner">
               <h2 className="font-bold">Prenatal Care Information</h2>
               <p>
