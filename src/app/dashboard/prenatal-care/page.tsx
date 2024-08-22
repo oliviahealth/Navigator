@@ -17,7 +17,7 @@ const Tab: React.FC = () => {
       <Accordion title="Prenatal Care Records">
         {selectedPrenatalCareRecordSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+             <div className="bento-inner">
               <h2 className="font-bold">Prenatal Care Information</h2>
               <p>
                 <strong>Attended Regular Visits:</strong>{" "}

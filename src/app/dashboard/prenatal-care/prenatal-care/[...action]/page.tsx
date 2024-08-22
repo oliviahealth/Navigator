@@ -180,7 +180,7 @@ const PrenatalCareRecord: React.FC = () => {
           <button
             type="submit"
             disabled={isSubmitting}
-          className="text-white button-filled px-20 py-2 rounded-md whitespace-nowrap hover:bg-[#9F9F9F] transition-colors duration-200 ease-in-out"
+          className="text-white button-filled px-20 py-2 rounded-md whitespace-nowrap hover:bg-button-filled transition-colors duration-200 ease-in-out"
           >
             Submit
           </button>
