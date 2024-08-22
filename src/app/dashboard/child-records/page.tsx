@@ -7,6 +7,7 @@ import useBriefChildWellnessUpdate from "./brief-child-wellness-update/submissio
 import useDeliveryHistoryInformationForm from "./delivery-history-information-form/submissions";
 import useInfancyQuestionnaire from "./infancy-questionnaire/submissions";
 import usePerceivedMaternalPlanningSelfEfficacyTool from "./perceived-maternal-parenting-self-efficacy-tool/submissions";
+import useTargetChildRecord from "./target-child-record/submissions";
 
 const Tab: React.FC = () => {
   const {
@@ -44,12 +45,19 @@ const Tab: React.FC = () => {
     handlePerceievedMaternalPlanningSelfEfficacyToolSubmissionSelect,
   } = usePerceivedMaternalPlanningSelfEfficacyTool();
 
+  const {
+    perceivedTargetChildRecordSubmissions,
+    selectedTargetChildRecordSubmission,
+    handleTargetChildRecordDelete,
+    handleTargetChildRecordSubmissionSelect,
+  } = useTargetChildRecord();
+
   return (
     <div className="flex flex-col">
       <Accordion title="ASQ-3 Screening">
         {selectedASQ3Submission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+           <div className="bento-inner">
               <h2 className="font-bold">General Information</h2>
               <p>
                 <strong>Participant Name:</strong>{" "}
@@ -79,7 +87,7 @@ const Tab: React.FC = () => {
                 {selectedASQ3Submission.ageAdjusted ? "Yes" : "No"}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Screening Results</h2>
               <p>
                 <strong>Communication Score:</strong>{" "}
@@ -120,7 +128,7 @@ const Tab: React.FC = () => {
                 {selectedASQ3Submission.describeActivitiesProvided || "N/A"}
               </p>
             </div>
-            <div className="border p-4 rounded-md col-span-2">
+            <div className="bento-inner">
               <h2 className="font-bold">Submission Details</h2>
               <p>
                 <strong>Label:</strong> {selectedASQ3Submission.label}
@@ -142,7 +150,7 @@ const Tab: React.FC = () => {
       <Accordion title="Brief Child Wellness Update">
         {selectedBriefChildWellnessUpdateSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+           <div className="bento-inner">
               <h2 className="font-bold">General Information</h2>
               <p>
                 <strong>Child Name:</strong>{" "}
@@ -159,7 +167,7 @@ const Tab: React.FC = () => {
                 {selectedBriefChildWellnessUpdateSubmission.timeframe}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Health Information</h2>
               <p>
                 <strong>Health Insurance:</strong>{" "}
@@ -188,14 +196,14 @@ const Tab: React.FC = () => {
                 {selectedBriefChildWellnessUpdateSubmission.hasDentalCare}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Reading Information</h2>
               <p>
                 <strong>Reading Frequency:</strong>{" "}
                 {selectedBriefChildWellnessUpdateSubmission.readingFrequency}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Submission Details</h2>
               <p>
                 <strong>Label:</strong>{" "}
@@ -218,7 +226,7 @@ const Tab: React.FC = () => {
       <Accordion title="Delivery History Information Form">
         {selectedDeliveryHistoryInformationSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">General Information</h2>
               <p>
                 <strong>Participant Name:</strong>{" "}
@@ -239,7 +247,7 @@ const Tab: React.FC = () => {
                 {selectedDeliveryHistoryInformationSubmission.staffName}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Delivery Information</h2>
               {selectedDeliveryHistoryInformationSubmission.deliveries.map(
                 (delivery: any, index: number) => (
@@ -269,7 +277,7 @@ const Tab: React.FC = () => {
                 )
               )}
             </div>
-            <div className="border p-4 rounded-md col-span-2">
+            <div className="bento-inner">
               <h2 className="font-bold">Submission Details</h2>
               <p>
                 <strong>Label:</strong>{" "}
@@ -292,7 +300,7 @@ const Tab: React.FC = () => {
       <Accordion title="Infancy Questionnaire">
         {selectedInfancyQuestionnaireSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+           <div className="bento-inner">
               <h2 className="font-bold">General Information</h2>
               <p>
                 <strong>Participant Name:</strong>{" "}
@@ -321,7 +329,7 @@ const Tab: React.FC = () => {
                 {selectedInfancyQuestionnaireSubmission.timeframe}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Sleep Information</h2>
               <p>
                 <strong>Sleeps on Back:</strong>{" "}
@@ -336,7 +344,7 @@ const Tab: React.FC = () => {
                 {selectedInfancyQuestionnaireSubmission.sleepWithoutSoftBedding}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Development Information</h2>
               <p>
                 <strong>Storytelling Frequency:</strong>{" "}
@@ -347,7 +355,7 @@ const Tab: React.FC = () => {
                 {selectedInfancyQuestionnaireSubmission.isBiologicalMother}
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Postpartum Information</h2>
               <p>
                 <strong>Attended Postpartum Visit:</strong>{" "}
@@ -363,7 +371,7 @@ const Tab: React.FC = () => {
                 </p>
               )}
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Breastfeeding Information</h2>
               <p>
                 <strong>Had Breast Milk:</strong>{" "}
@@ -385,7 +393,7 @@ const Tab: React.FC = () => {
                   "N/A"}
               </p>
             </div>
-            <div className="border p-4 rounded-md col-span-2">
+            <div className="bento-inner">
               <h2 className="font-bold">Submission Details</h2>
               <p>
                 <strong>Label:</strong>{" "}
@@ -408,7 +416,7 @@ const Tab: React.FC = () => {
       <Accordion title="Perceived Maternal Planning Self-Efficacy Tool">
         {selectedPerceievedMaternalPlanningSelfEfficacyToolSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+          <div className="bento-inner">
               <h2 className="font-bold">General Information</h2>
               <p>
                 <strong>Participant Name:</strong>{" "}
@@ -435,7 +443,7 @@ const Tab: React.FC = () => {
                 }
               </p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Self-Efficacy Information</h2>
               <p>
                 <strong>Keeping Baby Occupied:</strong>{" "}
@@ -558,7 +566,7 @@ const Tab: React.FC = () => {
                 }
               </p>
             </div>
-            <div className="border p-4 rounded-md col-span-2">
+            <div className="bento-inner">
               <h2 className="font-bold">Submission Details</h2>
               <p>
                 <strong>Label:</strong>{" "}
@@ -584,6 +592,104 @@ const Tab: React.FC = () => {
           }
         />
       </Accordion>
+      <Accordion title="Target Child Record">
+  {selectedTargetChildRecordSubmission && (
+    <div className="grid grid-cols-2 gap-4">
+      <div className="bento-inner">
+        <h2 className="font-bold">General Information</h2>
+        <p>
+          <strong>Participant Name:</strong>{" "}
+          {selectedTargetChildRecordSubmission.participantName}
+        </p>
+        <p>
+          <strong>Case ID:</strong>{" "}
+          {selectedTargetChildRecordSubmission.caseId}
+        </p>
+        <p>
+          <strong>Date Completed:</strong>{" "}
+          {new Date(selectedTargetChildRecordSubmission.dateCompleted).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Staff Name:</strong>{" "}
+          {selectedTargetChildRecordSubmission.staffName}
+        </p>
+      </div>
+      <div className="bento-inner">
+        <h2 className="font-bold">Child Information</h2>
+        <p>
+          <strong>Child Name:</strong>{" "}
+          {selectedTargetChildRecordSubmission.childName}
+        </p>
+        <p>
+          <strong>Date of Birth:</strong>{" "}
+          {new Date(selectedTargetChildRecordSubmission.childDateOfBirth).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>Enrollment Date:</strong>{" "}
+          {new Date(selectedTargetChildRecordSubmission.childEnrollmentDate).toLocaleDateString()}
+        </p>
+        <p>
+          <strong>SSN:</strong>{" "}
+          {selectedTargetChildRecordSubmission.childSSN || "N/A"}
+        </p>
+        <p>
+          <strong>Gender:</strong>{" "}
+          {selectedTargetChildRecordSubmission.childGender}
+        </p>
+        <p>
+          <strong>Ethnicity:</strong>{" "}
+          {selectedTargetChildRecordSubmission.childEthnicity}
+        </p>
+        <p>
+          <strong>Race:</strong>{" "}
+          {selectedTargetChildRecordSubmission.childRace.join(", ")}
+        </p>
+      </div>
+      <div className="bento-inner">
+        <h2 className="font-bold">Health Information</h2>
+        <p>
+          <strong>Gestational Age at Birth:</strong>{" "}
+          {selectedTargetChildRecordSubmission.gestationalAgeAtBirth}
+        </p>
+        <p>
+          <strong>Is Biological Mother:</strong>{" "}
+          {selectedTargetChildRecordSubmission.isBiologicalMother}
+        </p>
+        <p>
+          <strong>Well Child Visits Completed:</strong>{" "}
+          {selectedTargetChildRecordSubmission.wellChildVisitsCompleted.join(", ")}
+        </p>
+        <p>
+          <strong>Health Insurance:</strong>{" "}
+          {selectedTargetChildRecordSubmission.healthInsurance || "None"}
+        </p>
+        {selectedTargetChildRecordSubmission.otherHealthInsurance && (
+          <p>
+            <strong>Other Health Insurance:</strong>{" "}
+            {selectedTargetChildRecordSubmission.otherHealthInsurance}
+          </p>
+        )}
+      </div>
+      <div className="bento-inner">
+        <h2 className="font-bold">Submission Details</h2>
+        <p>
+          <strong>Label:</strong>{" "}
+          {selectedTargetChildRecordSubmission.label}
+        </p>
+        <p>
+          <strong>Staff Notes:</strong>{" "}
+          {selectedTargetChildRecordSubmission.staffNotes}
+        </p>
+      </div>
+    </div>
+  )}
+  <Submission
+    link="/dashboard/child-records/target-child-record/"
+    submissions={perceivedTargetChildRecordSubmissions}
+    onDelete={handleTargetChildRecordDelete}
+    onSubmissionSelect={handleTargetChildRecordSubmissionSelect}
+  />
+</Accordion>
     </div>
   );
 };

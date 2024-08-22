@@ -139,7 +139,7 @@ const ASQ3: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard/child-records');
             }
         };
 
@@ -168,7 +168,7 @@ const ASQ3: React.FC = () => {
         }
 
         setSuccessMessage('ASQ-3 submitted successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/child-records')
     };
 
 
