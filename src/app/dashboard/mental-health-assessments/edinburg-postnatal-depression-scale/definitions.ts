@@ -191,7 +191,8 @@ export const pages: Array<keyof Partial<IEdinburgPostnatalDepressionScaleInputs>
         "difficultySleeping",
         "sadness",
         "crying",
-        "selfHarmThoughts"],
+        "selfHarmThoughts"
+    ],
     [
         "participantName",
         "caseId",
@@ -200,5 +201,7 @@ export const pages: Array<keyof Partial<IEdinburgPostnatalDepressionScaleInputs>
         "timeframe",
         "totalScore",
         "notes",
+        "label",
+        "staffNotes"
     ],
 ];
