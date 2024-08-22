@@ -43,6 +43,16 @@ export const readReferralsAndServices = async (referralsAndServicesId: string, u
     return ReferralsAndServicesResponseSchema.parse(response);
 }
 
+export const readAllReferralsAndServices = async (userId: string) => {
+    const response = await prisma.referralsAndServices.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => ReferralsAndServicesResponseSchema.parse(log));
+}
+
 /**
  * Updates a Referrals And Services Form in the database with new Referrals And Services Form.
  * @param {IReferralsAndServicesInputs} referralsAndServicesInput - An array of updated Referrals And Services Formies.

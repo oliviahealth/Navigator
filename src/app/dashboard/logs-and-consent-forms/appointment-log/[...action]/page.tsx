@@ -78,13 +78,13 @@ const AppointmentLog: React.FC = () => {
             console.error(error);
             setErrorMessage('Something went wrong! Please try again later');
 
-            router.push('/dashboard/logs-and-forms');
+            router.push('/dashboard/logs-and-consent-forms');
 
             return;
         }
 
         setSuccessMessage('Appointment Log submitted successfully!');
-        router.push('/dashboard/logs-and-forms');
+        router.push('/dashboard/logs-and-consent-forms');
     };
 
     useEffect(() => {
@@ -117,7 +117,7 @@ const AppointmentLog: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard/logs-and-forms');
+                router.push('/dashboard/logs-and-consent-forms');
             }
         };
 
