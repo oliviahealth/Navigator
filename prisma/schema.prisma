@@ -121,7 +121,7 @@ model EnrollmentForm {
   clientName        String
   clientDate        DateTime
   guardianName      String?
-  guardianDate      String?
+  guardianDate      DateTime?
   gcMomsName        String
   gcMomsDate        String
   label             String
@@ -1336,6 +1336,8 @@ model IPVScreening {
   ipvDisclosure     YesNo
   ipvDisclosureDate DateTime
   notes             String?
+  label                    String
+  staffNotes               String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
