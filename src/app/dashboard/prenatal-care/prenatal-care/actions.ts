@@ -26,6 +26,16 @@ export const readPrenatalCareRecord = async (prenatalCareId: string, userId: str
     return PrenatalCareResponseSchema.parse(response);
 }
 
+export const readAllPrenatalCareRecords = async (userId: string) => {
+    const response = await prisma.prenatalCare.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => PrenatalCareResponseSchema.parse(form));
+}
+
+
 export const updatePrenatalCareRecord = async (prenatalCareInputs: IPrenatalCareInputs, id: string, userId: string) => {
     const { ...data } = prenatalCareInputs;
     const response = await prisma.prenatalCare.update({

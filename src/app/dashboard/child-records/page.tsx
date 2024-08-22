@@ -1,3 +1,5 @@
+"use client"
+
 import Accordion from "@/components/dashboard/Accordion";
 
 const Tab: React.FC = () => {

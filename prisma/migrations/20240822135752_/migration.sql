@@ -270,7 +270,7 @@ CREATE TABLE "EnrollmentForm" (
     "clientName" TEXT NOT NULL,
     "clientDate" TIMESTAMP(3) NOT NULL,
     "guardianName" TEXT,
-    "guardianDate" TEXT,
+    "guardianDate" TIMESTAMP(3),
     "gcMomsName" TEXT NOT NULL,
     "gcMomsDate" TEXT NOT NULL,
     "label" TEXT NOT NULL,
@@ -981,6 +981,8 @@ CREATE TABLE "IPVScreening" (
     "ipvDisclosure" "YesNo" NOT NULL,
     "ipvDisclosureDate" TIMESTAMP(3) NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
