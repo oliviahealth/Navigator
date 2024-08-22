@@ -72,4 +72,11 @@
   .truncate {
     @apply overflow-hidden text-ellipsis whitespace-nowrap;
   }
+
+  .bento-outer {
+    @apply flex flex-wrap gap-4 mt-2 mb-4;
+  }
+  .bento-inner {
+    @apply rounded-xl p-2 bg-neutral-100 w-full;
+  }
 }

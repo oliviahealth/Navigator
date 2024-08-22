@@ -2,7 +2,7 @@
 
 import Accordion from "@/components/dashboard/Accordion";
 import Submission from "@/components/dashboard/Submission";
-import { communicationLoglabelMapping } from "../logs-and-forms/communication-log/definitions";
+import { communicationLoglabelMapping } from "../logs-and-consent-forms/communication-log/definitions";
 import useCommunicationLogs from "./communication-log/submissions";
 import useAppointmentLogs from "./appointment-log/submissions";
 import useEnrollmentForms from "./enrollment-form/submissions";
@@ -43,9 +43,9 @@ const Tab: React.FC = () => {
         {selectedAppointmentLogSubmission && (
           <div>
             {Array.isArray(selectedAppointmentLogSubmission.appointmentEntries) && selectedAppointmentLogSubmission.appointmentEntries.length > 0 ? (
-              <div className="flex flex-wrap gap-4 mt-2">
+              <div className="bento-outer">
                 {selectedAppointmentLogSubmission.appointmentEntries.map((entry: any, index: number) => (
-                  <div key={index} className="border p-2 rounded-md flex-1 min-w-[200px]">
+                  <div key={index} className="bento-inner">
                     <p><strong>Date/Time:</strong> {new Date(entry.dateTime).toLocaleString()}</p>
                     <p><strong>Who:</strong> {entry.who}</p>
                     <p><strong>Location:</strong> {entry.location}</p>
@@ -59,7 +59,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/appointment-log/"
+          link="/dashboard/logs-and-consent-forms/appointment-log/"
           submissions={appointmentLogSubmissions}
           onDelete={handleAppointmentLogDelete}
           onSubmissionSelect={handleAppointmentLogSubmissionSelect}
@@ -70,9 +70,9 @@ const Tab: React.FC = () => {
         {selectedCommunicationLogSubmission && (
           <div>
             {Array.isArray(selectedCommunicationLogSubmission.communicationEntries) && selectedCommunicationLogSubmission.communicationEntries.length > 0 ? (
-              <div className="flex flex-wrap gap-4 mt-2">
+              <div className="bento-outer">
                 {selectedCommunicationLogSubmission.communicationEntries.map((entry: any, index: number) => (
-                  <div key={index} className="border p-2 rounded-md flex-1 min-w-[200px]">
+                  <div key={index} className="bento-inner">
                     <p><strong>Date/Time:</strong> {new Date(entry.dateTime).toLocaleString()}</p>
                     <p><strong>Method:</strong> {communicationLoglabelMapping[entry.method]}</p>
                     <p><strong>Organization/Person:</strong> {entry.organizationPerson}</p>
@@ -88,7 +88,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/communication-log/"
+          link="/dashboard/logs-and-consent-forms/communication-log/"
           submissions={communicationLogSubmissions}
           onDelete={handleCommunicationLogDelete}
           onSubmissionSelect={handleCommunicationLogSubmissionSelect}
@@ -98,7 +98,7 @@ const Tab: React.FC = () => {
       <Accordion title="Enrollment Form">
         {selectedEnrollmentFormSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Personal Information</h2>
               <p><strong>First Name:</strong> {selectedEnrollmentFormSubmission.firstName}</p>
               <p><strong>Last Name:</strong> {selectedEnrollmentFormSubmission.lastName}</p>
@@ -111,26 +111,26 @@ const Tab: React.FC = () => {
               <p><strong>Cell Phone:</strong> {selectedEnrollmentFormSubmission.cellPhone}</p>
               <p><strong>Email:</strong> {selectedEnrollmentFormSubmission.email}</p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Client Information</h2>
               <p><strong>Client Name:</strong> {selectedEnrollmentFormSubmission.clientName}</p>
               <p><strong>Client Date:</strong> {new Date(selectedEnrollmentFormSubmission.clientDate).toLocaleString()}</p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Guardian Information</h2>
               <p><strong>Guardian Name:</strong> {selectedEnrollmentFormSubmission.guardianName ? selectedEnrollmentFormSubmission.guardianName : "N/A"}</p>
               <p><strong>Guardian Date:</strong> {selectedEnrollmentFormSubmission.guardianName ? new Date(selectedEnrollmentFormSubmission.guardianDate).toLocaleString() : "N/A"}</p>
             </div>
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">GC-MOMS Information</h2>
               <p><strong>GC-MOMS Name:</strong> {selectedEnrollmentFormSubmission.gcMomsName}</p>
               <p><strong>GC-MOMS Date:</strong> {new Date(selectedEnrollmentFormSubmission.gcMomsDate).toLocaleString()}</p>
             </div>
-            <div className="border p-4 rounded-md col-span-2">
+            <div className="bento-inner">
               <h2 className="font-bold">Emergency Contacts</h2>
               <div className="grid grid-cols-2 gap-4">
                 {selectedEnrollmentFormSubmission.emergencyContacts.map((contact: any, index: number) => (
-                  <div key={index} className="border-t mt-2 pt-2">
+                  <div key={index} className="bento-inner">
                     <p><strong>Name:</strong> {contact.name}</p>
                     <p><strong>Relationship:</strong> {contact.relationship}</p>
                     <p><strong>Phone:</strong> {contact.phone}</p>
@@ -139,10 +139,14 @@ const Tab: React.FC = () => {
                 ))}
               </div>
             </div>
+            <div className="bento-inner">
+              <h2 className="font-bold">Staff Notes</h2>
+              <p> {selectedEnrollmentFormSubmission.staffNotes}</p>
+            </div>
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/enrollment-form/"
+          link="/dashboard/logs-and-consent-forms/enrollment-form/"
           submissions={enrollmentFormSubmissions!}
           onDelete={handleEnrollmentFormDelete}
           onSubmissionSelect={handleEnrollmentFormSubmissionSelect}
@@ -152,14 +156,14 @@ const Tab: React.FC = () => {
       <Accordion title="Media Appearance Release">
         {selectedMediaAppearanceReleaseSubmission && (
           <div className="grid grid-cols-2 gap-4">
-            <div className="border p-4 rounded-md">
+            <div className="bento-inner">
               <h2 className="font-bold">Participant Information</h2>
               <p><strong>Participant Name:</strong> {selectedMediaAppearanceReleaseSubmission.participantName}</p>
               <p><strong>Address:</strong> {selectedMediaAppearanceReleaseSubmission.address}</p>
               <p><strong>Participant Date:</strong> {new Date(selectedMediaAppearanceReleaseSubmission.participantDate).toLocaleString()}</p>
             </div>
             {selectedMediaAppearanceReleaseSubmission.guardianName && (
-              <div className="border p-4 rounded-md">
+              <div className="bento-inner">
                 <h2 className="font-bold">Guardian Information</h2>
                 <p><strong>Guardian Name:</strong> {selectedMediaAppearanceReleaseSubmission.guardianName}</p>
                 <p><strong>Guardian Date:</strong> {new Date(selectedMediaAppearanceReleaseSubmission.participantDate).toLocaleString()}</p>
@@ -168,7 +172,7 @@ const Tab: React.FC = () => {
           </div>
         )}
         <Submission
-          link="/dashboard/logs-and-forms/media-appearance-form/"
+          link="/dashboard/logs-and-consent-forms/media-appearance-form/"
           submissions={mediaAppearanceReleaseSubmissions}
           onDelete={handleMediaAppearanceReleaseDelete}
           onSubmissionSelect={handleMediaAppearanceReleaseSubmissionSelect}

@@ -60,8 +60,8 @@ model User {
   InfancyQuestionnaire                      InfancyQuestionnaire[]
   TargetChildRecord                         TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
-  PrenatalCare                           PrenatalCare[]
-  HouseholdHousingSafetyProfile         HouseholdHousingSafetyProfile[]
+  PrenatalCare                              PrenatalCare[]
+  HouseholdHousingSafetyProfile             HouseholdHousingSafetyProfile[]
   FoodSecurity                              FoodSecurity[]
 }
 
@@ -121,7 +121,7 @@ model EnrollmentForm {
   clientName        String
   clientDate        DateTime
   guardianName      String?
-  guardianDate      String?
+  guardianDate      DateTime?
   gcMomsName        String
   gcMomsDate        String
   label             String
@@ -795,8 +795,8 @@ model CurrentMedicationList {
   currentMedicationList Json[]
   notes                 String?
 
-  label                                 String
-  staffNotes                            String
+  label      String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -839,7 +839,7 @@ model DukeUniversityReligionIndex {
   beliefLifeInfluence        TruthLevel
   religiousIntegrationEffort TruthLevel
 
-  label String
+  label      String
   staffNotes String
 
   dateCreated  DateTime @default(now())
@@ -857,8 +857,8 @@ model MentalHealthHistory {
   medicationDetails   String?
   notes               String?
 
-  label                                 String
-  staffNotes                            String
+  label      String
+  staffNotes String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -963,7 +963,7 @@ model EdinburgPostnatalDepressionScale {
   totalScore         String
   notes              String?
 
-  label String
+  label      String
   staffNotes String
 
   dateCreated  DateTime @default(now())
@@ -1103,7 +1103,7 @@ model PerceivedStressScale {
   difficultiesPilingUp      PerceivedStressScaleOptions
   totalScore                String
 
-  label String
+  label      String
   staffNotes String
 
   dateCreated  DateTime @default(now())
@@ -1137,12 +1137,12 @@ model GeneralizedAnxietyDisorder {
   feelingAfraid           GADAnswers
   problemsDifficulty      Difficulty
   totalScore              String
-  
-  label String
+
+  label      String
   staffNotes String
 
-  dateCreated             DateTime   @default(now())
-  dateModified            DateTime   @updatedAt
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
 
 model PregnancySpacingAssesment {
@@ -1291,8 +1291,8 @@ model BriefChildWellnessUpdate {
   readingFrequency     ReadingFrequency
   label                String
   staffNotes           String
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
+  dateCreated          DateTime                          @default(now())
+  dateModified         DateTime                          @updatedAt
 }
 
 model DeliveryHistoryInformationForm {
@@ -1379,7 +1379,7 @@ model InfancyQuestionnaire {
   motherCouldNotBreastfeed Yes?
   label                    String
   staffNotes               String
-  
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }
@@ -1504,40 +1504,40 @@ enum HousingStatus {
 }
 
 model HouseholdHousingSafetyProfile {
-  id                          String   @id @default(cuid())
-  user User @relation(fields: [userId], references: [id])
+  id   String @id @default(cuid())
+  user User   @relation(fields: [userId], references: [id])
 
-  userId                      String
-  participantName             String
-  caseId                      String
-  dateCompleted               DateTime
-  staffName                   String
-  timeframe                   String[]
-  insuranceType               String
-  otherInsurance              String?
-  highSchoolDiploma           String
-  highestEducation            String?
-  currentlyEnrolled           String
-  middleHighSchoolGED         Boolean?
-  employmentStatus            String
-  usesTobacco                 String
-  tobaccoCessationServices    String?
-  currentlyPregnant           String?
-  wantPregnant                String?
-  yearlyHouseholdIncome       Float?
-  incomeUndeterminedReason    String?
+  userId                        String
+  participantName               String
+  caseId                        String
+  dateCompleted                 DateTime
+  staffName                     String
+  timeframe                     String[]
+  insuranceType                 String
+  otherInsurance                String?
+  highSchoolDiploma             String
+  highestEducation              String?
+  currentlyEnrolled             String
+  middleHighSchoolGED           Boolean?
+  employmentStatus              String
+  usesTobacco                   String
+  tobaccoCessationServices      String?
+  currentlyPregnant             String?
+  wantPregnant                  String?
+  yearlyHouseholdIncome         Float?
+  incomeUndeterminedReason      String?
   otherIncomeUndeterminedReason String?
-  dependentsCount             Int
-  housingStatus               String
-  label                       String
-  staffNotes                  String
-  dateCreated                 DateTime @default(now())
-  dateModified                DateTime @updatedAt
+  dependentsCount               Int
+  housingStatus                 String
+  label                         String
+  staffNotes                    String
+  dateCreated                   DateTime @default(now())
+  dateModified                  DateTime @updatedAt
 }
 
 model FoodSecurity {
-  id                                                                     String @id @default(uuid())
-  User                                                                   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                                                                     String   @id @default(uuid())
+  User                                                                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId                                                                 String
   worryHouseholdWithoutFood                                              String
   howOftenWorryHouseholdWithoutFood                                      String?
@@ -1549,22 +1549,22 @@ model FoodSecurity {
   howOftenPastFourWeeksFamilyDidNotEatPreferredFoodResourcesToObtainFood String?
   label                                                                  String
   staffNotes                                                             String
-  dateCreated  DateTime @default(now())
-  dateModified DateTime @updatedAt
+  dateCreated                                                            DateTime @default(now())
+  dateModified                                                           DateTime @updatedAt
 }
 
 model SocialSupportForm {
-  id                          String          @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
-  userId                      String
+  id     String @id @default(uuid())
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
-  assessmentDate String
-  siteId String
-  participantId String
-  relation String
-  formCompletionStatus String
-  phase String
-  segment String
+  assessmentDate         String
+  siteId                 String
+  participantId          String
+  relation               String
+  formCompletionStatus   String
+  phase                  String
+  segment                String
   formCompletionLanguage String
 
   specialPersonInNeed         ResponseAnswers
@@ -1581,9 +1581,8 @@ model SocialSupportForm {
   talkToFriendsAboutProblems  ResponseAnswers
   specialPersonInitials       String?
   specialPersonRelationship   String?
-  comments                    String?         // Optional comments field
-  
-  dateCreated                 DateTime        @default(now())
-  dateModified                DateTime        @updatedAt
-  
+  comments                    String? // Optional comments field
+
+  dateCreated  DateTime @default(now())
+  dateModified DateTime @updatedAt
 }
