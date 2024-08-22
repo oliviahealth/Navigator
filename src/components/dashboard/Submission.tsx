@@ -36,6 +36,8 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
     }
   };
 
+  const selectedSubmission = submissions.find((sub) => sub.id === selectedSubmissionId);
+
   return (
     <div className="flex flex-row relative mt-2 mb-1 space-x-4 items-center">
       {submissions.length > 0 ? (
@@ -131,6 +133,13 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
       <Link href={`${link}new`} className="text-red-800 font-semibold text-sm -mb-[2px] border-b-2 border-transparent hover:border-red-800 transition duration-100 ease-in">
         New
       </Link>
+
+      {selectedSubmission && (
+        <div className="absolute bottom-0 right-0 text-right text-xs text-neutral-500 space-y-1">
+          <div><strong>Created: </strong>{new Date(selectedSubmission.dateCreated).toLocaleString()}</div>
+          <div><strong>Last Edited: </strong>{new Date(selectedSubmission.dateModified).toLocaleString()}</div>
+        </div>
+      )}
     </div >
   );
 };

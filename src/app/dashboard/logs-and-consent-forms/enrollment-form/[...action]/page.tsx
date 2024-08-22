@@ -590,7 +590,7 @@ const EnrollmentLog: React.FC = () => {
                 </span>
               )}
 
-              <p className="font-medium pb-2 pt-8">Date</p>
+              <p className="font-medium pb-2 pt-8">Guardian Date</p>
               <input
                 {...register("guardianDate", {
                   required: watch("clientAge") < 18, valueAsDate: true
