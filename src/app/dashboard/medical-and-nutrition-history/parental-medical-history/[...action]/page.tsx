@@ -78,7 +78,7 @@ const ParentalMedicalHistory: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard/medical-and-nutrition-history/');
             }
         };
 
@@ -107,7 +107,7 @@ const ParentalMedicalHistory: React.FC = () => {
         }
 
         setSuccessMessage('Parental Medical History submitted successfully!')
-        router.push('/dashboard')
+        router.push('/dashboard/medical-and-nutrition-history/');
     };
 
     return (

@@ -43,6 +43,15 @@ export const readEncounterForm = async (encounterFormId: string, userId: string)
     return EncounterFormResponseSchema.parse(response);
 }
 
+export const readAllEncounterForm = async (userId: string) => {
+    const response = await prisma.encounterForm.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => EncounterFormResponseSchema.parse(form));
+}
+
 /**
  * Updates a Encounter Form in the database with new Encounter Form.
  * @param {IEncounterFormInputs} encounterFormInput - An array of updated Encounter Formies.

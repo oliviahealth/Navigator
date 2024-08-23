@@ -495,7 +495,7 @@ const EncounterForm: React.FC = () => {
             } catch (error) {
                 console.error(error);
                 setErrorMessage('Something went wrong! Please try again later');
-                router.push('/dashboard');
+                router.push('/dashboard/medical-and-nutrition-history/');
             }
         };
 
@@ -527,7 +527,7 @@ const EncounterForm: React.FC = () => {
         }
 
         setSuccessMessage('Encounter Form submitted successfully!')
-        router.push('/dashboard');
+        router.push('/dashboard/medical-and-nutrition-history/');
     };
 
     return (

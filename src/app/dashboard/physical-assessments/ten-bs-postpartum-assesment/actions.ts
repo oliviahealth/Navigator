@@ -26,6 +26,16 @@ export const readTenBsPostpartumAssesmentRecord = async (tenBsPostpartumAssesmen
     return TenBsPostpartumAssesmentResponseSchema.parse(response);
 }
 
+export const readAllTenBsPostpartumAssessmentRecord = async (userId: string) => {
+    const response = await prisma.tenBsPostpartumAppointmentAssesment.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => TenBsPostpartumAssesmentResponseSchema.parse(form));
+}
+
+
 export const updateTenBsPostpartumAssesmentRecord = async (tenBsPostpartumAssesmentInputs: ITenBsPostpartumAssesmentInputs, id: string, userId: string) => {
     const {  ...data } = tenBsPostpartumAssesmentInputs;
     const response = await prisma.tenBsPostpartumAppointmentAssesment.update({

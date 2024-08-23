@@ -56,6 +56,15 @@ export const readNutritionHistoryAndAssessment = async (NutritionHistoryAndAsses
     return NutritionHistoryAndAssessmentResponseSchema.parse(response);
 }
 
+export const readAllNutritionHistoryAssessment = async (userId: string) => {
+    const response = await prisma.nutritionHistoryAndAssessment.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => NutritionHistoryAndAssessmentResponseSchema.parse(form));
+}
+
 /**
  * Updates a Nutrition History and Assessment in the database with new Nutrition History and Assessment.
  * @param {INutritionHistoryAndAssessmentInputs} nutritionHistoryAndAssessmentInput - An array of updated Nutrition History and Assessmenties.

@@ -47,6 +47,15 @@ export const readParentalMedicalHistory = async (parentalMedicalHistoryId: strin
     return ParentalMedicalHistoryResponseSchema.parse(response);
 }
 
+export const readAllParentalMedicalHistory = async (userId: string) => {
+    const response = await prisma.parentalMedicalHistory.findMany({
+        where: {
+            userId
+        }
+    });
+    return response.map(form => ParentalMedicalHistoryResponseSchema.parse(form));
+}
+
 /**
  * Updates a Parental Medical History in the database with new Parental Medical History.
  * @param {IParentalMedicalHistoryInputs} parentalMedicalHistoryInput - An array of updated Parental Medical Historyies.
