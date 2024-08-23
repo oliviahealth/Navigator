@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
 import {
   createSubstanceUseHistory,
+  readSubstanceUseHistory,
   updateSubstanceUseHistory,
 } from "../actions";
 import {
@@ -69,6 +70,7 @@ const SubstanceUseHistory: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
+    reset,
   } = useForm<ISubstanceUseHistoryInput>({
     resolver: zodResolver(SubstanceUseHistoryInputSchema),
     defaultValues: {
@@ -77,7 +79,7 @@ const SubstanceUseHistory: React.FC = () => {
         {
           medication: "",
           dose: "",
-          dates: null,
+          date: null,
         },
       ],
     },
@@ -106,9 +108,9 @@ const SubstanceUseHistory: React.FC = () => {
     if (value !== "Never") {
       setValue("date_used_mat", null);
       setValue("mat_clinic_name", null);
-      setValue("mat_clinic_phone", null); 
+      setValue("mat_clinic_phone", null);
     } else {
-      setValue('medications', null);  
+      setValue('medications', []);
     }
   };
 
@@ -120,6 +122,76 @@ const SubstanceUseHistory: React.FC = () => {
       setValue("addiction_medicine_clinic_phone", null);
     }
   };
+
+  useEffect(() => {
+    const fetchAndPopulatePastSubmissionData = async () => {
+      try {
+        if (verb !== 'edit') {
+          return;
+        }
+
+        if (!user) {
+          throw new Error("User not found");
+        }
+
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
+
+        const response = await readSubstanceUseHistory(submissionId, user.id);
+        const formattedResponse = {
+          ...response,
+          date_used_mat: response.date_used_mat ? new Date(response.date_used_mat).toISOString().slice(0, 10) : null,
+          date_used_medicine_service: response.date_used_medicine_service ? new Date(response.date_used_medicine_service).toISOString().slice(0, 10) : null,
+          alcohol_date_last_used: response.alcohol_date_last_used ? new Date(response.alcohol_date_last_used).toISOString().slice(0, 10) : null,
+          benzodiazepines_date_last_used: response.benzodiazepines_date_last_used ? new Date(response.benzodiazepines_date_last_used).toISOString().slice(0, 10) : null,
+          cocaine_date_last_used: response.cocaine_date_last_used ? new Date(response.cocaine_date_last_used).toISOString().slice(0, 10) : null,
+          heroin_date_last_used: response.heroin_date_last_used ? new Date(response.heroin_date_last_used).toISOString().slice(0, 10) : null,
+          kush_date_last_used: response.kush_date_last_used ? new Date(response.kush_date_last_used).toISOString().slice(0, 10) : null,
+          marijuana_date_last_used: response.marijuana_date_last_used ? new Date(response.marijuana_date_last_used).toISOString().slice(0, 10) : null,
+          methamphetamine_date_last_used: response.methamphetamine_date_last_used ? new Date(response.methamphetamine_date_last_used).toISOString().slice(0, 10) : null,
+          prescription_drugs_date_last_used: response.prescription_drugs_date_last_used ? new Date(response.prescription_drugs_date_last_used).toISOString().slice(0, 10) : null,
+          tobacco_date_last_used: response.tobacco_date_last_used ? new Date(response.tobacco_date_last_used).toISOString().slice(0, 10) : null,
+
+          other_drugs: response.other_drugs ? response.other_drugs.map(drug => ({
+            ...drug,
+            date_last_used: drug.date_last_used ? new Date(drug.date_last_used).toISOString().slice(0, 10) : undefined,
+          })) : [],
+          medications: response.medications ? response.medications.map(med => ({
+            ...med,
+            date: med.date ? new Date(med.date).toISOString().slice(0, 10) : undefined,
+          })) : []
+        }
+
+        reset(formattedResponse)
+
+        setShowAddictionServiceDetails(response.used_addiction_medicine_services !== "Never")
+        setShowMatDetails(response.mat_engaged !== "Never")
+
+        const drugVisibilityState: DrugVisibilityState = {
+          alcohol: response.alcohol_ever_used === "Yes",
+          benzodiazepines: response.benzodiazepines_ever_used === "Yes",
+          cocaine: response.cocaine_ever_used === "Yes",
+          heroin: response.heroin_ever_used === "Yes",
+          kush: response.kush_ever_used === "Yes",
+          marijuana: response.marijuana_ever_used === "Yes",
+          methamphetamine: response.methamphetamine_ever_used === "Yes",
+          prescription_drugs: response.prescription_drugs_ever_used === "Yes",
+          tobacco: response.tobacco_ever_used === "Yes",
+        };
+        setShowDrugDate(drugVisibilityState);
+
+      } catch (error) {
+        console.error(error);
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard/substance-use-assessments');
+      }
+    };
+
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
   const submit = async (data: ISubstanceUseHistoryInput) => {
     try {
@@ -138,13 +210,13 @@ const SubstanceUseHistory: React.FC = () => {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
 
-      router.push("/dashboard");
+      router.push("/dashboard/substance-use-assessments");
 
       return;
     }
 
     setSuccessMessage("Substance Use History submitted successfully!");
-    router.push("/dashboard");
+    router.push("/dashboard/substance-use-assessments");
   };
 
   const addNewSubstance = () => {
@@ -397,9 +469,9 @@ const SubstanceUseHistory: React.FC = () => {
           <div className="space-y-4 pt-4">
             <p className="font-medium">Date Last Used</p>
             <input
-              {...register("date_used_mat")}
+              {...register("date_used_mat", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
-              type="string"
+              type="date"
             />
             {errors.date_used_mat && (
               <span className="label-text-alt text-red-500">
@@ -467,14 +539,15 @@ const SubstanceUseHistory: React.FC = () => {
                   </span>
                 )}
 
-                <p className="font-medium">Dates</p>
+                <p className="font-medium">Date</p>
                 <input
-                  {...register(`medications.${index}.dates`)}
+                  {...register(`medications.${index}.date`, { valueAsDate: true })}
                   className="border border-gray-300 px-4 py-2 rounded-md w-full"
+                  type="date"
                 />
-                {errors.medications && errors.medications[index]?.dose && (
+                {errors.medications && errors.medications[index]?.date && (
                   <span className="label-text-alt text-red-500">
-                    {errors.medications[index]?.dose?.message}
+                    {errors.medications[index]?.date?.message}
                   </span>
                 )}
               </div>
@@ -517,9 +590,9 @@ const SubstanceUseHistory: React.FC = () => {
           <div className="space-y-4 pt-4">
             <p className="font-medium">Date Last Used</p>
             <input
-              {...register("date_used_medicine_service")}
+              {...register("date_used_medicine_service", { valueAsDate: true })}
               className="border border-gray-300 px-4 py-2 rounded-md w-full"
-              type="string"
+              type="date"
             />
             {errors.date_used_medicine_service && (
               <span className="label-text-alt text-red-500">
@@ -554,14 +627,14 @@ const SubstanceUseHistory: React.FC = () => {
         <div>
           <hr className="border-t-1 border-gray-400 my-4" />
           <div>
-              <p className="font-semibold pb-2 pt-8">Submission Label</p>
-              <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-              {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+            <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
           </div>
           <div>
-              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
-              <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-              {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
+            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+            <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
           </div>
         </div>
 

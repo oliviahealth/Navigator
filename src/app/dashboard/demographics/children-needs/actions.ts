@@ -50,8 +50,6 @@ export const readAllChildrenNeedsForm = async (userId: string) => {
         }
     });
 
-    console.log(response);
-
     return response.map(log => ChildrenNeedsFormResponseSchema.parse(log));
 }
 

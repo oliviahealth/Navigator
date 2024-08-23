@@ -121,7 +121,6 @@ const InfancyQuestionnaire: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IInfancyQuestionnaireInputs) => {
-        console.log(data)
         try {
             let response;
 

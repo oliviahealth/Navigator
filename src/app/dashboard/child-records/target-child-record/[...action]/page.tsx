@@ -110,7 +110,6 @@ const TargetChildRecord: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: ITargetChildRecordInputs) => {
-        console.log()
         try {
             let response;
 
