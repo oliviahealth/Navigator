@@ -13,7 +13,7 @@ export const createFoodSecurityRecord = async (foodSecurityInputs: IFoodSecurity
     });
 
     return FoodSecurityResponseSchema.parse(response);
-}
+};
 
 export const readFoodSecurityRecord = async (foodSecurityId: string, userId: string) => {
     const response = await prisma.foodSecurity.findUniqueOrThrow({
@@ -24,7 +24,17 @@ export const readFoodSecurityRecord = async (foodSecurityId: string, userId: str
     });
 
     return FoodSecurityResponseSchema.parse(response);
-}
+};
+
+export const readAllFoodRecurityRecord = async (userId: string) => {
+    const response = await prisma.foodSecurity.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => FoodSecurityResponseSchema.parse(log));
+};
 
 export const updateFoodSecurityRecord = async (foodSecurityInput: IFoodSecurityInputs, id: string, userId: string) => {
     const { ...rest } = foodSecurityInput;
@@ -39,7 +49,7 @@ export const updateFoodSecurityRecord = async (foodSecurityInput: IFoodSecurityI
     });
 
     return FoodSecurityResponseSchema.parse(response);
-}
+};
 
 export const deleteFoodSecurityRecord = async (foodSecurityId: string, userId: string) => {
     const response = await prisma.foodSecurity.deleteMany({
@@ -50,4 +60,4 @@ export const deleteFoodSecurityRecord = async (foodSecurityId: string, userId: s
     });
 
     return FoodSecurityResponseSchema.parse(response);
-}
+};

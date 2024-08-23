@@ -30,25 +30,21 @@ export const HousingSecurityHomeVisitInputsSchema = z.object({
   healthInsurance: YesNoEnum,
   concerns: YesNoDidNotAskEnum,
   erVisit: YesNoEnum,
-  erVisitSpecific: z
-    .array(
+  erVisitSpecific: z.array(
       z.object({
-        visitDate: z
-          .union([z.date(), z.string().min(1, "Date of Visit is required")])
-          .optional(),
-        visitReason: VisitReasonEnum.optional(),
+        visitDate: z.union([z.date(), z.string().min(1, "Date of Visit is required")]).optional().nullable(),
+        visitReason: VisitReasonEnum.optional().nullable(),
       })
     )
     .optional(),
   wellChildVisits: YesNoEnum,
-  wellChildVisitsSpecific: z
-    .array(
+  wellChildVisitsSpecific: z.array(
       z.object({
-        childName: z.string().min(1, "Required"),
+        childName: z.string().min(1, "Required").optional().nullable(),
         wellChildVisitsCompleted: z.array(WellChildVisitsEnum).optional(),
       })
     )
-    .optional(),
+    .optional().nullable(),
   // Added fields
   otherInsurance: z.string().nullable(), // Allows string or null
   middleHighSchoolGED: z.boolean().nullable(), // Allows boolean or null

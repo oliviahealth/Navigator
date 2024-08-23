@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -8,16 +8,14 @@ import { useFieldArray, useForm } from "react-hook-form";
 import {
   HousingSecurityHomeVisitResponseSchema,
   IHousingSecurityHomeVisitInputs,
-  HousingSecurityHomeVisitInputsSchema,
+  HousingSecurityHomeVisitInputsSchema
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
 import {
   createHousingSecurityHomeVisit,
-  readHousingSecurityHomeVisit,
-  updateHousingSecurityHomeVisit,
+  updateHousingSecurityHomeVisit
 } from "../actions";
-import { error } from "console";
 
 const HousingSecurityHomeVisit: React.FC = () => {
   const router = useRouter();
@@ -26,7 +24,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
   const verb = action[0];
   const submissionId = action[1];
 
-  const user = useAppStore((state) => state.user);
+  const user = useAppStore(state => state.user);
 
   const setSuccessMessage = useAppStore((state) => state.setSuccessMessage);
   const setErrorMessage = useAppStore((state) => state.setErrorMessage);
@@ -35,7 +33,6 @@ const HousingSecurityHomeVisit: React.FC = () => {
     register,
     handleSubmit,
     control,
-    reset,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<IHousingSecurityHomeVisitInputs>({

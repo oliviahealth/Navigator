@@ -44,6 +44,16 @@ export const readHousingSecurityHomeVisit = async (housingSecurityHomeVisitId: s
     return HousingSecurityHomeVisitResponseSchema.parse(response)
 };
 
+export const readAllHousingSecurityHomeVisit = async (userId: string) => {
+    const response = await prisma.housingSecurityHomeVisitForm.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => HousingSecurityHomeVisitResponseSchema.parse(log));
+};
+
 /**
  * Updates a Housing Security Home Visit in the database with new data.
  * @param {IHousingSecurityHomeVisitInputs} housingSecurityHomeVisitInput - The updated Housing Security Home Visit data.
