@@ -12,12 +12,11 @@ import { SocialSupportFormResponseSchema, ISocialSupportFormInputs, SocialSuppor
  * @remarks This function takes Social Support Form Record data and saves them to the database using Prisma.
  */
 export const createSocialSupportForm = async (socialSupportFormInput: ISocialSupportFormInputs, userId: string) => {
-    const { ...data } = socialSupportFormInput;
 
     const response = await prisma.socialSupportForm.create({
         data: {
             userId,
-            ...data
+            ...socialSupportFormInput
         },
     });
 
@@ -44,6 +43,16 @@ export const readSocialSupportForm = async (socialSupportFormId: string, userId:
     return SocialSupportFormResponseSchema.parse(response);
 };
 
+export const readAllSocialSupportForms = async (userId: string) => {
+    const response = await prisma.socialSupportForm.findMany({
+        where: {
+            userId,
+        },
+    });
+
+    return response.map(log => SocialSupportFormResponseSchema.parse(log));
+};
+
 /**
  * Updates a Social Support Form Record in the database with new Social Support Form Record.
  * @param {ISocialSupportFormInputs} socialSupportFormInput - The updated Social Support Form Record data.
@@ -55,7 +64,6 @@ export const readSocialSupportForm = async (socialSupportFormId: string, userId:
  * record with the record provided in the input.
  */
 export const updateSocialSupportForm = async (socialSupportFormInput: ISocialSupportFormInputs, id: string, userId: string) => {
-    const { ...data } = socialSupportFormInput;
 
     const response = await prisma.socialSupportForm.update({
         where: {
@@ -63,7 +71,7 @@ export const updateSocialSupportForm = async (socialSupportFormInput: ISocialSup
             userId
         },
         data: {
-            ...data
+            ...socialSupportFormInput
         }
     });
 
@@ -84,6 +92,6 @@ export const deleteSocialSupportForm = async (submissionId: string, userId: stri
             userId: userId
         }
     });
-    
+
     return SocialSupportFormResponseSchema.parse(response);
 };

@@ -270,7 +270,7 @@ CREATE TABLE "EnrollmentForm" (
     "clientName" TEXT NOT NULL,
     "clientDate" TIMESTAMP(3) NOT NULL,
     "guardianName" TEXT,
-    "guardianDate" TEXT,
+    "guardianDate" TIMESTAMP(3),
     "gcMomsName" TEXT NOT NULL,
     "gcMomsDate" TEXT NOT NULL,
     "label" TEXT NOT NULL,
@@ -926,6 +926,8 @@ CREATE TABLE "IntimatePartnerViolenceForm" (
     "insultOrTalkDown" "IPVStatus" NOT NULL,
     "threatenWithHarm" "IPVStatus" NOT NULL,
     "screamOrCurse" "IPVStatus" NOT NULL,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
@@ -971,7 +973,7 @@ CREATE TABLE "DeliveryHistoryInformationForm" (
 );
 
 -- CreateTable
-CREATE TABLE "IPVScreening" (
+CREATE TABLE "IPVDisclosureScreeningTool" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "dateTaken" TIMESTAMP(3) NOT NULL,
@@ -981,10 +983,12 @@ CREATE TABLE "IPVScreening" (
     "ipvDisclosure" "YesNo" NOT NULL,
     "ipvDisclosureDate" TIMESTAMP(3) NOT NULL,
     "notes" TEXT,
+    "label" TEXT NOT NULL,
+    "staffNotes" TEXT NOT NULL,
     "dateCreated" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "dateModified" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "IPVScreening_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "IPVDisclosureScreeningTool_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -1269,7 +1273,7 @@ ALTER TABLE "BriefChildWellnessUpdate" ADD CONSTRAINT "BriefChildWellnessUpdate_
 ALTER TABLE "DeliveryHistoryInformationForm" ADD CONSTRAINT "DeliveryHistoryInformationForm_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "IPVScreening" ADD CONSTRAINT "IPVScreening_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "IPVDisclosureScreeningTool" ADD CONSTRAINT "IPVDisclosureScreeningTool_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "InfancyQuestionnaire" ADD CONSTRAINT "InfancyQuestionnaire_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
