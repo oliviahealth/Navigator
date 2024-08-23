@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import {
     getErrorMessage,
-    labelMapping,
+    edinburgLabelMapping,
     TimeframeEnum,
     SelfHarmThoughtsEnum,
 } from "../definitions";
@@ -125,7 +125,7 @@ const EdinburgResultsTouchpoint: React.FC = () => {
                                         className="form-radio"
                                         disabled={isOptionDisabled(option)}
                                     />
-                                    <span className="ml-2">{labelMapping.selfHarmThoughts[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.selfHarmThoughts[option]}</span>
                                 </label>
                             ))}
                             {errors.answerToTen && (

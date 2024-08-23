@@ -42,7 +42,17 @@ export const readGeneralizedAnxietyDisorder = async (GeneralizedAnxietyDisorderI
     })
 
     return GeneralizedAnxietyDisorderResponseSchema.parse(response);
-}
+};
+
+export const readAllGeneralizedAnxietyDisorder = async (userId: string) => {
+    const response = await prisma.generalizedAnxietyDisorder.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => GeneralizedAnxietyDisorderResponseSchema.parse(log));
+};
 
 /**
  * Updates a Generalized Anxiety Disorder Record in the database with new Generalized Anxiety Disorder Record.

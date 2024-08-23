@@ -10,7 +10,7 @@ interface AccordionProps {
   children: React.ReactNode;
   isLoading?: boolean;
   onClick?: () => void;
-}
+};
 
 const Accordion: React.FC<AccordionProps> = ({
   title,

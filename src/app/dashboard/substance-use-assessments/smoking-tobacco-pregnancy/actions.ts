@@ -2,50 +2,58 @@
 
 import { prisma } from '@/lib/prisma';
 import { ISmokingTobaccoPregnancyInputs, SmokingTobaccoPregnancyResponseSchema } from './definitions';
-import { SmokingStatus } from '@prisma/client';
 
 export const createSmokingTobaccoPregnancyRecord = async (input: ISmokingTobaccoPregnancyInputs, userId: string) => {
   const response = await prisma.smokingTobaccoPregnancy.create({
     data: {
       userId,
-      smokingStatus: input.smokingStatus as SmokingStatus, 
-      label: input.label,
-      staffNotes: input.staffNotes
+      ...input
     },
   });
 
   return SmokingTobaccoPregnancyResponseSchema.parse(response);
 };
 
-export const readSmokingTobaccoPregnancyRecord = async (id: string, userId: string) => {
+export const readSmokingTobaccoPregnancyRecord = async (SmokingTobaccoPregnancyRecordId: string, userId: string) => {
   const response = await prisma.smokingTobaccoPregnancy.findUniqueOrThrow({
     where: {
-      id,
+      userId,
+      id: SmokingTobaccoPregnancyRecordId,
+    },
+  });
+
+  return SmokingTobaccoPregnancyResponseSchema.parse(response);
+};
+
+export const readAllSmokingTobaccoPregnancyRecords = async (userId: string) => {
+  const response = await prisma.smokingTobaccoPregnancy.findMany({
+    where: {
       userId,
     },
   });
 
-  return SmokingTobaccoPregnancyResponseSchema.parse(response);
-};
+  return response.map(log => SmokingTobaccoPregnancyResponseSchema.parse(log));
+}
 
-export const updateSmokingTobaccoPregnancyRecord = async (input: ISmokingTobaccoPregnancyInputs, id: string, userId: string) => {
+export const updateSmokingTobaccoPregnancyRecord = async (input: ISmokingTobaccoPregnancyInputs, SmokingTobaccoPregnancyRecordId: string, userId: string) => {
+
   const response = await prisma.smokingTobaccoPregnancy.update({
     where: {
-      id,
+      id: SmokingTobaccoPregnancyRecordId,
       userId,
     },
     data: {
-      smokingStatus: input.smokingStatus as SmokingStatus
-    },
+      ...input
+    }
   });
 
   return SmokingTobaccoPregnancyResponseSchema.parse(response);
-};
+}
 
-export const deleteSmokingTobaccoPregnancyRecord = async (id: string, userId: string) => {
-  const response = await prisma.smokingTobaccoPregnancy.deleteMany({
+export const deleteSmokingTobaccoPregnancyRecord = async (submissionId: string, userId: string) => {
+  const response = await prisma.smokingTobaccoPregnancy.delete({
     where: {
-      id,
+      id: submissionId,
       userId,
     },
   });

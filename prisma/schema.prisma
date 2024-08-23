@@ -984,7 +984,9 @@ model SmokingTobaccoPregnancy {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  smokingStatus SmokingStatus
+  smokingStatus SmokingStatus?
+  label         String
+  staffNotes    String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1034,16 +1036,17 @@ model SubstanceUseHistory {
   tobacco_notes                            String?
   other_drugs                              Json[]
   notes                                    String?
-
-  mat_engaged                      CurrentlyPreviouslyNever
-  date_used_mat                    String?
-  medications                      Json
-  mat_clinic_name                  String?
-  mat_clinic_phone                 String?
-  used_addiction_medicine_services CurrentlyPreviouslyNever
-  date_used_medicine_service       String?
-  addiction_medicine_clinic        String?
-  addiction_medicine_clinic_phone  String?
+  mat_engaged                              CurrentlyPreviouslyNever
+  date_used_mat                            DateTime?
+  medications                              Json[]
+  mat_clinic_name                          String?
+  mat_clinic_phone                         String?
+  used_addiction_medicine_services         CurrentlyPreviouslyNever
+  date_used_medicine_service               DateTime?
+  addiction_medicine_clinic                String?
+  addiction_medicine_clinic_phone          String?
+  label                                    String
+  staffNotes                               String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

@@ -14,8 +14,6 @@ import { DukeUniversityReligionIndexResponseSchema, IDukeUniversityReligionIndex
 export const createDukeUniversityReligionIndex = async (dukeUniversityReligionIndexInput: IDukeUniversityReligionIndexInputs, userId: string) => {
     const { ...data } = dukeUniversityReligionIndexInput;
 
-    console.log(data);
-
     const response = await prisma.dukeUniversityReligionIndex.create({
         data: {
             userId,
@@ -44,6 +42,16 @@ export const readDukeUniversityReligionIndex = async (dukeUniversityReligionInde
     })
 
     return DukeUniversityReligionIndexResponseSchema.parse(response)
+};
+
+export const readAllDukeUniversityReligionIndex = async (userId: string) => {
+    const response = await prisma.dukeUniversityReligionIndex.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => DukeUniversityReligionIndexResponseSchema.parse(log));
 }
 
 /**

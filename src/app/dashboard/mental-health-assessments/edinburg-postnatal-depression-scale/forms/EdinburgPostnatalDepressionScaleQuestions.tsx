@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import {
     getErrorMessage,
-    labelMapping,
+    edinburgLabelMapping,
     EnjoymentEnum,
     SelfHarmThoughtsEnum,
     CryingEnum,
@@ -96,7 +96,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.laugh[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.laugh[option]}</span>
                                 </label>
                             ))}
                             {errors.laugh && (
@@ -118,7 +118,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.enjoyment[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.enjoyment[option]}</span>
                                 </label>
                             ))}
                             {errors.enjoyment && (
@@ -140,7 +140,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.selfBlame[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.selfBlame[option]}</span>
                                 </label>
                             ))}
                             {errors.selfBlame && (
@@ -162,7 +162,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.anxiety[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.anxiety[option]}</span>
                                 </label>
                             ))}
                             {errors.anxiety && (
@@ -184,7 +184,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.scared[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.scared[option]}</span>
                                 </label>
                             ))}
                             {errors.scared && (
@@ -206,7 +206,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.copeInability[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.copeInability[option]}</span>
                                 </label>
                             ))}
                             {errors.copeInability && (
@@ -228,7 +228,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.difficultySleeping[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.difficultySleeping[option]}</span>
                                 </label>
                             ))}
                             {errors.difficultySleeping && (
@@ -250,7 +250,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.sadness[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.sadness[option]}</span>
                                 </label>
                             ))}
                             {errors.sadness && (
@@ -272,7 +272,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.crying[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.crying[option]}</span>
                                 </label>
                             ))}
                             {errors.crying && (
@@ -294,7 +294,7 @@ const EdinburgPostnatalDepressionScaleQuestions: React.FC<{
                                         value={option}
                                         className="form-radio"
                                     />
-                                    <span className="ml-2">{labelMapping.selfHarmThoughts[option]}</span>
+                                    <span className="ml-2">{edinburgLabelMapping.selfHarmThoughts[option]}</span>
                                 </label>
                             ))}
                             {errors.selfHarmThoughts && (

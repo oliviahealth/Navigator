@@ -179,7 +179,6 @@ const ParticipantRecordForOthersInvolved: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IParticipantRecordForOthersInvolvedInputs) => {
-        console.log("success")
         try {
             let response;
 

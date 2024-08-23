@@ -75,7 +75,7 @@ export const TimeframeEnum = z.enum([
     "Postnatal",
 ]);
 
-export const labelMapping = {
+export const edinburgLabelMapping = {
     laugh: {
         As_much_as_always: "As much as I always could",
         Not_quite_so_much: "Not quite so much now",

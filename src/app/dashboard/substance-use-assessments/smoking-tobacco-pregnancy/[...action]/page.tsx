@@ -9,6 +9,8 @@ import {
   SmokingTobaccoPregnancyInputSchema,
   SmokingTobaccoPregnancyResponseSchema,
   ISmokingTobaccoPregnancyInputs,
+  SmokingTobaccoPregnancyLabelMapping,
+  SmokingStatusEnum,
 } from "../definitions";
 import {
   createSmokingTobaccoPregnancyRecord,
@@ -95,31 +97,33 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
   useEffect(() => {
     const fetchAndPopulatePastSubmissionData = async () => {
       try {
-        if (verb !== "edit") return;
+        if (verb !== 'edit') {
+          return;
+        }
 
-        if (!submissionId)
-          throw new Error(
-            "Missing submissionId when fetching past submissions"
-          );
+        if (!user) {
+          throw new Error("User not found");
+        }
 
-        if (!user) throw new Error("Missing user");
+        if (!submissionId) {
+          throw new Error('Missing submissionId when fetching past submission');
+        }
 
         const response = await readSmokingTobaccoPregnancyRecord(submissionId, user.id);
+        reset(response)
 
-        SmokingTobaccoPregnancyResponseSchema.parse(response);
-
-        reset(response);
       } catch (error) {
         console.error(error);
-        setErrorMessage("Something went wrong! Please try again later");
-
-        router.push("/");
-        return;
+        setErrorMessage('Something went wrong! Please try again later');
+        router.push('/dashboard/substance-use-assessments');
       }
     };
 
-    fetchAndPopulatePastSubmissionData();
-  }, []);
+    if (user && verb === 'edit' && submissionId) {
+      fetchAndPopulatePastSubmissionData();
+    }
+  }, [user, verb, submissionId, reset, router, setErrorMessage]);
+
 
   const submit = async (data: ISmokingTobaccoPregnancyInputs) => {
     try {
@@ -138,14 +142,12 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
-
-      router.push("/dashboard");
-
+      router.push('/dashboard/substance-use-assessments');
       return;
     }
 
     setSuccessMessage("Smoking-Tobacco-Pregnancy Form submitted successfully!");
-    router.push("/dashboard");
+    router.push('/dashboard/substance-use-assessments');
   };
 
   return (
@@ -209,8 +211,30 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
             <p className="font-medium text-xl">Smoking and Tobacco Use during Pregnancy</p>
 
             <p className="font-medium pt-6">Choose the statement that best describes your smoking status</p>
-            <div className="flex flex-col space-y-3">
-              <label className="flex items-center">
+            {/* <div className="flex flex-col space-y-3"> */}
+
+            <div className="space-y-3">
+              <p className="font-semibold">Has your child had any involvement with Child Protective Service (CPS)</p>
+              <div className="space-y-2">
+                {SmokingStatusEnum.options.map(option => (
+                  <label key={option} className="flex items-center">
+                    <input
+                      {...register("smokingStatus")}
+                      className="form-radio"
+                      type="radio"
+                      value={option}
+                    />
+                    <span className="ml-2">{SmokingTobaccoPregnancyLabelMapping.smokingStatus[option]}</span>
+                  </label>
+                ))}
+                {errors.smokingStatus && (
+                  <span className="label-text-alt text-red-500">
+                    {errors.smokingStatus.message}
+                  </span>
+                )}
+              </div>
+            </div>
+            {/* <label className="flex items-center">
                 <input
                   type="radio"
                   value="NEVER"
@@ -264,21 +288,21 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
               <span className="label-text-alt text-red-500">
                 {errors.smokingStatus?.message}
               </span>
-            )}
+            )} */}
 
-                  <div>
-                    <hr className="border-t-1 border-gray-400 my-4" />
-                    <div>
-                        <p className="font-semibold pb-2 pt-8">Submission Label</p>
-                        <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-                        {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
-                    </div>
-                    <div>
-                        <p className="font-semibold pb-2 pt-8">Staff Notes</p>
-                        <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-                        {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
-                    </div>
-                 </div>
+            <div>
+              <hr className="border-t-1 border-gray-400 my-4" />
+              <div>
+                <p className="font-semibold pb-2 pt-8">Submission Label</p>
+                <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+              </div>
+              <div>
+                <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+                <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+                {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
+              </div>
+            </div>
 
             <button
               type="submit"
