@@ -11,7 +11,6 @@ const useSubstanceUseHistory = () => {
         const fetchSubstanceUseHistorySubmissions = async () => {
             if (user) {
                 const response = await readAllSubstanceUseHistory(user.id);
-                console.log(response);
                 setSubstanceUseHistorySubmissions(response || []);
                 if (response && response.length > 0) {
                     setSelectedSubstanceUseHistorySubmission(response[0]);

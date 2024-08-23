@@ -31,8 +31,6 @@ const Submission: React.FC<SubmissionProps> = ({ link, submissions = [], onDelet
   const handleDelete = () => {
     if (selectedSubmissionId) {
       onDelete(selectedSubmissionId);
-    } else {
-      console.log(selectedSubmissionId)
     }
   };
 

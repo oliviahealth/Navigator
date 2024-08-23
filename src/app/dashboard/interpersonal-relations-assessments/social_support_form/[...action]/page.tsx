@@ -78,18 +78,12 @@ const SocialSupportForm: React.FC = () => {
         throw new Error("User missing");
       }
 
-      console.log("User:", user);
-      console.log("Verb:", verb);
-
       if (verb === "new") {
-        console.log("Attempting to create new form");
         response = await createSocialSupportForm(data, user.id);
       } else {
-        console.log("Attempting to update form");
         response = await updateSocialSupportForm(data, submissionId, user.id);
       }
 
-      console.log("Form submitted successfully:", response);
       setSuccessMessage("Social Support Form submitted successfully!");
       router.push("/dashboard");
     } catch (error) {

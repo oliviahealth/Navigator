@@ -135,10 +135,8 @@ const SmokingTobaccoPregnancyForm: React.FC = () => {
 
       if (verb === "new") {
         response = await createSmokingTobaccoPregnancyRecord(data, user.id);
-        console.log("created")
       } else {
         response = await updateSmokingTobaccoPregnancyRecord(data, submissionId, user.id);
-        console.log("updating")
       }
 
     } catch (error) {

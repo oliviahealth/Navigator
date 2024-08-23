@@ -118,7 +118,6 @@ const DeliveryHistoryInformationForm: React.FC = () => {
     }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
     const submit = async (data: IDeliveryHistoryInformationFormInputs) => {
-        console.log(data)
         try {
             DeliveryHistoryInformationFormInputsSchema.parse(data);
 

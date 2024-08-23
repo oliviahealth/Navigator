@@ -257,7 +257,6 @@ const EnrollmentLog: React.FC = () => {
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
-      console.log(errors)
       setErrorMessage("Please ensure all fields have been completed on tabs 6 and 10");
     }
   }, [errors])
