@@ -11,7 +11,7 @@ import {
     IDukeUniversityReligionIndexInputs,
     TimeSpentReligiouslyEnum,
     TruthLevelEnum,
-    labelMapping
+    dukeLabelMapping
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
@@ -119,7 +119,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.churchAttendance[option]}</span>
+                                        <span className="ml-2">{dukeLabelMapping.churchAttendance[option]}</span>
                                     </label>
                                 ))}
                                 {errors.churchAttendance && (
@@ -141,7 +141,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.timeSpentReligiously[option]}</span>
+                                        <span className="ml-2">{dukeLabelMapping.timeSpentReligiously[option]}</span>
                                     </label>
                                 ))}
                                 {errors.timeSpentReligiously && (
@@ -163,7 +163,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.truthLevel[option]}</span>
+                                        <span className="ml-2">{dukeLabelMapping.truthLevel[option]}</span>
                                     </label>
                                 ))}
                                 {errors.divineExperience && (
@@ -185,7 +185,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.truthLevel[option]}</span>
+                                        <span className="ml-2">{dukeLabelMapping.truthLevel[option]}</span>
                                     </label>
                                 ))}
                                 {errors.beliefLifeInfluence && (
@@ -207,7 +207,7 @@ const DukeUniversityReligionIndex: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.truthLevel[option]}</span>
+                                        <span className="ml-2">{dukeLabelMapping.truthLevel[option]}</span>
                                     </label>
                                 ))}
                                 {errors.religiousIntegrationEffort && (

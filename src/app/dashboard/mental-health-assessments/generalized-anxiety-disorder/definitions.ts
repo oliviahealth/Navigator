@@ -14,7 +14,7 @@ export const DifficultyEnum = z.enum([
     "Extremely"
 ]);
 
-export const labelMapping = {
+export const generalizedAnxietyLabelMapping = {
     answers: {
         Not_at_all: "Not at all",
         Several_days: "Several days",

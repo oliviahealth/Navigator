@@ -42,6 +42,16 @@ export const readPerceivedStressScale = async (PerceivedStressScaleId: string, u
     })
 
     return PerceivedStressScaleResponseSchema.parse(response);
+};
+
+export const readAllPercievedStressScale = async (userId: string) => {
+    const response = await prisma.perceivedStressScale.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => PerceivedStressScaleResponseSchema.parse(log));
 }
 
 /**

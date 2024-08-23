@@ -44,6 +44,16 @@ export const readDukeUniversityReligionIndex = async (dukeUniversityReligionInde
     })
 
     return DukeUniversityReligionIndexResponseSchema.parse(response)
+};
+
+export const readAllDukeUniversityReligionIndex = async (userId: string) => {
+    const response = await prisma.dukeUniversityReligionIndex.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => DukeUniversityReligionIndexResponseSchema.parse(log));
 }
 
 /**
