@@ -47,6 +47,16 @@ export const readEdinburgPostnatalDepressionScale = async (EdinburgPostnatalDepr
     return EdinburgPostnatalDepressionScaleResponseSchema.parse(response);
 }
 
+export const readAllEdinburgPostnatalDepressionScale = async (userId: string) => {
+    const response = await prisma.edinburgPostnatalDepressionScale.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => EdinburgPostnatalDepressionScaleResponseSchema.parse(log));
+}
+
 /**
  * Updates a Edinburg Postnatal Depression Scale Record in the database with new Edinburg Postnatal Depression Scale Record.
  * @param {IEdinburgPostnatalDepressionScaleInputs} EdinburgPostnatalDepressionScaleInput - An array of updated Edinburg Postnatal Depression Scale Recordies.

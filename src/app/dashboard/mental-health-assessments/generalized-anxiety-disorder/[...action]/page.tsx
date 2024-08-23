@@ -10,7 +10,7 @@ import {
     GeneralizedAnxietyDisorderInputsSchema,
     AnswersEnum,
     DifficultyEnum,
-    labelMapping
+    generalizedAnxietyLabelMapping
 } from '../definitions';
 import useAppStore from '@/lib/useAppStore';
 import {
@@ -188,7 +188,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.feelingNervous && (
@@ -210,7 +210,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.unableToControlWorrying && (
@@ -232,7 +232,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.worryingTooMuch && (
@@ -254,7 +254,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.troubleRelaxing && (
@@ -276,7 +276,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.restlessness && (
@@ -298,7 +298,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.easilyAnnoyed && (
@@ -320,7 +320,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.answers[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.answers[option]}</span>
                                     </label>
                                 ))}
                                 {errors.feelingAfraid && (
@@ -342,7 +342,7 @@ const MentalHealthHistory: React.FC = () => {
                                             value={option}
                                             className="form-radio"
                                         />
-                                        <span className="ml-2">{labelMapping.difficulty[option]}</span>
+                                        <span className="ml-2">{generalizedAnxietyLabelMapping.difficulty[option]}</span>
                                     </label>
                                 ))}
                                 {errors.problemsDifficulty && (

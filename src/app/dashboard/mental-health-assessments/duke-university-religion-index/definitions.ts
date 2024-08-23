@@ -26,7 +26,7 @@ export const TruthLevelEnum = z.enum([
     "Definitely_true",
 ]);
 
-export const labelMapping = {
+export const dukeLabelMapping = {
     churchAttendance: {
         Never: "Never",
         Once_a_year: "Once a year or less",

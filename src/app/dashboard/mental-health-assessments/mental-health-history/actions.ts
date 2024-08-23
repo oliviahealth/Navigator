@@ -42,7 +42,17 @@ export const readMentalHealthHistory = async (mentalHealthHistoryId: string, use
     })
 
     return MentalHealthHistoryResponseSchema.parse(response);
-}
+};
+
+export const readAllMentalHealthHistory = async (userId: string) => {
+    const response = await prisma.mentalHealthHistory.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => MentalHealthHistoryResponseSchema.parse(log));
+};
 
 /**
  * Updates a Mental Health History Record in the database with new Mental Health History Record.
