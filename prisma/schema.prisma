@@ -56,7 +56,7 @@ model User {
   BriefChildWellnessUpdate                  BriefChildWellnessUpdate[]
   DeliveryHistoryInformationForm            DeliveryHistoryInformationForm[]
   socialSupportForm                         SocialSupportForm[]
-  IPVScreening                              IPVScreening[]
+  IPVDisclosureScreeningTool                IPVDisclosureScreeningTool[]
   InfancyQuestionnaire                      InfancyQuestionnaire[]
   TargetChildRecord                         TargetChildRecord[]
   PerceivedMaternalPlanningSelfEfficacyTool PerceivedMaternalPlanningSelfEfficacyTool[]
@@ -1246,6 +1246,8 @@ model IntimatePartnerViolenceForm {
   insultOrTalkDown IPVStatus
   threatenWithHarm IPVStatus
   screamOrCurse    IPVStatus
+  label            String
+  staffNotes       String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1324,7 +1326,7 @@ enum ResponseAnswers {
   Very_strongly_agree
 }
 
-model IPVScreening {
+model IPVDisclosureScreeningTool {
   id     String @id @default(uuid())
   user   User   @relation(fields: [userId], references: [id])
   userId String
@@ -1336,8 +1338,8 @@ model IPVScreening {
   ipvDisclosure     YesNo
   ipvDisclosureDate DateTime
   notes             String?
-  label                    String
-  staffNotes               String
+  label             String
+  staffNotes        String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
@@ -1561,15 +1563,14 @@ model SocialSupportForm {
   user   User   @relation(fields: [userId], references: [id])
   userId String
 
-  assessmentDate         String
-  siteId                 String
-  participantId          String
-  relation               String
-  formCompletionStatus   String
-  phase                  String
-  segment                String
-  formCompletionLanguage String
-
+  assessmentDate              String
+  siteId                      String
+  participantId               String
+  relation                    String
+  formCompletionStatus        String
+  phase                       String
+  segment                     String
+  formCompletionLanguage      String
   specialPersonInNeed         ResponseAnswers
   specialPersonJoysSorrows    ResponseAnswers
   familyHelp                  ResponseAnswers
@@ -1585,6 +1586,8 @@ model SocialSupportForm {
   specialPersonInitials       String?
   specialPersonRelationship   String?
   comments                    String? // Optional comments field
+  label                       String
+  staffNotes                  String
 
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt

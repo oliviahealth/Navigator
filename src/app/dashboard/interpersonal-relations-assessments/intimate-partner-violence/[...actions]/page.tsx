@@ -11,9 +11,9 @@ import {
 } from "../definitions";
 import useAppStore from "@/lib/useAppStore";
 import {
-  createIPVFormEntry,
-  readIPVFormEntry,
-  updateIPVFormEntry,
+  createIPVForm,
+  readIPVForm,
+  updateIPVForm,
 } from "../actions";
 
 const IPVForm: React.FC = () => {
@@ -47,9 +47,9 @@ const IPVForm: React.FC = () => {
       let response;
 
       if (verb === "new") {
-        response = await createIPVFormEntry(data, user.id);
+        response = await createIPVForm(data, user.id);
       } else if (verb === "edit" && submissionId) {
-        response = await updateIPVFormEntry(data, submissionId, user.id);
+        response = await updateIPVForm(data, submissionId, user.id);
       } else {
         throw new Error("Invalid action or missing submissionId");
       }
@@ -58,18 +58,17 @@ const IPVForm: React.FC = () => {
     } catch (error) {
       console.error(error); // for debugging
       setErrorMessage(
-        `Error: ${
-          error instanceof Error
-            ? error.message
-            : "Something went wrong! Please try again later"
+        `Error: ${error instanceof Error
+          ? error.message
+          : "Something went wrong! Please try again later"
         }`
       );
-      router.push("/dashboard");
+      router.push("/dashboard/interpersonal-relations-assessments");
       return;
     }
 
     setSuccessMessage("IPV Form submitted successfully!");
-    router.push("/dashboard");
+    router.push("/dashboard/interpersonal-relations-assessments");
   };
 
   useEffect(() => {
@@ -87,13 +86,14 @@ const IPVForm: React.FC = () => {
           throw new Error("Missing submissionId when fetching past submission");
         }
 
-        const response = await readIPVFormEntry(submissionId, user.id);
+        const response = await readIPVForm(submissionId, user.id);
+        reset(response)
 
         IntimatePartnerViolenceFormInputsSchema.parse(response);
       } catch (error) {
         console.error(error);
         setErrorMessage("Something went wrong! Please try again later");
-        router.push("/dashboard");
+        router.push("/dashboard/interpersonal-relations-assessments");
         return;
       }
     };
@@ -102,6 +102,7 @@ const IPVForm: React.FC = () => {
 
     fetchAndPopulatePastSubmissionData();
   }, [user, verb, submissionId, reset, router, setErrorMessage]);
+
   return (
     <div className="w-full h-full flex justify-center p-2 mt-2 text-base">
       <form
@@ -164,7 +165,7 @@ const IPVForm: React.FC = () => {
             {errors.insultOrTalkDown && (
               <span className="label-text-alt text-red-500">
                 {errors.insultOrTalkDown.message}
-              </span> 
+              </span>
             )}
           </div>
 
@@ -222,18 +223,22 @@ const IPVForm: React.FC = () => {
           </p>
         </div>
         <div>
-            <hr className="border-t-1 border-gray-400 my-4" />
-            <div>
-                <p className="font-semibold pb-2 pt-8">Submission Label</p>
-                <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-                {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
-            </div>
-            <div>
-                <p className="font-semibold pb-2 pt-8">Staff Notes</p>
-                <textarea {...register("notes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
-                {errors.notes && (<span className="label-text-alt text-red-500">{errors.notes.message}</span>)}
-            </div>
+          <hr className="border-t-1 border-gray-400 my-4" />
+          <div>
+            <p className="font-semibold pb-2 pt-8">Submission Label</p>
+            <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
           </div>
+          <div>
+            <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+            <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" />
+            {errors.staffNotes && (
+              <span className="label-text-alt text-red-500">
+                {errors.staffNotes.message}
+              </span>
+            )}
+          </div>
+        </div>
         <div className="flex justify-center mt-12">
           <button
             type="submit"

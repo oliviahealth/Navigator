@@ -46,13 +46,19 @@ export const labelMapping = {
   },
 };
 
+export const SocialSupportFormLabelMapping: Record<any, any> = {
+  Very_strongly_disagree: "Very Strongly Disagree",
+  Strongly_disagree: "Strongly Disagree",
+  Disagree: "Disagree",
+  Neither_agree_nor_disagree: "Neither Agree nor Disagree",
+  Strongly_agree: "Strongly Agree",
+  Very_strongly_agree: "Very Strongly Agree"
+}
+
 export const SocialSupportFormInputsSchema = z.object({
   assessmentDate: z.string(),
   siteId: z.string().regex(/^\d{2}-\d{2}$/, "Site ID must be in 01-00 format"),
-  participantId: z.union([
-    z.string().refine((val) => !isNaN(Number(val)) && Number(val) > 0, {}),
-    z.number().positive(),
-  ]),
+  participantId: z.string(),
   relation: z
     .string()
     .regex(/^\d{2}-\d{2}$/, "Relation must be in 01-00 format"),
@@ -75,11 +81,10 @@ export const SocialSupportFormInputsSchema = z.object({
   specialPersonInitials: z.string(),
   specialPersonRelationship: z.nativeEnum(SpecialPersonRelationshipEnum),
   comments: z.string().optional(),
+  label: z.string().min(1, "Label required."),
+  staffNotes: z.string().min(1, "Staff Notes required.")
 });
-
-export type ISocialSupportFormInputs = z.infer<
-  typeof SocialSupportFormInputsSchema
->;
+export type ISocialSupportFormInputs = z.infer<typeof SocialSupportFormInputsSchema>;
 
 export const SocialSupportFormResponseSchema =
   SocialSupportFormInputsSchema.extend({
@@ -88,6 +93,4 @@ export const SocialSupportFormResponseSchema =
     dateCreated: z.date(),
     dateModified: z.date(),
   });
-export type SocialSupportFormResponse = z.infer<
-  typeof SocialSupportFormResponseSchema
->;
+export type SocialSupportFormResponse = z.infer<typeof SocialSupportFormResponseSchema>;

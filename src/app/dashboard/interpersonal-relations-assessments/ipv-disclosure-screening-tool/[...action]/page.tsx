@@ -7,19 +7,19 @@ import { useForm } from "react-hook-form";
 
 import {
   YesNoEnum,
-  IPVScreeningResponseSchema,
-  IIPVScreeningInputs,
-  IPVScreeningInputsSchema,
+  IPVDisclosureScreeningToolInputsSchema,
+  IIPVDisclosureScreeningToolInputs,
+  IPVDisclosureScreeningToolResponseSchema,
 } from "../definitions";
 
 import useAppStore from "@/lib/useAppStore";
 import {
-  createIPVScreening,
-  readIPVScreening,
-  updateIPVScreening,
+  createIPVDisclosureScreeningTool,
+  readIPVDisclosureScreeningTool,
+  updateIPVDisclosureScreeningTool,
 } from "../actions";
 
-const IPVScreening: React.FC = () => {
+const IPVDisclosureScreeningTool: React.FC = () => {
   const router = useRouter();
   const { action } = useParams();
 
@@ -36,8 +36,8 @@ const IPVScreening: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<IIPVScreeningInputs>({
-    resolver: zodResolver(IPVScreeningInputsSchema),
+  } = useForm<IIPVDisclosureScreeningToolInputs>({
+    resolver: zodResolver(IPVDisclosureScreeningToolInputsSchema),
   });
 
   useEffect(() => {
@@ -55,28 +55,22 @@ const IPVScreening: React.FC = () => {
           throw new Error("Missing submissionId when fetching past submission");
         }
 
-        const response = await readIPVScreening(submissionId, user.id);
+        const response = await readIPVDisclosureScreeningTool(submissionId, user.id);
 
-        const validResponse = IPVScreeningResponseSchema.parse(response);
+        const validResponse = IPVDisclosureScreeningToolResponseSchema.parse(response);
 
         const formattedResponse = {
           ...validResponse,
-          dateTaken: new Date(validResponse.dateTaken)
-            .toISOString()
-            .slice(0, 10),
-          ipvScreeningDate: new Date(validResponse.ipvScreeningDate)
-            .toISOString()
-            .slice(0, 10),
-          ipvDisclosureDate: new Date(validResponse.ipvDisclosureDate)
-            .toISOString()
-            .slice(0, 10),
+          dateTaken: new Date(validResponse.dateTaken).toISOString().slice(0, 10),
+          ipvScreeningDate: new Date(validResponse.ipvScreeningDate).toISOString().slice(0, 10),
+          ipvDisclosureDate: new Date(validResponse.ipvDisclosureDate).toISOString().slice(0, 10),
         };
 
         reset(formattedResponse);
       } catch (error) {
         console.error(error);
         setErrorMessage("Something went wrong! Please try again later");
-        router.push("/dashboard");
+        router.push("/dashboard/interpersonal-relations-assessments/");
       }
     };
 
@@ -85,7 +79,7 @@ const IPVScreening: React.FC = () => {
     }
   }, [user, verb, submissionId, reset, router, setErrorMessage]);
 
-  const submit = async (data: IIPVScreeningInputs) => {
+  const submit = async (data: IIPVDisclosureScreeningToolInputs) => {
     try {
       let response;
 
@@ -94,12 +88,12 @@ const IPVScreening: React.FC = () => {
       }
 
       if (verb === "new") {
-        response = await createIPVScreening(data, user.id);
+        response = await createIPVDisclosureScreeningTool(data, user.id);
       } else {
-        response = await updateIPVScreening(data, submissionId, user.id);
+        response = await updateIPVDisclosureScreeningTool(data, submissionId, user.id);
       }
 
-      IPVScreeningResponseSchema.parse(response);
+      IPVDisclosureScreeningToolResponseSchema.parse(response);
     } catch (error) {
       console.error(error);
       setErrorMessage("Something went wrong! Please try again later");
@@ -107,7 +101,7 @@ const IPVScreening: React.FC = () => {
     }
 
     setSuccessMessage("IPV Screening submitted successfully!");
-    router.push("/dashboard");
+    router.push("/dashboard/interpersonal-relations-assessments/");
   };
 
   return (
@@ -229,7 +223,6 @@ const IPVScreening: React.FC = () => {
               <textarea
                 {...register("notes")}
                 className="border border-gray-300 px-4 py-2 rounded-md w-full"
-                required
               />
               {errors.notes && (
                 <span className="label-text-alt text-red-500">
@@ -241,14 +234,14 @@ const IPVScreening: React.FC = () => {
           <div>
             <hr className="border-t-1 border-gray-400 my-4" />
             <div>
-                <p className="font-semibold pb-2 pt-8">Submission Label</p>
-                <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
-                {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
+              <p className="font-semibold pb-2 pt-8">Submission Label</p>
+              <textarea {...register("label")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
+              {errors.label && (<span className="label-text-alt text-red-500">{errors.label.message}</span>)}
             </div>
             <div>
-                <p className="font-semibold pb-2 pt-8">Staff Notes</p>
-                <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
-                {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
+              <p className="font-semibold pb-2 pt-8">Staff Notes</p>
+              <textarea {...register("staffNotes")} className="border border-gray-300 px-4 py-2 rounded-md w-full" required />
+              {errors.staffNotes && (<span className="label-text-alt text-red-500">{errors.staffNotes.message}</span>)}
             </div>
           </div>
 
@@ -269,4 +262,4 @@ const IPVScreening: React.FC = () => {
   );
 };
 
-export default IPVScreening;
+export default IPVDisclosureScreeningTool;
