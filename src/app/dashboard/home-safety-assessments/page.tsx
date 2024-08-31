@@ -64,7 +64,7 @@ const Tab: React.FC = () => {
                   <p><strong>ER Visit Details:</strong></p>
                   {selectedHousingSecurityHomeVisitForm.erVisitSpecific.map((visit: ERVisit, index: number) => (
                   <div key={index}>
-                      <p>Visit Date: {new Date(visit.visitDate).toLocaleDateString()}</p>
+                      <p>Visit Date: {new Date(String(visit.visitDate)).toLocaleDateString()}</p>
                       <p>Visit Reason: {visit.visitReason}</p>
                   </div>
                 ))}

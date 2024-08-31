@@ -1157,6 +1157,9 @@ model PregnancySpacingAssesment {
   hadPregnanciesLessThan12MoApart String
   discussFamilyPlanningInterest   String
 
+  label String
+  staffNotes String
+
   dateCreated  DateTime @default(now())
   dateModified DateTime @updatedAt
 }

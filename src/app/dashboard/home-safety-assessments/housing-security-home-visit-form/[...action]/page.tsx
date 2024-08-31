@@ -81,7 +81,7 @@ const HousingSecurityHomeVisit: React.FC = () => {
       setShowErVisitSpecific(true);
     } else {
       setShowErVisitSpecific(false);
-      setValue("erVisitSpecific", null);
+      setValue("erVisitSpecific", undefined);
     }
   };
 
