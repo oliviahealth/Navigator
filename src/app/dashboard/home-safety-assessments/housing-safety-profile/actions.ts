@@ -25,6 +25,16 @@ export const readHouseholdHousingSafetyProfile = async (profileId: string, userI
     return HouseholdHousingSafetyProfileResponseSchema.parse(response);
 };
 
+export const readAllHouseholdHousingSafetyProfile = async (userId: string) => {
+    const response = await prisma.householdHousingSafetyProfile.findMany({
+        where: {
+            userId
+        }
+    });
+
+    return response.map(log => HouseholdHousingSafetyProfileResponseSchema.parse(log));
+};
+
 export const updateHouseholdHousingSafetyProfile = async (profileInput: IHouseholdHousingSafetyProfileInputs, id: string, userId: string) => {
     const response = await prisma.householdHousingSafetyProfile.update({
         where: {
