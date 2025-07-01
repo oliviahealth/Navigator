@@ -15,7 +15,7 @@ export const createUser = async (signupFormData: ISignupFormData) => {
     const user = await prisma.user.create({
         data: {
             name,
-            email,
+            email: email.toLowerCase(),
             password: hashedPassword
         }
     });

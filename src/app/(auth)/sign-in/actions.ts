@@ -7,20 +7,20 @@ import { cookies } from "next/headers";
 
 import { ISigninFormData } from "./definitions";
 
-export const signin = async(signinFormData: ISigninFormData) => {
+export const signin = async (signinFormData: ISigninFormData) => {
     const { email, password } = signinFormData;
 
     const user = await prisma.user.findUnique({
-        where: { email }
+        where: { email: email.toLowerCase() }
     });
 
-    if(!user || !user.password) {
+    if (!user || !user.password) {
         throw new Error('Invalid username or password: User not found');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if(!isPasswordValid) {
+    if (!isPasswordValid) {
         throw new Error("Invalid username or password");
     }
 
@@ -32,7 +32,7 @@ export const signin = async(signinFormData: ISigninFormData) => {
         value: token,
         httpOnly: true,
         path: "/",
-      });
+    });
 
     return { user, token }
 }
